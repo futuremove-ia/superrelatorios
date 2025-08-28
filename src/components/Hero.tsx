@@ -1,0 +1,54 @@
+import { Button } from "@/components/ui/button";
+import { Play, CheckCircle } from "lucide-react";
+
+const Hero = () => {
+  return (
+    <section className="min-h-screen bg-gradient-hero flex items-center justify-center relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 opacity-50">
+        <div className="w-full h-full bg-white/5 bg-[radial-gradient(circle,_rgba(255,255,255,0.1)_1px,_transparent_1px)] bg-[length:60px_60px]"></div>
+      </div>
+      
+      <div className="container mx-auto px-4 py-20 text-center relative z-10">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+            Relatórios Inteligentes em{" "}
+            <span className="text-accent">3 Cliques</span>
+          </h1>
+          
+          <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
+            Gere relatórios profissionais com análises de consultor em minutos. 
+            Pare de perder tempo com planilhas manuais.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+            <Button variant="accent" size="lg" className="text-lg px-8 py-4">
+              Criar Meu Primeiro Relatório
+            </Button>
+            <Button variant="outline" size="lg" className="text-lg px-8 py-4 bg-white/10 border-white/30 text-white hover:bg-white/20">
+              <Play className="w-5 h-5 mr-2" />
+              Ver Demonstração
+            </Button>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center text-white/80 text-sm">
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-accent" />
+              <span>3 cliques do upload ao PDF</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-accent" />
+              <span>Recomendações acionáveis</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-accent" />
+              <span>Seus dados, seu controle</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Hero;
