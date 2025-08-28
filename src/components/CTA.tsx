@@ -3,10 +3,10 @@ import { CheckCircle } from "lucide-react";
 
 const CTA = () => {
   return (
-    <section className="py-20 bg-gradient-hero relative overflow-hidden">
+    <section className="py-20 bg-primary relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 opacity-50">
-        <div className="w-full h-full bg-white/5 bg-[radial-gradient(circle,_rgba(255,255,255,0.1)_1px,_transparent_1px)] bg-[length:60px_60px]"></div>
+        <div className="w-full h-full bg-white/5"></div>
       </div>
       
       <div className="container mx-auto px-4 text-center relative z-10">
