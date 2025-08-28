@@ -8,40 +8,43 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 220 30% 96%;
-    --foreground: 220 10% 15%;
+    /* Improved colors for better contrast and accessibility */
+    --background: 0 0% 100%;
+    --foreground: 222 84% 4.9%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 10% 15%;
+    --card-foreground: 222 84% 4.9%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 10% 15%;
+    --popover-foreground: 222 84% 4.9%;
 
-    --primary: 220 85% 60%;
+    /* Professional blue palette */
+    --primary: 220 91% 51%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 15% 92%;
-    --secondary-foreground: 220 10% 15%;
+    --secondary: 220 14.3% 95.9%;
+    --secondary-foreground: 220 8.9% 46.1%;
 
-    --muted: 220 15% 92%;
-    --muted-foreground: 220 10% 50%;
+    --muted: 220 14.3% 95.9%;
+    --muted-foreground: 220 8.9% 46.1%;
 
-    --accent: 140 65% 45%;
+    /* Professional green for CTAs */
+    --accent: 142 71% 45%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 15% 88%;
-    --input: 220 15% 88%;
-    --ring: 220 85% 60%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 220 91% 51%;
 
     --radius: 0.75rem;
     
-    /* Gradients for modern design */
-    --gradient-primary: linear-gradient(135deg, hsl(220 85% 60%), hsl(240 80% 65%));
-    --gradient-hero: linear-gradient(135deg, hsl(220 85% 60%) 0%, hsl(240 80% 65%) 50%, hsl(260 75% 70%) 100%);
-    --gradient-card: linear-gradient(145deg, hsla(220, 85%, 60%, 0.1), hsla(240, 80%, 65%, 0.1));
+    /* Enhanced gradients with better contrast */
+    --gradient-primary: linear-gradient(135deg, hsl(220 91% 51%), hsl(213 94% 68%));
+    --gradient-hero: linear-gradient(135deg, hsl(220 91% 51%) 0%, hsl(213 94% 68%) 50%, hsl(200 100% 70%) 100%);
+    --gradient-card: linear-gradient(145deg, hsla(220, 91%, 51%, 0.05), hsla(213, 94%, 68%, 0.05));
 
     --sidebar-background: 0 0% 98%;
 
@@ -61,37 +64,37 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 220 25% 8%;
-    --foreground: 220 15% 92%;
+    --background: 222 84% 4.9%;
+    --foreground: 210 40% 98%;
 
-    --card: 220 20% 12%;
-    --card-foreground: 220 15% 92%;
+    --card: 222 84% 4.9%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 220 20% 12%;
-    --popover-foreground: 220 15% 92%;
+    --popover: 222 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 220 85% 65%;
-    --primary-foreground: 220 25% 8%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222 84% 4.9%;
 
-    --secondary: 220 15% 18%;
-    --secondary-foreground: 220 15% 92%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 220 15% 18%;
-    --muted-foreground: 220 10% 65%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 140 65% 50%;
-    --accent-foreground: 220 25% 8%;
+    --accent: 142 76% 36%;
+    --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 50%;
-    --destructive-foreground: 220 15% 92%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 220 15% 18%;
-    --input: 220 15% 18%;
-    --ring: 220 85% 65%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 217.2 91.2% 59.8%;
     
-    --gradient-primary: linear-gradient(135deg, hsl(220 85% 65%), hsl(240 80% 70%));
-    --gradient-hero: linear-gradient(135deg, hsl(220 85% 65%) 0%, hsl(240 80% 70%) 50%, hsl(260 75% 75%) 100%);
-    --gradient-card: linear-gradient(145deg, hsla(220, 85%, 65%, 0.15), hsla(240, 80%, 70%, 0.15));
+    --gradient-primary: linear-gradient(135deg, hsl(217.2 91.2% 59.8%), hsl(213 94% 68%));
+    --gradient-hero: linear-gradient(135deg, hsl(217.2 91.2% 59.8%) 0%, hsl(213 94% 68%) 50%, hsl(200 100% 70%) 100%);
+    --gradient-card: linear-gradient(145deg, hsla(217.2, 91.2%, 59.8%, 0.1), hsla(213, 94%, 68%, 0.1));
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -109,6 +112,39 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-body;
+  }
+
+  /* Typography hierarchy */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+
+  h1 {
+    @apply text-4xl md:text-6xl font-bold leading-tight;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl font-bold leading-tight;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl font-semibold leading-relaxed;
+  }
+
+  h4 {
+    @apply text-lg md:text-xl font-semibold;
+  }
+
+  h5 {
+    @apply text-base md:text-lg font-medium;
+  }
+
+  h6 {
+    @apply text-sm md:text-base font-medium;
+  }
+
+  p {
+    @apply leading-relaxed;
   }
 }

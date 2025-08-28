@@ -39,11 +39,11 @@ const HowItWorks = () => {
           {steps.map((step, index) => (
             <div key={index} className="relative">
               <Card className="p-8 text-center border-0 bg-card hover:shadow-lg transition-all duration-300">
-                <div className="relative">
-                  <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-6 text-white text-lg font-bold">
+                <div className="relative mb-6">
+                  <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto text-white text-lg font-bold shadow-lg">
                     {index + 1}
                   </div>
-                  <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center mx-auto mb-6 -mt-12 relative z-10">
+                  <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center mx-auto -mt-6 relative z-10 shadow-md">
                     <step.icon className="w-6 h-6 text-white" />
                   </div>
                 </div>
