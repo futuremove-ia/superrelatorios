@@ -22,6 +22,10 @@ All colors MUST be HSL.
     --primary: 220 91% 51%;
     --primary-foreground: 0 0% 100%;
 
+    /* Dark blue variant for enhanced contrast and depth */
+    --primary-dark: 220 91% 35%;
+    --primary-dark-foreground: 0 0% 100%;
+
     --secondary: 220 14.3% 95.9%;
     --secondary-foreground: 220 8.9% 46.1%;
 
@@ -70,6 +74,10 @@ All colors MUST be HSL.
 
     --primary: 217.2 91.2% 59.8%;
     --primary-foreground: 222 84% 4.9%;
+
+    /* Dark blue for dark mode */
+    --primary-dark: 217.2 91.2% 45%;
+    --primary-dark-foreground: 210 40% 98%;
 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
