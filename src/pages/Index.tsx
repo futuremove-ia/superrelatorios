@@ -5,7 +5,7 @@ import DocumentExamples from "@/components/DocumentExamples";
 import HowItWorks from "@/components/HowItWorks";
 import ReportExamples from "@/components/ReportExamples";
 import Benefits from "@/components/Benefits";
-import Testimonials from "@/components/Testimonials";
+import Trust from "@/components/Trust";
 import Pricing from "@/components/Pricing";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
@@ -20,7 +20,7 @@ const Index = () => {
       <HowItWorks />
       <ReportExamples />
       <Benefits />
-      <Testimonials />
+      <Trust />
       <Pricing />
       <CTA />
       <Footer />

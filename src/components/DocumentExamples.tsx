@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import { FileSpreadsheet, FileText, Copy, Upload } from "lucide-react";
+import { FileSpreadsheet, FileText, ClipboardPaste, Upload } from "lucide-react";
 
 const DocumentExamples = () => {
   const documentTypes = [
@@ -22,7 +22,7 @@ const DocumentExamples = () => {
       borderColor: "border-blue-200"
     },
     {
-      icon: Copy,
+      icon: ClipboardPaste,
       name: "Texto Direto",
       description: "Cole dados do seu sistema",
       formats: "Copiar e colar",
