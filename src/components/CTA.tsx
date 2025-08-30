@@ -16,8 +16,8 @@ const CTA = () => {
           </h2>
           
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Junte-se a milhares de empresas que já usam o SuperRelatórios 
-            para tomar decisões mais inteligentes.
+            Junte-se a milhares de empresas que já usam o Super<span className="font-bold text-primary">Relatórios</span> 
+            para tomar decisões mais inteligentes com IA.
           </p>
           
           <Button variant="accent" size="lg" className="text-lg px-12 py-4 mb-8">

@@ -5,18 +5,18 @@ const Features = () => {
   const features = [
     {
       icon: Zap,
-      title: "Rápido e Eficiente",
-      description: "Gere relatórios completos em menos de 3 minutos com nossa tecnologia inteligente.",
+      title: "IA Inteligente e Rápida",
+      description: "Gere relatórios completos em menos de 3 minutos com análise de dados por Inteligência Artificial.",
     },
     {
       icon: Target,
-      title: "Análises Profundas",
-      description: "Insights valiosos e métricas relevantes para tomada de decisão estratégica.",
+      title: "Análises e Projeções",
+      description: "Receba insights valiosos, cenários futuros e projeções baseadas em IA para decisões estratégicas.",
     },
     {
       icon: Shield,
       title: "Seguro e Confiável",
-      description: "Seus dados protegidos com criptografia de nível empresarial.",
+      description: "Seus dados protegidos com criptografia de nível empresarial e processamento seguro.",
     },
   ];
 
@@ -25,10 +25,10 @@ const Features = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Por que escolher o SuperRelatórios?
+            Por que escolher o Super<span className="font-bold text-primary">Relatórios</span>?
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Desenvolvido especificamente para pequenas e médias empresas que precisam de análises profissionais sem complicação.
+            Inteligência Artificial desenvolvida especificamente para PMEs que precisam de análises profissionais, cenários e projeções sem complicação.
           </p>
         </div>
         

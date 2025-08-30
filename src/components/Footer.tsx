@@ -7,13 +7,17 @@ const Footer = () => {
         <div className="grid md:grid-cols-4 gap-8">
           <div className="col-span-1">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center">
-                <BarChart3 className="w-5 h-5 text-white" />
+              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                <div className="w-5 h-5 bg-white rounded-sm flex items-center justify-center">
+                  <span className="text-xs font-bold text-primary">SR</span>
+                </div>
               </div>
-              <span className="text-xl font-bold">SuperRelatórios</span>
+              <span className="text-xl font-bold">
+                Super<span className="font-bold text-primary">Relatórios</span>
+              </span>
             </div>
             <p className="text-sm text-background/70 leading-relaxed">
-              Relatórios inteligentes para PMEs que querem crescer com dados e decisões mais assertivas.
+              Relatórios inteligentes com IA para PMEs que querem crescer com análise de dados, cenários e projeções automatizadas.
             </p>
           </div>
           
@@ -49,7 +53,7 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-background/20 mt-8 pt-8 text-center text-sm text-background/70">
-          © 2024 SuperRelatórios. Todos os direitos reservados.
+          © 2024 Super<span className="font-bold text-primary">Relatórios</span>. Todos os direitos reservados.
         </div>
       </div>
     </footer>
