@@ -12,12 +12,14 @@ const Hero = () => {
       <div className="container mx-auto px-4 py-20 text-center relative z-10">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
-            Pare de perder tempo com relatórios{" "}
-            <span className="text-primary-dark">manuais</span>
+            Pare de perder tempo com relatórios manuais
           </h1>
           
-          <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Gere relatórios profissionais em 3 cliques, com análises feitas por IA que ajudam a decidir. 
+          <p className="text-xl md:text-2xl text-white mb-6 max-w-3xl mx-auto leading-relaxed">
+            Gere relatórios profissionais em 3 cliques, com análises feitas por IA que ajudam a decidir.
+          </p>
+          
+          <p className="text-lg text-primary-dark mb-8 max-w-2xl mx-auto font-semibold">
             Inteligência de consultor, por uma fração do custo.
           </p>
           

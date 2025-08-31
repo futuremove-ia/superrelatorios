@@ -1,20 +1,27 @@
 import { cn } from "@/lib/utils";
 
 interface BrandNameProps {
-  variant?: "default" | "white-chip" | "header";
+  variant?: "default" | "on-blue" | "on-dark" | "header";
   className?: string;
 }
 
 const BrandName = ({ variant = "default", className }: BrandNameProps) => {
   const baseClasses = "font-heading";
   
-  if (variant === "white-chip") {
+  if (variant === "on-blue") {
     return (
       <span className={cn(baseClasses, className)}>
-        <span className="bg-white px-2 py-1 rounded-md">
-          <span className="text-primary-dark">Super</span>
-          <span className="font-bold text-primary">Relatórios</span>
-        </span>
+        <span className="text-primary-dark">Super</span>
+        <span className="font-bold text-white">Relatórios</span>
+      </span>
+    );
+  }
+  
+  if (variant === "on-dark") {
+    return (
+      <span className={cn(baseClasses, className)}>
+        <span className="text-white">Super</span>
+        <span className="font-bold text-primary">Relatórios</span>
       </span>
     );
   }
@@ -22,7 +29,7 @@ const BrandName = ({ variant = "default", className }: BrandNameProps) => {
   if (variant === "header") {
     return (
       <span className={cn(baseClasses, "text-xl", className)}>
-        <span className="text-primary-dark">Super</span>
+        <span className="text-black">Super</span>
         <span className="font-bold text-primary">Relatórios</span>
       </span>
     );
@@ -30,7 +37,7 @@ const BrandName = ({ variant = "default", className }: BrandNameProps) => {
   
   return (
     <span className={cn(baseClasses, className)}>
-      <span className="text-primary-dark">Super</span>
+      <span className="text-black">Super</span>
       <span className="font-bold text-primary">Relatórios</span>
     </span>
   );

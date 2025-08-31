@@ -6,26 +6,35 @@ This document defines the complete design system for SuperRelatórios, ensuring 
 ## Brand Guidelines
 
 ### Logo & Brand Name
-- **Primary Usage**: `<BrandName variant="default" />`
-- **On Blue Backgrounds**: `<BrandName variant="white-chip" />` 
+- **Default Usage**: `<BrandName variant="default" />` - White/light backgrounds
+- **On Blue Backgrounds**: `<BrandName variant="on-blue" />` 
+- **On Dark Backgrounds**: `<BrandName variant="on-dark" />`
 - **In Header**: `<BrandName variant="header" />`
+- **Logo Icon**: `<LogoIcon size="sm|md|lg" />` - 3-bar chart icon
 - **Rules**: 
-  - "Super" always in `text-primary-dark`
-  - "Relatórios" always `font-bold text-primary`
-  - White chip variant for contrast on blue backgrounds
+  - "Super" NEVER bold, color varies by background
+  - "Relatórios" ALWAYS `font-bold`, color varies by background
+  - NO chip variants for website/app (only marketing materials)
+  - White background: Super(black) + Relatórios(blue bold)
+  - Blue background: Super(dark blue) + Relatórios(white bold)
+  - Dark background: Super(white) + Relatórios(blue bold)
 
 ### Brand Colors
 - **Primary Blue**: `hsl(220, 91%, 51%)` - Main brand color
-- **Primary Dark Blue**: `hsl(220, 91%, 35%)` - For emphasis and contrast
-- **Accent Green**: Complementary color for CTAs and highlights
+- **Primary Dark Blue**: `hsl(220, 91%, 20%)` - Dark blue (footer color)
+- **Accent Green**: `hsl(142, 76%, 36%)` - For CTAs and highlights
+- **Brand Black**: `hsl(0, 0%, 0%)` - For "Super" text
+- **Brand White**: `hsl(0, 0%, 100%)` - For contrast text
 
 ## Color System
 
 ### CSS Variables (Light Mode)
 ```css
 --primary: 220 91% 51%;           /* Main brand blue */
---primary-dark: 220 91% 35%;      /* Dark blue for emphasis */
---accent: [green values];         /* Accent green */
+--primary-dark: 220 91% 20%;      /* Dark blue (footer color) */
+--accent: 142 76% 36%;            /* Accent green */
+--brand-super: 0 0% 0%;           /* Black for "Super" */
+--brand-relatorios: 220 91% 51%;  /* Blue for "Relatórios" */
 --background: 0 0% 100%;          /* White background */
 --foreground: 222.2 84% 4.9%;     /* Dark text */
 --secondary: 220 14.3% 95.9%;     /* Light gray backgrounds */
@@ -36,7 +45,9 @@ This document defines the complete design system for SuperRelatórios, ensuring 
 ### CSS Variables (Dark Mode)
 ```css
 --primary: 217.2 91.2% 59.8%;     /* Lighter blue for dark mode */
---primary-dark: 217.2 91.2% 45%;  /* Dark blue for dark mode */
+--primary-dark: 220 91% 20%;      /* Dark blue consistent */
+--brand-super: 210 40% 98%;       /* White for "Super" on dark */
+--brand-relatorios: 220 91% 51%;  /* Blue for "Relatórios" on dark */
 --background: 222.2 84% 4.9%;     /* Dark background */
 --foreground: 210 40% 98%;        /* Light text */
 ```

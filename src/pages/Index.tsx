@@ -4,6 +4,7 @@ import Features from "@/components/Features";
 import DocumentExamples from "@/components/DocumentExamples";
 import HowItWorks from "@/components/HowItWorks";
 import ReportExamples from "@/components/ReportExamples";
+import ReportShowcase from "@/components/ReportShowcase";
 import Benefits from "@/components/Benefits";
 import Trust from "@/components/Trust";
 import Pricing from "@/components/Pricing";
@@ -16,8 +17,8 @@ const Index = () => {
       <Header />
       <Hero />
       <Features />
-      <DocumentExamples />
       <HowItWorks />
+      <ReportShowcase />
       <ReportExamples />
       <Benefits />
       <Trust />

@@ -1,4 +1,5 @@
-import { BarChart3 } from "lucide-react";
+import BrandName from "@/components/BrandName";
+import LogoIcon from "@/components/LogoIcon";
 
 const Footer = () => {
   return (
@@ -7,14 +8,8 @@ const Footer = () => {
         <div className="grid md:grid-cols-4 gap-8">
           <div className="col-span-1">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <div className="w-5 h-5 bg-white rounded-sm flex items-center justify-center">
-                  <span className="text-xs font-bold text-primary">SR</span>
-                </div>
-              </div>
-               <span className="text-xl font-bold">
-                 <span className="text-primary-dark">Super</span><span className="font-bold text-primary">Relatórios</span>
-               </span>
+              <LogoIcon size="sm" />
+              <BrandName variant="on-dark" />
             </div>
             <p className="text-sm text-background/70 leading-relaxed">
               Relatórios inteligentes com IA para PMEs que querem crescer com análise de dados, cenários e projeções automatizadas.
@@ -53,7 +48,7 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-background/20 mt-8 pt-8 text-center text-sm text-background/70">
-          © 2024 <span className="text-primary-dark">Super</span><span className="font-bold text-primary">Relatórios</span>. Todos os direitos reservados.
+          © 2024 <BrandName variant="on-dark" />. Todos os direitos reservados.
         </div>
       </div>
     </footer>

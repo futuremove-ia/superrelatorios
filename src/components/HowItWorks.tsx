@@ -40,19 +40,14 @@ const HowItWorks = () => {
             <div key={index} className="relative">
               <Card className="p-8 text-center border-0 bg-card hover:shadow-lg transition-all duration-300">
                 <div className="relative mb-6">
-                  <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto shadow-lg relative">
+                  <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto shadow-lg">
                     <step.icon className="w-8 h-8 text-white" />
-                    <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2">
-                      <span className="inline-flex items-center justify-center w-8 h-8 bg-primary-dark text-white text-sm font-bold rounded-full shadow-lg border-4 border-white">
-                        {index + 1}
-                      </span>
-                    </div>
                   </div>
                 </div>
                 
                 <div className="mb-4">
-                  <span className="text-sm text-primary font-semibold">{step.step}</span>
-                  <h3 className="text-xl font-semibold text-foreground mt-2">
+                  <h4 className="text-lg text-primary font-semibold mb-2">{step.step}</h4>
+                  <h3 className="text-xl font-semibold text-foreground">
                     {step.title}
                   </h3>
                 </div>
