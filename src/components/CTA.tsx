@@ -16,7 +16,7 @@ const CTA = () => {
           </h2>
           
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Junte-se a milhares de empresas que já usam o Super<span className="font-bold text-primary">Relatórios</span> 
+            Junte-se a milhares de empresas que já usam o <span className="bg-white px-2 py-1 rounded-md"><span className="text-primary-dark">Super</span><span className="font-bold text-primary">Relatórios</span></span> 
             para tomar decisões mais inteligentes com IA.
           </p>
           

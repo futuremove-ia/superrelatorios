@@ -12,9 +12,9 @@ const Footer = () => {
                   <span className="text-xs font-bold text-primary">SR</span>
                 </div>
               </div>
-              <span className="text-xl font-bold">
-                Super<span className="font-bold text-primary">Relatórios</span>
-              </span>
+               <span className="text-xl font-bold">
+                 <span className="text-primary-dark">Super</span><span className="font-bold text-primary">Relatórios</span>
+               </span>
             </div>
             <p className="text-sm text-background/70 leading-relaxed">
               Relatórios inteligentes com IA para PMEs que querem crescer com análise de dados, cenários e projeções automatizadas.
@@ -53,7 +53,7 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-background/20 mt-8 pt-8 text-center text-sm text-background/70">
-          © 2024 Super<span className="font-bold text-primary">Relatórios</span>. Todos os direitos reservados.
+          © 2024 <span className="text-primary-dark">Super</span><span className="font-bold text-primary">Relatórios</span>. Todos os direitos reservados.
         </div>
       </div>
     </footer>

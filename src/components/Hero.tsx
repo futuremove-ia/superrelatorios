@@ -13,7 +13,7 @@ const Hero = () => {
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
             Pare de perder tempo com relatórios{" "}
-            <span className="text-accent">manuais</span>
+            <span className="text-primary-dark">manuais</span>
           </h1>
           
           <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">

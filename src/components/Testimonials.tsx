@@ -1,28 +1,31 @@
 import { Card } from "@/components/ui/card";
-import { Star } from "lucide-react";
+import { Shield, Clock, Award, Lock } from "lucide-react";
 
 const Testimonials = () => {
-  const testimonials = [
+  const trustPillars = [
     {
-      name: "Ana Souza",
-      role: "Diretora Financeira",
-      company: "TechStart Soluções",
-      content: "Em 10 minutos eu gerou um relatório que levaria horas. A clareza do Resumo Executivo é absurda.",
-      rating: 5,
+      icon: Shield,
+      title: "Dados Seguros",
+      highlight: "Criptografia bancária",
+      description: "Seus dados são processados com a mesma segurança dos bancos. Nunca armazenamos informações sensíveis.",
     },
     {
-      name: "Rafael Lima", 
-      role: "COO",
-      company: "InovaLogistics",
-      content: "A equipe entendeu rapidamente o que fazer. Virou ritual semanal analisar os KPIs gerados.",
-      rating: 5,
+      icon: Clock,
+      title: "Sem Compromisso",
+      highlight: "Teste grátis",
+      description: "Experimente todos os recursos sem cartão de crédito. Cancele quando quiser, sem burocracias.",
     },
     {
-      name: "Marina Costa",
-      role: "Fundadora",
-      company: "Verde & Sustentável",
-      content: "Usei para apresentar resultados a investidores. Ganho tempo e passei profissionalismo.",
-      rating: 5,
+      icon: Award,
+      title: "Qualidade Garantida",
+      highlight: "Padrão consultoria",
+      description: "Relatórios com metodologia profissional, validados por especialistas em análise de negócios.",
+    },
+    {
+      icon: Lock,
+      title: "Privacidade Total",
+      highlight: "Seus dados, suas regras",
+      description: "Processamento local quando possível. Política de privacidade transparente e controle total.",
     },
   ];
 
@@ -31,29 +34,33 @@ const Testimonials = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Empresários que já testaram
+            Transparência e Confiança
           </h2>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Construímos nossa solução pensando na segurança e transparência que sua empresa precisa.
+          </p>
         </div>
         
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {testimonials.map((testimonial, index) => (
-            <Card key={index} className="p-6 border-0 bg-card hover:shadow-lg transition-all duration-300">
-              <div className="flex items-center gap-1 mb-4">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-accent text-accent" />
-                ))}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+          {trustPillars.map((pillar, index) => (
+            <Card key={index} className="p-6 border-0 bg-card hover:shadow-lg transition-all duration-300 text-center">
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <pillar.icon className="w-6 h-6 text-primary" />
               </div>
               
-              <blockquote className="text-foreground mb-6 leading-relaxed">
-                "{testimonial.content}"
-              </blockquote>
-              
-              <div>
-                <div className="font-semibold text-foreground">{testimonial.name}</div>
-                <div className="text-sm text-muted-foreground">
-                  {testimonial.role} • {testimonial.company}
-                </div>
+              <div className="mb-3">
+                <span className="text-sm font-semibold text-primary-dark bg-primary/10 px-3 py-1 rounded-full">
+                  {pillar.highlight}
+                </span>
               </div>
+              
+              <h3 className="text-lg font-semibold text-foreground mb-3">
+                {pillar.title}
+              </h3>
+              
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                {pillar.description}
+              </p>
             </Card>
           ))}
         </div>

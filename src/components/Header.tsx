@@ -13,7 +13,7 @@ const Header = () => {
           </div>
           <div className="flex flex-col">
             <span className="text-xl font-heading text-foreground">
-              Super<span className="font-bold text-primary">Relatórios</span>
+              <span className="text-primary-dark">Super</span><span className="font-bold text-primary">Relatórios</span>
             </span>
           </div>
         </div>
