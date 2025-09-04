@@ -1,391 +1,421 @@
 # SuperRelatórios Design System
 
 ## Overview
-This document defines the complete design system for SuperRelatórios, ensuring consistency, accessibility, and professional appearance across all platforms. This system serves as the foundation for all development work.
+Este documento define o sistema de design completo para SuperRelatórios, garantindo consistência, acessibilidade e aparência profissional em todas as plataformas. Este sistema serve como base para todo o trabalho de desenvolvimento.
 
-## Brand Guidelines
+## Identidade Visual
 
-### Brand Name Usage
-- **Component**: Always use `<BrandName />` component for consistency
-- **Variants**:
-  - `variant="default"` - White/light backgrounds
-  - `variant="on-blue"` - Blue backgrounds  
-  - `variant="on-dark"` - Dark blue backgrounds
-  - `variant="header"` - Header navigation
+### Logomarca
 
-### Brand Name Rules (CRITICAL)
-- **"Super"**: NEVER bold, color varies by background
-- **"Relatórios"**: ALWAYS `font-bold`, color varies by background
-- **NO chip variants** for website/app (only marketing materials)
+#### LogoIcon - Ícone da Marca
+- **Componente**: `<LogoIcon size="sm|md|lg" />`
+- **Design**: Gráfico de 3 barras (sem chip de fundo)
+- **Cores**: 
+  - Barra 1 (média): Primary blue `hsl(220, 91%, 51%)`
+  - Barra 2 (baixa): Dark blue `hsl(220, 91%, 20%)`
+  - Barra 3 (alta): Green `hsl(142, 76%, 36%)`
+- **Tamanhos**:
+  - `sm`: 24x24px (w-6 h-6)
+  - `md`: 40x40px (w-10 h-10)
+  - `lg`: 48x48px (w-12 h-12)
+- **Acessibilidade**: Sempre com `aria-hidden="true"`
 
-### Brand Name Color Applications
+#### BrandName - Nome da Marca
+- **Componente**: SEMPRE usar `<BrandName />` para consistência
+- **Variantes**:
+  - `variant="default"` - Fundos brancos/claros
+  - `variant="on-blue"` - Fundos azuis
+  - `variant="on-dark"` - Fundos azul escuro
+  - `variant="header"` - Navegação do cabeçalho
+
+#### Regras da Marca (CRÍTICO)
+- **"Super"**: NUNCA negrito, cor varia conforme fundo
+- **"Relatórios"**: SEMPRE `font-bold`, cor varia conforme fundo
+- **SEM variantes chip** para website/app (apenas materiais de marketing)
+
+#### Aplicações de Cor da Marca
 ```tsx
-// White/light backgrounds
+// Fundos brancos/claros
 <BrandName variant="default" />
-// Result: Super(black) + Relatórios(blue bold)
+// Resultado: Super(preto) + Relatórios(azul negrito)
 
-// Blue backgrounds
+// Fundos azuis
 <BrandName variant="on-blue" />
-// Result: Super(dark blue) + Relatórios(white bold)
+// Resultado: Super(azul escuro) + Relatórios(branco negrito)
 
-// Dark blue backgrounds  
+// Fundos azul escuro
 <BrandName variant="on-dark" />
-// Result: Super(white) + Relatórios(blue bold)
+// Resultado: Super(branco) + Relatórios(azul negrito)
+
+// Cabeçalho
+<BrandName variant="header" />
+// Resultado: Super(preto) + Relatórios(azul negrito) com tamanho text-xl
 ```
 
-### Logo Icon
-- **Component**: `<LogoIcon size="sm|md|lg" />`
-- **Design**: 3-bar chart icon (no background chip)
-- **Colors**: 
-  - Bar 1 (medium): Primary blue `hsl(220, 91%, 51%)`
-  - Bar 2 (low): Dark blue `hsl(220, 91%, 20%)`
-  - Bar 3 (high): Green `hsl(142, 76%, 36%)`
-- **Usage**: Always with `aria-hidden="true"` for accessibility
+## Paleta de Cores
 
-## Color Palette
-
-### Core Colors (HSL Format)
+### Cores Principais (Formato HSL)
 ```css
-/* Primary Colors */
---primary: 220 91% 51%;           /* Main brand blue */
---primary-dark: 220 91% 20%;      /* Dark blue (footer color) */
---accent: 142 76% 36%;            /* Accent green for CTAs */
+/* Cores Primárias */
+--primary: 220 91% 51%;           /* Azul principal da marca */
+--primary-dark: 220 91% 20%;      /* Azul escuro (cor do rodapé) */
+--accent: 142 76% 36%;            /* Verde para CTAs */
 
-/* Brand Colors */
---brand-super: 0 0% 0%;           /* Black for "Super" */
---brand-relatorios: 220 91% 51%;  /* Blue for "Relatórios" */
+/* Cores da Marca */
+--brand-super: 0 0% 0%;           /* Preto para "Super" */
+--brand-relatorios: 220 91% 51%;  /* Azul para "Relatórios" */
 
-/* Base Colors */
---background: 0 0% 100%;          /* White background */
---foreground: 222 84% 4.9%;       /* Dark text */
---card: 0 0% 100%;                /* Card backgrounds */
---border: 220 13% 91%;            /* Border color */
---muted-foreground: 220 8.9% 46.1%; /* Secondary text */
+/* Cores Base */
+--background: 0 0% 100%;          /* Fundo branco */
+--foreground: 222 84% 4.9%;       /* Texto escuro */
+--card: 0 0% 100%;                /* Fundos de cartões */
+--border: 220 13% 91%;            /* Cor das bordas */
+--muted-foreground: 220 8.9% 46.1%; /* Texto secundário */
 ```
 
-### Dark Mode Variants
+### Variantes Modo Escuro
 ```css
 .dark {
-  --background: 222 84% 4.9%;      /* Dark background */
-  --foreground: 210 40% 98%;       /* Light text */
-  --brand-super: 210 40% 98%;      /* White for "Super" on dark */
-  --card: 222 84% 4.9%;            /* Dark card backgrounds */
+  --background: 222 84% 4.9%;      /* Fundo escuro */
+  --foreground: 210 40% 98%;       /* Texto claro */
+  --brand-super: 210 40% 98%;      /* Branco para "Super" no escuro */
+  --card: 222 84% 4.9%;            /* Fundos de cartões escuros */
 }
 ```
 
-### Color Usage Rules
-- **NEVER** use direct colors: `text-blue-500`, `bg-white`, `text-black`
-- **ALWAYS** use semantic tokens: `text-primary`, `bg-background`, `text-foreground`
-- **HSL ONLY**: All colors must be in HSL format for theme compatibility
-- **Design Tokens First**: Use CSS variables from `index.css`
+### Regras de Uso de Cores
+- **NUNCA** usar cores diretas: `text-blue-500`, `bg-white`, `text-black`
+- **SEMPRE** usar tokens semânticos: `text-primary`, `bg-background`, `text-foreground`
+- **APENAS HSL**: Todas as cores devem estar em formato HSL para compatibilidade de tema
+- **Design Tokens Primeiro**: Usar variáveis CSS de `index.css`
 
-## Typography
+## Tipografia
 
-### Font Families
+### Famílias de Fontes
 ```css
-font-heading: ['Montserrat', 'sans-serif']  /* Headings and brand */
-font-body: ['Inter', 'sans-serif']          /* Body text */
+font-heading: ['Montserrat', 'sans-serif']  /* Títulos e marca */
+font-body: ['Inter', 'sans-serif']          /* Texto do corpo */
 ```
 
-### Typography Scale
+### Escala Tipográfica
 ```css
-/* Headings - Always use font-heading */
-h1: text-4xl md:text-6xl font-bold         /* Main headlines */
-h2: text-3xl md:text-4xl font-bold         /* Section titles */
-h3: text-xl md:text-2xl font-semibold      /* Subsections */
-h4: text-lg md:text-xl font-semibold       /* Component titles */
+/* Títulos - Sempre usar font-heading */
+h1: text-4xl md:text-6xl font-bold         /* Títulos principais */
+h2: text-3xl md:text-4xl font-bold         /* Títulos de seção */
+h3: text-xl md:text-2xl font-semibold      /* Subseções */
+h4: text-lg md:text-xl font-semibold       /* Títulos de componentes */
 
-/* Body Text - Always use font-body */
-p: text-base leading-relaxed               /* Regular text */
-small: text-sm                             /* Fine print */
+/* Texto do Corpo - Sempre usar font-body */
+p: text-base leading-relaxed               /* Texto regular */
+small: text-sm                             /* Texto pequeno */
 ```
 
-### Text Colors
+### Cores de Texto
 ```css
-/* Primary text */
-text-foreground              /* Main text color */
-text-muted-foreground        /* Secondary/helper text */
+/* Texto primário */
+text-foreground              /* Cor principal do texto */
+text-muted-foreground        /* Texto secundário/auxiliar */
 
-/* Brand colors */
-text-primary                 /* Brand blue */
-text-primary-dark            /* Dark blue */
-text-accent                  /* Green for highlights */
+/* Cores da marca */
+text-primary                 /* Azul da marca */
+text-primary-dark            /* Azul escuro */
+text-accent                  /* Verde para destaques */
 
-/* Context colors */
-text-white                   /* White text on dark backgrounds */
-text-white/70                /* White text with opacity */
+/* Cores contextuais */
+text-white                   /* Texto branco em fundos escuros */
+text-white/70                /* Texto branco com opacidade */
 ```
 
-## Component System
+## Sistema de Componentes
 
-### Buttons
+### Botões
 ```tsx
-/* Primary Actions */
-<Button variant="default">Primary Action</Button>
+/* Ações Primárias */
+<Button variant="default">Ação Primária</Button>
 
-/* Secondary Actions */
-<Button variant="secondary">Secondary Action</Button>
+/* Ações Secundárias */
+<Button variant="secondary">Ação Secundária</Button>
 
-/* CTAs and Conversions */
+/* CTAs e Conversões */
 <Button variant="accent">Call to Action</Button>
 
-/* Subtle Actions */
-<Button variant="ghost">Subtle Action</Button>
+/* Ações Sutis */
+<Button variant="ghost">Ação Sutil</Button>
 
-/* Outlined Actions */
-<Button variant="outline">Outlined Action</Button>
+/* Ações com Contorno */
+<Button variant="outline">Ação com Contorno</Button>
 ```
 
-### Cards
+### Cartões
 ```tsx
-/* Standard Card */
+/* Cartão Padrão */
 <Card className="border-0 bg-card hover:shadow-lg transition-all duration-300">
 
-/* Interactive Card */
+/* Cartão Interativo */
 <Card className="hover:scale-105 transition-all duration-300">
 
-/* Card with Icon */
+/* Cartão com Ícone */
 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
   <Icon className="w-6 h-6 text-primary" />
 </div>
 ```
 
-### Sections
+### Seções
 ```tsx
-/* Standard Section */
+/* Seção Padrão */
 <section className="py-20 bg-background">
 
-/* Alternate Background */
+/* Fundo Alternativo */
 <section className="py-20 bg-secondary/30">
 
-/* Primary Background */
+/* Fundo Primário */
 <section className="py-20 bg-primary">
 ```
 
-## Layout System
+## Sistema de Layout
 
-### Container & Spacing
+### Container e Espaçamento
 ```css
 /* Containers */
-.container                   /* Max-width container with auto margins */
-mx-auto px-4                 /* Center with horizontal padding */
+.container                   /* Container de largura máxima com margens automáticas */
+mx-auto px-4                 /* Centralizar com padding horizontal */
 
-/* Vertical Rhythm */
-py-20                        /* Section padding (80px top/bottom) */
-mb-16                        /* Major section spacing (64px) */
-mb-6                         /* Element spacing (24px) */
-gap-8                        /* Grid/flex gaps (32px) */
+/* Ritmo Vertical */
+py-20                        /* Padding de seção (80px top/bottom) */
+mb-16                        /* Espaçamento principal de seção (64px) */
+mb-6                         /* Espaçamento de elementos (24px) */
+gap-8                        /* Gaps de grid/flex (32px) */
 
-/* Card Padding */
-p-6                          /* Standard card padding (24px) */
-p-8                          /* Large card padding (32px) */
+/* Padding de Cartões */
+p-6                          /* Padding padrão de cartão (24px) */
+p-8                          /* Padding grande de cartão (32px) */
 ```
 
-### Responsive Grid
+### Grid Responsivo
 ```css
-/* Standard Grid */
-grid md:grid-cols-3 gap-8    /* 3-column grid on desktop */
-grid md:grid-cols-2 gap-6    /* 2-column grid on tablet */
+/* Grid Padrão */
+grid md:grid-cols-3 gap-8    /* Grid de 3 colunas no desktop */
+grid md:grid-cols-2 gap-6    /* Grid de 2 colunas no tablet */
 
-/* Responsive Breakpoints */
-sm: 640px                    /* Small devices */
+/* Breakpoints Responsivos */
+sm: 640px                    /* Dispositivos pequenos */
 md: 768px                    /* Tablets */
 lg: 1024px                   /* Laptops */
 xl: 1280px                   /* Desktops */
-2xl: 1536px                  /* Large screens */
+2xl: 1536px                  /* Telas grandes */
 ```
 
-## Navigation & Interaction
+## Navegação e Interação
 
-### Header
+### Cabeçalho
 ```tsx
 <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
 ```
 
-### Mobile Navigation
-- Uses `Sheet` component for slide-out menu
-- Hamburger icon on mobile (`md:hidden`)
-- Full navigation links in mobile sheet
+### Navegação Mobile
+- Usa componente `Sheet` para menu deslizante
+- Ícone de hambúrguer no mobile (`md:hidden`)
+- Links de navegação completos no sheet mobile
 
-### Scroll Behavior
+### Comportamento de Scroll
 ```css
-/* Compensate for fixed header */
+/* Compensar cabeçalho fixo */
 section {
   scroll-margin-top: 80px;
 }
 ```
 
-### Hover States
+### Estados de Hover
 ```css
-/* Standard hover effects */
-hover:shadow-lg              /* Elevation increase */
-hover:scale-105              /* Slight scale up */
-hover:text-primary           /* Color change */
-transition-all duration-300  /* Smooth transitions */
+/* Efeitos de hover padrão */
+hover:shadow-lg              /* Aumento de elevação */
+hover:scale-105              /* Escala ligeiramente maior */
+hover:text-primary           /* Mudança de cor */
+transition-all duration-300  /* Transições suaves */
 ```
 
-## Accessibility
+## Responsividade
 
-### Color Contrast
-- **Minimum 4.5:1** ratio for normal text
-- **Minimum 3:1** ratio for large text
-- All colors tested in both light and dark modes
-- White text on primary blue: WCAG AA compliant
+### Abordagem Mobile-First
+- Estilos base para mobile (320px+)
+- Aprimoramento progressivo para telas maiores
+- Elementos interativos touch-friendly (44px mínimo)
 
-### Focus States
+### Escalonamento Tipográfico
 ```css
-/* Focus indicators */
-focus:ring-2 focus:ring-primary     /* Custom focus rings */
-focus:outline-none                  /* Remove default outline */
+/* Tamanhos de texto responsivos */
+text-4xl md:text-6xl          /* Escalar para telas maiores */
+text-xl md:text-2xl           /* Escalonamento proporcional */
 ```
 
-### Semantic HTML
-- Proper heading hierarchy (h1 → h2 → h3 → h4)
-- `aria-labels` for icon-only buttons
-- `aria-hidden="true"` for decorative icons
-- Semantic elements: `<main>`, `<section>`, `<article>`, `<header>`, `<footer>`
+### Adaptações de Layout
+```css
+/* Mobile para Desktop */
+flex-col sm:flex-row          /* Empilhar no mobile, linha no desktop */
+hidden md:flex                /* Ocultar no mobile, mostrar no desktop */
+grid md:grid-cols-3           /* Coluna única mobile, 3 colunas desktop */
+```
 
-### Language
+### Componentes Críticos Responsivos
+
+#### ReportShowcase
+```css
+/* Grid responsivo para exemplos de relatório */
+grid lg:grid-cols-2 gap-8 lg:gap-12    /* Uma coluna mobile, duas no desktop */
+
+/* Padding responsivo */
+p-4 lg:p-6                             /* Padding menor no mobile */
+
+/* Grid interno responsivo */
+grid-cols-1 md:grid-cols-3             /* Layout vertical no mobile */
+```
+
+## Acessibilidade
+
+### Contraste de Cores
+- **Mínimo 4.5:1** para texto normal
+- **Mínimo 3:1** para texto grande
+- Todas as cores testadas em modos claro e escuro
+- Texto branco em azul primário: compatível com WCAG AA
+
+### Estados de Foco
+```css
+/* Indicadores de foco */
+focus:ring-2 focus:ring-primary     /* Anéis de foco personalizados */
+focus:outline-none                  /* Remover contorno padrão */
+```
+
+### HTML Semântico
+- Hierarquia adequada de títulos (h1 → h2 → h3 → h4)
+- `aria-labels` para botões apenas com ícones
+- `aria-hidden="true"` para ícones decorativos
+- Elementos semânticos: `<main>`, `<section>`, `<article>`, `<header>`, `<footer>`
+
+### Idioma
 ```html
-<html lang="pt-BR">           /* Portuguese (Brazil) */
-```
-
-## Responsive Design
-
-### Mobile-First Approach
-- Base styles for mobile (320px+)
-- Progressive enhancement for larger screens
-- Touch-friendly interactive elements (44px minimum)
-
-### Typography Scaling
-```css
-/* Responsive text sizes */
-text-4xl md:text-6xl          /* Scale up on larger screens */
-text-xl md:text-2xl           /* Proportional scaling */
-```
-
-### Layout Adaptations
-```css
-/* Mobile to Desktop */
-flex-col sm:flex-row          /* Stack on mobile, row on desktop */
-hidden md:flex                /* Hide on mobile, show on desktop */
-grid md:grid-cols-3           /* Single column mobile, 3 columns desktop */
+<html lang="pt-BR">           /* Português (Brasil) */
 ```
 
 ## Performance
 
-### Animations
+### Animações
 ```css
-/* Optimized animations */
-transition-all duration-300   /* Smooth but fast */
-transform                     /* Use transform for performance */
-opacity                       /* Use opacity for performance */
+/* Animações otimizadas */
+transition-all duration-300   /* Suaves mas rápidas */
+transform                     /* Usar transform para performance */
+opacity                       /* Usar opacity para performance */
 ```
 
-### Loading States
-- Use `skeleton` components for loading states
-- Lazy loading for images
-- Progressive enhancement for interactive elements
+### Estados de Carregamento
+- Usar componentes `skeleton` para estados de carregamento
+- Lazy loading para imagens
+- Aprimoramento progressivo para elementos interativos
 
-## Content Guidelines
+## Diretrizes de Conteúdo
 
-### Headlines and Messaging
+### Títulos e Mensagens
 ```tsx
-/* Hero Section */
-h1: "Pare de perder tempo com relatórios manuais"         /* White text */
-p: "Gere relatórios profissionais em 3 cliques..."       /* White text */
-supporting: "Inteligência de consultor, por uma fração do custo"  /* Dark blue text */
+/* Seção Hero */
+h1: "Pare de perder tempo com relatórios manuais"         /* Texto branco */
+p: "Gere relatórios profissionais em 3 cliques..."       /* Texto branco */
+supporting: "Inteligência de consultor, por uma fração do custo"  /* Texto azul escuro */
 ```
 
 ### CTAs
 - "Criar Relatório Grátis"
 - "Começar Agora - Grátis"
 - "Ver Demonstração"
-- Always use `variant="accent"` for primary CTAs
+- Sempre usar `variant="accent"` para CTAs primários
 
-## File Organization
+## Organização de Arquivos
 
-### Component Structure
+### Estrutura de Componentes
 ```
 src/components/
-├── ui/              # Base UI components (shadcn)
-├── BrandName.tsx    # Brand consistency component
-├── LogoIcon.tsx     # Logo icon component
-├── Header.tsx       # Site header with navigation
-├── Footer.tsx       # Site footer
-├── Hero.tsx         # Hero section
-├── Features.tsx     # Features section
-├── HowItWorks.tsx   # Process explanation
-├── ReportShowcase.tsx # Report examples
-├── Benefits.tsx     # Benefits section
-├── Pricing.tsx      # Pricing plans
-├── CTA.tsx          # Call-to-action section
-└── [Feature].tsx    # Feature-specific components
+├── ui/              # Componentes base UI (shadcn)
+├── BrandName.tsx    # Componente de consistência da marca
+├── LogoIcon.tsx     # Componente do ícone da logo
+├── Header.tsx       # Cabeçalho do site com navegação
+├── Footer.tsx       # Rodapé do site
+├── Hero.tsx         # Seção hero
+├── Features.tsx     # Seção de recursos
+├── HowItWorks.tsx   # Explicação do processo
+├── ReportShowcase.tsx # Exemplos de relatórios
+├── Benefits.tsx     # Seção de benefícios
+├── Pricing.tsx      # Planos de preços
+├── CTA.tsx          # Seção call-to-action
+└── [Feature].tsx    # Componentes específicos de recursos
 ```
 
-### Styling Approach
-1. **Design Tokens First**: Use CSS variables from `index.css`
-2. **Component Variants**: Create variants in component files using `cva`
-3. **Utility Classes**: Only for spacing and layout
-4. **Consistent Patterns**: Reuse established patterns
+### Abordagem de Estilização
+1. **Design Tokens Primeiro**: Usar variáveis CSS de `index.css`
+2. **Variantes de Componentes**: Criar variantes em arquivos de componentes usando `cva`
+3. **Classes Utilitárias**: Apenas para espaçamento e layout
+4. **Padrões Consistentes**: Reutilizar padrões estabelecidos
 
-## Implementation Checklist
+## Checklist de Implementação
 
-### Brand Compliance
-- [ ] All brand mentions use `<BrandName />` component
-- [ ] LogoIcon has no background chip
-- [ ] Correct color variants for each background
-- [ ] "Super" never bold, "Relatórios" always bold
+### Conformidade da Marca
+- [ ] Todas as menções da marca usam componente `<BrandName />`
+- [ ] LogoIcon não possui chip de fundo
+- [ ] Variantes de cor corretas para cada fundo
+- [ ] "Super" nunca negrito, "Relatórios" sempre negrito
 
-### Color System
-- [ ] All colors use HSL format in CSS variables
-- [ ] No direct color classes (text-blue-500, bg-white)
-- [ ] Semantic tokens used consistently
-- [ ] Dark mode variants defined
+### Sistema de Cores
+- [ ] Todas as cores usam formato HSL em variáveis CSS
+- [ ] Nenhuma classe de cor direta (text-blue-500, bg-white)
+- [ ] Tokens semânticos usados consistentemente
+- [ ] Variantes do modo escuro definidas
 
-### Typography
-- [ ] Proper heading hierarchy maintained
-- [ ] Font families applied correctly
-- [ ] Responsive text scaling implemented
+### Tipografia
+- [ ] Hierarquia adequada de títulos mantida
+- [ ] Famílias de fontes aplicadas corretamente
+- [ ] Escalonamento de texto responsivo implementado
 
-### Layout & Spacing
-- [ ] Consistent spacing with design tokens
-- [ ] Responsive grid system implemented
-- [ ] Proper container usage
+### Layout e Espaçamento
+- [ ] Espaçamento consistente com design tokens
+- [ ] Sistema de grid responsivo implementado
+- [ ] Uso adequado de containers
 
-### Accessibility
-- [ ] Color contrast ratios met
-- [ ] Focus states implemented
-- [ ] Semantic HTML structure
-- [ ] ARIA labels where needed
-- [ ] Proper language attribute
+### Acessibilidade
+- [ ] Razões de contraste de cores atendidas
+- [ ] Estados de foco implementados
+- [ ] Estrutura HTML semântica
+- [ ] Labels ARIA onde necessário
+- [ ] Atributo de idioma adequado
 
 ### Performance
-- [ ] Optimized animations
-- [ ] Smooth transitions
-- [ ] Progressive enhancement
+- [ ] Animações otimizadas
+- [ ] Transições suaves
+- [ ] Aprimoramento progressivo
+
+### Responsividade
+- [ ] Abordagem mobile-first
+- [ ] Breakpoints adequados
+- [ ] Componentes se adaptam a diferentes tamanhos
+- [ ] Touch targets adequados (44px mínimo)
 
 ---
 
-## Development Standards
+## Padrões de Desenvolvimento
 
-### Code Quality
-- Use TypeScript for all components
-- Implement proper prop interfaces
-- Export components as default
-- Use consistent naming conventions
+### Qualidade de Código
+- Usar TypeScript para todos os componentes
+- Implementar interfaces adequadas de props
+- Exportar componentes como padrão
+- Usar convenções de nomenclatura consistentes
 
-### Testing Considerations
-- Components should be easily testable
-- Props should be well-documented
-- Variants should be clearly defined
+### Considerações de Teste
+- Componentes devem ser facilmente testáveis
+- Props devem ser bem documentados
+- Variantes devem ser claramente definidas
 
-### Maintenance
-- Regular design system reviews
-- Component documentation updates
-- Accessibility audits
-- Performance monitoring
+### Manutenção
+- Revisões regulares do sistema de design
+- Atualizações da documentação de componentes
+- Auditorias de acessibilidade
+- Monitoramento de performance
 
 ---
 
-*This design system is the foundation for all SuperRelatórios development. Any deviations must be approved and documented. The system ensures consistency, accessibility, and professional quality across all platforms.*
+*Este sistema de design é a base para todo o desenvolvimento SuperRelatórios. Qualquer desvio deve ser aprovado e documentado. O sistema garante consistência, acessibilidade e qualidade profissional em todas as plataformas.*

@@ -19,9 +19,11 @@ const Hero = () => {
             Gere relatórios profissionais em 3 cliques, com análises feitas por IA que ajudam a decidir.
           </p>
           
-          <p className="text-lg text-primary-dark mb-8 max-w-2xl mx-auto font-semibold">
-            Inteligência de consultor, por uma fração do custo.
-          </p>
+          <div className="bg-white/10 backdrop-blur-sm rounded-lg px-6 py-3 mb-8 max-w-2xl mx-auto">
+            <p className="text-lg text-primary-dark font-semibold">
+              Inteligência de consultor, por uma fração do custo.
+            </p>
+          </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <Button variant="accent" size="lg" className="text-lg px-8 py-4">

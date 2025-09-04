@@ -15,11 +15,11 @@ const ReportShowcase = () => {
           </p>
         </div>
         
-        <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto">
           {/* Portrait Report */}
           <div className="space-y-4">
             <h3 className="text-xl font-semibold text-center">Formato Retrato (A4)</h3>
-            <Card className="aspect-[3/4] p-6 bg-white border-2 shadow-lg">
+            <Card className="aspect-[3/4] p-4 lg:p-6 bg-white border-2 shadow-lg">
               <div className="h-full flex flex-col">
                 {/* Header */}
                 <div className="border-b pb-4 mb-4">
@@ -78,7 +78,7 @@ const ReportShowcase = () => {
                 {/* Footer */}
                 <div className="border-t pt-2 mt-4">
                   <p className="text-xs text-muted-foreground text-center">
-                    Gerado automaticamente • SuperRelatórios
+                    Gerado automaticamente • <span className="font-heading"><span className="text-foreground">Super</span><span className="font-bold text-primary">Relatórios</span></span>
                   </p>
                 </div>
               </div>
@@ -88,7 +88,7 @@ const ReportShowcase = () => {
           {/* Landscape Report */}
           <div className="space-y-4">
             <h3 className="text-xl font-semibold text-center">Formato Paisagem (A4)</h3>
-            <Card className="aspect-[4/3] p-6 bg-white border-2 shadow-lg">
+            <Card className="aspect-[4/3] p-4 lg:p-6 bg-white border-2 shadow-lg">
               <div className="h-full flex flex-col">
                 {/* Header */}
                 <div className="border-b pb-3 mb-3">
@@ -104,8 +104,8 @@ const ReportShowcase = () => {
                   </div>
                 </div>
                 
-                {/* Content Grid */}
-                <div className="flex-1 grid grid-cols-3 gap-3">
+                 {/* Content Grid */}
+                <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-3">
                   {/* KPIs */}
                   <div className="space-y-2">
                     <h5 className="font-semibold text-sm text-primary-dark">Indicadores Chave</h5>
@@ -155,8 +155,8 @@ const ReportShowcase = () => {
                 </div>
                 
                 {/* Footer */}
-                <div className="border-t pt-2 mt-3 flex justify-between items-center text-xs text-muted-foreground">
-                  <span>Dados processados por IA • SuperRelatórios</span>
+                <div className="border-t pt-2 mt-3 flex flex-col md:flex-row justify-between items-center text-xs text-muted-foreground gap-1">
+                  <span>Dados processados por IA • <span className="font-heading"><span className="text-foreground">Super</span><span className="font-bold text-primary">Relatórios</span></span></span>
                   <span>Página 1 de 3</span>
                 </div>
               </div>
