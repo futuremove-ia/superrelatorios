@@ -3,7 +3,7 @@ import LogoIcon from "@/components/LogoIcon";
 
 const Footer = () => {
   return (
-    <footer className="bg-foreground text-background py-12">
+    <footer className="bg-primary-dark text-white py-12">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-4 gap-8">
           <div className="col-span-1">
@@ -11,43 +11,43 @@ const Footer = () => {
               <LogoIcon size="sm" />
               <BrandName variant="on-dark" />
             </div>
-            <p className="text-sm text-background/70 leading-relaxed">
+            <p className="text-sm text-white/70 leading-relaxed">
               Relatórios inteligentes com IA para PMEs que querem crescer com análise de dados, cenários e projeções automatizadas.
             </p>
           </div>
           
           <div>
             <h4 className="font-semibold mb-4">Produto</h4>
-            <ul className="space-y-2 text-sm text-background/70">
-              <li><a href="#recursos" className="hover:text-background transition-colors">Recursos</a></li>
-              <li><a href="#como-funciona" className="hover:text-background transition-colors">Como Funciona</a></li>
-              <li><a href="#precos" className="hover:text-background transition-colors">Preços</a></li>
-              <li><a href="#" className="hover:text-background transition-colors">Integrações</a></li>
+            <ul className="space-y-2 text-sm text-white/70">
+              <li><a href="#recursos" className="hover:text-white transition-colors">Recursos</a></li>
+              <li><a href="#como-funciona" className="hover:text-white transition-colors">Como Funciona</a></li>
+              <li><a href="#precos" className="hover:text-white transition-colors">Preços</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Integrações</a></li>
             </ul>
           </div>
           
           <div>
             <h4 className="font-semibold mb-4">Suporte</h4>
-            <ul className="space-y-2 text-sm text-background/70">
-              <li><a href="#" className="hover:text-background transition-colors">Central de Ajuda</a></li>
-              <li><a href="#" className="hover:text-background transition-colors">Documentação</a></li>
-              <li><a href="#" className="hover:text-background transition-colors">Status</a></li>
-              <li><a href="#" className="hover:text-background transition-colors">Contato</a></li>
+            <ul className="space-y-2 text-sm text-white/70">
+              <li><a href="#" className="hover:text-white transition-colors">Central de Ajuda</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Documentação</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Status</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Contato</a></li>
             </ul>
           </div>
           
           <div>
             <h4 className="font-semibold mb-4">Legal</h4>
-            <ul className="space-y-2 text-sm text-background/70">
-              <li><a href="#" className="hover:text-background transition-colors">Privacidade</a></li>
-              <li><a href="#" className="hover:text-background transition-colors">Termos</a></li>
-              <li><a href="#" className="hover:text-background transition-colors">Segurança</a></li>
-              <li><a href="#" className="hover:text-background transition-colors">Cookies</a></li>
+            <ul className="space-y-2 text-sm text-white/70">
+              <li><a href="#" className="hover:text-white transition-colors">Privacidade</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Termos</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Segurança</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Cookies</a></li>
             </ul>
           </div>
         </div>
         
-        <div className="border-t border-background/20 mt-8 pt-8 text-center text-sm text-background/70">
+        <div className="border-t border-white/20 mt-8 pt-8 text-center text-sm text-white/70">
           © 2024 <BrandName variant="on-dark" />. Todos os direitos reservados.
         </div>
       </div>

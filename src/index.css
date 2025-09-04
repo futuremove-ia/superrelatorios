@@ -153,4 +153,9 @@ All colors MUST be HSL.
   p {
     @apply leading-relaxed;
   }
+
+  /* Sections with scroll margin for fixed header */
+  section {
+    scroll-margin-top: 80px;
+  }
 }

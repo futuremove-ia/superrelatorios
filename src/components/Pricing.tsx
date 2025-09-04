@@ -63,7 +63,7 @@ const Pricing = () => {
           {plans.map((plan, index) => (
             <Card key={index} className={`p-8 border-2 transition-all duration-300 hover:shadow-xl ${
               plan.highlighted 
-                ? 'border-accent bg-gradient-card scale-105' 
+                ? 'border-accent bg-card scale-105' 
                 : 'border-border bg-card hover:border-primary/20'
             }`}>
               <div className="text-center mb-8">

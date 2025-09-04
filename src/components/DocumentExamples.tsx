@@ -8,27 +8,27 @@ const DocumentExamples = () => {
       name: "Excel / Planilhas",
       description: "Vendas, estoque, financeiro",
       formats: ".xlsx, .csv, .xls",
-      bgColor: "bg-green-50",
-      iconColor: "text-green-600",
-      borderColor: "border-green-200"
+      bgColor: "bg-accent/10",
+      iconColor: "text-accent",
+      borderColor: "border-accent/20"
     },
     {
       icon: FileText,
       name: "Word / Documentos",
       description: "Relatórios, atas, análises",
       formats: ".docx, .pdf, .txt",
-      bgColor: "bg-blue-50",
-      iconColor: "text-blue-600",
-      borderColor: "border-blue-200"
+      bgColor: "bg-primary/10",
+      iconColor: "text-primary",
+      borderColor: "border-primary/20"
     },
     {
       icon: ClipboardPaste,
       name: "Texto Direto",
       description: "Cole dados do seu sistema",
       formats: "Copiar e colar",
-      bgColor: "bg-purple-50",
-      iconColor: "text-purple-600",
-      borderColor: "border-purple-200"
+      bgColor: "bg-primary-dark/10",
+      iconColor: "text-primary-dark",
+      borderColor: "border-primary-dark/20"
     },
   ];
 

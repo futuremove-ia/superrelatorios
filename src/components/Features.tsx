@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Zap, Target, Shield } from "lucide-react";
+import BrandName from "@/components/BrandName";
 
 const Features = () => {
   const features = [
@@ -25,7 +26,7 @@ const Features = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Por que escolher o Super<span className="font-bold text-primary">Relatórios</span>?
+            Por que escolher o <BrandName variant="default" />?
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Inteligência Artificial desenvolvida especificamente para PMEs que precisam de análises profissionais, cenários e projeções sem complicação.

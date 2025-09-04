@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { TrendingUp, Users, DollarSign, Target, Eye, Download, BarChart3, CheckCircle, AlertTriangle, Lightbulb, FileText, ClipboardCheck } from "lucide-react";
+import BrandName from "@/components/BrandName";
 
 const ReportExamples = () => {
   const mainReport = {
@@ -45,19 +46,19 @@ const ReportExamples = () => {
       icon: TrendingUp,
       title: "Relatório de Vendas",
       description: "Performance comercial com insights acionáveis",
-      color: "bg-blue-600"
+      color: "bg-primary"
     },
     {
       icon: Users,
       title: "Análise de Clientes",
       description: "Segmentação e comportamento detalhado",
-      color: "bg-green-600"
+      color: "bg-accent"
     },
     {
       icon: DollarSign,
       title: "Relatório Financeiro",
       description: "Análise financeira executiva completa",
-      color: "bg-purple-600"
+      color: "bg-primary-dark"
     },
   ];
 

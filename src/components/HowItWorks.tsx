@@ -4,19 +4,19 @@ import { Upload, Settings, Download } from "lucide-react";
 const HowItWorks = () => {
   const steps = [
     {
-      step: "Passo 1",
+      step: 1,
       icon: Upload,
       title: "Envie seus dados",
       description: "Planilha (.xlsx/.csv) ou export do seu sistema. Detectamos automaticamente o tipo de análise.",
     },
     {
-      step: "Passo 2", 
+      step: 2, 
       icon: Settings,
       title: "Escolha o objetivo",
       description: "Resumo Executivo, Análise Completa, Riscos & Oportunidades — você decide o foco.",
     },
     {
-      step: "Passo 3",
+      step: 3,
       icon: Download,
       title: "Gere e compartilhe",
       description: "Receba o relatório pronto para enviar no WhatsApp, salvar em PDF ou organizar por pastas/links.",
@@ -46,10 +46,10 @@ const HowItWorks = () => {
                 </div>
                 
                 <div className="mb-4">
-                  <h4 className="text-lg text-primary font-semibold mb-2">{step.step}</h4>
-                  <h3 className="text-xl font-semibold text-foreground">
+                  <h3 className="text-xl md:text-2xl text-primary font-semibold mb-2">Passo {step.step}</h3>
+                  <h4 className="text-lg font-semibold text-foreground">
                     {step.title}
-                  </h3>
+                  </h4>
                 </div>
                 
                 <p className="text-muted-foreground leading-relaxed">
