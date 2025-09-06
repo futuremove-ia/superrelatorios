@@ -270,6 +270,78 @@ p-4 lg:p-6                             /* Padding menor no mobile */
 grid-cols-1 md:grid-cols-3             /* Layout vertical no mobile */
 ```
 
+---
+
+## Sistema de Componente Paper
+
+### Propósito
+O componente Paper fornece um sistema consistente para exibir conteúdo tipo documento, especialmente relatórios, com proporções A4 adequadas e comportamento responsivo.
+
+### Uso
+```tsx
+import { Paper } from "@/components/ui/paper";
+
+// Documento A4 retrato
+<Paper orientation="portrait" size="a4" padding="md">
+  <div>Conteúdo do documento</div>
+</Paper>
+
+// Documento A4 paisagem  
+<Paper orientation="landscape" size="a4" padding="lg">
+  <div>Conteúdo do dashboard</div>
+</Paper>
+```
+
+### Propriedades
+- `orientation`: "portrait" | "landscape" (padrão: "portrait")
+- `size`: "a4" | "letter" (padrão: "a4")
+- `padding`: "none" | "sm" | "md" | "lg" (padrão: "md")
+- `className`: Classes CSS adicionais
+
+### Comportamento Responsivo
+- **Mobile (< md)**: Usa fluxo de altura natural com alturas mínimas
+- **Desktop (≥ md)**: Aplica proporções corretas para simulação de documento
+- **A4 Retrato**: proporção 3:4.24
+- **A4 Paisagem**: proporção 4.24:3
+
+### Diretrizes de Conteúdo
+- Use `flex-shrink-0` para cabeçalhos e rodapés
+- Aplique `min-h-0` e `overflow-hidden` para áreas de conteúdo roláveis
+- Use classe `truncate` para texto que pode transbordar
+- Implemente grids responsivos: `grid-cols-1 md:grid-cols-2 lg:grid-cols-3`
+
+### Regras Críticas
+1. **Nunca forçar proporções no mobile** - Deixe o conteúdo fluir naturalmente
+2. **Sempre use componentes de marca semânticos** - `<BrandName variant="default" />`
+3. **Aplique layouts flex adequados** - Estrutura cabeçalho, conteúdo (flex-1), rodapé
+4. **Use espaçamento consistente** - Baseado na prop padding, espaçamento responsivo
+
+### Estrutura Recomendada
+```tsx
+<Paper orientation="landscape" size="a4" padding="md">
+  {/* Header - sempre flex-shrink-0 */}
+  <div className="border-b pb-3 mb-4 flex-shrink-0">
+    <h4 className="text-lg font-bold text-primary truncate">Título</h4>
+  </div>
+  
+  {/* Content - sempre flex-1 com min-h-0 */}
+  <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-3 min-h-0 overflow-hidden">
+    <div className="space-y-3 min-h-0">
+      <div className="bg-primary/5 p-3 rounded overflow-hidden">
+        <div className="font-semibold text-xs truncate">Conteúdo</div>
+      </div>
+    </div>
+  </div>
+  
+  {/* Footer - sempre flex-shrink-0 */}
+  <div className="border-t pt-3 mt-4 flex-shrink-0">
+    <span className="text-xs text-muted-foreground">
+      <BrandName variant="default" />
+    </span>
+  </div>
+</Paper>
+```
+
 ## Acessibilidade
 
 ### Contraste de Cores
