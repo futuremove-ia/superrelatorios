@@ -88,76 +88,76 @@ const ReportShowcase = () => {
           {/* Landscape Report */}
           <div className="space-y-4">
             <h3 className="text-xl font-semibold text-center">Formato Paisagem (A4)</h3>
-            <Card className="aspect-[4/3] p-4 lg:p-6 bg-white border-2 shadow-lg">
-              <div className="h-full flex flex-col">
+            <Card className="aspect-[4/3] p-3 sm:p-4 lg:p-6 bg-white border-2 shadow-lg overflow-hidden">
+              <div className="h-full flex flex-col min-h-0">
                 {/* Header */}
-                <div className="border-b pb-3 mb-3">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h4 className="text-lg font-bold text-primary">DASHBOARD ANALÍTICO</h4>
-                      <p className="text-sm text-muted-foreground">Performance Mensal - Janeiro 2024</p>
+                <div className="border-b pb-2 sm:pb-3 mb-2 sm:mb-3 flex-shrink-0">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1 sm:gap-2">
+                    <div className="min-w-0 flex-1">
+                      <h4 className="text-sm sm:text-base lg:text-lg font-bold text-primary truncate">DASHBOARD ANALÍTICO</h4>
+                      <p className="text-xs sm:text-sm text-muted-foreground truncate">Performance Mensal - Janeiro 2024</p>
                     </div>
-                    <div className="text-right text-xs text-muted-foreground">
-                      <div>Gerado em: 31/01/2024</div>
-                      <div>Período: 01-31 Jan</div>
+                    <div className="text-xs text-muted-foreground flex-shrink-0 sm:text-right">
+                      <div className="whitespace-nowrap">Gerado em: 31/01/2024</div>
+                      <div className="whitespace-nowrap">Período: 01-31 Jan</div>
                     </div>
                   </div>
                 </div>
                 
-                 {/* Content Grid */}
-                <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-3">
+                {/* Content Grid */}
+                <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-3 min-h-0 overflow-hidden">
                   {/* KPIs */}
-                  <div className="space-y-2">
-                    <h5 className="font-semibold text-sm text-primary-dark">Indicadores Chave</h5>
-                    <div className="space-y-2">
-                      <div className="bg-primary/5 p-2 rounded text-xs">
-                        <div className="font-semibold">Receita Total</div>
-                        <div className="text-lg font-bold text-primary">R$ 847K</div>
-                        <div className="text-accent">↑ 12.5%</div>
+                  <div className="space-y-1 sm:space-y-2 min-h-0">
+                    <h5 className="font-semibold text-xs sm:text-sm text-primary-dark">Indicadores Chave</h5>
+                    <div className="space-y-1 sm:space-y-2">
+                      <div className="bg-primary/5 p-1.5 sm:p-2 rounded text-xs overflow-hidden">
+                        <div className="font-semibold truncate">Receita Total</div>
+                        <div className="text-sm sm:text-lg font-bold text-primary truncate">R$ 847K</div>
+                        <div className="text-accent truncate">↑ 12.5%</div>
                       </div>
-                      <div className="bg-accent/5 p-2 rounded text-xs">
-                        <div className="font-semibold">Novos Clientes</div>
-                        <div className="text-lg font-bold text-accent">156</div>
-                        <div className="text-primary">↑ 8.2%</div>
+                      <div className="bg-accent/5 p-1.5 sm:p-2 rounded text-xs overflow-hidden">
+                        <div className="font-semibold truncate">Novos Clientes</div>
+                        <div className="text-sm sm:text-lg font-bold text-accent truncate">156</div>
+                        <div className="text-primary truncate">↑ 8.2%</div>
                       </div>
                     </div>
                   </div>
                   
                   {/* Chart Simulation */}
-                  <div className="space-y-2">
-                    <h5 className="font-semibold text-sm text-primary-dark">Tendência de Vendas</h5>
-                    <div className="bg-gray-50 p-3 rounded h-24 flex items-end justify-between">
+                  <div className="space-y-1 sm:space-y-2 min-h-0">
+                    <h5 className="font-semibold text-xs sm:text-sm text-primary-dark">Tendência de Vendas</h5>
+                    <div className="bg-gray-50 p-2 sm:p-3 rounded h-16 sm:h-20 lg:h-24 flex items-end justify-between overflow-hidden">
                       {[40, 60, 35, 80, 65, 90, 75].map((height, i) => (
                         <div 
                           key={i}
-                          className="bg-primary rounded-t w-3"
+                          className="bg-primary rounded-t w-2 sm:w-3 flex-shrink-0"
                           style={{ height: `${height}%` }}
                         ></div>
                       ))}
                     </div>
-                    <div className="text-xs text-center text-muted-foreground">Jan 1-31, 2024</div>
+                    <div className="text-xs text-center text-muted-foreground truncate">Jan 1-31, 2024</div>
                   </div>
                   
                   {/* Recommendations */}
-                  <div className="space-y-2">
-                    <h5 className="font-semibold text-sm text-primary-dark">Recomendações IA</h5>
-                    <div className="space-y-2 text-xs">
-                      <div className="bg-accent/10 p-2 rounded border-l-2 border-accent">
-                        <div className="font-semibold">Oportunidade</div>
-                        <div>Expandir campanha região Sul (+15% potencial)</div>
+                  <div className="space-y-1 sm:space-y-2 min-h-0 sm:col-span-2 lg:col-span-1">
+                    <h5 className="font-semibold text-xs sm:text-sm text-primary-dark">Recomendações IA</h5>
+                    <div className="space-y-1 sm:space-y-2 text-xs overflow-hidden">
+                      <div className="bg-accent/10 p-1.5 sm:p-2 rounded border-l-2 border-accent overflow-hidden">
+                        <div className="font-semibold truncate">Oportunidade</div>
+                        <div className="text-xs leading-tight">Expandir campanha região Sul (+15% potencial)</div>
                       </div>
-                      <div className="bg-orange-50 p-2 rounded border-l-2 border-orange-400">
-                        <div className="font-semibold">Atenção</div>
-                        <div>Queda na retenção de clientes (-3%)</div>
+                      <div className="bg-orange-50 p-1.5 sm:p-2 rounded border-l-2 border-orange-400 overflow-hidden">
+                        <div className="font-semibold truncate">Atenção</div>
+                        <div className="text-xs leading-tight">Queda na retenção de clientes (-3%)</div>
                       </div>
                     </div>
                   </div>
                 </div>
                 
                 {/* Footer */}
-                <div className="border-t pt-2 mt-3 flex flex-col md:flex-row justify-between items-center text-xs text-muted-foreground gap-1">
-                  <span>Dados processados por IA • <span className="font-heading"><span className="text-foreground">Super</span><span className="font-bold text-primary">Relatórios</span></span></span>
-                  <span>Página 1 de 3</span>
+                <div className="border-t pt-1.5 sm:pt-2 mt-2 sm:mt-3 flex flex-col sm:flex-row justify-between items-center text-xs text-muted-foreground gap-1 flex-shrink-0">
+                  <span className="truncate text-center sm:text-left">Dados processados por IA • <span className="font-heading"><span className="text-foreground">Super</span><span className="font-bold text-primary">Relatórios</span></span></span>
+                  <span className="whitespace-nowrap">Página 1 de 3</span>
                 </div>
               </div>
             </Card>
