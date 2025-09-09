@@ -5,6 +5,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import AppLayout from "./components/AppLayout";
+import Dashboard from "./pages/app/Dashboard";
+import ReportsList from "./pages/app/ReportsList";
+import ReportBuilder from "./pages/app/ReportBuilder";
+import ReportDetail from "./pages/app/ReportDetail";
 
 const queryClient = new QueryClient();
 
@@ -15,7 +20,17 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Index />} />
+          
+          {/* App Routes */}
+          <Route path="/app" element={<AppLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="relatorios" element={<ReportsList />} />
+            <Route path="relatorios/:id" element={<ReportDetail />} />
+            <Route path="novo-relatorio" element={<ReportBuilder />} />
+          </Route>
+          
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
