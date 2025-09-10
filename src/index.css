@@ -8,103 +8,102 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Improved colors for better contrast and accessibility */
+    /* Base System Colors */
     --background: 0 0% 100%;
     --foreground: 222 84% 4.9%;
-
     --card: 0 0% 100%;
     --card-foreground: 222 84% 4.9%;
-
     --popover: 0 0% 100%;
     --popover-foreground: 222 84% 4.9%;
 
-    /* Professional blue palette */
+    /* Primary Blue Palette */
     --primary: 220 91% 51%;
     --primary-foreground: 0 0% 100%;
-
-    /* Dark blue variant for enhanced contrast and depth */
     --primary-dark: 220 91% 20%;
     --primary-dark-foreground: 0 0% 100%;
     
     /* Brand Colors */
-    --brand-super: 0 0% 0%;           /* Black for "Super" */
-    --brand-relatorios: 220 91% 51%;  /* Blue for "Relatórios" */
+    --brand-super: 222 84% 4.9%;      /* Dark text for "Super" */
+    --brand-relatorios: 220 91% 51%;  /* Primary blue for "Relatórios" */
 
+    /* Secondary & Muted Colors */
     --secondary: 220 14.3% 95.9%;
     --secondary-foreground: 220 8.9% 46.1%;
-
     --muted: 220 14.3% 95.9%;
     --muted-foreground: 220 8.9% 46.1%;
 
-    /* Professional green for CTAs */
+    /* Accent Green for CTAs */
     --accent: 142 71% 45%;
     --accent-foreground: 0 0% 100%;
 
+    /* Semantic Colors */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+    --warning: 45 93% 47%;
+    --warning-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
+    --info: 220 91% 51%;
+    --info-foreground: 0 0% 100%;
 
+    /* UI Elements */
     --border: 220 13% 91%;
     --input: 220 13% 91%;
     --ring: 220 91% 51%;
+    --radius: 1rem;
 
-    --radius: 0.75rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
+    /* Sidebar Colors */
+    --sidebar-background: 249 250 251;
+    --sidebar-foreground: 222 84% 4.9%;
+    --sidebar-primary: 220 91% 51%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 14.3% 95.9%;
+    --sidebar-accent-foreground: 220 8.9% 46.1%;
     --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-ring: 220 91% 51%;
   }
 
   .dark {
     --background: 222 84% 4.9%;
     --foreground: 210 40% 98%;
-
     --card: 222 84% 4.9%;
     --card-foreground: 210 40% 98%;
-
     --popover: 222 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
     --primary: 217.2 91.2% 59.8%;
     --primary-foreground: 222 84% 4.9%;
-
-    /* Dark blue for dark mode */
-    --primary-dark: 220 91% 20%;
+    --primary-dark: 220 91% 15%;
     --primary-dark-foreground: 210 40% 98%;
     
-    --brand-super: 210 40% 98%;       /* White for "Super" on dark */
-    --brand-relatorios: 220 91% 51%;  /* Blue for "Relatórios" on dark */
+    --brand-super: 210 40% 98%;
+    --brand-relatorios: 217.2 91.2% 59.8%;
 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
-
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
     --accent: 142 76% 36%;
     --accent-foreground: 210 40% 98%;
 
+    --success: 142 76% 36%;
+    --success-foreground: 210 40% 98%;
+    --warning: 45 93% 47%;
+    --warning-foreground: 222 84% 4.9%;
     --destructive: 0 62.8% 50%;
     --destructive-foreground: 210 40% 98%;
+    --info: 217.2 91.2% 59.8%;
+    --info-foreground: 222 84% 4.9%;
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 217.2 91.2% 59.8%;
+
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-primary: 217.2 91.2% 59.8%;
+    --sidebar-primary-foreground: 222 84% 4.9%;
     --sidebar-accent: 240 3.7% 15.9%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
@@ -157,5 +156,105 @@ All colors MUST be HSL.
   /* Sections with scroll margin for fixed header */
   section {
     scroll-margin-top: 80px;
+  }
+
+  /* Custom scrollbars */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+  }
+}
+
+@layer components {
+  /* Card System */
+  .card-hover {
+    @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-1;
+  }
+
+  .card-interactive {
+    @apply card-hover cursor-pointer;
+  }
+
+  /* Badge System */
+  .badge-success {
+    @apply bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100;
+  }
+
+  .badge-warning {
+    @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100;
+  }
+
+  .badge-error {
+    @apply bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100;
+  }
+
+  .badge-info {
+    @apply bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100;
+  }
+
+  /* Animation Utilities */
+  .animate-in {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  .fade-in {
+    @apply animate-in opacity-0;
+    animation: fadeIn 0.3s ease-out forwards;
+  }
+
+  .slide-up {
+    @apply animate-in opacity-0 translate-y-4;
+    animation: slideUp 0.3s ease-out forwards;
+  }
+
+  /* Responsive Text Utilities */
+  .text-responsive-xs {
+    @apply text-xs sm:text-sm;
+  }
+
+  .text-responsive-sm {
+    @apply text-sm sm:text-base;
+  }
+
+  .text-responsive-base {
+    @apply text-base sm:text-lg;
+  }
+
+  .text-responsive-lg {
+    @apply text-lg sm:text-xl md:text-2xl;
+  }
+
+  .text-responsive-xl {
+    @apply text-xl sm:text-2xl md:text-3xl;
+  }
+
+  .text-responsive-2xl {
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl;
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
