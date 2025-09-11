@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
-import { Upload, FileSpreadsheet, Copy, Zap, ArrowRight, CheckCircle } from 'lucide-react';
+import { useSearchParams, useNavigate, Link } from 'react-router-dom';
+import { Upload, FileSpreadsheet, Copy, Zap, ArrowRight, CheckCircle, ArrowLeft, Sparkles } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { StepIndicator } from '@/components/navigation/StepIndicator';
+import { AISuggestion } from '@/components/ui/ai-suggestion';
 import { reportsService, mockTemplates, ReportTemplate } from '@/services/mockReports';
 import { useToast } from '@/hooks/use-toast';
 
@@ -130,23 +132,12 @@ const ReportBuilder = () => {
     }
   };
 
-  const renderStepIndicator = () => (
-    <div className="flex items-center justify-center mb-8">
-      {[1, 2, 3, 4].map((stepNumber) => (
-        <div key={stepNumber} className="flex items-center">
-          <div className={`
-            w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium
-            ${step >= stepNumber ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}
-          `}>
-            {step > stepNumber ? <CheckCircle className="w-4 h-4" /> : stepNumber}
-          </div>
-          {stepNumber < 4 && (
-            <div className={`w-16 h-1 mx-2 ${step > stepNumber ? 'bg-primary' : 'bg-muted'}`} />
-          )}
-        </div>
-      ))}
-    </div>
-  );
+  const steps = [
+    { title: 'Escolher Modelo', description: 'Selecione o template ideal' },
+    { title: 'Configurar Relatório', description: 'Defina título e categoria' },
+    { title: 'Adicionar Dados', description: 'Upload ou cole seus dados' },
+    { title: 'Revisar e Criar', description: 'Finalize com IA' },
+  ];
 
   const renderStep1 = () => (
     <Card>
@@ -398,37 +389,109 @@ const ReportBuilder = () => {
   );
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-center mb-2">Criar Novo Relatório</h1>
-        <p className="text-muted-foreground text-center">
-          Em apenas 3 passos, transforme seus dados em um relatório profissional
-        </p>
-      </div>
+    <div className="min-h-screen bg-gradient-subtle">
+      <div className="flex">
+        {/* Main Content */}
+        <div className="flex-1 p-4 sm:p-6">
+          <div className="max-w-4xl mx-auto">
+            {/* Header */}
+            <div className="mb-6 sm:mb-8 animate-fade-in">
+              <div className="flex items-center gap-4 mb-4">
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/app">
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Voltar
+                  </Link>
+                </Button>
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-center">
+                Criar Novo Relatório
+              </h1>
+              <p className="text-muted-foreground text-center mt-2">
+                Em apenas 4 passos, transforme seus dados em um relatório profissional com IA
+              </p>
+            </div>
 
-      {renderStepIndicator()}
+            {/* Step Indicator */}
+            <div className="mb-8 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+              <StepIndicator 
+                steps={steps} 
+                currentStep={step}
+                className="max-w-2xl mx-auto"
+              />
+            </div>
 
-      <div className="space-y-6">
-        {step === 1 && renderStep1()}
-        {step === 2 && renderStep2()}
-        {step === 3 && renderStep3()}
-        {step === 4 && renderStep4()}
+            {/* Step Content */}
+            <div className="space-y-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+              {step === 1 && renderStep1()}
+              {step === 2 && renderStep2()}
+              {step === 3 && renderStep3()}
+              {step === 4 && renderStep4()}
 
-        {step < 4 && (
-          <div className="flex justify-between">
-            <Button 
-              variant="outline" 
-              onClick={handleBack}
-              disabled={step === 1}
-            >
-              Voltar
-            </Button>
-            <Button onClick={handleNext}>
-              Próximo
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+              {step < 4 && (
+                <div className="flex justify-between max-w-2xl mx-auto">
+                  <Button 
+                    variant="outline" 
+                    onClick={handleBack}
+                    disabled={step === 1}
+                    className="card-hover"
+                  >
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Voltar
+                  </Button>
+                  <Button onClick={handleNext} className="card-hover">
+                    Próximo
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
+              )}
+            </div>
           </div>
-        )}
+        </div>
+
+        {/* AI Sidebar */}
+        <div className="hidden xl:block w-80 p-6">
+          <div className="space-y-4">
+            <AISuggestion
+              title="Dica da IA"
+              description={
+                step === 1 ? "Escolha o modelo mais próximo do seu objetivo. Você pode personalizar depois!" :
+                step === 2 ? "Um título descritivo ajuda na organização e busca posterior." :
+                step === 3 ? "Aceita Excel, CSV, PDF e dados copiados. Quanto mais dados, melhor a análise!" :
+                "Nossa IA irá processar seus dados e gerar insights automaticamente."
+              }
+              variant="compact"
+            />
+            {step === 4 && (
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium flex items-center gap-2">
+                    <Sparkles className="h-4 w-4 text-primary" />
+                    O que nossa IA fará
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm space-y-2">
+                  <div className="flex items-start gap-2">
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                    <p>Analisar e organizar seus dados</p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                    <p>Gerar gráficos e visualizações</p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                    <p>Criar insights e recomendações</p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                    <p>Estruturar o relatório profissional</p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

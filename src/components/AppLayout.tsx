@@ -8,7 +8,8 @@ import {
   User, 
   Menu,
   Bell,
-  Search
+  Search,
+  Folder
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -25,6 +26,7 @@ const AppLayout = () => {
   const navigation = [
     { name: 'Dashboard', href: '/app', icon: LayoutDashboard },
     { name: 'Relatórios', href: '/app/relatorios', icon: FileText },
+    { name: 'Pastas', href: '/app/pastas', icon: Folder },
     { name: 'Novo Relatório', href: '/app/novo-relatorio', icon: Plus },
   ];
 
@@ -84,7 +86,7 @@ const AppLayout = () => {
     <div className="min-h-screen bg-background">
       {/* Desktop Sidebar */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-        <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r bg-card">
+        <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r bg-gradient-subtle shadow-lg">
           <SidebarContent />
         </div>
       </div>
@@ -99,7 +101,7 @@ const AppLayout = () => {
       {/* Main Content */}
       <div className="lg:pl-72">
         {/* Top Header */}
-        <header className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
+        <header className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b shadow-sm">
           <div className="flex h-16 items-center gap-4 px-4 sm:px-6">
             {/* Mobile Menu Button */}
             <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
@@ -111,21 +113,29 @@ const AppLayout = () => {
             </Sheet>
 
             {/* Search */}
-            <div className="flex-1 max-w-md">
+            <div className="flex-1 max-w-md hidden sm:block">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                 <Input
                   placeholder="Buscar relatórios..."
-                  className="pl-10 bg-muted/50"
+                  className="pl-10 bg-muted/50 border-muted focus:border-primary transition-colors"
                 />
               </div>
             </div>
 
             {/* Right Side */}
             <div className="flex items-center gap-2">
+              {/* Mobile Search */}
+              <Button variant="ghost" size="sm" className="sm:hidden">
+                <Search className="h-5 w-5" />
+              </Button>
+              
               {/* Notifications */}
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" className="relative hover-scale">
                 <Bell className="h-5 w-5" />
+                <span className="absolute -top-1 -right-1 h-3 w-3 bg-destructive rounded-full text-xs text-destructive-foreground flex items-center justify-center">
+                  3
+                </span>
               </Button>
 
               {/* User Menu */}
@@ -170,7 +180,7 @@ const AppLayout = () => {
         </header>
 
         {/* Page Content */}
-        <main className="min-h-[calc(100vh-4rem)]">
+        <main className="min-h-[calc(100vh-4rem)] animate-fade-in">
           <Outlet />
         </main>
       </div>
