@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate, Link } from 'react-router-dom';
-import { Upload, FileSpreadsheet, Copy, Zap, ArrowRight, CheckCircle, ArrowLeft, Sparkles } from 'lucide-react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { 
+  Upload, FileSpreadsheet, Copy, Zap, ArrowRight, CheckCircle, ArrowLeft, Sparkles,
+  FileText, Target, BarChart3, Eye, ChevronRight, Menu, X, Database, Brain
+} from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { StepIndicator } from '@/components/navigation/StepIndicator';
+import { Progress } from '@/components/ui/progress';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { AISuggestion } from '@/components/ui/ai-suggestion';
 import { reportsService, mockTemplates, ReportTemplate } from '@/services/mockReports';
 import { useToast } from '@/hooks/use-toast';
@@ -28,6 +32,7 @@ const ReportBuilder = () => {
   const [file, setFile] = useState<File | null>(null);
   const [textData, setTextData] = useState('');
   const [loading, setLoading] = useState(false);
+  const [aiSuggestionsOpen, setAiSuggestionsOpen] = useState(false);
 
   // Check if template was pre-selected from URL
   useEffect(() => {
@@ -57,27 +62,7 @@ const ReportBuilder = () => {
   };
 
   const handleNext = () => {
-    if (step === 1 && !selectedTemplate) {
-      toast({
-        title: "Selecione um modelo",
-        description: "Escolha um modelo para continuar.",
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    if (step === 2) {
-      if (!formData.title.trim()) {
-        toast({
-          title: "Título obrigatório",
-          description: "Digite um título para seu relatório.",
-          variant: "destructive"
-        });
-        return;
-      }
-    }
-
-    if (step === 3) {
+    if (step === 1) {
       if (formData.dataSource === 'upload' && !file) {
         toast({
           title: "Dados necessários",
@@ -94,6 +79,24 @@ const ReportBuilder = () => {
         });
         return;
       }
+    }
+    
+    if (step === 2 && !selectedTemplate) {
+      toast({
+        title: "Selecione um modelo",
+        description: "Escolha um modelo para continuar.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (step === 3 && !formData.title.trim()) {
+      toast({
+        title: "Título obrigatório",
+        description: "Digite um título para seu relatório.",
+        variant: "destructive"
+      });
+      return;
     }
 
     setStep(step + 1);
@@ -119,7 +122,6 @@ const ReportBuilder = () => {
         description: "Seu relatório foi criado com sucesso.",
       });
 
-      // Navigate to the created report
       navigate(`/app/relatorios/${newReport.id}`);
     } catch (error) {
       toast({
@@ -133,148 +135,80 @@ const ReportBuilder = () => {
   };
 
   const steps = [
-    { title: 'Escolher Modelo', description: 'Selecione o template ideal' },
-    { title: 'Configurar Relatório', description: 'Defina título e categoria' },
-    { title: 'Adicionar Dados', description: 'Upload ou cole seus dados' },
-    { title: 'Revisar e Criar', description: 'Finalize com IA' },
+    { 
+      title: 'Input de Dados', 
+      description: 'Upload ou cole seus dados',
+      icon: Database,
+      key: 'data'
+    },
+    { 
+      title: 'Revisão & Escolha de Modelo', 
+      description: 'IA organiza dados e sugere modelo',
+      icon: Brain,
+      key: 'model'
+    },
+    { 
+      title: 'Geração e Edição', 
+      description: 'Estrutura base gerada',
+      icon: FileText,
+      key: 'generation'
+    },
+    { 
+      title: 'Visualização Final', 
+      description: 'Relatório pronto para salvar',
+      icon: Eye,
+      key: 'final'
+    },
   ];
 
+  const progressPercentage = (step / 4) * 100;
+
+  // Step 1: Input de Dados
   const renderStep1 = () => (
-    <Card>
-      <CardHeader className="text-center">
-        <CardTitle>Escolha um Modelo</CardTitle>
-        <CardDescription>
-          Selecione o modelo mais adequado para seu relatório
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {mockTemplates.map((template) => (
-            <Card 
-              key={template.id}
-              className={`cursor-pointer transition-all ${
-                selectedTemplate === template.id ? 'ring-2 ring-primary' : 'hover:shadow-md'
-              }`}
-              onClick={() => setSelectedTemplate(template.id)}
-            >
-              <CardHeader>
-                <CardTitle className="text-lg">{template.name}</CardTitle>
-                <CardDescription>{template.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <p className="text-sm font-medium">Seções incluídas:</p>
-                  <ul className="text-xs text-muted-foreground space-y-1">
-                    {template.structure.sections.map((section, index) => (
-                      <li key={index}>• {section}</li>
-                    ))}
-                  </ul>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
-  );
+    <div className="space-y-6">
+      <div className="text-center">
+        <h2 className="text-xl md:text-2xl font-semibold mb-2">Input de Dados</h2>
+        <p className="text-muted-foreground">
+          Escolha como você quer fornecer os dados para análise
+        </p>
+      </div>
 
-  const renderStep2 = () => (
-    <Card>
-      <CardHeader className="text-center">
-        <CardTitle>Informações do Relatório</CardTitle>
-        <CardDescription>
-          Configure os detalhes básicos do seu relatório
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <Label htmlFor="title">Título do Relatório *</Label>
-            <Input
-              id="title"
-              value={formData.title}
-              onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-              placeholder="Ex: Relatório de Vendas Janeiro 2024"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="category">Categoria</Label>
-            <Select 
-              value={formData.category} 
-              onValueChange={(value) => setFormData(prev => ({ ...prev, category: value }))}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Selecione uma categoria" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Executivo">Executivo</SelectItem>
-                <SelectItem value="Vendas">Vendas</SelectItem>
-                <SelectItem value="Financeiro">Financeiro</SelectItem>
-                <SelectItem value="Marketing">Marketing</SelectItem>
-                <SelectItem value="Operacional">Operacional</SelectItem>
-                <SelectItem value="RH">Recursos Humanos</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="description">Descrição</Label>
-          <Textarea
-            id="description"
-            value={formData.description}
-            onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-            placeholder="Descreva brevemente o objetivo deste relatório..."
-            rows={3}
-          />
-        </div>
-      </CardContent>
-    </Card>
-  );
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card 
+          className={`cursor-pointer transition-all card-hover ${
+            formData.dataSource === 'upload' ? 'ring-2 ring-primary bg-primary/5' : ''
+          }`}
+          onClick={() => setFormData(prev => ({ ...prev, dataSource: 'upload' }))}
+        >
+          <CardHeader className="text-center">
+            <Upload className="w-8 h-8 mx-auto mb-2 text-primary" />
+            <CardTitle className="text-lg">Upload de Arquivo</CardTitle>
+            <CardDescription>
+              Excel, CSV, PDF, Word
+            </CardDescription>
+          </CardHeader>
+        </Card>
+        
+        <Card 
+          className={`cursor-pointer transition-all card-hover ${
+            formData.dataSource === 'text' ? 'ring-2 ring-primary bg-primary/5' : ''
+          }`}
+          onClick={() => setFormData(prev => ({ ...prev, dataSource: 'text' }))}
+        >
+          <CardHeader className="text-center">
+            <Copy className="w-8 h-8 mx-auto mb-2 text-primary" />
+            <CardTitle className="text-lg">Colar Dados</CardTitle>
+            <CardDescription>
+              Cole dados diretamente
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      </div>
 
-  const renderStep3 = () => (
-    <Card>
-      <CardHeader className="text-center">
-        <CardTitle>Adicionar Dados</CardTitle>
-        <CardDescription>
-          Escolha como você quer fornecer os dados para o relatório
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Card 
-            className={`cursor-pointer transition-all ${
-              formData.dataSource === 'upload' ? 'ring-2 ring-primary' : 'hover:shadow-md'
-            }`}
-            onClick={() => setFormData(prev => ({ ...prev, dataSource: 'upload' }))}
-          >
-            <CardHeader className="text-center">
-              <Upload className="w-8 h-8 mx-auto mb-2" />
-              <CardTitle className="text-lg">Upload de Arquivo</CardTitle>
-              <CardDescription>
-                Envie uma planilha ou documento
-              </CardDescription>
-            </CardHeader>
-          </Card>
-          
-          <Card 
-            className={`cursor-pointer transition-all ${
-              formData.dataSource === 'text' ? 'ring-2 ring-primary' : 'hover:shadow-md'
-            }`}
-            onClick={() => setFormData(prev => ({ ...prev, dataSource: 'text' }))}
-          >
-            <CardHeader className="text-center">
-              <Copy className="w-8 h-8 mx-auto mb-2" />
-              <CardTitle className="text-lg">Colar Dados</CardTitle>
-              <CardDescription>
-                Cole dados diretamente no campo
-              </CardDescription>
-            </CardHeader>
-          </Card>
-        </div>
-
-        {formData.dataSource === 'upload' && (
-          <div className="space-y-4">
-            <div className="border-2 border-dashed border-muted rounded-lg p-8 text-center">
+      {formData.dataSource === 'upload' && (
+        <Card>
+          <CardContent className="p-6">
+            <div className="border-2 border-dashed border-muted rounded-xl p-8 text-center">
               <FileSpreadsheet className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
               <div className="space-y-2">
                 <p className="text-sm font-medium">
@@ -286,188 +220,443 @@ const ReportBuilder = () => {
               </div>
               <Input
                 type="file"
-                className="mt-4"
+                className="mt-4 cursor-pointer"
                 accept=".xlsx,.xls,.csv,.pdf,.docx"
                 onChange={handleFileUpload}
               />
             </div>
             {file && (
-              <div className="p-4 bg-green-50 rounded-lg">
-                <p className="text-sm text-green-800">
-                  ✓ Arquivo carregado: {file.name}
-                </p>
+              <div className="mt-4 p-4 bg-success/10 border border-success/20 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-success" />
+                  <p className="text-sm font-medium text-success">
+                    Arquivo carregado: {file.name}
+                  </p>
+                </div>
               </div>
             )}
-          </div>
-        )}
+          </CardContent>
+        </Card>
+      )}
 
-        {formData.dataSource === 'text' && (
-          <div className="space-y-2">
-            <Label htmlFor="textData">Cole seus dados aqui</Label>
-            <Textarea
-              id="textData"
-              value={textData}
-              onChange={(e) => setTextData(e.target.value)}
-              placeholder="Cole aqui seus dados, texto, números, tabelas..."
-              rows={8}
-            />
-          </div>
-        )}
-      </CardContent>
-    </Card>
+      {formData.dataSource === 'text' && (
+        <Card>
+          <CardContent className="p-6">
+            <div className="space-y-2">
+              <Label htmlFor="textData">Cole seus dados aqui</Label>
+              <Textarea
+                id="textData"
+                value={textData}
+                onChange={(e) => setTextData(e.target.value)}
+                placeholder="Cole aqui seus dados, texto, números, tabelas..."
+                rows={12}
+                className="resize-none"
+              />
+              {textData && (
+                <p className="text-xs text-muted-foreground">
+                  {textData.length} caracteres
+                </p>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+    </div>
   );
 
-  const renderStep4 = () => (
-    <Card>
-      <CardHeader className="text-center">
-        <CardTitle>Revisão e Criação</CardTitle>
-        <CardDescription>
-          Verifique as informações e crie seu relatório
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h4 className="font-medium mb-2">Informações do Relatório</h4>
-            <div className="space-y-2 text-sm">
-              <p><span className="font-medium">Título:</span> {formData.title}</p>
-              <p><span className="font-medium">Categoria:</span> {formData.category}</p>
-              <p><span className="font-medium">Modelo:</span> {mockTemplates.find(t => t.id === selectedTemplate)?.name}</p>
-              {formData.description && (
-                <p><span className="font-medium">Descrição:</span> {formData.description}</p>
-              )}
+  // Step 2: Revisão & Escolha de Modelo
+  const renderStep2 = () => (
+    <div className="space-y-6">
+      <div className="text-center">
+        <h2 className="text-xl md:text-2xl font-semibold mb-2">Revisão & Escolha de Modelo</h2>
+        <p className="text-muted-foreground">
+          IA organizou seus dados. Escolha o modelo mais adequado
+        </p>
+      </div>
+
+      {/* Data Preview */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <CheckCircle className="w-5 h-5 text-success" />
+            Dados Processados
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+            <div className="p-3 bg-muted/50 rounded-lg">
+              <p className="font-medium">Fonte</p>
+              <p className="text-muted-foreground">
+                {formData.dataSource === 'upload' ? file?.name : 'Dados colados'}
+              </p>
             </div>
-          </div>
-          <div>
-            <h4 className="font-medium mb-2">Dados Fornecidos</h4>
-            <div className="space-y-2 text-sm">
-              <p>
-                <span className="font-medium">Fonte:</span> {
-                  formData.dataSource === 'upload' ? 'Upload de arquivo' : 'Dados colados'
+            <div className="p-3 bg-muted/50 rounded-lg">
+              <p className="font-medium">Tamanho</p>
+              <p className="text-muted-foreground">
+                {formData.dataSource === 'upload' 
+                  ? `${Math.round((file?.size || 0) / 1024)} KB`
+                  : `${textData.length} caracteres`
                 }
               </p>
-              {file && (
-                <p><span className="font-medium">Arquivo:</span> {file.name}</p>
-              )}
-              {textData && (
-                <p><span className="font-medium">Dados:</span> {textData.length} caracteres</p>
-              )}
+            </div>
+            <div className="p-3 bg-muted/50 rounded-lg">
+              <p className="font-medium">Status</p>
+              <p className="text-success">Processado ✓</p>
             </div>
           </div>
-        </div>
+        </CardContent>
+      </Card>
 
-        <div className="bg-blue-50 p-4 rounded-lg">
-          <div className="flex items-start gap-3">
-            <Zap className="w-5 h-5 text-blue-600 mt-0.5" />
+      {/* Template Selection */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4">Escolha um Modelo</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {mockTemplates.slice(0, 6).map((template) => (
+            <Card 
+              key={template.id}
+              className={`cursor-pointer transition-all card-hover ${
+                selectedTemplate === template.id ? 'ring-2 ring-primary bg-primary/5' : ''
+              }`}
+              onClick={() => setSelectedTemplate(template.id)}
+            >
+              <CardHeader>
+                <CardTitle className="text-lg">{template.name}</CardTitle>
+                <CardDescription>{template.description}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium">Seções incluídas:</p>
+                  <ul className="text-xs text-muted-foreground space-y-1">
+                    {template.structure.sections.slice(0, 3).map((section, index) => (
+                      <li key={index}>• {section}</li>
+                    ))}
+                  </ul>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  // Step 3: Geração e Edição
+  const renderStep3 = () => (
+    <div className="space-y-6">
+      <div className="text-center">
+        <h2 className="text-xl md:text-2xl font-semibold mb-2">Geração e Edição</h2>
+        <p className="text-muted-foreground">
+          Configure os detalhes do seu relatório
+        </p>
+      </div>
+
+      <Card>
+        <CardContent className="p-6 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="title">Título do Relatório *</Label>
+              <Input
+                id="title"
+                value={formData.title}
+                onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+                placeholder="Ex: Relatório de Vendas Janeiro 2024"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="category">Categoria</Label>
+              <Select 
+                value={formData.category} 
+                onValueChange={(value) => setFormData(prev => ({ ...prev, category: value }))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione uma categoria" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Executivo">Executivo</SelectItem>
+                  <SelectItem value="Vendas">Vendas</SelectItem>
+                  <SelectItem value="Financeiro">Financeiro</SelectItem>
+                  <SelectItem value="Marketing">Marketing</SelectItem>
+                  <SelectItem value="Operacional">Operacional</SelectItem>
+                  <SelectItem value="RH">Recursos Humanos</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="description">Descrição</Label>
+            <Textarea
+              id="description"
+              value={formData.description}
+              onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+              placeholder="Descreva brevemente o objetivo deste relatório..."
+              rows={3}
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Preview Structure */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Estrutura do Relatório</CardTitle>
+          <CardDescription>
+            Visualize como seu relatório será organizado
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            {['Título e Resumo Executivo', 'Principais KPIs', 'Análise Detalhada', 'Gráficos e Visualizações', 'Insights e Recomendações', 'Próximos Passos'].map((section, index) => (
+              <div key={index} className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
+                <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center">
+                  {index + 1}
+                </div>
+                <p className="text-sm font-medium">{section}</p>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+
+  // Step 4: Visualização Final
+  const renderStep4 = () => (
+    <div className="space-y-6">
+      <div className="text-center">
+        <h2 className="text-xl md:text-2xl font-semibold mb-2">Visualização Final</h2>
+        <p className="text-muted-foreground">
+          Revise as informações antes de criar seu relatório
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Informações do Relatório</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
             <div>
-              <h4 className="font-medium text-blue-900">IA SuperRelatórios</h4>
-              <p className="text-sm text-blue-700 mt-1">
+              <p className="text-sm font-medium text-muted-foreground">Título</p>
+              <p className="font-medium">{formData.title}</p>
+            </div>
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">Categoria</p>
+              <p>{formData.category}</p>
+            </div>
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">Modelo</p>
+              <p>{mockTemplates.find(t => t.id === selectedTemplate)?.name}</p>
+            </div>
+            {formData.description && (
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">Descrição</p>
+                <p className="text-sm">{formData.description}</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Dados Fornecidos</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">Fonte</p>
+              <p>{formData.dataSource === 'upload' ? 'Upload de arquivo' : 'Dados colados'}</p>
+            </div>
+            {file && (
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">Arquivo</p>
+                <p className="text-sm">{file.name}</p>
+              </div>
+            )}
+            {textData && (
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">Dados</p>
+                <p className="text-sm">{textData.length} caracteres</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card className="bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
+        <CardContent className="p-6">
+          <div className="flex items-start gap-3">
+            <Sparkles className="w-6 h-6 text-primary mt-0.5 flex-shrink-0" />
+            <div>
+              <h4 className="font-semibold text-primary mb-2">IA SuperRelatórios</h4>
+              <p className="text-sm text-muted-foreground mb-4">
                 Nossa IA irá analisar seus dados, organizá-los de forma inteligente e criar um relatório 
                 profissional com insights, gráficos e recomendações personalizadas.
               </p>
+              <Button 
+                onClick={handleCreateReport} 
+                disabled={loading}
+                className="w-full md:w-auto"
+                size="lg"
+              >
+                {loading ? (
+                  'Criando relatório...'
+                ) : (
+                  <>
+                    <Zap className="mr-2 h-5 w-5" />
+                    Criar Relatório com IA
+                  </>
+                )}
+              </Button>
             </div>
           </div>
-        </div>
-
-        <Button 
-          onClick={handleCreateReport} 
-          disabled={loading}
-          className="w-full"
-          size="lg"
-        >
-          {loading ? (
-            'Criando relatório...'
-          ) : (
-            <>
-              <Zap className="mr-2 h-5 w-5" />
-              Criar Relatório com IA
-            </>
-          )}
-        </Button>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </div>
   );
 
   return (
     <div className="min-h-screen bg-gradient-subtle">
-      <div className="flex">
-        {/* Main Content */}
-        <div className="flex-1 p-4 sm:p-6">
-          <div className="max-w-4xl mx-auto">
-            {/* Header */}
-            <div className="mb-6 sm:mb-8 animate-fade-in">
-              <div className="flex items-center gap-4 mb-4">
-                <Button variant="ghost" size="sm" onClick={() => {
-                  // Check if coming from landing page
-                  const referrer = document.referrer;
-                  if (referrer.includes(window.location.origin) && !referrer.includes('/app')) {
-                    navigate('/');
-                  } else {
-                    navigate('/app');
-                  }
-                }}>
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Voltar
-                </Button>
-              </div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-center">
-                Criar Novo Relatório
-              </h1>
-              <p className="text-muted-foreground text-center mt-2">
-                Em apenas 4 passos, transforme seus dados em um relatório profissional com IA
-              </p>
-            </div>
+      {/* Header */}
+      <header className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b">
+        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+          {/* Left: Back Button */}
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={() => {
+              const referrer = document.referrer;
+              if (referrer.includes(window.location.origin) && !referrer.includes('/app')) {
+                navigate('/');
+              } else {
+                navigate('/app');
+              }
+            }}
+            className="flex items-center gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            <span className="hidden sm:inline">Voltar</span>
+          </Button>
 
-            {/* Step Indicator */}
-            <div className="mb-8 animate-fade-in" style={{ animationDelay: '0.1s' }}>
-              <StepIndicator 
-                steps={steps} 
-                currentStep={step}
-                className="max-w-2xl mx-auto"
-              />
-            </div>
+          {/* Center: Title */}
+          <h1 className="text-lg md:text-xl font-semibold">
+            Fluxo de Criação de Relatórios
+          </h1>
 
-            {/* Step Content */}
-            <div className="space-y-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+          {/* Right: Step Indicator */}
+          <div className="flex items-center gap-2 text-sm">
+            <span className="hidden sm:inline text-muted-foreground">Passo</span>
+            <span className="font-medium">{step} de 4</span>
+          </div>
+        </div>
+
+        {/* Progress Bar */}
+        <div className="h-1 bg-muted">
+          <div 
+            className="h-full bg-primary transition-all duration-300 ease-out"
+            style={{ width: `${progressPercentage}%` }}
+          />
+        </div>
+      </header>
+
+      <div className="container mx-auto px-4 py-6">
+        <div className="flex gap-6">
+          {/* Left Sidebar - Desktop */}
+          <aside className="hidden lg:block w-80 space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Sumário das Etapas</CardTitle>
+              </CardHeader>
+              <CardContent className="p-4">
+                <div className="space-y-3">
+                  {steps.map((stepInfo, index) => {
+                    const stepNumber = index + 1;
+                    const isActive = stepNumber === step;
+                    const isCompleted = stepNumber < step;
+                    
+                    return (
+                      <div 
+                        key={stepInfo.key}
+                        className={`flex items-start gap-3 p-3 rounded-lg transition-all ${
+                          isActive ? 'bg-primary/10 border border-primary/20' : 
+                          isCompleted ? 'bg-success/5' : 'bg-muted/30'
+                        }`}
+                      >
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                          isCompleted ? 'bg-success text-success-foreground' :
+                          isActive ? 'bg-primary text-primary-foreground' :
+                          'bg-muted text-muted-foreground'
+                        }`}>
+                          {isCompleted ? <CheckCircle className="w-4 h-4" /> : stepNumber}
+                        </div>
+                        <div className="flex-1">
+                          <p className={`font-medium text-sm ${isActive ? 'text-primary' : ''}`}>
+                            {stepInfo.title}
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {stepInfo.description}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+          </aside>
+
+          {/* Mobile Steps - Horizontal */}
+          <div className="lg:hidden w-full mb-6">
+            <div className="flex items-center justify-between">
+              {steps.map((stepInfo, index) => {
+                const stepNumber = index + 1;
+                const isActive = stepNumber === step;
+                const isCompleted = stepNumber < step;
+                
+                return (
+                  <div key={stepInfo.key} className="flex items-center">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium ${
+                      isCompleted ? 'bg-success text-success-foreground' :
+                      isActive ? 'bg-primary text-primary-foreground' :
+                      'bg-muted text-muted-foreground'
+                    }`}>
+                      {isCompleted ? <CheckCircle className="w-4 h-4" /> : stepNumber}
+                    </div>
+                    {index < steps.length - 1 && (
+                      <div className={`w-4 h-0.5 mx-1 ${
+                        stepNumber < step ? 'bg-success' : 'bg-muted'
+                      }`} />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+            <p className="text-center text-sm text-muted-foreground mt-2">
+              {steps[step - 1].title}
+            </p>
+          </div>
+
+          {/* Main Content */}
+          <main className="flex-1 max-w-4xl mx-auto lg:mx-0">
+            <div className="animate-fade-in">
               {step === 1 && renderStep1()}
               {step === 2 && renderStep2()}
               {step === 3 && renderStep3()}
               {step === 4 && renderStep4()}
-
-              {step < 4 && (
-                <div className="flex justify-between max-w-2xl mx-auto">
-                  <Button 
-                    variant="outline" 
-                    onClick={handleBack}
-                    disabled={step === 1}
-                    className="card-hover"
-                  >
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                    Voltar
-                  </Button>
-                  <Button onClick={handleNext} className="card-hover">
-                    Próximo
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </div>
-              )}
             </div>
-          </div>
-        </div>
+          </main>
 
-        {/* AI Sidebar */}
-        <div className="hidden xl:block w-80 p-6">
-          <div className="space-y-4">
+          {/* Right Sidebar - Desktop */}
+          <aside className="hidden xl:block w-80 space-y-4">
             <AISuggestion
               title="Dica da IA"
               description={
-                step === 1 ? "Escolha o modelo mais próximo do seu objetivo. Você pode personalizar depois!" :
-                step === 2 ? "Um título descritivo ajuda na organização e busca posterior." :
-                step === 3 ? "Aceita Excel, CSV, PDF e dados copiados. Quanto mais dados, melhor a análise!" :
+                step === 1 ? "Aceita Excel, CSV, PDF e dados copiados. Quanto mais dados, melhor a análise!" :
+                step === 2 ? "Escolha o modelo mais próximo do seu objetivo. A IA já analisou seus dados!" :
+                step === 3 ? "Um título descritivo ajuda na organização e busca posterior." :
                 "Nossa IA irá processar seus dados e gerar insights automaticamente."
               }
               variant="compact"
             />
+            
             {step === 4 && (
               <Card>
                 <CardHeader className="pb-3">
@@ -496,9 +685,69 @@ const ReportBuilder = () => {
                 </CardContent>
               </Card>
             )}
-          </div>
+          </aside>
+        </div>
+
+        {/* Mobile AI Suggestions */}
+        <div className="xl:hidden mt-6">
+          <Collapsible open={aiSuggestionsOpen} onOpenChange={setAiSuggestionsOpen}>
+            <CollapsibleTrigger asChild>
+              <Button variant="outline" className="w-full justify-between">
+                <span className="flex items-center gap-2">
+                  <Brain className="h-4 w-4" />
+                  Sugestões da IA
+                </span>
+                <ChevronRight className={`h-4 w-4 transition-transform ${aiSuggestionsOpen ? 'rotate-90' : ''}`} />
+              </Button>
+            </CollapsibleTrigger>
+            <CollapsibleContent className="mt-4">
+              <AISuggestion
+                title="Dica da IA"
+                description={
+                  step === 1 ? "Aceita Excel, CSV, PDF e dados copiados. Quanto mais dados, melhor a análise!" :
+                  step === 2 ? "Escolha o modelo mais próximo do seu objetivo. A IA já analisou seus dados!" :
+                  step === 3 ? "Um título descritivo ajuda na organização e busca posterior." :
+                  "Nossa IA irá processar seus dados e gerar insights automaticamente."
+                }
+                variant="compact"
+              />
+            </CollapsibleContent>
+          </Collapsible>
         </div>
       </div>
+
+      {/* Mobile Bottom Navigation */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-background border-t p-4">
+        <div className="flex gap-3">
+          {step > 1 && (
+            <Button 
+              variant="outline" 
+              onClick={handleBack}
+              className="flex-1"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Voltar
+            </Button>
+          )}
+          {step < 4 ? (
+            <Button onClick={handleNext} className="flex-1">
+              Próximo
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          ) : (
+            <Button 
+              onClick={handleCreateReport} 
+              disabled={loading}
+              className="flex-1"
+            >
+              {loading ? 'Criando...' : 'Criar Relatório'}
+            </Button>
+          )}
+        </div>
+      </div>
+
+      {/* Mobile Bottom Padding */}
+      <div className="lg:hidden h-20" />
     </div>
   );
 };
