@@ -397,11 +397,17 @@ const ReportBuilder = () => {
             {/* Header */}
             <div className="mb-6 sm:mb-8 animate-fade-in">
               <div className="flex items-center gap-4 mb-4">
-                <Button variant="ghost" size="sm" asChild>
-                  <Link to="/app">
-                    <ArrowLeft className="h-4 w-4 mr-2" />
-                    Voltar
-                  </Link>
+                <Button variant="ghost" size="sm" onClick={() => {
+                  // Check if coming from landing page
+                  const referrer = document.referrer;
+                  if (referrer.includes(window.location.origin) && !referrer.includes('/app')) {
+                    navigate('/');
+                  } else {
+                    navigate('/app');
+                  }
+                }}>
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Voltar
                 </Button>
               </div>
               <h1 className="text-2xl sm:text-3xl font-bold text-center">

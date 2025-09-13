@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
+import { Link } from "react-router-dom";
 import BrandName from "@/components/BrandName";
 import LogoIcon from "@/components/LogoIcon";
 
@@ -26,8 +27,10 @@ const Header = () => {
         </nav>
         
         <div className="flex items-center gap-2">
-          <Button variant="accent" className="font-semibold hidden sm:inline-flex">
-            Criar Relatório Grátis
+          <Button variant="accent" className="font-semibold hidden sm:inline-flex" asChild>
+            <Link to="/app/novo-relatorio">
+              Criar Relatório Grátis
+            </Link>
           </Button>
           
           {/* Mobile Menu */}
@@ -48,8 +51,10 @@ const Header = () => {
                 <a href="#precos" className="text-foreground hover:text-primary transition-colors py-2 text-lg">
                   Preços
                 </a>
-                <Button variant="accent" className="mt-4">
-                  Criar Relatório Grátis
+                <Button variant="accent" className="mt-4" asChild>
+                  <Link to="/app/novo-relatorio">
+                    Criar Relatório Grátis
+                  </Link>
                 </Button>
               </nav>
             </SheetContent>

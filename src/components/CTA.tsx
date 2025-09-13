@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { CheckCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 import BrandName from "@/components/BrandName";
 
 const CTA = () => {
@@ -21,8 +22,10 @@ const CTA = () => {
             para tomar decisões mais inteligentes com IA.
           </p>
           
-          <Button variant="accent" size="lg" className="text-lg px-12 py-4 mb-8">
-            Começar Agora - Grátis
+          <Button variant="accent" size="lg" className="text-lg px-12 py-4 mb-8" asChild>
+            <Link to="/app/novo-relatorio">
+              Começar Agora - Grátis
+            </Link>
           </Button>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center text-white/80 text-sm">

@@ -16,6 +16,9 @@ interface KPICardProps {
   subtitle?: string;
   variant?: "default" | "success" | "warning" | "info";
   className?: string;
+  role?: string;
+  'aria-label'?: string;
+  style?: React.CSSProperties;
 }
 
 const KPICard = ({
@@ -25,7 +28,10 @@ const KPICard = ({
   trend,
   subtitle,
   variant = "default",
-  className
+  className,
+  role,
+  'aria-label': ariaLabel,
+  style
 }: KPICardProps) => {
   const getVariantStyles = () => {
     switch (variant) {
@@ -54,16 +60,21 @@ const KPICard = ({
   };
 
   return (
-    <Card className={cn(
-      "card-hover",
-      getVariantStyles(),
-      className
-    )}>
+    <Card 
+      className={cn(
+        "card-hover touch-target",
+        getVariantStyles(),
+        className
+      )}
+      style={style}
+      role={role}
+      aria-label={ariaLabel}
+    >
       <CardContent className="p-4 sm:p-6">
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
-              <Icon className={cn("h-4 w-4 sm:h-5 sm:w-5", getIconColor())} />
+              <Icon className={cn("h-4 w-4 sm:h-5 sm:w-5", getIconColor())} aria-hidden="true" />
               <p className="text-xs sm:text-sm font-medium text-muted-foreground">
                 {title}
               </p>
@@ -84,9 +95,9 @@ const KPICard = ({
           {trend && (
             <div className="flex items-center gap-1">
               {trend.isPositive ? (
-                <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 text-green-600" />
+                <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 text-green-600" aria-hidden="true" />
               ) : (
-                <TrendingDown className="h-3 w-3 sm:h-4 sm:w-4 text-red-600" />
+                <TrendingDown className="h-3 w-3 sm:h-4 sm:w-4 text-red-600" aria-hidden="true" />
               )}
               <Badge 
                 variant="secondary" 
@@ -96,6 +107,7 @@ const KPICard = ({
                     ? "bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300" 
                     : "bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300"
                 )}
+                aria-label={`Tendência ${trend.isPositive ? 'positiva' : 'negativa'} de ${Math.abs(trend.value)}%`}
               >
                 {trend.isPositive ? "+" : ""}{trend.value}%
               </Badge>

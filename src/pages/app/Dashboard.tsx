@@ -130,76 +130,97 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gradient-subtle">
       <div className="flex">
         {/* Main Content */}
-        <div className="flex-1 p-4 sm:p-6 space-y-6 sm:space-y-8">
-          {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="animate-fade-in">
-              <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
-                Painel do <BrandName />
-              </h1>
-              <p className="text-muted-foreground mt-1 sm:mt-2">
-                Gerencie seus relatórios e acompanhe seu progresso
-              </p>
-            </div>
-            <Button asChild size="lg" className="self-start sm:self-auto card-hover">
-              <Link to="/app/novo-relatorio">
-                <Plus className="mr-2 h-5 w-5" />
-                <span className="hidden sm:inline">Novo Relatório</span>
-                <span className="sm:hidden">Novo</span>
-              </Link>
-            </Button>
-          </div>
-
-          {/* KPI Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            {stats.map((stat, index) => (
-              <div key={stat.title} className="animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
-                <KPICard
-                  title={stat.title}
-                  value={stat.value}
-                  icon={stat.icon}
-                  trend={stat.trend}
-                  variant={stat.variant}
-                />
+        <div className="flex-1 dashboard-viewport overflow-y-auto">
+          <div className="container-fluid space-y-6 sm:space-y-8 py-4 sm:py-6">
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="animate-fade-in">
+                <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
+                  Painel do <BrandName />
+                </h1>
+                <p className="text-muted-foreground mt-1 sm:mt-2 text-readable">
+                  Gerencie seus relatórios e acompanhe seu progresso
+                </p>
               </div>
-            ))}
-          </div>
-
-          {/* Folders Section */}
-          <div className="animate-fade-in" style={{ animationDelay: '0.4s' }}>
-            <div className="flex items-center justify-between mb-4 sm:mb-6">
-              <h2 className="text-lg sm:text-xl font-semibold text-foreground flex items-center gap-2">
-                <Folder className="h-5 w-5 text-primary" />
-                Pastas Organizadas
-              </h2>
-              <Button variant="outline" size="sm" asChild>
-                <Link to="/app/pastas">Ver Todas</Link>
+              <Button 
+                asChild 
+                size="lg" 
+                className="self-start sm:self-auto btn-enhanced touch-target"
+                aria-label="Criar novo relatório"
+              >
+                <Link to="/app/novo-relatorio">
+                  <Plus className="mr-2 h-5 w-5" />
+                  <span className="hidden sm:inline">Novo Relatório</span>
+                  <span className="sm:hidden">Novo</span>
+                </Link>
               </Button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {folders.map((folder, index) => (
-                <Card key={folder.name} className="card-hover cursor-pointer group">
-                  <CardContent className="p-4 sm:p-6">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm ${folder.color}`}>
-                          {folder.icon}
-                        </div>
-                        <div>
-                          <h3 className="font-medium text-foreground group-hover:text-primary transition-colors">
-                            {folder.name}
-                          </h3>
-                          <p className="text-sm text-muted-foreground">
-                            {folder.count} relatórios
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+
+            {/* KPI Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+              {stats.map((stat, index) => (
+                <div key={stat.title} className="animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <KPICard
+                    title={stat.title}
+                    value={stat.value}
+                    icon={stat.icon}
+                    trend={stat.trend}
+                    variant={stat.variant}
+                    role="region"
+                    aria-label={`Métrica: ${stat.title} com valor ${stat.value}`}
+                  />
+                </div>
               ))}
             </div>
-          </div>
+
+            {/* Folders Section */}
+            <section className="animate-fade-in" style={{ animationDelay: '0.4s' }} aria-labelledby="folders-heading">
+              <div className="flex items-center justify-between mb-4 sm:mb-6">
+                <h2 id="folders-heading" className="text-lg sm:text-xl font-semibold text-foreground flex items-center gap-2">
+                  <Folder className="h-5 w-5 text-primary" />
+                  Pastas Organizadas
+                </h2>
+                <Button variant="outline" size="sm" asChild className="btn-enhanced">
+                  <Link to="/app/pastas" aria-label="Ver todas as pastas">Ver Todas</Link>
+                </Button>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {folders.map((folder, index) => (
+                  <Card 
+                    key={folder.name} 
+                    className="card-hover cursor-pointer group touch-target"
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Pasta ${folder.name} com ${folder.count} relatórios`}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        // Navigate to folder
+                      }
+                    }}
+                  >
+                    <CardContent className="p-4 sm:p-6">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm ${folder.color}`}>
+                            <span role="img" aria-label={`Ícone da pasta ${folder.name}`}>
+                              {folder.icon}
+                            </span>
+                          </div>
+                          <div>
+                            <h3 className="font-medium text-foreground group-hover:text-primary transition-colors">
+                              {folder.name}
+                            </h3>
+                            <p className="text-sm text-muted-foreground">
+                              {folder.count} relatórios
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </section>
 
           {/* Recent Reports */}
           <div className="animate-fade-in" style={{ animationDelay: '0.5s' }}>
@@ -301,6 +322,7 @@ const Dashboard = () => {
               </CardContent>
             </Card>
           </div>
+          </div>
         </div>
 
         {/* AI Sidebar */}
@@ -309,10 +331,26 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Floating Action Button */}
+      {/* Mobile Bottom Bar with CTA */}
+      <div className="mobile-bottom-bar lg:hidden">
+        <Button 
+          asChild 
+          className="w-full btn-enhanced"
+          size="lg"
+          aria-label="Criar novo relatório - acesso rápido"
+        >
+          <Link to="/app/novo-relatorio">
+            <Plus className="mr-2 h-5 w-5" />
+            Novo Relatório
+          </Link>
+        </Button>
+      </div>
+
+      {/* Floating Action Button - Alternative */}
       <FloatingButton 
         onClick={() => window.location.href = '/app/novo-relatorio'}
-        className="lg:hidden"
+        className="hidden"
+        aria-label="Botão flutuante para criar novo relatório"
       />
     </div>
   );

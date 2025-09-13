@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Check } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Pricing = () => {
   const plans = [
@@ -90,8 +91,15 @@ const Pricing = () => {
                 variant={plan.highlighted ? "accent" : "outline"} 
                 className="w-full"
                 size="lg"
+                asChild={plan.name === "Gratuito"}
               >
-                {plan.cta}
+                {plan.name === "Gratuito" ? (
+                  <Link to="/app/novo-relatorio">
+                    {plan.cta}
+                  </Link>
+                ) : (
+                  plan.cta
+                )}
               </Button>
             </Card>
           ))}
