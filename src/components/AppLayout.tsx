@@ -30,6 +30,13 @@ const AppLayout = () => {
     { name: 'Novo Relatório', href: '/app/novo-relatorio', icon: Plus },
   ];
 
+  const mobileNav = [
+    { name: 'Início', href: '/app', icon: LayoutDashboard },
+    { name: 'Relatórios', href: '/app/relatorios', icon: FileText },
+    { name: 'Novo', href: '/app/novo-relatorio', icon: Plus },
+    { name: 'Pastas', href: '/app/pastas', icon: Folder },
+  ];
+
   const isActive = (href: string) => {
     if (href === '/app') {
       return location.pathname === '/app';
@@ -53,7 +60,7 @@ const AppLayout = () => {
               to={item.href}
               onClick={() => setSidebarOpen(false)}
               className={`
-                flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors
+                flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
                 ${active 
                   ? 'bg-primary text-primary-foreground' 
                   : 'text-muted-foreground hover:text-foreground hover:bg-muted'
@@ -72,7 +79,7 @@ const AppLayout = () => {
           <Link
             to="/app/configuracoes"
             onClick={() => setSidebarOpen(false)}
-            className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
           >
             <Settings className="h-5 w-5" />
             Configurações
@@ -102,7 +109,7 @@ const AppLayout = () => {
       <div className="lg:pl-72">
         {/* Top Header */}
         <header className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b shadow-sm">
-          <div className="flex h-16 items-center gap-4 px-4 sm:px-6">
+          <div className="flex h-14 sm:h-16 items-center gap-4 px-4 sm:px-6">
             {/* Mobile Menu Button */}
             <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
               <SheetTrigger asChild>
@@ -124,7 +131,7 @@ const AppLayout = () => {
             </div>
 
             {/* Right Side */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 ml-auto">
               {/* Mobile Search */}
               <Button variant="ghost" size="sm" className="sm:hidden">
                 <Search className="h-5 w-5" />
@@ -180,9 +187,30 @@ const AppLayout = () => {
         </header>
 
         {/* Page Content */}
-        <main className="min-h-[calc(100vh-4rem)] animate-fade-in">
+        <main className="min-h-[calc(100vh-4rem)] pb-20 lg:pb-0 animate-fade-in">
           <Outlet />
         </main>
+
+        {/* Mobile Bottom Navigation */}
+        <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t z-50" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+          <div className="flex items-center justify-around h-14">
+            {mobileNav.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={`flex flex-col items-center justify-center gap-0.5 px-3 py-1.5 rounded-lg text-xs transition-colors ${
+                    active ? 'text-primary' : 'text-muted-foreground'
+                  }`}
+                >
+                  <item.icon className={`h-5 w-5 ${item.name === 'Novo' ? 'text-primary' : ''}`} />
+                  <span>{item.name}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </nav>
       </div>
     </div>
   );

@@ -23,8 +23,8 @@ All colors MUST be HSL.
     --primary-dark-foreground: 0 0% 100%;
     
     /* Brand Colors */
-    --brand-super: 222 84% 4.9%;      /* Dark text for "Super" */
-    --brand-relatorios: 220 91% 51%;  /* Primary blue for "Relatórios" */
+    --brand-super: 222 84% 4.9%;
+    --brand-relatorios: 220 91% 51%;
 
     /* Secondary & Muted Colors */
     --secondary: 220 14.3% 95.9%;
@@ -52,8 +52,8 @@ All colors MUST be HSL.
     --ring: 220 91% 51%;
     --radius: 1rem;
 
-    /* Sidebar Colors */
-    --sidebar-background: 249 250 251;
+    /* Sidebar Colors - fixed HSL format */
+    --sidebar-background: 210 20% 98%;
     --sidebar-foreground: 222 84% 4.9%;
     --sidebar-primary: 220 91% 51%;
     --sidebar-primary-foreground: 0 0% 100%;
@@ -181,7 +181,7 @@ All colors MUST be HSL.
 @layer components {
   /* Card System */
   .card-hover {
-    @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-1;
+    @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5;
   }
 
   .card-interactive {
@@ -218,6 +218,16 @@ All colors MUST be HSL.
   .slide-up {
     @apply animate-in opacity-0 translate-y-4;
     animation: slideUp 0.3s ease-out forwards;
+  }
+
+  /* Gradient subtle background */
+  .bg-gradient-subtle {
+    background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted) / 0.5) 100%);
+  }
+
+  /* Hover scale utility */
+  .hover-scale {
+    @apply transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98];
   }
 
   /* Responsive Text Utilities */
@@ -301,7 +311,7 @@ All colors MUST be HSL.
     }
   }
 
-  /* Touch targets for mobile */
+  /* Touch targets - opt-in class, not global */
   .touch-target {
     min-height: 44px;
     min-width: 44px;
@@ -311,13 +321,6 @@ All colors MUST be HSL.
     .touch-target {
       min-height: 48px;
       min-width: 48px;
-    }
-    
-    button, 
-    a[role="button"], 
-    [role="button"] {
-      min-height: 48px;
-      padding: 12px 16px;
     }
   }
 
@@ -338,17 +341,9 @@ All colors MUST be HSL.
     }
   }
 
-  /* Dashboard no-scroll constraint */
+  /* Dashboard viewport - auto overflow to prevent clipping */
   .dashboard-viewport {
-    height: calc(100vh - 80px); /* Account for header */
-    overflow: hidden;
-  }
-
-  @media (max-width: 768px) {
-    .dashboard-viewport {
-      height: calc(100vh - 64px); /* Smaller header on mobile */
-      overflow-y: auto;
-    }
+    min-height: calc(100vh - 80px);
   }
 
   /* PWA safe area support */

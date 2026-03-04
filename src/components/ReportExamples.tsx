@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { TrendingUp, Users, DollarSign, Target, Eye, Download, BarChart3, CheckCircle, AlertTriangle, Lightbulb, FileText, ClipboardCheck } from "lucide-react";
+import { Link } from "react-router-dom";
 import BrandName from "@/components/BrandName";
 
 const ReportExamples = () => {
@@ -46,19 +47,22 @@ const ReportExamples = () => {
       icon: TrendingUp,
       title: "Relatório de Vendas",
       description: "Performance comercial com insights acionáveis",
-      color: "bg-primary"
+      color: "bg-primary",
+      template: "sales-monthly"
     },
     {
       icon: Users,
       title: "Análise de Clientes",
       description: "Segmentação e comportamento detalhado",
-      color: "bg-accent"
+      color: "bg-accent",
+      template: "customer-analysis"
     },
     {
       icon: DollarSign,
       title: "Relatório Financeiro",
       description: "Análise financeira executiva completa",
-      color: "bg-primary-dark"
+      color: "bg-primary-dark",
+      template: "financial"
     },
   ];
 
@@ -76,9 +80,9 @@ const ReportExamples = () => {
         <div className="max-w-7xl mx-auto">
           {/* Main Report Example */}
           <div className="mb-12">
-            <Card className="overflow-hidden border-0 shadow-xl">
+            <Card className="overflow-hidden border shadow-xl">
               {/* Header */}
-              <div className="bg-primary p-8 text-white">
+              <div className="bg-primary p-6 sm:p-8 text-white">
                 <div className="text-center">
                   <h3 className="text-2xl font-bold mb-2">{mainReport.title}</h3>
                   <p className="text-white/90">{mainReport.subtitle}</p>
@@ -86,7 +90,7 @@ const ReportExamples = () => {
               </div>
 
               {/* Content Grid */}
-              <div className="p-8">
+              <div className="p-6 sm:p-8">
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {mainReport.sections.map((section, index) => (
                     <div key={index} className="space-y-3">
@@ -104,9 +108,11 @@ const ReportExamples = () => {
                 </div>
 
                 <div className="mt-8 pt-8 border-t border-border text-center">
-                  <Button variant="accent" size="lg">
-                    <Target className="w-5 h-5 mr-2" />
-                    Gerar Relatório Modelo
+                  <Button variant="accent" size="lg" asChild>
+                    <Link to="/app/novo-relatorio">
+                      <Target className="w-5 h-5 mr-2" />
+                      Gerar Relatório Modelo
+                    </Link>
                   </Button>
                 </div>
               </div>
@@ -114,9 +120,9 @@ const ReportExamples = () => {
           </div>
 
           {/* Other Examples */}
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
             {otherExamples.map((report, index) => (
-              <Card key={index} className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+              <Card key={index} className="overflow-hidden border shadow-lg card-hover">
                 <div className={`${report.color} p-6 text-white`}>
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
@@ -130,9 +136,11 @@ const ReportExamples = () => {
                 </div>
                 <div className="p-6">
                   <div className="flex gap-2">
-                    <Button variant="outline" size="sm" className="flex-1">
-                      <Eye className="w-4 h-4 mr-2" />
-                      Ver Exemplo
+                    <Button variant="outline" size="sm" className="flex-1" asChild>
+                      <Link to={`/app/novo-relatorio?template=${report.template}`}>
+                        <Eye className="w-4 h-4 mr-2" />
+                        Ver Exemplo
+                      </Link>
                     </Button>
                     <Button variant="ghost" size="sm">
                       <Download className="w-4 h-4" />
@@ -145,9 +153,11 @@ const ReportExamples = () => {
         </div>
 
         <div className="text-center mt-12">
-          <Button variant="accent" size="lg" className="px-8">
-            <Target className="w-5 h-5 mr-2" />
-            Criar Meu Relatório Agora
+          <Button variant="accent" size="lg" className="px-8" asChild>
+            <Link to="/app/novo-relatorio">
+              <Target className="w-5 h-5 mr-2" />
+              Criar Meu Relatório Agora
+            </Link>
           </Button>
           <p className="text-sm text-muted-foreground mt-3">
             Primeiro relatório grátis • Sem cartão de crédito

@@ -14,20 +14,9 @@ import { useToast } from '@/hooks/use-toast';
 const Settings = () => {
   const { toast } = useToast();
   const [settings, setSettings] = useState({
-    notifications: {
-      email: true,
-      push: false,
-      reports: true,
-      marketing: false
-    },
-    appearance: {
-      theme: 'light',
-      language: 'pt-BR'
-    },
-    privacy: {
-      twoFactor: false,
-      analytics: true
-    }
+    notifications: { email: true, push: false, reports: true, marketing: false },
+    appearance: { theme: 'light', language: 'pt-BR' },
+    privacy: { twoFactor: false, analytics: true }
   });
 
   const handleSave = (section: string) => {
@@ -38,70 +27,39 @@ const Settings = () => {
   };
 
   const sections = [
-    { 
-      id: 'profile', 
-      title: 'Perfil', 
-      icon: User, 
-      description: 'Informações pessoais e conta' 
-    },
-    { 
-      id: 'notifications', 
-      title: 'Notificações', 
-      icon: Bell, 
-      description: 'Preferências de comunicação' 
-    },
-    { 
-      id: 'appearance', 
-      title: 'Aparência', 
-      icon: Palette, 
-      description: 'Tema e idioma' 
-    },
-    { 
-      id: 'security', 
-      title: 'Segurança', 
-      icon: Shield, 
-      description: 'Senha e autenticação' 
-    },
-    { 
-      id: 'plan', 
-      title: 'Plano', 
-      icon: Zap, 
-      description: 'Assinatura e faturamento' 
-    },
+    { id: 'profile', title: 'Perfil', icon: User, description: 'Informações pessoais e conta' },
+    { id: 'notifications', title: 'Notificações', icon: Bell, description: 'Preferências de comunicação' },
+    { id: 'appearance', title: 'Aparência', icon: Palette, description: 'Tema e idioma' },
+    { id: 'security', title: 'Segurança', icon: Shield, description: 'Senha e autenticação' },
+    { id: 'plan', title: 'Plano', icon: Zap, description: 'Assinatura e faturamento' },
   ];
 
   const [activeSection, setActiveSection] = useState('profile');
 
   const renderProfile = () => (
     <div className="space-y-6">
-      <Card className="card-hover">
+      <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <User className="h-5 w-5 text-primary" />
             Informações Pessoais
           </CardTitle>
-          <CardDescription>
-            Atualize suas informações de perfil
-          </CardDescription>
+          <CardDescription>Atualize suas informações de perfil</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="flex items-center gap-6">
-            <Avatar className="h-20 w-20">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+            <Avatar className="h-16 w-16 sm:h-20 sm:w-20">
               <AvatarImage src="/placeholder-avatar.jpg" />
               <AvatarFallback className="text-lg">UD</AvatarFallback>
             </Avatar>
             <div className="space-y-2">
               <h3 className="font-medium text-foreground">Foto do Perfil</h3>
-              <p className="text-sm text-muted-foreground">
-                JPG, PNG ou GIF. Máximo 2MB.
-              </p>
-              <Button variant="outline" size="sm">
-                Alterar Foto
-              </Button>
+              <p className="text-sm text-muted-foreground">JPG, PNG ou GIF. Máximo 2MB.</p>
+              <Button variant="outline" size="sm">Alterar Foto</Button>
             </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="firstName">Nome</Label>
               <Input id="firstName" defaultValue="Usuário" />
@@ -127,9 +85,7 @@ const Settings = () => {
             <Input id="role" defaultValue="Gerente de Operações" />
           </div>
           
-          <Button onClick={() => handleSave('perfil')} className="card-hover">
-            Salvar Alterações
-          </Button>
+          <Button onClick={() => handleSave('perfil')}>Salvar Alterações</Button>
         </CardContent>
       </Card>
     </div>
@@ -137,100 +93,41 @@ const Settings = () => {
 
   const renderNotifications = () => (
     <div className="space-y-6">
-      <Card className="card-hover">
+      <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Bell className="h-5 w-5 text-primary" />
             Preferências de Notificação
           </CardTitle>
-          <CardDescription>
-            Configure como e quando você quer ser notificado
-          </CardDescription>
+          <CardDescription>Configure como e quando você quer ser notificado</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label>Notificações por Email</Label>
-                <p className="text-sm text-muted-foreground">
-                  Receba atualizações importantes por email
-                </p>
+          {[
+            { key: 'email', label: 'Notificações por Email', desc: 'Receba atualizações importantes por email' },
+            { key: 'push', label: 'Notificações Push', desc: 'Notificações instantâneas no navegador' },
+            { key: 'reports', label: 'Relatórios Concluídos', desc: 'Quando seus relatórios estiverem prontos' },
+            { key: 'marketing', label: 'Marketing e Dicas', desc: 'Novidades, dicas e ofertas especiais' },
+          ].map((item, i) => (
+            <div key={item.key}>
+              {i > 0 && <Separator className="mb-4" />}
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5 flex-1 mr-4">
+                  <Label>{item.label}</Label>
+                  <p className="text-sm text-muted-foreground">{item.desc}</p>
+                </div>
+                <Switch 
+                  checked={settings.notifications[item.key as keyof typeof settings.notifications]}
+                  onCheckedChange={(checked) => 
+                    setSettings(prev => ({
+                      ...prev,
+                      notifications: { ...prev.notifications, [item.key]: checked }
+                    }))
+                  }
+                />
               </div>
-              <Switch 
-                checked={settings.notifications.email}
-                onCheckedChange={(checked) => 
-                  setSettings(prev => ({
-                    ...prev,
-                    notifications: { ...prev.notifications, email: checked }
-                  }))
-                }
-              />
             </div>
-            
-            <Separator />
-            
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label>Notificações Push</Label>
-                <p className="text-sm text-muted-foreground">
-                  Notificações instantâneas no navegador
-                </p>
-              </div>
-              <Switch 
-                checked={settings.notifications.push}
-                onCheckedChange={(checked) => 
-                  setSettings(prev => ({
-                    ...prev,
-                    notifications: { ...prev.notifications, push: checked }
-                  }))
-                }
-              />
-            </div>
-            
-            <Separator />
-            
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label>Relatórios Concluídos</Label>
-                <p className="text-sm text-muted-foreground">
-                  Quando seus relatórios estiverem prontos
-                </p>
-              </div>
-              <Switch 
-                checked={settings.notifications.reports}
-                onCheckedChange={(checked) => 
-                  setSettings(prev => ({
-                    ...prev,
-                    notifications: { ...prev.notifications, reports: checked }
-                  }))
-                }
-              />
-            </div>
-            
-            <Separator />
-            
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label>Marketing e Dicas</Label>
-                <p className="text-sm text-muted-foreground">
-                  Novidades, dicas e ofertas especiais
-                </p>
-              </div>
-              <Switch 
-                checked={settings.notifications.marketing}
-                onCheckedChange={(checked) => 
-                  setSettings(prev => ({
-                    ...prev,
-                    notifications: { ...prev.notifications, marketing: checked }
-                  }))
-                }
-              />
-            </div>
-          </div>
-          
-          <Button onClick={() => handleSave('notificações')} className="card-hover">
-            Salvar Preferências
-          </Button>
+          ))}
+          <Button onClick={() => handleSave('notificações')}>Salvar Preferências</Button>
         </CardContent>
       </Card>
     </div>
@@ -238,60 +135,42 @@ const Settings = () => {
 
   const renderAppearance = () => (
     <div className="space-y-6">
-      <Card className="card-hover">
+      <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Palette className="h-5 w-5 text-primary" />
             Aparência e Idioma
           </CardTitle>
-          <CardDescription>
-            Personalize a interface do SuperRelatórios
-          </CardDescription>
+          <CardDescription>Personalize a interface do SuperRelatórios</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="theme">Tema</Label>
-              <Select value={settings.appearance.theme} onValueChange={(value) => 
-                setSettings(prev => ({
-                  ...prev,
-                  appearance: { ...prev.appearance, theme: value }
-                }))
-              }>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="light">Claro</SelectItem>
-                  <SelectItem value="dark">Escuro</SelectItem>
-                  <SelectItem value="system">Sistema</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="language">Idioma</Label>
-              <Select value={settings.appearance.language} onValueChange={(value) => 
-                setSettings(prev => ({
-                  ...prev,
-                  appearance: { ...prev.appearance, language: value }
-                }))
-              }>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="pt-BR">Português (Brasil)</SelectItem>
-                  <SelectItem value="en-US">English (US)</SelectItem>
-                  <SelectItem value="es-ES">Español</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+          <div className="space-y-2">
+            <Label>Tema</Label>
+            <Select value={settings.appearance.theme} onValueChange={(value) => 
+              setSettings(prev => ({ ...prev, appearance: { ...prev.appearance, theme: value } }))
+            }>
+              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="light">Claro</SelectItem>
+                <SelectItem value="dark">Escuro</SelectItem>
+                <SelectItem value="system">Sistema</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
-          
-          <Button onClick={() => handleSave('aparência')} className="card-hover">
-            Salvar Configurações
-          </Button>
+          <div className="space-y-2">
+            <Label>Idioma</Label>
+            <Select value={settings.appearance.language} onValueChange={(value) => 
+              setSettings(prev => ({ ...prev, appearance: { ...prev.appearance, language: value } }))
+            }>
+              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="pt-BR">Português (Brasil)</SelectItem>
+                <SelectItem value="en-US">English (US)</SelectItem>
+                <SelectItem value="es-ES">Español</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <Button onClick={() => handleSave('aparência')}>Salvar Configurações</Button>
         </CardContent>
       </Card>
     </div>
@@ -299,69 +178,45 @@ const Settings = () => {
 
   const renderSecurity = () => (
     <div className="space-y-6">
-      <Card className="card-hover">
+      <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Shield className="h-5 w-5 text-primary" />
             Segurança da Conta
           </CardTitle>
-          <CardDescription>
-            Mantenha sua conta segura
-          </CardDescription>
+          <CardDescription>Mantenha sua conta segura</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label>Alterar Senha</Label>
-              <p className="text-sm text-muted-foreground">
-                Última alteração: há 3 meses
-              </p>
-              <Button variant="outline" size="sm">
-                Alterar Senha
-              </Button>
+          <div className="space-y-2">
+            <Label>Alterar Senha</Label>
+            <p className="text-sm text-muted-foreground">Última alteração: há 3 meses</p>
+            <Button variant="outline" size="sm">Alterar Senha</Button>
+          </div>
+          <Separator />
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5 flex-1 mr-4">
+              <Label>Autenticação de Dois Fatores</Label>
+              <p className="text-sm text-muted-foreground">Adicione uma camada extra de segurança</p>
             </div>
-            
-            <Separator />
-            
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label>Autenticação de Dois Fatores</Label>
-                <p className="text-sm text-muted-foreground">
-                  Adicione uma camada extra de segurança
-                </p>
-              </div>
-              <div className="flex items-center gap-2">
-                <Badge variant={settings.privacy.twoFactor ? "default" : "secondary"}>
-                  {settings.privacy.twoFactor ? "Ativo" : "Inativo"}
-                </Badge>
-                <Switch 
-                  checked={settings.privacy.twoFactor}
-                  onCheckedChange={(checked) => 
-                    setSettings(prev => ({
-                      ...prev,
-                      privacy: { ...prev.privacy, twoFactor: checked }
-                    }))
-                  }
-                />
-              </div>
-            </div>
-            
-            <Separator />
-            
-            <div className="space-y-2">
-              <Label>Sessões Ativas</Label>
-              <p className="text-sm text-muted-foreground">
-                Gerencie dispositivos conectados à sua conta
-              </p>
-              <Button variant="outline" size="sm">
-                Ver Sessões
-              </Button>
+            <div className="flex items-center gap-2">
+              <Badge variant={settings.privacy.twoFactor ? "default" : "secondary"}>
+                {settings.privacy.twoFactor ? "Ativo" : "Inativo"}
+              </Badge>
+              <Switch 
+                checked={settings.privacy.twoFactor}
+                onCheckedChange={(checked) => 
+                  setSettings(prev => ({ ...prev, privacy: { ...prev.privacy, twoFactor: checked } }))
+                }
+              />
             </div>
           </div>
-          
-          <Button onClick={() => handleSave('segurança')} className="card-hover">
-            Salvar Configurações
-          </Button>
+          <Separator />
+          <div className="space-y-2">
+            <Label>Sessões Ativas</Label>
+            <p className="text-sm text-muted-foreground">Gerencie dispositivos conectados à sua conta</p>
+            <Button variant="outline" size="sm">Ver Sessões</Button>
+          </div>
+          <Button onClick={() => handleSave('segurança')}>Salvar Configurações</Button>
         </CardContent>
       </Card>
     </div>
@@ -369,61 +224,38 @@ const Settings = () => {
 
   const renderPlan = () => (
     <div className="space-y-6">
-      <Card className="card-hover">
+      <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Zap className="h-5 w-5 text-primary" />
             Plano e Faturamento
           </CardTitle>
-          <CardDescription>
-            Gerencie sua assinatura
-          </CardDescription>
+          <CardDescription>Gerencie sua assinatura</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="p-4 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg border border-primary/20">
-            <div className="flex items-center justify-between mb-4">
+          <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
               <div>
                 <h3 className="font-semibold text-foreground">Plano Profissional</h3>
                 <p className="text-sm text-muted-foreground">Ativo desde Janeiro 2024</p>
               </div>
-              <Badge className="bg-primary text-primary-foreground">Ativo</Badge>
+              <Badge className="bg-primary text-primary-foreground self-start">Ativo</Badge>
             </div>
-            
-            <div className="space-y-3">
-              <div className="flex justify-between text-sm">
-                <span>Relatórios criados este mês</span>
-                <span className="font-medium">23 / ilimitado</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span>Armazenamento usado</span>
-                <span className="font-medium">2.3 GB / 100 GB</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span>Próxima cobrança</span>
-                <span className="font-medium">15 de Fevereiro</span>
-              </div>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between"><span>Relatórios criados este mês</span><span className="font-medium">23 / ilimitado</span></div>
+              <div className="flex justify-between"><span>Armazenamento usado</span><span className="font-medium">2.3 GB / 100 GB</span></div>
+              <div className="flex justify-between"><span>Próxima cobrança</span><span className="font-medium">15 de Fevereiro</span></div>
             </div>
           </div>
-          
-          <div className="flex gap-2">
-            <Button variant="outline" className="flex-1">
-              Alterar Plano
-            </Button>
-            <Button variant="outline" className="flex-1">
-              Ver Faturas
-            </Button>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <Button variant="outline" className="flex-1">Alterar Plano</Button>
+            <Button variant="outline" className="flex-1">Ver Faturas</Button>
           </div>
-          
           <Separator />
-          
           <div className="space-y-2">
             <Label className="text-destructive">Zona de Perigo</Label>
-            <p className="text-sm text-muted-foreground">
-              Cancelar sua assinatura removerá o acesso a recursos premium
-            </p>
-            <Button variant="destructive" size="sm">
-              Cancelar Assinatura
-            </Button>
+            <p className="text-sm text-muted-foreground">Cancelar sua assinatura removerá o acesso a recursos premium</p>
+            <Button variant="destructive" size="sm">Cancelar Assinatura</Button>
           </div>
         </CardContent>
       </Card>
@@ -442,60 +274,56 @@ const Settings = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-subtle">
-      <div className="flex max-w-7xl mx-auto">
-        {/* Sidebar */}
-        <div className="hidden lg:block w-64 p-6">
-          <div className="sticky top-6">
-            <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
-              <SettingsIcon className="h-5 w-5 text-primary" />
-              Configurações
-            </h2>
-            <nav className="space-y-1">
-              {sections.map((section) => (
-                <button
-                  key={section.id}
-                  onClick={() => setActiveSection(section.id)}
-                  className={`w-full text-left p-3 rounded-lg transition-colors flex items-center gap-3 ${
-                    activeSection === section.id
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                  }`}
-                >
-                  <section.icon className="h-4 w-4" />
-                  <div>
-                    <div className="font-medium">{section.title}</div>
-                    <div className="text-xs opacity-70">{section.description}</div>
-                  </div>
-                </button>
-              ))}
-            </nav>
-          </div>
-        </div>
-
+    <div className="bg-gradient-subtle min-h-full">
+      <div className="max-w-5xl mx-auto p-4 sm:p-6">
         {/* Mobile Section Selector */}
-        <div className="lg:hidden w-full p-4">
-          <Card className="mb-6">
-            <CardContent className="pt-6">
-              <Select value={activeSection} onValueChange={setActiveSection}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {sections.map((section) => (
-                    <SelectItem key={section.id} value={section.id}>
-                      {section.title}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </CardContent>
-          </Card>
+        <div className="lg:hidden mb-6">
+          <Select value={activeSection} onValueChange={setActiveSection}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {sections.map((section) => (
+                <SelectItem key={section.id} value={section.id}>
+                  {section.title}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
-        {/* Main Content */}
-        <div className="flex-1 p-4 lg:p-6">
-          <div className="animate-fade-in">
+        <div className="flex gap-6">
+          {/* Desktop Sidebar */}
+          <div className="hidden lg:block w-64 flex-shrink-0">
+            <div className="sticky top-20">
+              <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                <SettingsIcon className="h-5 w-5 text-primary" />
+                Configurações
+              </h2>
+              <nav className="space-y-1">
+                {sections.map((section) => (
+                  <button
+                    key={section.id}
+                    onClick={() => setActiveSection(section.id)}
+                    className={`w-full text-left p-3 rounded-lg transition-colors flex items-center gap-3 ${
+                      activeSection === section.id
+                        ? 'bg-primary text-primary-foreground'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                    }`}
+                  >
+                    <section.icon className="h-4 w-4 flex-shrink-0" />
+                    <div className="min-w-0">
+                      <div className="font-medium text-sm">{section.title}</div>
+                      <div className="text-xs opacity-70 truncate">{section.description}</div>
+                    </div>
+                  </button>
+                ))}
+              </nav>
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className="flex-1 min-w-0">
             {renderSection()}
           </div>
         </div>

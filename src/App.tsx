@@ -30,10 +30,12 @@ const App = () => (
             <Route index element={<Dashboard />} />
             <Route path="relatorios" element={<ReportsList />} />
             <Route path="relatorios/:id" element={<ReportDetail />} />
-            <Route path="novo-relatorio" element={<ReportBuilder />} />
             <Route path="pastas" element={<Folders />} />
             <Route path="configuracoes" element={<Settings />} />
           </Route>
+          
+          {/* Standalone route - ReportBuilder has its own header */}
+          <Route path="/app/novo-relatorio" element={<ReportBuilder />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
