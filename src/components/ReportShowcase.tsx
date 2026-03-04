@@ -1,6 +1,7 @@
 import { Paper } from "@/components/ui/paper";
 import { Button } from "@/components/ui/button";
 import { BarChart3, TrendingUp, PieChart, Download } from "lucide-react";
+import { Link } from "react-router-dom";
 import BrandName from "@/components/BrandName";
 
 const ReportShowcase = () => {
@@ -45,14 +46,14 @@ const ReportShowcase = () => {
                     <span className="font-semibold text-sm">Principais Métricas</span>
                   </div>
                   <div className="grid grid-cols-2 gap-2 text-xs">
-                    <div className="bg-white p-2 rounded truncate">Receita: R$ 2.4M</div>
-                    <div className="bg-white p-2 rounded truncate">Crescimento: +23%</div>
+                    <div className="bg-background p-2 rounded truncate">Receita: R$ 2.4M</div>
+                    <div className="bg-background p-2 rounded truncate">Crescimento: +23%</div>
                   </div>
                 </div>
                 
-                <div className="bg-gray-50 p-3 rounded">
+                <div className="bg-muted/50 p-3 rounded">
                   <div className="flex items-center gap-2 mb-2">
-                    <PieChart className="w-4 h-4 text-primary-dark flex-shrink-0" />
+                    <PieChart className="w-4 h-4 text-primary flex-shrink-0" />
                     <span className="font-semibold text-sm">Distribuição por Região</span>
                   </div>
                   <div className="space-y-2 text-xs">
@@ -106,7 +107,7 @@ const ReportShowcase = () => {
               <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4 min-h-0 overflow-hidden">
                 {/* KPIs */}
                 <div className="space-y-3 min-h-0">
-                  <h5 className="font-semibold text-sm text-primary-dark">Indicadores Chave</h5>
+                  <h5 className="font-semibold text-sm text-foreground">Indicadores Chave</h5>
                   <div className="space-y-2">
                     <div className="bg-primary/5 p-3 rounded overflow-hidden">
                       <div className="font-semibold text-xs truncate">Receita Total</div>
@@ -123,8 +124,8 @@ const ReportShowcase = () => {
                 
                 {/* Chart Simulation */}
                 <div className="space-y-3 min-h-0">
-                  <h5 className="font-semibold text-sm text-primary-dark">Tendência de Vendas</h5>
-                  <div className="bg-gray-50 p-3 rounded h-24 sm:h-28 flex items-end justify-between gap-1 overflow-hidden">
+                  <h5 className="font-semibold text-sm text-foreground">Tendência de Vendas</h5>
+                  <div className="bg-muted/50 p-3 rounded h-24 sm:h-28 flex items-end justify-between gap-1 overflow-hidden">
                     {[40, 60, 35, 80, 65, 90, 75].map((height, i) => (
                       <div 
                         key={i}
@@ -138,13 +139,13 @@ const ReportShowcase = () => {
                 
                 {/* Recommendations */}
                 <div className="space-y-3 min-h-0 md:col-span-2 lg:col-span-1">
-                  <h5 className="font-semibold text-sm text-primary-dark">Recomendações IA</h5>
+                  <h5 className="font-semibold text-sm text-foreground">Recomendações IA</h5>
                   <div className="space-y-2 overflow-hidden">
                     <div className="bg-accent/10 p-3 rounded border-l-2 border-accent overflow-hidden">
                       <div className="font-semibold text-xs truncate">Oportunidade</div>
                       <div className="text-xs leading-snug">Expandir campanha região Sul (+15% potencial)</div>
                     </div>
-                    <div className="bg-orange-50 p-3 rounded border-l-2 border-orange-400 overflow-hidden">
+                    <div className="bg-warning/10 p-3 rounded border-l-2 border-warning overflow-hidden">
                       <div className="font-semibold text-xs truncate">Atenção</div>
                       <div className="text-xs leading-snug">Queda na retenção de clientes (-3%)</div>
                     </div>
@@ -164,9 +165,11 @@ const ReportShowcase = () => {
         </div>
         
         <div className="text-center mt-12">
-          <Button variant="accent" size="lg" className="text-lg px-8 py-4">
-            <Download className="w-5 h-5 mr-2" />
-            Criar Meu Relatório Agora
+          <Button variant="accent" size="lg" className="text-lg px-8 py-4" asChild>
+            <Link to="/app/novo-relatorio">
+              <Download className="w-5 h-5 mr-2" />
+              Criar Meu Relatório Agora
+            </Link>
           </Button>
         </div>
       </div>
