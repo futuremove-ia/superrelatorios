@@ -20,6 +20,7 @@ interface FolderData {
 }
 
 const Folders = () => {
+  const navigate = useNavigate();
   const [folders, setFolders] = useState<FolderData[]>([]);
   const [filteredFolders, setFilteredFolders] = useState<FolderData[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
