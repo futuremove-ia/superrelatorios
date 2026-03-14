@@ -55,7 +55,7 @@ const ReportExamples = () => {
       title: "Análise de Clientes",
       description: "Segmentação e comportamento detalhado",
       color: "bg-accent",
-      template: "sales-monthly"
+      template: "executive-quarterly"
     },
     {
       icon: DollarSign,
