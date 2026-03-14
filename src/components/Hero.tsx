@@ -28,7 +28,7 @@ const Hero = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <Button variant="accent" size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-4 w-full sm:w-auto" asChild>
-              <Link to="/app/novo-relatorio?template=executivo">
+              <Link to="/app/novo-relatorio?template=executive-quarterly">
                 Criar Meu Primeiro Relatório
               </Link>
             </Button>
