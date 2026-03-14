@@ -55,14 +55,14 @@ const ReportExamples = () => {
       title: "Análise de Clientes",
       description: "Segmentação e comportamento detalhado",
       color: "bg-accent",
-      template: "customer-analysis"
+      template: "sales-monthly"
     },
     {
       icon: DollarSign,
       title: "Relatório Financeiro",
       description: "Análise financeira executiva completa",
       color: "bg-primary-dark",
-      template: "financial"
+      template: "financial-monthly"
     },
   ];
 

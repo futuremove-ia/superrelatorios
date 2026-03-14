@@ -33,7 +33,7 @@ const Pricing = () => {
       features: ["Usuários ilimitados", "Área e área", "Políticas de acesso", "Relatórios avançados"],
       cta: "Falar com Vendas",
       highlighted: false,
-      href: "#",
+      href: "mailto:contato@superrelatorios.com.br?subject=Plano%20Business",
     },
   ];
 

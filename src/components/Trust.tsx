@@ -37,7 +37,7 @@ const Trust = () => {
         
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {trustPillars.map((pillar, index) => (
-            <Card key={index} className="p-8 text-center border-0 bg-card hover:shadow-lg transition-all duration-300">
+            <Card key={index} className="p-8 text-center bg-card hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
               <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <pillar.icon className="w-8 h-8 text-white" />
               </div>
