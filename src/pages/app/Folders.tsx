@@ -274,7 +274,7 @@ const Folders = () => {
 
       {/* Floating Action Button */}
       <FloatingButton 
-        onClick={() => window.location.href = '/app/pastas/nova'}
+        onClick={() => navigate('/app/novo-relatorio')}
         icon={<Plus className="h-6 w-6" />}
         className="lg:hidden"
       >
