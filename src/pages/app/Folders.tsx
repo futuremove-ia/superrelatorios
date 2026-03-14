@@ -186,7 +186,7 @@ const Folders = () => {
                   </p>
                   {!searchTerm && (
                     <Button asChild>
-                      <Link to="/app/pastas/nova">
+                      <Link to="/app/novo-relatorio">
                         <Plus className="mr-2 h-4 w-4" />
                         Criar Primeira Pasta
                       </Link>
