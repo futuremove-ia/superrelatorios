@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Folder, Plus, MoreHorizontal, Search, FileText, Edit, Trash2 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -20,6 +20,7 @@ interface FolderData {
 }
 
 const Folders = () => {
+  const navigate = useNavigate();
   const [folders, setFolders] = useState<FolderData[]>([]);
   const [filteredFolders, setFilteredFolders] = useState<FolderData[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -137,12 +138,10 @@ const Folders = () => {
                 Organize seus relatórios de forma inteligente
               </p>
             </div>
-            <Button asChild size="lg" className="self-start sm:self-auto card-hover">
-              <Link to="/app/pastas/nova">
+            <Button size="lg" className="self-start sm:self-auto card-hover" onClick={() => navigate('/app/novo-relatorio')}>
                 <Plus className="mr-2 h-5 w-5" />
                 <span className="hidden sm:inline">Nova Pasta</span>
                 <span className="sm:hidden">Nova</span>
-              </Link>
             </Button>
           </div>
 
@@ -187,7 +186,7 @@ const Folders = () => {
                   </p>
                   {!searchTerm && (
                     <Button asChild>
-                      <Link to="/app/pastas/nova">
+                      <Link to="/app/novo-relatorio">
                         <Plus className="mr-2 h-4 w-4" />
                         Criar Primeira Pasta
                       </Link>
@@ -275,7 +274,7 @@ const Folders = () => {
 
       {/* Floating Action Button */}
       <FloatingButton 
-        onClick={() => window.location.href = '/app/pastas/nova'}
+        onClick={() => navigate('/app/novo-relatorio')}
         icon={<Plus className="h-6 w-6" />}
         className="lg:hidden"
       >

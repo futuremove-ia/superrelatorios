@@ -325,7 +325,7 @@ const ReportDetail = () => {
       </div>
 
       {/* Mobile Bottom CTA Bar */}
-      <div className="sm:hidden fixed bottom-14 left-0 right-0 bg-background/95 backdrop-blur-sm border-t p-3 z-40 flex gap-2" style={{ paddingBottom: 'calc(12px + env(safe-area-inset-bottom))' }}>
+      <div className="sm:hidden fixed bottom-[3.5rem] left-0 right-0 bg-background/95 backdrop-blur-sm border-t p-3 z-40 flex gap-2 lg:bottom-0" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
         <Button variant="outline" className="flex-1" onClick={handleShare}>
           <Share2 className="h-4 w-4 mr-2" />
           Compartilhar

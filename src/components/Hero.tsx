@@ -28,11 +28,16 @@ const Hero = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <Button variant="accent" size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-4 w-full sm:w-auto" asChild>
-              <Link to="/app/novo-relatorio?template=executivo">
+              <Link to="/app/novo-relatorio?template=executive-quarterly">
                 Criar Meu Primeiro Relatório
               </Link>
             </Button>
-            <Button variant="outline" size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-4 bg-white/10 border-white/30 text-white hover:bg-white/20 w-full sm:w-auto">
+            <Button
+              variant="outline"
+              size="lg"
+              className="text-base sm:text-lg px-6 sm:px-8 py-4 bg-white/10 border-white/30 text-white hover:bg-white/20 w-full sm:w-auto"
+              onClick={() => document.getElementById('exemplos')?.scrollIntoView({ behavior: 'smooth' })}
+            >
               <Play className="w-5 h-5 mr-2" />
               Ver Demonstração
             </Button>
