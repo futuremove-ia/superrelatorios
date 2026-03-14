@@ -138,12 +138,10 @@ const Folders = () => {
                 Organize seus relatórios de forma inteligente
               </p>
             </div>
-            <Button asChild size="lg" className="self-start sm:self-auto card-hover">
-              <Link to="/app/pastas/nova">
+            <Button size="lg" className="self-start sm:self-auto card-hover" onClick={() => navigate('/app/novo-relatorio')}>
                 <Plus className="mr-2 h-5 w-5" />
                 <span className="hidden sm:inline">Nova Pasta</span>
                 <span className="sm:hidden">Nova</span>
-              </Link>
             </Button>
           </div>
 
