@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
 	darkMode: ["class"],
@@ -19,70 +20,75 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				'heading': ['Inter', 'sans-serif'],
-				'body': ['Inter', 'sans-serif'],
+				sans: ["Inter", "system-ui", "sans-serif"], // DSP: Substituir Montserrat
+				mono: ["Geist Mono", "monospace"], // DSP: Adicionar Geist Mono
+				heading: ["Inter", "system-ui", "sans-serif"], // DSP: Substituir Montserrat
+				body: ["Inter", "system-ui", "sans-serif"], // Mantido Inter
+				metric: ["Geist Mono", "monospace"] // DSP: Nova classe para métricas
+			},
+			spacing: {
+				'section': '2rem', // DSP section
+				'element': '1rem', // DSP element  
+				'tight': '0.5rem', // DSP tight
+				// Manter existentes + adicionar DSP
 			},
 			colors: {
-				border: 'hsl(var(--border))',
-				input: 'hsl(var(--input))',
-				ring: 'hsl(var(--ring))',
-				background: 'hsl(var(--background))',
-				foreground: 'hsl(var(--foreground))',
+				// DSP Semântica de Fundo e Superfície
+				background: {
+					light: "#FFFFFF",
+					dark: "#0B0B0C", 
+					subtle: { light: "#F9FAFB", dark: "#121214" }
+				},
+				foreground: {
+					light: "#0F172A", // Slate 900
+					dark: "#FAFAFA",
+					muted: { light: "#64748B", dark: "#A1A1AA" }
+				},
+				border: {
+					light: "#E2E8F0",
+					dark: "#1F1F23"
+				},
+				// Primary: Azul mais escuro da paleta existente (usando CSS variables)
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))',
-					dark: 'hsl(var(--primary-dark))',
-					'dark-foreground': 'hsl(var(--primary-dark-foreground))'
+					states: {
+						hover: { light: 'hsl(var(--primary))', dark: 'hsl(var(--primary))' }
+					}
 				},
-				secondary: {
-					DEFAULT: 'hsl(var(--secondary))',
-					foreground: 'hsl(var(--secondary-foreground))'
-				},
-				destructive: {
-					DEFAULT: 'hsl(var(--destructive))',
-					foreground: 'hsl(var(--destructive-foreground))'
-				},
-				muted: {
-					DEFAULT: 'hsl(var(--muted))',
-					foreground: 'hsl(var(--muted-foreground))'
-				},
+				// Acento Estratégico (DSP) - usando CSS variables
 				accent: {
 					DEFAULT: 'hsl(var(--accent))',
-					foreground: 'hsl(var(--accent-foreground))'
+					foreground: 'hsl(var(--accent-foreground))',
+					states: {
+						hover: { light: 'hsl(var(--accent))', dark: 'hsl(var(--accent))' }
+					}
 				},
-				popover: {
-					DEFAULT: 'hsl(var(--popover))',
-					foreground: 'hsl(var(--popover-foreground))'
+				// Status Operacionais (Mapeamento Inteligente) - usando CSS variables
+				status: {
+					positive: 'hsl(var(--status-positive))',
+					negative: 'hsl(var(--status-negative))',
+					neutral: 'hsl(var(--status-neutral))',
+					pending: 'hsl(var(--status-pending))'
 				},
-				card: {
-					DEFAULT: 'hsl(var(--card))',
-					foreground: 'hsl(var(--card-foreground))'
-				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
-				},
+				// Cores legadas para compatibilidade (mapeamento)
+				success: "#10B981",
+				destructive: "#EF4444", 
+				info: "#3B82F6",
+				warning: "#F59E0B",
+				// Cores existentes mantidas para compatibilidade
+				card: 'hsl(var(--card))',
+				popover: 'hsl(var(--popover))',
+				popoverForeground: 'hsl(var(--popover-foreground))',
+				secondary: 'hsl(var(--secondary))',
+				secondaryForeground: 'hsl(var(--secondary-foreground))',
+				muted: 'hsl(var(--muted))',
+				mutedForeground: 'hsl(var(--muted-foreground))',
+				ring: 'hsl(var(--ring))',
+				input: 'hsl(var(--input))',
 				brand: {
 					super: 'hsl(var(--brand-super))',
 					relatorios: 'hsl(var(--brand-relatorios))'
-				},
-				success: {
-					DEFAULT: 'hsl(var(--success))',
-					foreground: 'hsl(var(--success-foreground))'
-				},
-				warning: {
-					DEFAULT: 'hsl(var(--warning))',
-					foreground: 'hsl(var(--warning-foreground))'
-				},
-				info: {
-					DEFAULT: 'hsl(var(--info))',
-					foreground: 'hsl(var(--info-foreground))'
 				}
 			},
 			borderRadius: {
@@ -126,5 +132,5 @@ export default {
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [tailwindcssAnimate],
 } satisfies Config;

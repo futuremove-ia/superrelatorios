@@ -1,37 +1,43 @@
 import { Card } from "@/components/ui/card";
 import { Zap, Target, Shield } from "lucide-react";
 import BrandName from "@/components/BrandName";
+import { useTranslation } from "react-i18next";
+
+
 
 const Features = () => {
+  const { t } = useTranslation();
   const features = [
     {
       icon: Zap,
-      title: "IA Inteligente e Rápida",
-      description: "Gere relatórios completos em menos de 3 minutos com análise de dados por Inteligência Artificial.",
+      title: t('landing.features_section.items.context.title'),
+      description: t('landing.features_section.items.context.desc'),
     },
     {
       icon: Target,
-      title: "Análises e Projeções",
-      description: "Receba insights valiosos, cenários futuros e projeções baseadas em IA para decisões estratégicas.",
+      title: t('landing.features_section.items.decisions.title'),
+      description: t('landing.features_section.items.decisions.desc'),
     },
     {
       icon: Shield,
-      title: "Seguro e Confiável",
-      description: "Seus dados protegidos com criptografia de nível empresarial e processamento seguro.",
+      title: t('landing.features_section.items.privacy.title'),
+      description: t('landing.features_section.items.privacy.desc'),
     },
   ];
+
 
   return (
     <section id="recursos" className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Por que escolher o <BrandName variant="default" />?
+            {t('landing.features_section.title', { brand: <BrandName variant="default" /> })}
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Inteligência Artificial desenvolvida especificamente para PMEs que precisam de análises profissionais, cenários e projeções sem complicação.
+            {t('landing.features_section.subtitle')}
           </p>
         </div>
+
         
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {features.map((feature, index) => (

@@ -19,6 +19,8 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         accent: "bg-accent text-accent-foreground hover:bg-accent/90 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]",
+        success: "bg-status-positive text-white hover:bg-status-positive/90 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]",
+        warning: "bg-status-pending text-white hover:bg-status-pending/90 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]",
       },
       size: {
         default: "h-10 px-4 py-2",

@@ -9,10 +9,22 @@ import Trust from "@/components/Trust";
 import Pricing from "@/components/Pricing";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
+import { SEO } from "@/components/SEO";
+import { StructuredData } from "@/components/StructuredData";
+import { useTranslation } from "react-i18next";
+
 
 const Index = () => {
+  const { t } = useTranslation();
   return (
+
     <div className="min-h-screen">
+      <SEO 
+        title={t('seo.index_title')} 
+        description={t('seo.index_desc')}
+      />
+
+      <StructuredData />
       <Header />
       <Hero />
       <Features />

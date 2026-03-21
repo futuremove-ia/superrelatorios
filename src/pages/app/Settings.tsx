@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { User, Settings as SettingsIcon, Shield, Bell, Palette, Zap, HelpCircle, LogOut } from 'lucide-react';
+import { User, Settings as SettingsIcon, Shield, Bell, Palette, Zap } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,12 +10,15 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 const Settings = () => {
   const { toast } = useToast();
+  const { t, i18n } = useTranslation();
+  
   const [settings, setSettings] = useState({
     notifications: { email: true, push: false, reports: true, marketing: false },
-    appearance: { theme: 'light', language: 'pt-BR' },
+    appearance: { theme: 'light', language: i18n.language || 'pt-BR' },
     privacy: { twoFactor: false, analytics: true }
   });
 
@@ -27,12 +30,13 @@ const Settings = () => {
   };
 
   const sections = [
-    { id: 'profile', title: 'Perfil', icon: User, description: 'Informações pessoais e conta' },
-    { id: 'notifications', title: 'Notificações', icon: Bell, description: 'Preferências de comunicação' },
-    { id: 'appearance', title: 'Aparência', icon: Palette, description: 'Tema e idioma' },
-    { id: 'security', title: 'Segurança', icon: Shield, description: 'Senha e autenticação' },
-    { id: 'plan', title: 'Plano', icon: Zap, description: 'Assinatura e faturamento' },
+    { id: 'profile', title: t('settings.sections.profile'), icon: User, description: t('settings.profile.desc') },
+    { id: 'notifications', title: t('settings.sections.notifications'), icon: Bell, description: t('settings.notifications.desc') },
+    { id: 'appearance', title: t('settings.sections.appearance'), icon: Palette, description: t('settings.appearance.description') },
+    { id: 'security', title: t('settings.sections.security'), icon: Shield, description: t('settings.security.desc') },
+    { id: 'plan', title: t('settings.sections.plan'), icon: Zap, description: t('settings.plan.desc') },
   ];
+
 
   const [activeSection, setActiveSection] = useState('profile');
 
@@ -42,50 +46,52 @@ const Settings = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <User className="h-5 w-5 text-primary" />
-            Informações Pessoais
+            {t('settings.profile.title')}
           </CardTitle>
-          <CardDescription>Atualize suas informações de perfil</CardDescription>
+          <CardDescription>{t('settings.profile.desc')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
+
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
             <Avatar className="h-16 w-16 sm:h-20 sm:w-20">
               <AvatarImage src="/placeholder-avatar.jpg" />
               <AvatarFallback className="text-lg">UD</AvatarFallback>
             </Avatar>
             <div className="space-y-2">
-              <h3 className="font-medium text-foreground">Foto do Perfil</h3>
-              <p className="text-sm text-muted-foreground">JPG, PNG ou GIF. Máximo 2MB.</p>
-              <Button variant="outline" size="sm">Alterar Foto</Button>
+              <h3 className="font-medium text-foreground">{t('settings.profile.photo')}</h3>
+              <p className="text-sm text-muted-foreground">{t('settings.profile.photo_desc')}</p>
+              <Button variant="outline" size="sm">{t('settings.profile.change_photo')}</Button>
             </div>
+
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="firstName">Nome</Label>
+              <Label htmlFor="firstName">{t('settings.profile.first_name')}</Label>
               <Input id="firstName" defaultValue="Usuário" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="lastName">Sobrenome</Label>
+              <Label htmlFor="lastName">{t('settings.profile.last_name')}</Label>
               <Input id="lastName" defaultValue="Demo" />
             </div>
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">{t('settings.profile.email')}</Label>
             <Input id="email" type="email" defaultValue="usuario@exemplo.com" />
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="company">Empresa</Label>
+            <Label htmlFor="company">{t('settings.profile.company')}</Label>
             <Input id="company" defaultValue="SuperRelatórios Inc." />
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="role">Cargo</Label>
+            <Label htmlFor="role">{t('settings.profile.role')}</Label>
             <Input id="role" defaultValue="Gerente de Operações" />
           </div>
           
-          <Button onClick={() => handleSave('perfil')}>Salvar Alterações</Button>
+          <Button onClick={() => handleSave(t('settings.sections.profile'))}>{t('settings.profile.save_button')}</Button>
         </CardContent>
       </Card>
     </div>
@@ -97,16 +103,17 @@ const Settings = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Bell className="h-5 w-5 text-primary" />
-            Preferências de Notificação
+            {t('settings.notifications.title')}
           </CardTitle>
-          <CardDescription>Configure como e quando você quer ser notificado</CardDescription>
+          <CardDescription>{t('settings.notifications.desc')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
+
           {[
-            { key: 'email', label: 'Notificações por Email', desc: 'Receba atualizações importantes por email' },
-            { key: 'push', label: 'Notificações Push', desc: 'Notificações instantâneas no navegador' },
-            { key: 'reports', label: 'Relatórios Concluídos', desc: 'Quando seus relatórios estiverem prontos' },
-            { key: 'marketing', label: 'Marketing e Dicas', desc: 'Novidades, dicas e ofertas especiais' },
+            { key: 'email', label: t('settings.notifications.email'), desc: t('settings.notifications.email_desc') },
+            { key: 'push', label: t('settings.notifications.push'), desc: t('settings.notifications.push_desc') },
+            { key: 'reports', label: t('settings.notifications.reports'), desc: t('settings.notifications.reports_desc') },
+            { key: 'marketing', label: t('settings.notifications.marketing'), desc: t('settings.notifications.marketing_desc') },
           ].map((item, i) => (
             <div key={item.key}>
               {i > 0 && <Separator className="mb-4" />}
@@ -127,7 +134,8 @@ const Settings = () => {
               </div>
             </div>
           ))}
-          <Button onClick={() => handleSave('notificações')}>Salvar Preferências</Button>
+          <Button onClick={() => handleSave(t('settings.sections.notifications'))}>{t('settings.notifications.save_button')}</Button>
+
         </CardContent>
       </Card>
     </div>
@@ -139,38 +147,44 @@ const Settings = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Palette className="h-5 w-5 text-primary" />
-            Aparência e Idioma
+            {t('settings.appearance.title')}
           </CardTitle>
-          <CardDescription>Personalize a interface do SuperRelatórios</CardDescription>
+          <CardDescription>{t('settings.appearance.description')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-2">
-            <Label>Tema</Label>
+            <Label>{t('settings.appearance.theme')}</Label>
             <Select value={settings.appearance.theme} onValueChange={(value) => 
               setSettings(prev => ({ ...prev, appearance: { ...prev.appearance, theme: value } }))
             }>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="light">Claro</SelectItem>
-                <SelectItem value="dark">Escuro</SelectItem>
-                <SelectItem value="system">Sistema</SelectItem>
+                <SelectItem value="light">{t('settings.appearance.theme_light')}</SelectItem>
+                <SelectItem value="dark">{t('settings.appearance.theme_dark')}</SelectItem>
+                <SelectItem value="system">{t('settings.appearance.theme_system')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-2">
-            <Label>Idioma</Label>
-            <Select value={settings.appearance.language} onValueChange={(value) => 
-              setSettings(prev => ({ ...prev, appearance: { ...prev.appearance, language: value } }))
-            }>
+            <Label>{t('settings.appearance.language')}</Label>
+            <Select value={settings.appearance.language} onValueChange={(value) => {
+              setSettings(prev => ({ ...prev, appearance: { ...prev.appearance, language: value } }));
+              i18n.changeLanguage(value);
+            }}>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="pt-BR">Português (Brasil)</SelectItem>
-                <SelectItem value="en-US">English (US)</SelectItem>
-                <SelectItem value="es-ES">Español</SelectItem>
+                <SelectItem value="pt-BR">{t('settings.language.pt')}</SelectItem>
+                <SelectItem value="en-US">{t('settings.language.en')}</SelectItem>
+                <SelectItem value="es-ES">{t('settings.language.es')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
-          <Button onClick={() => handleSave('aparência')}>Salvar Configurações</Button>
+          <Button onClick={() => {
+            toast({
+              title: t('settings.appearance.save_success_title'),
+              description: t('settings.appearance.save_success_desc'),
+            });
+          }}>{t('settings.appearance.save_button')}</Button>
         </CardContent>
       </Card>
     </div>
@@ -182,25 +196,26 @@ const Settings = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Shield className="h-5 w-5 text-primary" />
-            Segurança da Conta
+            {t('settings.security.title')}
           </CardTitle>
-          <CardDescription>Mantenha sua conta segura</CardDescription>
+          <CardDescription>{t('settings.security.desc')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
+
           <div className="space-y-2">
-            <Label>Alterar Senha</Label>
-            <p className="text-sm text-muted-foreground">Última alteração: há 3 meses</p>
-            <Button variant="outline" size="sm">Alterar Senha</Button>
+            <Label>{t('settings.security.change_password')}</Label>
+            <p className="text-sm text-muted-foreground">{t('settings.security.last_changeCode', { date: 'há 3 meses' })}</p>
+            <Button variant="outline" size="sm">{t('settings.security.change_password')}</Button>
           </div>
           <Separator />
           <div className="flex items-center justify-between">
             <div className="space-y-0.5 flex-1 mr-4">
-              <Label>Autenticação de Dois Fatores</Label>
-              <p className="text-sm text-muted-foreground">Adicione uma camada extra de segurança</p>
+              <Label>{t('settings.security.two_factor')}</Label>
+              <p className="text-sm text-muted-foreground">{t('settings.security.two_factor_desc')}</p>
             </div>
             <div className="flex items-center gap-2">
               <Badge variant={settings.privacy.twoFactor ? "default" : "secondary"}>
-                {settings.privacy.twoFactor ? "Ativo" : "Inativo"}
+                {settings.privacy.twoFactor ? t('common.active') : t('common.inactive')}
               </Badge>
               <Switch 
                 checked={settings.privacy.twoFactor}
@@ -212,11 +227,11 @@ const Settings = () => {
           </div>
           <Separator />
           <div className="space-y-2">
-            <Label>Sessões Ativas</Label>
-            <p className="text-sm text-muted-foreground">Gerencie dispositivos conectados à sua conta</p>
-            <Button variant="outline" size="sm">Ver Sessões</Button>
+            <Label>{t('settings.security.active_sessions')}</Label>
+            <p className="text-sm text-muted-foreground">{t('settings.security.active_sessions_desc')}</p>
+            <Button variant="outline" size="sm">{t('settings.security.view_sessions')}</Button>
           </div>
-          <Button onClick={() => handleSave('segurança')}>Salvar Configurações</Button>
+          <Button onClick={() => handleSave(t('settings.sections.security'))}>{t('settings.security.save_button')}</Button>
         </CardContent>
       </Card>
     </div>
@@ -228,35 +243,40 @@ const Settings = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Zap className="h-5 w-5 text-primary" />
-            Plano e Faturamento
+            {t('settings.plan.title')}
           </CardTitle>
-          <CardDescription>Gerencie sua assinatura</CardDescription>
+          <CardDescription>{t('settings.plan.desc')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
+
           <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
               <div>
-                <h3 className="font-semibold text-foreground">Plano Profissional</h3>
-                <p className="text-sm text-muted-foreground">Ativo desde Janeiro 2024</p>
+                <h3 className="font-semibold text-foreground">{t('settings.plan.professional')}</h3>
+                <p className="text-sm text-muted-foreground">{t('settings.plan.active_since', { date: 'Janeiro 2024' })}</p>
               </div>
-              <Badge className="bg-primary text-primary-foreground self-start">Ativo</Badge>
+              <Badge className="bg-primary text-primary-foreground self-start">{t('common.active')}</Badge>
             </div>
+
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between"><span>Relatórios criados este mês</span><span className="font-medium">23 / ilimitado</span></div>
-              <div className="flex justify-between"><span>Armazenamento usado</span><span className="font-medium">2.3 GB / 100 GB</span></div>
-              <div className="flex justify-between"><span>Próxima cobrança</span><span className="font-medium">15 de Fevereiro</span></div>
+              <div className="flex justify-between"><span>{t('settings.plan.usage.reports')}</span><span className="font-medium">23 / {t('common.unlimited')}</span></div>
+              <div className="flex justify-between"><span>{t('settings.plan.usage.storage')}</span><span className="font-medium">2.3 GB / 100 GB</span></div>
+              <div className="flex justify-between"><span>{t('settings.plan.usage.next_billing')}</span><span className="font-medium">15 de Fevereiro</span></div>
             </div>
           </div>
+
           <div className="flex flex-col sm:flex-row gap-2">
-            <Button variant="outline" className="flex-1">Alterar Plano</Button>
-            <Button variant="outline" className="flex-1">Ver Faturas</Button>
+            <Button variant="outline" className="flex-1">{t('settings.plan.change_plan')}</Button>
+            <Button variant="outline" className="flex-1">{t('settings.plan.view_invoices')}</Button>
           </div>
+
           <Separator />
           <div className="space-y-2">
-            <Label className="text-destructive">Zona de Perigo</Label>
-            <p className="text-sm text-muted-foreground">Cancelar sua assinatura removerá o acesso a recursos premium</p>
-            <Button variant="destructive" size="sm">Cancelar Assinatura</Button>
+            <Label className="text-destructive">{t('settings.plan.danger_zone')}</Label>
+            <p className="text-sm text-muted-foreground">{t('settings.plan.danger_desc')}</p>
+            <Button variant="destructive" size="sm">{t('settings.plan.cancel_button')}</Button>
           </div>
+
         </CardContent>
       </Card>
     </div>
@@ -298,7 +318,7 @@ const Settings = () => {
             <div className="sticky top-20">
               <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
                 <SettingsIcon className="h-5 w-5 text-primary" />
-                Configurações
+                {t('settings.title')}
               </h2>
               <nav className="space-y-1">
                 {sections.map((section) => (

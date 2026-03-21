@@ -1,0 +1,22 @@
+Mês,Faturamento,Custo_Variavel,Custo_Fixo,Lucro,Margem_Liquida,Clientes_Novos,Clientes_Recorrentes,Churn_Rate,CAC,Ticket_Medio,Prazo_Recebimento_Dias
+Jan-2026,150000,90000,35000,25000,16.7,45,180,8.5,850,285,28
+Fev-2026,142000,88000,35000,19000,13.4,38,175,9.2,920,275,30
+Mar-2026,135000,87000,36000,12000,8.9,32,170,10.1,1050,265,35
+Abr-2026,128000,86000,36500,5500,4.3,28,165,11.5,1200,255,42
+Mai-2026,145000,87500,37000,20500,14.1,35,172,9.8,980,278,38
+Jun-2026,138000,86800,37500,13700,9.9,30,168,10.5,1100,268,40
+
+# Arquivo de teste para jornada completa
+# Dados simulando queda de margem e aumento do prazo de recebimento
+# Use este arquivo no DataInputStep para testar o fluxo completo
+
+# KPIs esperados da extração:
+# - NET_MARGIN: média dos valores da coluna Margem_Liquida (~ 10.6%)
+# - CASH_FLOW: Lucro acumulado (~ 85.7k)
+# - RECEIVABLES_DAYS: média dos prazos (~ 35.5 dias)
+# - CUSTOMER_ACQ_COST: média do CAC (~ 1,016)
+# - AVG_TICKET: média do ticket (~ 270)
+# - CHURN_RATE: média do churn (~ 9.9%)
+
+# Desafio esperado: LOW_PROFITABILITY (margem caiu de 16.7% para 4.3%)
+# Alavanca sugerida: LEV_PRICE (Revisão de Precificação)

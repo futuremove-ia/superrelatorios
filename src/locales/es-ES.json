@@ -1,0 +1,943 @@
+{
+  "bi": {
+    "areas": {
+      "strategy": { "name": "Estrategia", "desc": "Visión de largo plazo y objetivos" },
+      "management": { "name": "Gestión", "desc": "Eficiencia y gobernanza" },
+      "finance": { "name": "Finanzas", "desc": "Flujo de caja y rentabilidad" },
+      "sales": { "name": "Comercial", "desc": "Embudo y desempeño de ventas" },
+      "marketing": { "name": "Marketing", "desc": "Adquisición y canales" },
+      "operations": { "name": "Operaciones", "desc": "Procesos y productividad" },
+      "logistics": { "name": "Logística", "desc": "Cadena de suministro y entrega" },
+      "customer_service": { "name": "Atención al Cliente", "desc": "Soporte y satisfacción" },
+      "hr": { "name": "Recursos Humanos", "desc": "Capital humano y retención" }
+    },
+    "metrics": {
+      "revenue": { "name": "Ingresos", "desc": "Ingresos brutos totales del período" },
+      "gross_margin": { "name": "Margen Bruto", "desc": "Porcentaje de beneficio sobre la venta" },
+      "ebitda": { "name": "EBITDA", "desc": "Beneficio operativo antes de impuestos" },
+      "cac": { "name": "CAC", "desc": "Costo de Adquisición de Cliente" },
+      "ltv": { "name": "LTV", "desc": "Valor de vida del cliente" },
+      "churn": { "name": "Tasa de Cancelación", "desc": "Porcentaje de clientes que dejaron de comprar" },
+      "roas": { "name": "ROAS", "desc": "Retorno sobre gasto publicitario" },
+      "cpa": { "name": "CPA", "desc": "Costo por adquisición" },
+      "conversion_rate": { "name": "Tasa de Conversión", "desc": "Conversión de prospectos en ventas" },
+      "turnover": { "name": "Rotación", "desc": "Tasa de rotación de empleados" },
+      "enps": { "name": "eNPS", "desc": "Nivel de lealtad y satisfacción de los colaboradores" }
+    }
+  },
+  "brand": {
+    "super": "Súper",
+    "reports": "Reportes"
+  },
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "back": "Volver",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "loading": "Cargando...",
+    "processing": "Procesando...",
+    "error": "Ocurrió un error",
+    "success": "Éxito",
+    "view": "Visualizar",
+    "open": "Abrir",
+    "close": "Cerrar",
+    "share": "Compartir",
+    "download": "Descargar",
+    "next": "Siguiente",
+    "generate": "Analizar con Inteligencia Artificial",
+    "error_title": "¡Oops! Algo salió mal",
+    "success_title": "¡Todo listo!"
+  },
+  "landing": {
+    "hero": {
+      "title": "Transforme sus datos en decisiones estratégicas en minutos",
+      "subtitle": "Genere reportes profesionales en 3 clics, con inteligencia de negocio que le ayuda a crecer.",
+      "badge": "Análisis de nivel consultoría, por una fracción del precio.",
+      "cta_main": "Crear Mi Primer Reporte",
+      "cta_sec": "Ver Demostración",
+      "features": {
+        "clicks": "3 clics desde el envío al reporte",
+        "insights": "Indicadores de Resultado claros",
+        "security": "Seguridad total de sus datos"
+      }
+    },
+    "nav_links": {
+      "features": "Recursos",
+      "how_it_works": "Cómo Funciona",
+      "pricing": "Precios",
+      "cta": "Crear Reporte Gratis",
+      "aria_menu": "Abrir menú principal"
+    },
+    "trust_section": {
+      "title": "Transparencia y Confianza",
+      "subtitle": "Como una plataforma enfocada en el crecimiento, priorizamos el secreto total y el soporte dedicado para su empresa.",
+      "items": {
+        "privacy": {
+          "title": "Privacidad & Control",
+          "desc": "Sus datos nunca salen de su control. Procesamiento seguro y eliminación automática tras el análisis.",
+          "tag": "100% seguro"
+        },
+        "support": {
+          "title": "Soporte Estratégico",
+          "desc": "Acompañamos su primer reporte para garantizar que la inteligencia generada sea práctica y útil.",
+          "tag": "Soporte incluido"
+        },
+        "roadmap": {
+          "title": "Evolución con Usted",
+          "desc": "Nuestra hoja de ruta é abierta: usted sugiere mejoras y nosotros construimos basados en sus comentarios reales.",
+          "tag": "Foco en el usuario"
+        }
+      }
+    },
+    "examples": {
+      "title": "Vea el nivel de los análisis generados",
+      "subtitle": "Cada reporte es único, adaptado a sus datos y contexto empresarial. Vea lo que recibe en segundos.",
+      "main": {
+        "title": "Reporte Estratégico",
+        "subtitle": "Análisis de Performance y Salud del Negocio",
+        "cta": "Generar Reporte Modelo",
+        "sections": {
+          "summary": {
+            "title": "Resumen Ejecutivo",
+            "desc": "Visión general de la empresa con métricas vitales y direccionamientos estratégicos claros."
+          },
+          "highlights": {
+            "title": "Puntos Destacados",
+            "desc": "• Crecimiento del 23% en ventas\n• Reducción del 15% en costos operativos\n• Aumento sólido en la satisfacción del cliente"
+          },
+          "analysis": {
+            "title": "Análisis de Tendencia",
+            "desc": "Gráficos de performance con comparativos mensuales y correlaciones entre indicadores."
+          },
+          "risks": {
+            "title": "Riesgos y Oportunidades",
+            "desc": "Identificación proactiva de cuellos de botella y oportunidades de crecimiento basadas en patrones reales."
+          },
+          "insights": {
+            "title": "Insights de IA",
+            "desc": "Recomendaciones específicas para optimizar sus resultados y reducir desperdicios."
+          },
+          "checklist": {
+            "title": "Plan de Acción",
+            "desc": "Lista de tareas prácticas organizadas por prioridad e impacto esperado en el beneficio."
+          }
+        }
+      },
+      "others": {
+        "sales": {
+          "title": "Ventas Mensuales",
+          "desc": "Performance comercial con insights prácticos"
+        },
+        "clients": {
+          "title": "Análisis de Clientes",
+          "desc": "Segmentación y comportamiento de compra detallado"
+        },
+        "financial": {
+          "title": "Gestión Financiera",
+          "desc": "Análisis de flujo y márgenes para la dirección"
+        },
+        "view": "Ver Ejemplo"
+      },
+      "footer_cta": "Crear Mi Reporte Ahora",
+      "footer_hint": "Primer análisis gratis • Sin tarjeta de crédito"
+    },
+    "features_section": {
+      "title": "¿Por qué elegir {{brand}}?",
+      "subtitle": "Inteligencia Artificial desarrollada específicamente para Pymes que necesitan análisis profesionales, escenarios y proyecciones sin complicaciones.",
+      "items": {
+        "context": {
+          "title": "Inteligencia que entiende su negocio",
+          "desc": "Nuestra IA no solo lee datos, entiende el contexto de su sector y genera diagnósticos en minutos."
+        },
+        "decisions": {
+          "title": "Decisiones basadas en hechos",
+          "desc": "Deje de decidir por 'feeling'. Reciba proyecciones e insights que antes estaban restringidos a consultorías caras."
+        },
+        "privacy": {
+          "title": "Privacidad de Nivel Bancario",
+          "desc": "Sus datos estratégicos se tratan con secreto absoluto, cifrado total y protección de datos."
+        }
+      }
+    },
+    "how_it_works": {
+      "title": "Cómo Funciona",
+      "subtitle": "Una solución simple y poderosa, pensada para la velocidad que su día a día exige.",
+      "steps": {
+        "upload": {
+          "title": "Envíe sus datos",
+          "desc": "Cargue su planilla (.xlsx o .csv) o simplemente pegue su texto. Nuestra IA organiza todo."
+        },
+        "target": {
+          "title": "Elija el objetivo",
+          "desc": "Resumen Gerencial, Análisis Financiero o Plan de Acción — usted elige el foco del análisis."
+        },
+        "receive": {
+          "title": "Reciba el reporte",
+          "desc": "Visualice al instante, comparta el enlace o exporte a PDF con un clic."
+        }
+      },
+      "quick_start": {
+        "title": "Comience Ahora con un Modelo",
+        "cta": "Crear Ahora",
+        "exec": {
+          "title": "Resumen de Gestión",
+          "desc": "Para una visión 360º rápida de la salud actual de su empresa."
+        },
+        "sales": {
+          "title": "Análisis de Ventas",
+          "desc": "Para entender quién compra, cuándo compra y cómo vender aún más."
+        },
+        "full": {
+          "title": "Diagnóstico Profundo",
+          "desc": "Nuestra IA analiza cada detalle y entrega recomendaciones estratégicas."
+        }
+      }
+    },
+    "cta": {
+      "title": "¿Listo para llevar su negocio al siguiente nivel?",
+      "subtitle": "Únase a miles de empresas que ya transforman datos brutos en inteligencia competitiva.",
+      "button": "Comenzar Gratuitamente",
+      "features": {
+        "no_card": "Sin tarjeta de crédito",
+        "cancel_anytime": "Cancele cuando quiera",
+        "fast_setup": "Rápido en la aplicación"
+      }
+    },
+    "benefits": {
+      "title": "Inteligencia estratégica para su día a día",
+      "subtitle": "Elimine el trabajo manual y enfóquese en lo que realmente importa: la estrategia de su negocio.",
+      "items": {
+        "speed": {
+          "title": "Resultados en minutos",
+          "desc": "Lo que llevaba horas ahora lleva minutos. Enfoque a su equipo en lo que realmente trae resultados."
+        },
+        "action": {
+          "title": "Análisis y Próximos Pasos",
+          "desc": "Métricas con la mirada en los datos, e insights enfocados en la acción estratégica y apoyo a la decisión."
+        },
+        "design": {
+          "title": "Listo para enviar",
+          "desc": "Diseño profesional, limpio y elegante — causa un impacto positivo en clientes e inversores."
+        },
+        "viz": {
+          "title": "Visualizaciones Automáticas",
+          "desc": "Gráficos, tablas e indicadores visuales generados al instante para facilitar el entendimiento."
+        },
+        "narrative": {
+          "title": "Narrativa Adaptada",
+          "desc": "El sistema adapta el tono de voz y el vocabulario de acuerdo con su sector y contexto empresarial."
+        },
+        "security": {
+          "title": "Sus Datos, Su Propiedad",
+          "desc": "Seguridad total con cifrado de punta. Sus datos se usan solo para su análisis."
+        }
+      }
+    },
+    "footer": {
+      "mission": "Reportes inteligentes con IA para Pymes que buscan crecer a través de datos y proyecciones automatizadas.",
+      "sections": {
+        "product": {
+          "title": "Producto",
+          "features": "Recursos",
+          "how_it_works": "Cómo Funciona",
+          "pricing": "Precios",
+          "integrations": "Integraciones"
+        },
+        "support": {
+          "title": "Soporte",
+          "help": "Centro de Ayuda",
+          "docs": "Documentación",
+          "status": "Estado",
+          "contact": "Contacto"
+        },
+        "legal": {
+          "title": "Legal",
+          "privacy": "Privacidad",
+          "terms": "Términos",
+          "security": "Seguridad",
+          "cookies": "Cookies"
+        }
+      },
+      "copyright": "© {{year}} {{brand}}. Todos los derechos reservados."
+    },
+    "pricing": {
+      "title": "Planes simples y transparentes",
+      "subtitle": "Elija por volumen de reportes y colaboración. Comience gratis y evolucione cuando tenga sentido para su negocio.",
+      "recommended": "Recomendado",
+      "plans": {
+        "free": {
+          "name": "Gratuito",
+          "desc": "Comience ya",
+          "period": "/siempre",
+          "cta": "Crear Reporte Gratis",
+          "features": ["2 reportes/mes", "Modelos básicos", "Exportación a PDF"]
+        },
+        "pro": {
+          "name": "Profesional",
+          "desc": "Más popular",
+          "period": "/mes",
+          "cta": "Probar Ahora",
+          "features": ["20 reportes/mes", "Modelos premium", "Compartir por enlace", "Narrativas avanzadas"]
+        },
+        "business": {
+          "name": "Empresarial",
+          "desc": "Para equipos",
+          "period": "/mes",
+          "cta": "Hablar con Ventas",
+          "features": ["Reportes ilimitados", "Área de equipo", "Políticas de acceso", "Seguridad avanzada"]
+        }
+      }
+    },
+    "showcase": {
+      "title": "Ejemplos de Reportes",
+      "subtitle": "Vea cómo sus datos cobran vida con análisis profesionales listos para compartir.",
+      "portrait": {
+        "title": "Formato Retrato (A4)",
+        "header": "REPORTE EJECUTIVO",
+        "analysis": "Análisis de Ventas Q4",
+        "summary": "Resumen Gerencial",
+        "summary_text": "Crecimiento del 23% en ventas comparado al último trimestre, destacando...",
+        "metrics": "Indicadores Principales",
+        "revenue": "Ingresos: $ 2.4M",
+        "growth": "Crecimiento: +23%",
+        "dist": "Distribución por Región",
+        "south": "Sur",
+        "southeast": "Sureste",
+        "northeast": "Noreste",
+        "generated": "Generado automáticamente"
+      },
+      "landscape": {
+        "title": "Formato Paisaje (Panel)",
+        "header": "PANEL ANALÍTICO",
+        "subtitle": "Performance Mensual",
+        "generated_on": "Generado el: {{date}}",
+        "period": "Período: {{period}}",
+        "kpi_title": "Indicadores Clave",
+        "rev_total": "Ingresos Totales",
+        "new_clients": "Nuevos Clientes",
+        "trend_title": "Tendencia de Ventas",
+        "ai_title": "Recomendaciones IA",
+        "opportunity": "Oportunidad",
+        "opp_text": "Expandir campaña región Sur (+15% potencial)",
+        "attention": "Atención",
+        "att_text": "Caída en la retención de clientes detectada",
+        "ai_footer": "Datos procesados por IA estratégica",
+        "page_info": "Página {{current}} de {{total}}"
+      },
+      "cta": "Crear Mi Reporte Ahora"
+    }
+  },
+  "nav": {
+    "dashboard": "Panel Principal",
+    "reports": "Mis Reportes",
+    "folders": "Mis Carpetas",
+    "new_report": "Crear Reporte",
+    "settings": "Mi Configuración",
+    "profile": "Mi Perfil",
+    "logout": "Cerrar Sesión de forma Segura",
+    "home": "Inicio",
+    "main_navigation": "Navegación Principal",
+    "open_menu": "Abrir Menú",
+    "user_menu": "Menú de Usuario",
+    "notifications": "Notificaciones"
+  },
+  "dashboard": {
+    "welcome": "¡Bienvenido de nuevo! ¿Analizamos algo nuevo hoy?",
+    "ai_summary": "La IA analizó sus datos recientes. Tiene {{diagnostics}} diagnósticos y {{priorities}} prioridad sugerida.",
+    "metrics": {
+      "reports_created": "Reportes Generados",
+      "templates_used": "Modelos de Reportes",
+      "hours_saved": "Tiempo Ganado en Gestión",
+      "success_rate": "Análisis Inteligentes",
+      "active_priorities": "Prioridades Activas",
+      "execution_rate": "Tasa de Ejecución",
+      "estimated_impact": "Impacto Estimado",
+      "actions_label": "Acciones prioritarias",
+      "efficiency_label": "Eficiencia de entrega",
+      "analysis_label": "Análisis de datos",
+      "roi_label": "Retorno sobre acciones"
+    },
+    "sections": {
+      "ai_diagnosis": "Diagnóstico Prioritario",
+      "ai_priorities": "Prioridades Sugeridas",
+      "recent_reports": "Reportes Recientes",
+      "view_all": "Ver todos",
+      "view_details": "Ver detalles"
+    },
+    "actions": {
+      "my_data": "Mis Datos",
+      "new_report": "Nuevo Reporte"
+    },
+    "recent_reports": "Mis Últimos Reportes",
+    "view_all": "Ver Lista Completa",
+    "new_report": "Crear Nuevo Reporte",
+    "status": {
+      "draft": "En borrador",
+      "completed": "Finalizado",
+      "shared": "Ya compartido"
+    },
+    "folders": {
+      "title": "Mis Carpetas",
+      "view_all": "Ver Todas",
+      "items_one": "reporte",
+      "items_other": "reportes"
+    },
+    "trends": {
+      "vs_previous": "vs mes anterior",
+      "more_engagement": "más compromiso",
+      "flow_optimization": "optimización en el flujo",
+      "continuous_improvement": "mejora continua"
+    },
+    "quick_actions": {
+      "title": "Acciones Rápidas",
+      "subtitle": "Cree reportes rápidamente usando nuestros modelos inteligentes",
+      "executive": {
+        "title": "Reporte Ejecutivo",
+        "desc": "Performance trimestral"
+      },
+      "sales": {
+        "title": "Reporte de Ventas",
+        "desc": "Análisis mensual"
+      },
+      "custom": {
+        "title": "Reporte Personalizado",
+        "desc": "Crear desde cero"
+      }
+    }
+  },
+  "auth": {
+    "login_title": "Entre en su cuenta",
+    "signup_title": "Cree su cuenta gratuitamente",
+    "email_label": "Correo Profesional",
+    "password_label": "Su Contraseña",
+    "email_placeholder": "nombre@empresa.com",
+    "password_placeholder": "••••••••",
+    "google_button": "Continuar con Google",
+    "separator": "o continúe con correo",
+    "submit_login": "Entrar ahora",
+    "submit_signup": "Crear mi cuenta gratis",
+    "switch_to_signup": "¿No tiene cuenta? Regístrese gratis",
+    "switch_to_login": "¿Ya tiene una cuenta? Entre aquí",
+    "terms_prefix": "Al continuar, usted acepta nuestros",
+    "terms_link": "Términos de Uso",
+    "privacy_link": "Política de Privacidad",
+    "and": "y",
+    "toast": {
+      "signup_success": "¡Registro realizado! Verifique su correo para confirmar.",
+      "login_success": "¡Bienvenido de nuevo! Qué bueno tenerle aquí.",
+      "error_generic": "¡Oops! Ocurrió un error en la autenticación. Inténtelo de nuevo."
+    }
+  },
+  "builder": {
+    "steps": {
+      "summary": {
+        "data": {
+          "title": "Origen de Datos",
+          "desc": "Envíe o pegue sus datos"
+        },
+        "model": {
+          "title": "Análisis Estratégico",
+          "desc": "La IA identifica patrones y sugiere el mejor enfoque"
+        },
+        "blocks": {
+        "title": "Personalice sus Bloques",
+        "desc": "Reordene, elimine o edite las secciones que la IA sugirió para su informe.",
+        "add_block": "Añadir Nuevo Bloque",
+        "ai_hint_title": "Sugerencia de la IA",
+        "ai_hint_body": "Reorganizamos los bloques para contar una historia. Comenzar con el <strong>Resumen Ejecutivo</strong> ayuda a captar la atención del lector antes de entrar en los datos técnicos.",
+        "auto_mapping_title": "Auto-Mapeo",
+        "auto_mapping_body": "Cada bloque está conectado a sus datos originales. Si cambia un bloque, la IA recalcula los insights automáticamente.",
+        "loading_title": "Analizando sus datos con IA...",
+        "loading_desc": "Esto puede llevar algunos segundos mientras generamos los insights estratégicos."
+      },
+      "generation": {
+          "title": "Configuración Final",
+          "desc": "Estructura del documento"
+        },
+        "final": {
+          "title": "Visualización Lista",
+          "desc": "Reporte profesional"
+        }
+      },
+      "data": {
+        "title": "Elija sus datos",
+        "desc": "Elija cómo prefiere enviarnos la información de su negocio.",
+        "sources": {
+          "upload": "Enviar Archivos",
+          "upload_desc": "Excel, CSV, PDF o Documentos",
+          "paste": "Pegar Datos",
+          "paste_desc": "Copiar y pegar texto directo",
+          "url": "Analizar Sitio",
+          "url_desc": "Extraer datos de un enlace"
+        },
+        "dropzone": {
+          "title": "Arrastre sus archivos aquí o haga clic para elegir",
+          "hint": "Aceptamos planillas (.xlsx, .csv) y documentos",
+          "success": "¡Archivo cargado con éxito!"
+        },
+        "example": "Descargar modelo de ejemplo",
+        "labels": {
+          "paste_area": "Pegue sus datos aquí",
+          "paste_placeholder": "Pegue aquí sus datos, texto, números, tablas...",
+          "chars": "caracteres",
+          "url_input": "Enlace de la página o sitio",
+          "url_placeholder": "https://ejemplo.com/reporte"
+        }
+      },
+      "template": {
+        "title": "Confirmación y Modelo",
+        "desc": "Nuestra inteligencia artificial analizó sus datos. Ahora, defina cuál será el enfoque de su análisis estratégico.",
+        "preview_title": "Datos Identificados",
+        "source_label": "Fuente:",
+        "size_label": "Volumen:",
+        "status_label": "Calidad:",
+        "status_val": "Listo para análisis",
+        "selection_title": "Enfoque del Reporte",
+        "sections_label": "Qué se analizará:"
+      },
+      "generation": {
+        "title": "Detalles del Documento",
+        "desc": "Personalice el nombre y el objetivo para que la IA genere un análisis más preciso.",
+        "form": {
+          "title_label": "Título del Reporte",
+          "title_placeholder": "Ej: Ventas Mensuales - Enero 2024",
+          "cat_label": "Categoría / Área",
+          "cat_placeholder": "Elija el área estratégica",
+          "desc_label": "Objetivo del Análisis (Opcional)",
+          "desc_placeholder": "Describa en qué debe enfocarse este reporte o el problema que quiere resolver..."
+        },
+        "structure": {
+          "title": "Estructura Inteligente",
+          "desc": "Su análisis contará con los siguientes módulos automáticos:"
+        }
+      },
+      "preview": {
+        "title": "Análisis Concluido",
+        "desc": "Revise el análisis generado antes de guardarlo en su cuenta.",
+        "ai_badge": "Informe Generado por IA",
+        "save_card_title": "¿Desea guardar este análisis?",
+        "save_card_desc": "Al guardarlo, este informe estará disponible en su historial para consulta y exportación.",
+        "save_button": "Guardar en mi cuenta",
+        "cta_initial": "Generar Informe con IA",
+        "cta_loading": "Analizando con IA...",
+        "ai_processing_desc": "Nuestra IA está cruzando sus datos con patrones de mercado para generar recomendaciones.",
+        "diagnostic_title": "Diagnóstico y Próximos Pasos",
+        "recommended_priority": "Prioridad Recomendada",
+        "recommended_priority_desc": "Basado en el diagnóstico anterior, la IA calculó que esta es la acción de mayor retorno inmediato para su negocio.",
+        "ai_engine": "SúperReportes IA — Gemini 1.5 Pro"
+      }
+    },
+    "title": "Asistente de Reportes",
+    "step_indicator": {
+      "prefix": "Etapa",
+      "value": "{{current}} de {{total}}"
+    },
+    "sidebar": {
+      "summary_title": "Progreso de la Creación",
+      "ai_hint_title": "Dica Inteligente",
+      "consultant_hint": "Dica del Consultor",
+      "ai_suggestions": "Ayuda Estratégica",
+      "ai_hints": {
+        "step1": "Aceptamos varios formatos. Cuanto más limpios estén los datos, más preciso será el análisis.",
+        "step2": "Cada modelo se enfoca en métricas diferentes. Elija el que más se alinee con su momento.",
+        "step3": "Un título claro ayuda a usted y a su equipo a encontrar este reporte en el futuro.",
+        "step4": "Revise los puntos de atención y las recomendaciones generadas antes de finalizar."
+      },
+      "ai_will_do": {
+        "title": "Nuestro Proceso de IA",
+        "item1": "Normalización y limpieza de datos",
+        "item2": "Identificación de tendencias y fallas",
+        "item3": "Creación de indicadores de resultado",
+        "item4": "Redacción de recomendaciones prácticas"
+      }
+    },
+    "toasts": {
+      "data_required_title": "Datos necesarios",
+      "upload_required_desc": "Por favor, cargue un archivo para continuar.",
+      "text_required_desc": "Por favor, pegue sus datos para continuar.",
+      "url_required_desc": "Por favor, inserte un enlace válido (que comience con http o https).",
+      "select_template_title": "Elija el modelo",
+      "select_template_desc": "Seleccione uno de los modelos anteriores para orientar a la IA.",
+      "title_required_title": "Título obligatorio",
+      "title_required_desc": "Dé un nombre a su reporte para guardarlo.",
+      "analysis_completed_title": "¡Análisis Finalizado!",
+      "analysis_completed_desc": "Su inteligencia de negocio está lista para revisión.",
+      "save_success_title": "¡Reporte Guardado!",
+      "save_success_desc": "Su nuevo análisis ya está disponible en su panel.",
+      "file_uploaded_title": "¡Archivo Cargado!",
+      "file_uploaded_desc": "{{name}} fue procesado con éxito.",
+      "model_downloaded_title": "¡Modelo Descargado!",
+      "model_downloaded_desc": "Use el archivo como guía para sus próximos datos."
+    },
+    "errors": {
+      "ia_title": "Error en la IA",
+      "ia_unknown": "No pudimos procesar los datos ahora. Inténtelo de nuevo.",
+      "save_title": "Error al guardar",
+      "save_generic": "Hubo un problema técnico. Sus datos están seguros, inténtelo de nuevo."
+    }
+  },
+  "reports": {
+    "title": "Mis Reportes",
+    "subtitle": "Gestione todos sus análisis y decisiones estratégicas en un solo lugar.",
+    "new_report_button": "Crear Nuevo Reporte",
+    "view_grid": "Visualizar en Cuadrícula",
+    "view_list": "Visualizar en Lista",
+    "table_desc": "Lista de reportes disponibles",
+    "filters": {
+      "search_placeholder": "Buscar por título o descripción...",
+      "status": "Filtrar por Estado",
+      "category": "Filtrar por Categoría",
+      "all": "Todos",
+      "draft": "Borrador",
+      "completed": "Finalizado",
+      "shared": "Compartido"
+    },
+    "counter_one": "1 reporte encontrado",
+    "counter_other": "{{count}} reportes encontrados",
+    "empty": {
+      "title": "Su lista de reportes está vacía",
+      "filter_desc": "Intente ajustar los filtros para encontrar su análisis.",
+      "brand_new_desc": "¿Aún no ha creado ningún reporte? ¿Qué tal comenzar ahora y transformar sus datos en decisiones?",
+      "cta": "Crear mi Primer Reporte"
+    },
+    "actions": {
+      "view": "Visualizar",
+      "share": "Compartir",
+      "download": "Descargar PDF",
+      "open": "Abrir Análisis"
+    }
+  },
+  "report_detail": {
+    "back_button": "Volver a la Lista",
+    "presentation_mode": "Modo Presentación",
+    "status": "Estado del Análisis",
+    "tabs": {
+      "report": "Reporte",
+      "sources": "Fuentes de Datos"
+    },
+    "ai_section": {
+      "title": "Diagnóstico & Próximos Pasos",
+      "recommended_priority": "Prioridad Recomendada",
+      "priority_desc": "Basándose en el diagnóstico anterior, la IA calculó que esta es la acción de mayor retorno inmediato para su negocio."
+    },
+    "data_assets": {
+      "title": "Activos de Datos",
+      "description": "Archivos y enlaces originales que alimentaron este análisis.",
+      "download": "Descargar",
+      "open_link": "Abrir Enlace"
+    },
+    "cards": {
+      "category": "Categoría del Reporte",
+      "created_at": "Generado el",
+      "updated_at": "Última Actualización",
+      "views": "Visualizaciones Totales"
+    },
+    "content": {
+      "executive_summary": "Resumen de Gestión",
+      "executive_summary_desc": "Este reporte presenta un análisis detallado de los principales indicadores y métricas de performance, proporcionando insights valiosos para la toma de decisiones estratégicas.",
+      "highlights": "Puntos de Atención y Destacados",
+      "detailed_analysis": "Análisis Estratégico",
+      "detailed_analysis_placeholder": "Los datos presentados indican una performance consistente con las expectativas establecidas. Las métricas principales demuestran una tendencia positiva, sugiriendo eficacia en las estrategias implementadas.",
+      "ai_insight": "Conclusión Inteligente de la IA",
+      "ai_insight_placeholder": "Basándose en los datos proporcionados, se recomienda mantener el foco en las áreas de mayor performance y considerar estrategias de optimización para los indicadores con mayor potencial de crecimiento.",
+      "next_steps": "Plan de Acción Recomendado",
+      "next_steps_placeholder_1": "Profundizar el análisis de las métricas con mejor performance",
+      "next_steps_placeholder_2": "Implementar acciones correctivas para indicadores en declive",
+      "next_steps_placeholder_3": "Establecer cronograma para reevaluación en 30 días",
+      "generated_on": "Documento generado el {{date}}",
+      "verified": "Sistema Verificado"
+    },
+    "sidebar": {
+      "info_title": "Información del Reporte",
+      "template": "Modelo Utilizado",
+      "description": "Descripción Original",
+      "quick_actions": "Acciones Rápidas",
+      "export_pdf": "Exportar a PDF"
+    },
+    "notifications": {
+      "error_load": "Error al cargar el reporte",
+      "error_load_desc": "No pudimos cargar el reporte solicitado. Puede haber sido eliminado.",
+      "not_found": "Reporte no encontrado",
+      "link_copied": "¡Enlace copiado!",
+      "link_copied_desc": "Comparta este enlace con su equipo o clientes.",
+      "download_start": "Descarga iniciada",
+      "download_desc": "Su PDF se está generando y estará listo pronto."
+    }
+  },
+  "folders": {
+    "title": "Mis Carpetas",
+    "subtitle": "Organice sus análisis y colabore con su equipo de forma simple y segura.",
+    "new_folder_button": "Crear Nueva Carpeta",
+    "table_desc": "Lista de carpetas organizadas",
+    "search_placeholder": "Buscar carpetas por nombre...",
+    "counter_one": "1 carpeta encontrada",
+    "counter_other": "{{count}} carpetas encontradas",
+    "empty": {
+      "title": "Ninguna carpeta por aquí",
+      "title_search": "Ninguna carpeta encontrada",
+      "desc": "Organice sus reportes creando carpetas temáticas para facilitar su día a día.",
+      "desc_search": "Intente ajustar el término de búsqueda para encontrar su carpeta.",
+      "cta": "Crear mi Primera Carpeta"
+    },
+    "actions": {
+      "rename": "Renombrar Carpeta",
+      "delete": "Eliminar Carpeta",
+      "open": "Abrir Carpeta"
+    },
+    "meta": {
+      "modified": "Modificado el",
+      "items": "reportes",
+      "updated_ago": "Actualizada hace {{time}}"
+    }
+  },
+  "profile": {
+    "title": "Su Perfil",
+    "subtitle": "Mantenga sus datos actualizados para una mejor experiencia.",
+    "fields": {
+      "full_name": "Nombre Completo",
+      "email": "Correo",
+      "email_hint": "El correo no puede ser alterado directamente.",
+      "save": "Guardar Cambios"
+    },
+    "security": {
+      "title": "Seguridad de la Cuenta",
+      "desc": "La protección en dos pasos está desactivada."
+    },
+    "notifications": {
+      "title": "Notificaciones",
+      "desc": "Tiene {{count}} avisos recientes no leídos."
+    }
+  },
+  "settings": {
+    "title": "Configuración de la Cuenta",
+    "sections": {
+      "profile": "Mi Perfil",
+      "notifications": "Notificaciones",
+      "appearance": "Visual e Idioma",
+      "security": "Seguridad",
+      "plan": "Plan y Suscripción"
+    },
+    "profile": {
+      "title": "Información Personal",
+      "desc": "Actualice cómo aparece para su equipo y en los reportes.",
+      "photo": "Foto de Perfil",
+      "photo_desc": "JPG, PNG o GIF. Recomendado 400x400px.",
+      "change_photo": "Cambiar Foto",
+      "first_name": "Su Nombre",
+      "last_name": "Su Apellido",
+      "email": "Correo Profesional",
+      "company": "Nombre de la Empresa",
+      "role": "Su Cargo / Función",
+      "save_button": "Guardar Cambios de Perfil"
+    },
+    "notifications": {
+      "title": "¿Cómo quiere ser avisado?",
+      "desc": "Elija los canales de comunicación más prácticos para usted.",
+      "email": "Notificaciones por Correo",
+      "email_desc": "Resúmenes semanales y actualizaciones de seguridad.",
+      "push": "Avisos en el Navegador",
+      "push_desc": "Alertas inmediatas cuando se genere un reporte.",
+      "reports": "Reportes Listos",
+      "reports_desc": "Reciba un aviso en cuanto la IA finalice su análisis.",
+      "marketing": "Consejos y Novedades",
+      "marketing_desc": "Nuevos modelos de reportes y consejos de gestión.",
+      "save_button": "Guardar Preferencias de Avisos"
+    },
+    "security": {
+      "title": "Seguridad de la Cuenta",
+      "desc": "Proteja sus datos con capas extra de protección.",
+      "change_password": "Cambiar Contraseña de Acceso",
+      "last_change": "Último cambio: {{date}}",
+      "last_changeCode": "Último cambio: {{date}}",
+      "two_factor": "Autenticación en Dos Pasos",
+      "two_factor_desc": "Añade un código extra para entrar en la cuenta.",
+      "active_sessions": "Sesiones Activas",
+      "active_sessions_desc": "Gestione los dispositivos donde está conectado.",
+      "view_sessions": "Ver Todos los Dispositivos",
+      "save_button": "Guardar Configuración de Seguridad"
+    },
+    "plan": {
+      "title": "Su Plan y Suscripción",
+      "desc": "Gestione su inversión en SúperReportes.",
+      "professional": "Plan Profesional",
+      "active_since": "Activo desde {{date}}",
+      "usage": {
+        "reports": "Análisis Creados",
+        "storage": "Espacio en la Nube",
+        "next_billing": "Próximo Cobro"
+      },
+      "change_plan": "Cambiar de Plan",
+      "view_invoices": "Historial de Facturas",
+      "danger_zone": "Zona de Cancelación",
+      "danger_desc": "Al cancelar, perderá el acceso a los recursos de IA e historial ilimitado.",
+      "cancel_button": "Cancelar mi Suscripción"
+    },
+    "appearance": {
+      "title": "Apariencia e Idioma",
+      "description": "Personalice la interfaz de SúperReportes",
+      "theme": "Tema",
+      "theme_light": "Claro",
+      "theme_dark": "Oscuro",
+      "theme_system": "Sistema",
+      "language": "Idioma",
+      "save_button": "Guardar Configuración",
+      "save_success_title": "Configuración guardada",
+      "save_success_desc": "Las configuraciones de apariencia se actualizaron con éxito."
+    }
+  },
+  "data_hub": {
+    "title": "Mis Datos",
+    "subtitle": "Repositorio centralizado de archivos, URLs y fuentes de inteligencia para su negocio.",
+    "add_source": "Añadir Fuente",
+    "new_analysis": "Nuevo Análisis",
+    "search_placeholder": "Buscar por nombre, tipo o contenido...",
+    "tabs": {
+      "all": "Todos los Activos",
+      "files": "Archivos y Planillas",
+      "urls": "Enlaces y Sitios",
+      "text": "Textos y Notas"
+    },
+    "stats": {
+      "files": "Archivos",
+      "urls": "Enlaces Conectados",
+      "text": "Textos Brutos",
+      "storage": "Almacenamiento Total"
+    },
+    "table": {
+        "source": "Fuente de Datos",
+        "type": "Tipo",
+        "reports": "Reportes Vinculados",
+        "date": "Fecha de Ingesta",
+        "actions": "Acciones"
+      },
+    "empty": {
+      "title": "Su central de datos está lista para ser alimentada",
+      "description": "Cargue planillas, pegue notas de reuniones o conecte enlaces. Nuestra IA usará estos activos para generar diagnósticos profundos.",
+      "cta": "Añadir Mi Primera Fuente"
+    },
+    "actions": {
+      "generate": "Generar Nuevo Análisis",
+      "move": "Mover a Carpeta",
+      "delete": "Eliminar Permanentemente",
+      "download": "Descargar Original",
+      "open_link": "Acceder a Enlace Externo"
+    }
+  },
+  "priorities": {
+    "title": "Prioridades Asistidas",
+    "subtitle": "Acciones estratégicas sugeridas por la IA basadas en sus diagnósticos reales.",
+    "search_placeholder": "Buscar prioridades por título o descripción...",
+    "view_cards": "Tarjetas",
+    "view_list": "Lista",
+    "items_count": "ítems encontrados",
+    "filter": "Filtrar Prioridades",
+    "new_analysis": "Nuevo Diagnóstico",
+    "summary": {
+      "title": "Resumen de Enfoque",
+      "desc": "Donde su energía debe estar concentrada ahora",
+      "high": "Alta Prioridad",
+      "medium": "Prioridad Media",
+      "low": "Baja Prioridad",
+      "validated": "Validado para Ejecución"
+    },
+    "levels": {
+      "high": "Alta",
+      "medium": "Media",
+      "low": "Baja"
+    },
+    "list_title": "Sugerencias de Inteligencia Artificial",
+    "empty": {
+      "title": "Esperando nuevos datos para priorizar",
+      "description": "Genere un nuevo reporte o cargue datos recientes para que la IA identifique las próximas acciones de alto impacto.",
+      "cta": "Generar Diagnóstico IA"
+    },
+    "card": {
+      "score": "Puntuación de Impacto",
+      "ai_suggested": "Sugerida por IA",
+      "validated": "Confirmado por usted",
+      "cta_validate": "Validar Importancia",
+      "cta_action": "Definir Próxima Acción"
+    },
+    "validation_modal": {
+      "title": "Validación Estratégica",
+      "description": "Ajuste los criterios a continuación para que el sistema entienda la prioridad real según su momento de negocio.",
+      "why_important": "¿Por qué esta acción es prioritaria?",
+      "status_label": "Estado del Proceso",
+      "cta_cancel": "Cancelar",
+      "cta_confirm": "Validar y Mover a Ejecución",
+      "rice": {
+        "impact": "Impacto en el Beneficio",
+        "impact_tip": "¿Cuánto mueve esta acción los indicadores financieros?",
+        "urgency": "Urgencia",
+        "urgency_tip": "¿Qué tan crítico es hacer esto ahora?",
+        "confidence": "Confianza en el Resultado",
+        "confidence_tip": "¿Cuánto creemos que esta acción tendrá el efecto esperado?",
+        "effort": "Esfuerzo de Implementación",
+        "effort_tip": "Complejidad técnica y tiempo necesario del equipo.",
+        "final_score": "Puntuación Final Calculada",
+        "formula": "Fórmula RICE (Impacto x Urgencia x Confianza) / Esfuerzo"
+      }
+    },
+    "toast": {
+      "validated_title": "¡Prioridad Confirmada!",
+      "validated_desc": "Esta acción se ha movido a su Lista de Ejecución."
+    }
+  },
+  "action_plan": {
+    "title": "Lista de Ejecución",
+    "subtitle": "Transformando diagnósticos y prioridades en resultados prácticos para su empresa.",
+    "view_impact": "Ver Impacto Real",
+    "new_diagnostic": "Nuevo Diagnóstico",
+    "active_cycle": "Ciclo de Crecimiento Activo",
+    "progress_label": "Progreso de Ejecución",
+    "completed_label": "Completados",
+    "high_impact_badge": "ALTO IMPACTO",
+    "metric_label": "Métrica Objetivo:",
+    "metric_value": "Tasa de Conversión",
+    "deadline_label": "Plazo Estimado:",
+    "deadline_value": "15 de Abril",
+    "add_manual": "Añadir tarea manual",
+    "empty": {
+      "title": "Su plan de acción espera su decisión",
+      "description": "Valide las prioridades sugeridas por la IA para transformarlas en tareas prácticas y empezar a ver el ROI en su negocio.",
+      "cta": "Ver Prioridades para Validar"
+    },
+    "impact_card": {
+      "title": "Resumen del Impacto Esperado",
+      "desc": "Retorno estimado de las acciones de este ciclo",
+      "roi": "ROI Estimado",
+      "roi_value": "$ 14.200",
+      "time_saved": "Ahorro de Tiempo",
+      "time_saved_value": "12h",
+      "time_saved_unit": "/mes",
+      "cta_evolution": "Analizar Evolución del Negocio"
+    },
+    "next_target": {
+      "title": "Próximo Objetivo Estratégico",
+      "desc": "Complete las tareas actuales para que la IA genere el próximo ciclo de crecimiento.",
+      "waiting": "Esperando Ejecución"
+    },
+    "toast": {
+      "completed_title": "¡Acción Completada! 🎉",
+      "completed_desc": "El impacto ha sido registrado. ¿Desea validar el resultado con un nuevo diagnóstico?",
+      "cta_validate": "Validar Ahora"
+    }
+  },
+  "seo": {
+    "index_title": "SúperReportes | El Generador de Reportes Profesionales con IA",
+    "index_desc": "Genere reportes profesionales con análisis de consultor en minutos. La plataforma nº1 para Pymes que no quieren perder tiempo con planillas manuales."
+  },
+  "errors": {
+    "not_found_title": "Página no encontrada",
+    "not_found_desc": "¡Oops! Parece que ha seguido un enlace que no existe o la página ha sido movida.",
+    "return_home": "Volver al Inicio"
+  },
+  "loading_state": {
+    "system": "Preparando su entorno...",
+    "data": "Organizando información...",
+    "standard": "Cargando..."
+  }
+}

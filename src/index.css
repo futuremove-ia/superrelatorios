@@ -8,7 +8,37 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Base System Colors */
+    /* DSP Background System */
+    --background-light: 0 0% 100%;
+    --background-dark: 220 13% 5%;
+    --background-subtle-light: 0 0% 98%;
+    --background-subtle-dark: 220 13% 7%;
+    
+    /* DSP Foreground System */
+    --foreground-light: 210 24% 8%;
+    --foreground-dark: 0 0% 98%;
+    --foreground-muted-light: 215 16% 47%;
+    --foreground-muted-dark: 215 20% 65%;
+    
+    /* DSP Border System */
+    --border-light: 211 20% 94%;
+    --border-dark: 215 28% 17%;
+    
+    /* Primary: Azul mais escuro */
+    --primary: 217 91% 27%; /* #1e40af */
+    --primary-foreground: 0 0% 100%;
+    
+    /* DSP Accent */
+    --accent: 38 92% 50%; /* #F59E0B */
+    --accent-foreground: 0 0% 100%;
+    
+    /* DSP Status */
+    --status-positive: 142 76% 36%;
+    --status-negative: 0 84% 60%;
+    --status-neutral: 217 91% 60%;
+    --status-pending: 38 92% 50%;
+
+    /* Base System Colors (Compatibilidade) */
     --background: 0 0% 100%;
     --foreground: 222 84% 4.9%;
     --card: 0 0% 100%;
@@ -16,15 +46,15 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222 84% 4.9%;
 
-    /* Primary Blue Palette */
-    --primary: 220 91% 51%;
-    --primary-foreground: 0 0% 100%;
-    --primary-dark: 220 91% 20%;
+    /* Primary Blue Palette (Atualizado para azul mais escuro) */
+    --primary-legacy: 217 91% 27%; /* #1e40af */
+    --primary-foreground-legacy: 0 0% 100%;
+    --primary-dark: 220 91% 15%;
     --primary-dark-foreground: 0 0% 100%;
     
     /* Brand Colors */
     --brand-super: 222 84% 4.9%;
-    --brand-relatorios: 220 91% 51%;
+    --brand-relatorios: 217 91% 27%;
 
     /* Secondary & Muted Colors */
     --secondary: 220 14.3% 95.9%;
@@ -32,47 +62,69 @@ All colors MUST be HSL.
     --muted: 220 14.3% 95.9%;
     --muted-foreground: 220 8.9% 46.1%;
 
-    /* Accent Green for CTAs */
-    --accent: 142 71% 45%;
-    --accent-foreground: 0 0% 100%;
-
-    /* Semantic Colors */
-    --success: 142 76% 36%;
+    /* Semantic Colors (Mapeamento DSP) */
+    --success: 142 76% 36%; /* status-positive */
     --success-foreground: 0 0% 100%;
-    --warning: 45 93% 47%;
+    --warning: 38 92% 50%; /* status-pending */
     --warning-foreground: 0 0% 100%;
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84.2% 60.2%; /* status-negative */
     --destructive-foreground: 0 0% 100%;
-    --info: 220 91% 51%;
+    --info: 217 91% 60%; /* status-neutral */
     --info-foreground: 0 0% 100%;
 
     /* UI Elements */
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 220 91% 51%;
+    --ring: 217 91% 27%;
     --radius: 1rem;
 
     /* Sidebar Colors - fixed HSL format */
     --sidebar-background: 210 20% 98%;
     --sidebar-foreground: 222 84% 4.9%;
-    --sidebar-primary: 220 91% 51%;
+    --sidebar-primary: 217 91% 27%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 220 14.3% 95.9%;
     --sidebar-accent-foreground: 220 8.9% 46.1%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 220 91% 51%;
+    --sidebar-ring: 217 91% 27%;
   }
 
   .dark {
-    --background: 222 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    /* DSP Background System - Dark Mode */
+    --background: 220 13% 5%;
+    --foreground: 0 0% 98%;
+    --card: 220 13% 7%;
+    --card-foreground: 0 0% 98%;
+    --popover: 220 13% 7%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222 84% 4.9%;
+    /* DSP Primary - Dark Mode */
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    /* DSP Accent - Dark Mode */
+    --accent: 38 92% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    /* DSP Status - Dark Mode */
+    --status-positive: 142 76% 45%;
+    --status-negative: 0 84% 65%;
+    --status-neutral: 217 91% 75%;
+    --status-pending: 38 92% 60%;
+
+    /* DSP Foreground - Dark Mode */
+    --foreground-light: 0 0% 98%;
+    --foreground-dark: 210 24% 8%;
+    --foreground-muted-light: 215 20% 65%;
+    --foreground-muted-dark: 215 16% 47%;
+
+    /* DSP Border - Dark Mode */
+    --border-light: 215 28% 17%;
+    --border-dark: 211 20% 94%;
+
+    /* Legacy Colors - Dark Mode */
+    --primary-legacy: 217.2 91.2% 59.8%;
+    --primary-foreground-legacy: 222 84% 4.9%;
     --primary-dark: 220 91% 15%;
     --primary-dark-foreground: 210 40% 98%;
     
@@ -84,7 +136,7 @@ All colors MUST be HSL.
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 142 76% 36%;
+    --accent: 217 91% 60%;
     --accent-foreground: 210 40% 98%;
 
     --success: 142 76% 36%;
@@ -100,6 +152,7 @@ All colors MUST be HSL.
     --input: 217.2 32.6% 17.5%;
     --ring: 217.2 91.2% 59.8%;
 
+    /* Sidebar Colors - Dark Mode */
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 217.2 91.2% 59.8%;
@@ -120,37 +173,48 @@ All colors MUST be HSL.
     @apply bg-background text-foreground font-body;
   }
 
-  /* Typography hierarchy */
+  /* Typography hierarchy - DSP Aligned */
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading;
   }
 
   h1 {
-    @apply text-4xl md:text-6xl font-bold leading-tight;
+    @apply typography-h1;
   }
 
   h2 {
-    @apply text-3xl md:text-4xl font-bold leading-tight;
+    @apply typography-h2;
   }
 
   h3 {
-    @apply text-xl md:text-2xl font-semibold leading-relaxed;
+    @apply typography-h2;
   }
 
   h4 {
-    @apply text-lg md:text-xl font-semibold;
+    @apply typography-h2;
   }
 
   h5 {
-    @apply text-base md:text-lg font-medium;
+    @apply typography-label;
   }
 
   h6 {
-    @apply text-sm md:text-base font-medium;
+    @apply typography-label;
   }
 
-  p {
-    @apply leading-relaxed;
+  /* Typography base */
+  p, span, div {
+    @apply font-body;
+  }
+
+  /* Typography for metrics */
+  .metric {
+    @apply font-metric;
+  }
+
+  /* Typography for labels */
+  .label {
+    @apply font-label;
   }
 
   /* Sections with scroll margin for fixed header */
@@ -179,9 +243,9 @@ All colors MUST be HSL.
 }
 
 @layer components {
-  /* Card System */
+  /* Card System - Premium Elevation & Refined Borders */
   .card-hover {
-    @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5;
+    @apply transition-all duration-300 border-border/50 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 bg-card;
   }
 
   .card-interactive {
@@ -254,7 +318,22 @@ All colors MUST be HSL.
   .text-responsive-2xl {
     @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl;
   }
+
+  /* Premium Shine Effect */
+  .btn-shine {
+    @apply relative overflow-hidden;
+  }
+
+  .btn-shine::after {
+    content: '';
+    @apply absolute -inset-full top-0 block w-1/2 h-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[-25deg] transition-all duration-1000;
+  }
+
+  .btn-shine:hover::after {
+    @apply left-full;
+  }
 }
+
 
 @keyframes fadeIn {
   to {
@@ -404,5 +483,136 @@ All colors MUST be HSL.
 
   .scroll-snap-start {
     scroll-snap-align: start;
+  }
+
+  /* DSP Typography Classes */
+  .typography-h1 {
+    @apply text-2xl font-semibold tracking-tight;
+  }
+
+  .typography-h2 {
+    @apply text-lg font-medium;
+  }
+
+  .typography-label {
+    @apply text-[10px] font-bold uppercase tracking-wider;
+  }
+
+  .typography-body {
+    @apply text-sm font-normal leading-relaxed;
+  }
+
+  .typography-metric {
+    @apply font-mono text-xl tabular-nums;
+  }
+
+  /* DSP Card System */
+  .card-dsp {
+    @apply border border-border-light dark:border-border-dark;
+    @apply bg-background-light dark:bg-background-dark;
+    @apply shadow-sm dark:shadow-none;
+    @apply rounded-lg;
+  }
+
+  /* DSP Information Flow */
+  .information-flow {
+    @apply space-y-4;
+  }
+
+  .problem-section {
+    @apply text-foreground-light dark:text-foreground-dark;
+  }
+
+  .action-section {
+    @apply text-accent-foreground bg-accent;
+  }
+
+  .metric-section {
+    @apply font-metric text-xl tabular-nums;
+  }
+
+  /* DSP Status Colors */
+  .status-positive {
+    @apply text-status-positive;
+  }
+
+  .status-negative {
+    @apply text-status-negative;
+  }
+
+  .status-neutral {
+    @apply text-status-neutral;
+  }
+
+  .status-pending {
+    @apply text-status-pending;
+  }
+
+  /* DSP Spacing */
+  .space-y-section {
+    @apply space-y-8;
+  }
+
+  .space-y-element {
+    @apply space-y-4;
+  }
+
+  .space-y-tight {
+    @apply space-y-2;
+  }
+
+  .space-x-section {
+    @apply space-x-8;
+  }
+
+  .space-x-element {
+    @apply space-x-4;
+  }
+
+  .space-x-tight {
+    @apply space-x-2;
+  }
+
+  /* DSP Background Colors */
+  .bg-dsp-light {
+    @apply bg-background-light;
+  }
+
+  .bg-dsp-dark {
+    @apply bg-background-dark;
+  }
+
+  .bg-dsp-subtle-light {
+    @apply bg-background-subtle-light;
+  }
+
+  .bg-dsp-subtle-dark {
+    @apply bg-background-subtle-dark;
+  }
+
+  /* DSP Text Colors */
+  .text-dsp-light {
+    @apply text-foreground-light;
+  }
+
+  .text-dsp-dark {
+    @apply text-foreground-dark;
+  }
+
+  .text-dsp-muted-light {
+    @apply text-foreground-muted-light;
+  }
+
+  .text-dsp-muted-dark {
+    @apply text-foreground-muted-dark;
+  }
+
+  /* DSP Border Colors */
+  .border-dsp-light {
+    @apply border-border-light;
+  }
+
+  .border-dsp-dark {
+    @apply border-border-dark;
   }
 }

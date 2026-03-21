@@ -2,52 +2,57 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Check } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
 
 const Pricing = () => {
+  const { t } = useTranslation();
   const plans = [
     {
-      name: "Gratuito",
+      name: t('landing.pricing.plans.free.name'),
       price: "R$ 0",
-      period: "/sempre",
-      description: "Comece já",
-      features: ["2 relatórios/mês", "Templates básicos", "Export PDF"],
-      cta: "Criar Relatório Grátis",
+      period: t('landing.pricing.plans.free.period'),
+      description: t('landing.pricing.plans.free.desc'),
+      features: t('landing.pricing.plans.free.features', { returnObjects: true }),
+      cta: t('landing.pricing.plans.free.cta'),
       highlighted: false,
       href: "/app/novo-relatorio",
     },
     {
-      name: "Pro",
+      name: t('landing.pricing.plans.pro.name'),
       price: "R$ 59",
-      period: "/mês",
-      description: "Mais usado",
-      features: ["20 relatórios/mês", "Templates completos", "Compartilhamento por link", "Narrativas avançadas"],
-      cta: "Experimentar Agora",
+      period: t('landing.pricing.plans.pro.period'),
+      description: t('landing.pricing.plans.pro.desc'),
+      features: t('landing.pricing.plans.pro.features', { returnObjects: true }),
+      cta: t('landing.pricing.plans.pro.cta'),
       highlighted: true,
       href: "/app/novo-relatorio",
     },
     {
-      name: "Business",
+      name: t('landing.pricing.plans.business.name'),
       price: "R$ 149",
-      period: "/mês",
-      description: "Time",
-      features: ["Usuários ilimitados", "Área e área", "Políticas de acesso", "Relatórios avançados"],
-      cta: "Falar com Vendas",
+      period: t('landing.pricing.plans.business.period'),
+      description: t('landing.pricing.plans.business.desc'),
+      features: t('landing.pricing.plans.business.features', { returnObjects: true }),
+      cta: t('landing.pricing.plans.business.cta'),
       highlighted: false,
       href: "mailto:contato@superrelatorios.com.br?subject=Plano%20Business",
     },
   ];
+
 
   return (
     <section id="precos" className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Planos simples
+            {t('landing.pricing.title')}
           </h2>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
-            Escolha por volume de relatórios e colaboração. Comece grátis e evolua quando fizer sentido.
+            {t('landing.pricing.subtitle')}
           </p>
         </div>
+
         
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto items-start">
           {plans.map((plan, index) => (
@@ -58,9 +63,10 @@ const Pricing = () => {
             }`}>
               {plan.highlighted && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full">
-                  Recomendado
+                  {t('landing.pricing.recommended')}
                 </div>
               )}
+
               <div className="text-center mb-8">
                 <div className="mb-2">
                   <span className="text-sm text-primary font-semibold">{plan.description}</span>

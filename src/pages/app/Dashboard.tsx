@@ -1,32 +1,39 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Plus, TrendingUp, Clock, Share2, FileText, Folder, Users, Target } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { useReports } from '@/hooks/useReports';
+import { useDashboardSummary } from '@/hooks/useDashboardSummary';
+import { Report } from '@/types/reports';
+import { 
+  ListChecks, 
+  Zap, 
+  FileText, 
+  CircleDollarSign,
+  Plus,
+  Calendar,
+  TrendingUp
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { KPICard } from '@/components/ui/kpi-card';
-import { AISidebar } from '@/components/ai/AISidebar';
-import { reportsService, Report } from '@/services/mockReports';
-import BrandName from '@/components/BrandName';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Dashboard as DashboardUnificado } from '@/components/dashboard/Dashboard';
+import { DiagnosticSection } from '@/components/business/DiagnosticSection';
+import { PriorityCard } from '@/components/business/PriorityCard';
+import StrategicFocusBar from '@/components/strategy/StrategicFocusBar';
 
 const Dashboard = () => {
-  const [reports, setReports] = useState<Report[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { t, i18n } = useTranslation();
+  const { data: allReports = [], isLoading: reportsLoading } = useReports();
+  const { 
+    activePriorities, 
+    executionRate, 
+    reportsCreated, 
+    estimatedImpact,
+    isLoading: metricsLoading 
+  } = useDashboardSummary();
 
-  useEffect(() => {
-    const loadReports = async () => {
-      try {
-        const data = await reportsService.getAllReports();
-        setReports(data.slice(0, 6));
-      } catch (error) {
-        console.error('Error loading reports:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadReports();
-  }, []);
+  const loading = reportsLoading || metricsLoading;
+  const reports = allReports.slice(0, 4);
 
   const getStatusColor = (status: Report['status']) => {
     switch (status) {
@@ -38,86 +45,62 @@ const Dashboard = () => {
 
   const getStatusText = (status: Report['status']) => {
     switch (status) {
-      case 'completed': return 'Concluído';
-      case 'shared': return 'Compartilhado';
-      default: return 'Rascunho';
+      case 'completed': return t('dashboard.status.completed');
+      case 'shared': return t('dashboard.status.shared');
+      default: return t('dashboard.status.draft');
     }
   };
 
   const stats = [
     { 
-      title: 'Total de Relatórios', 
-      value: reports.length.toString(), 
-      icon: FileText, 
-      trend: { value: 12, isPositive: true, label: 'vs mês anterior' },
+      title: t('dashboard.metrics.active_priorities'), 
+      value: activePriorities.value.toString(), 
+      icon: Target, 
+      trend: activePriorities.trend,
       variant: 'info' as const
     },
     { 
-      title: 'Compartilhados', 
-      value: reports.filter(r => r.status === 'shared').length.toString(), 
-      icon: Share2, 
-      trend: { value: 18, isPositive: true, label: 'mais engajamento' },
+      title: t('dashboard.metrics.execution_rate'), 
+      value: executionRate.value, 
+      icon: ListChecks, 
+      trend: executionRate.trend,
       variant: 'success' as const
     },
     { 
-      title: 'Em Andamento', 
-      value: reports.filter(r => r.status === 'draft').length.toString(), 
-      icon: Clock, 
-      trend: { value: 5, isPositive: false, label: 'otimização no fluxo' },
-      variant: 'warning' as const
+      title: t('dashboard.metrics.reports_created'), 
+      value: reportsCreated.value, 
+      icon: FileText, 
+      trend: reportsCreated.trend,
+      variant: 'info' as const
     },
     { 
-      title: 'Taxa de Conclusão', 
-      value: '87%', 
-      icon: TrendingUp, 
-      trend: { value: 3, isPositive: true, label: 'melhoria contínua' },
+      title: t('dashboard.metrics.estimated_impact'), 
+      value: estimatedImpact.value, 
+      icon: CircleDollarSign, 
+      trend: estimatedImpact.trend,
       variant: 'success' as const
-    },
-  ];
-
-  const folders = [
-    { name: 'Relatórios Financeiros', count: 12, icon: '💰', color: 'bg-emerald-100 text-emerald-700' },
-    { name: 'Vendas & Marketing', count: 8, icon: '📈', color: 'bg-blue-100 text-blue-700' },
-    { name: 'Operacional', count: 5, icon: '⚙️', color: 'bg-purple-100 text-purple-700' },
-  ];
-
-  const quickActions = [
-    {
-      title: 'Relatório Executivo',
-      description: 'Performance trimestral',
-      icon: Target,
-      href: '/app/novo-relatorio?template=executive-quarterly',
-      color: 'bg-gradient-to-br from-blue-500 to-blue-600'
-    },
-    {
-      title: 'Relatório de Vendas',
-      description: 'Análise mensal',
-      icon: TrendingUp,
-      href: '/app/novo-relatorio?template=sales-monthly',
-      color: 'bg-gradient-to-br from-green-500 to-green-600'
-    },
-    {
-      title: 'Relatório Customizado',
-      description: 'Criar do zero',
-      icon: Plus,
-      href: '/app/novo-relatorio?template=custom',
-      color: 'bg-gradient-to-br from-purple-500 to-purple-600'
     },
   ];
 
   if (loading) {
     return (
-      <div className="p-4 sm:p-6 max-w-7xl mx-auto">
-        <div className="animate-pulse space-y-6">
-          <div className="h-8 bg-muted rounded w-64"></div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {[1, 2, 3, 4].map(i => (
-              <div key={i} className="h-28 bg-muted rounded-xl"></div>
-            ))}
-          </div>
+      <div className="container-fluid space-y-8 py-6">
+        <div className="flex items-center justify-between">
+          <Skeleton className="h-10 w-64" />
+          <Skeleton className="h-11 w-40" />
+        </div>
+        
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {[1, 2, 3, 4].map(i => (
+            <Skeleton key={i} className="h-28 rounded-xl" />
+          ))}
+        </div>
+
+        <div className="space-y-4">
+          <Skeleton className="h-6 w-48" />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[1, 2, 3].map(i => (
-              <div key={i} className="h-48 bg-muted rounded-xl"></div>
+              <Skeleton key={i} className="h-48 rounded-xl" />
             ))}
           </div>
         </div>
@@ -130,32 +113,47 @@ const Dashboard = () => {
       <div className="flex">
         {/* Main Content */}
         <div className="flex-1 dashboard-viewport overflow-y-auto">
-          <div className="container-fluid space-y-6 py-4 sm:py-6">
+          <div className="container-fluid space-y-8 py-4 sm:py-6">
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
-                  Painel do <BrandName />
+                  {t('dashboard.welcome')}, <BrandName />
                 </h1>
-                <p className="text-muted-foreground mt-1 text-sm sm:text-base">
-                  Gerencie seus relatórios e acompanhe seu progresso
+                <p className="text-muted-foreground text-sm mt-1">
+                  {t('dashboard.ai_summary', { diagnostics: 3, priorities: 1 })}
                 </p>
               </div>
-              <Button 
-                asChild 
-                size="lg" 
-                className="self-start sm:self-auto touch-target"
-                aria-label="Criar novo relatório"
-              >
-                <Link to="/app/novo-relatorio">
-                  <Plus className="mr-2 h-5 w-5" />
-                  <span className="hidden sm:inline">Novo Relatório</span>
-                  <span className="sm:hidden">Novo</span>
-                </Link>
-              </Button>
+              <div className="flex gap-2">
+                <Button 
+                  variant="outline"
+                  asChild 
+                  size="lg" 
+                  className="self-start sm:self-auto touch-target"
+                >
+                  <Link to="/app/pastas">
+                    <Database className="mr-2 h-5 w-5" />
+                    {t('dashboard.actions.my_data')}
+                  </Link>
+                </Button>
+                <Button 
+                  asChild 
+                  size="lg" 
+                  className="self-start sm:self-auto touch-target"
+                  aria-label={t('dashboard.actions.new_report')}
+                >
+                  <Link to="/app/novo-relatorio">
+                    <Plus className="mr-2 h-5 w-5" />
+                    {t('dashboard.actions.new_report')}
+                  </Link>
+                </Button>
+              </div>
             </div>
 
-            {/* KPI Cards */}
+            {/* Dashboard Unificado */}
+            <DashboardUnificado />
+
+            {/* KPI Cards - Mantido para compatibilidade */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               {stats.map((stat) => (
                 <KPICard
@@ -171,152 +169,58 @@ const Dashboard = () => {
               ))}
             </div>
 
-            {/* Folders Section */}
-            <section aria-labelledby="folders-heading">
-              <div className="flex items-center justify-between mb-4">
-                <h2 id="folders-heading" className="text-lg font-semibold text-foreground flex items-center gap-2">
-                  <Folder className="h-5 w-5 text-primary" />
-                  Pastas Organizadas
-                </h2>
-                <Button variant="outline" size="sm" asChild>
-                  <Link to="/app/pastas">Ver Todas</Link>
-                </Button>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                {folders.map((folder) => (
-                  <Card 
-                    key={folder.name} 
-                    className="card-hover cursor-pointer group"
-                    role="button"
-                    tabIndex={0}
-                    aria-label={`Pasta ${folder.name} com ${folder.count} relatórios`}
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex items-center gap-3">
-                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm ${folder.color}`}>
-                          <span role="img" aria-hidden="true">{folder.icon}</span>
-                        </div>
-                        <div>
-                          <h3 className="font-medium text-foreground group-hover:text-primary transition-colors text-sm sm:text-base">
-                            {folder.name}
-                          </h3>
-                          <p className="text-xs sm:text-sm text-muted-foreground">
-                            {folder.count} relatórios
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+            {/* v2.0 Strategic Focus Section */}
+            <section aria-labelledby="strategic-heading" className="space-y-6">
+              <h2 id="strategic-heading" className="text-lg font-semibold text-foreground flex items-center gap-2">
+                <Target className="h-5 w-5 text-primary" />
+                {t('dashboard.sections.strategic_focus')}
+              </h2>
+              <StrategicFocusBar />
             </section>
 
-            {/* Recent Reports */}
-            <section>
+            {/* Recent Reports Section */}
+            <section aria-labelledby="reports-heading">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
+                <h2 id="reports-heading" className="text-lg font-semibold text-foreground flex items-center gap-2">
                   <FileText className="h-5 w-5 text-primary" />
-                  Relatórios Recentes
+                  {t('dashboard.sections.recent_reports')}
                 </h2>
-                <Button variant="outline" asChild size="sm">
-                  <Link to="/app/relatorios">Ver Todos</Link>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/app/relatorios" className="flex items-center gap-1">
+                    {t('dashboard.sections.view_all')}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
                 </Button>
               </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                {reports.map((report) => (
-                  <Card key={report.id} className="card-hover group">
-                    <CardHeader className="pb-3 p-4">
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="flex-1 min-w-0">
-                          <CardTitle className="text-sm sm:text-base text-foreground line-clamp-2 group-hover:text-primary transition-colors">
-                            {report.title}
-                          </CardTitle>
-                          {report.subtitle && (
-                            <CardDescription className="mt-1 line-clamp-1 text-xs">
-                              {report.subtitle}
-                            </CardDescription>
-                          )}
-                        </div>
-                        <Badge className={`${getStatusColor(report.status)} text-xs`} variant="secondary">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {reports.map(report => (
+                  <Card key={report.id} className="hover:shadow-md transition-shadow">
+                    <CardHeader className="pb-3">
+                      <div className="flex items-start justify-between">
+                        <CardTitle className="text-base">{report.title}</CardTitle>
+                        <Badge className={getStatusColor(report.status)}>
                           {getStatusText(report.status)}
                         </Badge>
                       </div>
+                      <CardDescription className="text-sm">
+                        {report.description}
+                      </CardDescription>
                     </CardHeader>
-                    <CardContent className="pt-0 p-4">
-                      <div className="space-y-3">
-                        <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">
-                          {report.description}
-                        </p>
-                        
-                        <div className="flex items-center justify-between text-xs text-muted-foreground">
-                          <span className="flex items-center gap-1">
-                            <span className="w-2 h-2 rounded-full bg-current opacity-60"></span>
-                            {report.category}
-                          </span>
-                          <span>{new Date(report.updatedAt).toLocaleDateString('pt-BR')}</span>
-                        </div>
-
-                        <div className="flex gap-2">
-                          <Button variant="outline" size="sm" asChild className="flex-1">
-                            <Link to={`/app/relatorios/${report.id}`}>
-                              Abrir
-                            </Link>
-                          </Button>
-                          {report.status === 'completed' && (
-                            <Button variant="secondary" size="sm">
-                              <Share2 className="h-4 w-4" />
-                            </Button>
-                          )}
-                        </div>
+                    <CardContent>
+                      <div className="flex items-center justify-between text-sm text-muted-foreground">
+                        <span>{new Date(report.createdAt).toLocaleDateString()}</span>
+                        <Button variant="ghost" size="sm" asChild>
+                          <Link to={`/app/relatorios/${report.id}`}>
+                            {t('dashboard.sections.view_report')}
+                          </Link>
+                        </Button>
                       </div>
                     </CardContent>
                   </Card>
                 ))}
               </div>
             </section>
-
-            {/* Quick Actions */}
-            <section>
-              <Card>
-                <CardHeader className="text-center p-4 sm:p-6">
-                  <CardTitle className="flex items-center justify-center gap-2 text-base sm:text-lg">
-                    <Target className="h-5 w-5 text-primary" />
-                    Ações Rápidas
-                  </CardTitle>
-                  <CardDescription className="text-xs sm:text-sm">
-                    Crie relatórios rapidamente usando nossos modelos inteligentes
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="p-4 sm:p-6 pt-0">
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-                    {quickActions.map((action) => (
-                      <Link key={action.title} to={action.href} className="group">
-                        <Card className="h-full card-hover border bg-gradient-to-br from-background to-muted/50">
-                          <CardContent className="p-4 sm:p-6 text-center">
-                            <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl ${action.color} flex items-center justify-center mx-auto mb-3 group-hover:scale-105 transition-transform duration-300`}>
-                              <action.icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-                            </div>
-                            <h3 className="font-medium text-foreground group-hover:text-primary transition-colors text-sm sm:text-base">
-                              {action.title}
-                            </h3>
-                            <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-                              {action.description}
-                            </p>
-                          </CardContent>
-                        </Card>
-                      </Link>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </section>
           </div>
-        </div>
-
-        {/* AI Sidebar */}
-        <div className="hidden xl:block w-80 p-6">
-          <AISidebar context="dashboard" />
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Share2, Download, Edit, MoreHorizontal, Eye, Calendar, Tag } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ArrowLeft, Share2, Download, Edit, MoreHorizontal, Eye, Calendar, Tag, Lightbulb, Target } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -9,14 +9,39 @@ import { Paper } from '@/components/ui/paper';
 import { reportsService, Report } from '@/services/mockReports';
 import { useToast } from '@/hooks/use-toast';
 import BrandName from '@/components/BrandName';
+import { useTranslation } from 'react-i18next';
+import { DynamicBlockRenderer } from '@/components/reports/renderer/DynamicBlockRenderer';
+import { DiagnosticSection } from '@/components/business/DiagnosticSection';
+import { PriorityCard } from '@/components/business/PriorityCard';
+import { Diagnostic, Priority } from '@/types/business';
+import { Sparkles, Zap, Database, ExternalLink, FileText } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { CardDescription } from '@/components/ui/card';
 
 const ReportDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
-  
+  const { t, i18n } = useTranslation();
+
   const [report, setReport] = useState<Report | null>(null);
   const [loading, setLoading] = useState(true);
+
+  // Extrair diagnóstico do data_json (Onda 1)
+  const diagnosticData: Diagnostic | null = (report as any)?.rawData?.diagnostic?.diagnostic ? {
+    id: `diag-${report?.id}`,
+    reportId: report?.id || '',
+    createdAt: report?.createdAt || '',
+    ...(report as any).rawData.diagnostic.diagnostic
+  } : null;
+
+  const priorityData: Priority | null = (report as any)?.rawData?.diagnostic?.suggestedPriority ? {
+    id: `prio-${report?.id}`,
+    diagnosticId: `diag-${report?.id}`,
+    createdAt: report?.createdAt || '',
+    status: 'suggested',
+    ...(report as any).rawData.diagnostic.suggestedPriority
+  } : null;
 
   useEffect(() => {
     const loadReport = async () => {
@@ -32,8 +57,8 @@ const ReportDetail = () => {
       } catch (error) {
         console.error('Error loading report:', error);
         toast({
-          title: "Erro ao carregar relatório",
-          description: "Tente novamente em alguns instantes.",
+          title: t('report_detail.notifications.error_load'),
+          description: t('report_detail.notifications.error_load_desc'),
           variant: "destructive"
         });
       } finally {
@@ -42,7 +67,7 @@ const ReportDetail = () => {
     };
 
     loadReport();
-  }, [id, navigate, toast]);
+  }, [id, navigate, toast, t]);
 
   const getStatusColor = (status: Report['status']) => {
     switch (status) {
@@ -54,23 +79,23 @@ const ReportDetail = () => {
 
   const getStatusText = (status: Report['status']) => {
     switch (status) {
-      case 'completed': return 'Concluído';
-      case 'shared': return 'Compartilhado';
-      default: return 'Rascunho';
+      case 'completed': return t('reports.filters.completed');
+      case 'shared': return t('reports.filters.shared');
+      default: return t('reports.filters.draft');
     }
   };
 
   const handleShare = () => {
     toast({
-      title: "Link copiado!",
-      description: "O link do relatório foi copiado para a área de transferência."
+      title: t('report_detail.notifications.link_copied'),
+      description: t('report_detail.notifications.link_copied_desc')
     });
   };
 
   const handleDownload = () => {
     toast({
-      title: "Download iniciado",
-      description: "O relatório está sendo baixado em PDF."
+      title: t('report_detail.notifications.download_start'),
+      description: t('report_detail.notifications.download_desc')
     });
   };
 
@@ -94,13 +119,13 @@ const ReportDetail = () => {
         <Card>
           <CardContent className="text-center py-12">
             <h3 className="text-lg font-medium text-foreground mb-2">
-              Relatório não encontrado
+              {t('report_detail.notifications.not_found')}
             </h3>
             <p className="text-muted-foreground mb-6">
-              O relatório que você está procurando não existe ou foi removido.
+              {t('report_detail.notifications.error_load_desc')}
             </p>
             <Button asChild>
-              <Link to="/app/relatorios">Voltar aos Relatórios</Link>
+              <Link to="/app/relatorios">{t('report_detail.back_button')}</Link>
             </Button>
           </CardContent>
         </Card>
@@ -110,15 +135,16 @@ const ReportDetail = () => {
 
   return (
     <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-6">
-      {/* Header - Responsive */}
+      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3 min-w-0">
           <Button variant="ghost" size="sm" asChild className="flex-shrink-0">
             <Link to="/app/relatorios">
               <ArrowLeft className="h-4 w-4 mr-1 sm:mr-2" />
-              <span className="hidden sm:inline">Voltar</span>
+              <span className="hidden sm:inline">{t('common.back')}</span>
             </Link>
           </Button>
+
           <div className="min-w-0">
             <h1 className="text-xl sm:text-2xl font-bold text-foreground truncate">{report.title}</h1>
             {report.subtitle && (
@@ -127,19 +153,19 @@ const ReportDetail = () => {
           </div>
         </div>
         
-        {/* Desktop Actions */}
         <div className="hidden sm:flex items-center gap-2 flex-shrink-0">
           <Badge className={getStatusColor(report.status)}>
             {getStatusText(report.status)}
           </Badge>
           <Button variant="outline" size="sm" onClick={handleShare}>
             <Share2 className="h-4 w-4 mr-2" />
-            Compartilhar
+            {t('common.share')}
           </Button>
           <Button variant="outline" size="sm" onClick={handleDownload}>
             <Download className="h-4 w-4 mr-2" />
-            Download
+            {t('common.download')}
           </Button>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm">
@@ -149,17 +175,16 @@ const ReportDetail = () => {
             <DropdownMenuContent align="end">
               <DropdownMenuItem>
                 <Edit className="mr-2 h-4 w-4" />
-                Editar
+                {t('common.edit')}
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Eye className="mr-2 h-4 w-4" />
-                Modo Apresentação
+                {t('report_detail.presentation_mode')}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
 
-        {/* Mobile Status Badge */}
         <div className="sm:hidden flex items-center gap-2">
           <Badge className={getStatusColor(report.status)}>
             {getStatusText(report.status)}
@@ -173,7 +198,7 @@ const ReportDetail = () => {
           <CardContent className="p-4 sm:pt-6">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Tag className="h-4 w-4 flex-shrink-0" />
-              <span>Categoria</span>
+              <span>{t('report_detail.cards.category')}</span>
             </div>
             <p className="font-medium text-sm sm:text-base truncate">{report.category}</p>
           </CardContent>
@@ -183,9 +208,9 @@ const ReportDetail = () => {
           <CardContent className="p-4 sm:pt-6">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Calendar className="h-4 w-4 flex-shrink-0" />
-              <span>Criado em</span>
+              <span>{t('report_detail.cards.created_at')}</span>
             </div>
-            <p className="font-medium text-sm sm:text-base">{new Date(report.createdAt).toLocaleDateString('pt-BR')}</p>
+            <p className="font-medium text-sm sm:text-base">{new Date(report.createdAt).toLocaleDateString(i18n.language)}</p>
           </CardContent>
         </Card>
         
@@ -193,9 +218,9 @@ const ReportDetail = () => {
           <CardContent className="p-4 sm:pt-6">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Calendar className="h-4 w-4 flex-shrink-0" />
-              <span>Atualizado</span>
+              <span>{t('report_detail.cards.updated_at')}</span>
             </div>
-            <p className="font-medium text-sm sm:text-base">{new Date(report.updatedAt).toLocaleDateString('pt-BR')}</p>
+            <p className="font-medium text-sm sm:text-base">{new Date(report.updatedAt).toLocaleDateString(i18n.language)}</p>
           </CardContent>
         </Card>
         
@@ -203,136 +228,156 @@ const ReportDetail = () => {
           <CardContent className="p-4 sm:pt-6">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Eye className="h-4 w-4 flex-shrink-0" />
-              <span>Visualizações</span>
+              <span>{t('report_detail.cards.views')}</span>
             </div>
             <p className="font-medium text-sm sm:text-base">24</p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Report Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <Paper orientation="portrait" padding="lg">
-            <div className="space-y-6">
-              {/* Header */}
-              <div className="text-center border-b pb-4">
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <BrandName />
+      <Tabs defaultValue="report" className="space-y-6">
+        <TabsList className="bg-muted/50 p-1">
+          <TabsTrigger value="report" className="gap-2 font-bold text-xs uppercase tracking-widest">
+            <FileText className="h-3.5 w-3.5" />
+            {t('report_detail.tabs.report')}
+          </TabsTrigger>
+          <TabsTrigger value="sources" className="gap-2 font-bold text-xs uppercase tracking-widest">
+            <Database className="h-3.5 w-3.5" />
+            {t('report_detail.tabs.sources')}
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="report" className="space-y-8 animate-in fade-in duration-500">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2 space-y-8">
+              <Paper orientation="portrait" padding="lg" className="min-h-[1000px] shadow-2xl border-none">
+                <div className="p-4 sm:p-8">
+                   <div className="flex justify-between items-start mb-8 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+                      <BrandName />
+                      <div className="text-right text-[10px] uppercase tracking-widest font-mono">
+                        {t('report_detail.content.verified')} • {report.id}
+                      </div>
+                   </div>
+                   
+                   <DynamicBlockRenderer blocks={report.blocks} />
                 </div>
-                <h1 className="text-xl sm:text-2xl font-bold text-foreground">{report.title}</h1>
-                {report.subtitle && (
-                  <p className="text-muted-foreground text-sm sm:text-base">{report.subtitle}</p>
-                )}
-                <p className="text-sm text-muted-foreground mt-2">
-                  Gerado em {new Date(report.createdAt).toLocaleDateString('pt-BR')}
-                </p>
-              </div>
+              </Paper>
 
-              {/* Resumo Executivo */}
-              <section>
-                <h2 className="text-lg sm:text-xl font-semibold mb-3 text-primary">Resumo Executivo</h2>
-                <p className="text-foreground leading-relaxed text-sm sm:text-base">
-                  {report.description || 'Este relatório apresenta uma análise detalhada dos principais indicadores e métricas de performance, fornecendo insights valiosos para a tomada de decisão estratégica.'}
-                </p>
-              </section>
-
-              {/* Destaques */}
-              <section>
-                <h2 className="text-lg sm:text-xl font-semibold mb-3 text-primary">Principais Destaques</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  {Object.entries(report.data).map(([key, value]) => (
-                    <div key={key} className="bg-muted/50 p-3 sm:p-4 rounded-lg">
-                      <h3 className="font-medium text-foreground capitalize text-sm">{key}</h3>
-                      <p className="text-xl sm:text-2xl font-bold text-primary">{typeof value === 'number' ? value.toLocaleString() : String(value)}</p>
+              {/* Onda 1: Seção de Diagnóstico e Prioridade IA no final do relatório */}
+              {diagnosticData && priorityData && (
+                <div className="pt-8 border-t space-y-6 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Zap className="h-5 w-5 text-primary fill-primary/20" />
+                    <h2 className="text-xl font-bold tracking-tight">{t('report_detail.ai_section.title')}</h2>
+                  </div>
+                  
+                  <DiagnosticSection diagnostic={diagnosticData} />
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="flex flex-col justify-center space-y-2 p-4">
+                      <h4 className="font-bold text-sm uppercase tracking-wider text-muted-foreground">{t('report_detail.ai_section.recommended_priority')}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {t('report_detail.ai_section.priority_desc')}
+                      </p>
                     </div>
-                  ))}
-                </div>
-              </section>
-
-              {/* Análise */}
-              <section>
-                <h2 className="text-lg sm:text-xl font-semibold mb-3 text-primary">Análise Detalhada</h2>
-                <div className="space-y-4">
-                  <p className="text-foreground leading-relaxed text-sm sm:text-base">
-                    Os dados apresentados indicam uma performance consistente com as expectativas estabelecidas. 
-                    As métricas principais demonstram uma tendência positiva, sugerindo eficácia nas estratégias implementadas.
-                  </p>
-                  <div className="bg-info/5 p-4 rounded-lg border border-info/20">
-                    <h4 className="font-medium text-foreground mb-2">💡 Insight da IA</h4>
-                    <p className="text-muted-foreground text-sm">
-                      Com base nos dados fornecidos, recomenda-se manter o foco nas áreas de maior performance 
-                      e considerar estratégias de otimização para os indicadores com maior potencial de crescimento.
-                    </p>
+                    <PriorityCard priority={priorityData} />
                   </div>
                 </div>
-              </section>
-
-              {/* Próximos Passos */}
-              <section>
-                <h2 className="text-lg sm:text-xl font-semibold mb-3 text-primary">Próximos Passos</h2>
-                <div className="space-y-2">
-                  {['Aprofundar análise das métricas com melhor performance', 'Implementar ações corretivas para indicadores em declínio', 'Estabelecer cronograma para reavaliação em 30 dias'].map((step, i) => (
-                    <div key={i} className="flex items-start gap-2">
-                      <span className="w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0 mt-0.5">{i + 1}</span>
-                      <p className="text-foreground text-sm sm:text-base">{step}</p>
-                    </div>
-                  ))}
-                </div>
-              </section>
+              )}
             </div>
-          </Paper>
-        </div>
 
-        {/* Sidebar */}
-        <div className="space-y-6">
-          <Card>
+            <div className="space-y-6">
+              <Card className="border-border/40 bg-muted/10 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="text-base sm:text-lg">{t('report_detail.sidebar.info_title')}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <p className="text-sm text-muted-foreground">{t('report_detail.sidebar.template')}</p>
+                    <p className="font-medium">{report.template}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">{t('report_detail.sidebar.description')}</p>
+                    <p className="text-sm">{report.description}</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base sm:text-lg">{t('report_detail.sidebar.quick_actions')}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <Button variant="outline" className="w-full justify-start">
+                    <Edit className="mr-2 h-4 w-4" />
+                    {t('common.edit')}
+                  </Button>
+                  <Button variant="outline" className="w-full justify-start" onClick={handleShare}>
+                    <Share2 className="mr-2 h-4 w-4" />
+                    {t('common.share')}
+                  </Button>
+                  <Button variant="outline" className="w-full justify-start" onClick={handleDownload}>
+                    <Download className="mr-2 h-4 w-4" />
+                    {t('report_detail.sidebar.export_pdf')}
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="sources" className="animate-in fade-in duration-500">
+          <Card className="border-none shadow-xl">
             <CardHeader>
-              <CardTitle className="text-base sm:text-lg">Informações do Relatório</CardTitle>
+              <CardTitle className="text-lg">{t('report_detail.data_assets.title')}</CardTitle>
+              <CardDescription>{t('report_detail.data_assets.description')}</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <p className="text-sm text-muted-foreground">Template Utilizado</p>
-                <p className="font-medium">{report.template}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Descrição</p>
-                <p className="text-sm">{report.description}</p>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-4 rounded-xl border bg-muted/10">
+                  <div className="flex items-center gap-4">
+                    <div className="p-2 bg-background rounded-lg border shadow-sm">
+                      <Database className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Vendas_Novembro_2025.xlsx</p>
+                      <p className="text-xs text-muted-foreground">Planilha Excel • 1.2 MB</p>
+                    </div>
+                  </div>
+                  <Button variant="outline" size="sm" className="gap-2 font-bold">
+                    <Download className="h-4 w-4" />
+                    {t('report_detail.data_assets.download')}
+                  </Button>
+                </div>
+                
+                <div className="flex items-center justify-between p-4 rounded-xl border bg-muted/10 opacity-50">
+                  <div className="flex items-center gap-4">
+                    <div className="p-2 bg-background rounded-lg border shadow-sm">
+                      <ExternalLink className="h-5 w-5 text-blue-500" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Google Analytics Dashboard</p>
+                      <p className="text-xs text-muted-foreground">Fonte Externa • analytics.google.com</p>
+                    </div>
+                  </div>
+                  <Button variant="ghost" size="sm" className="gap-2">
+                    {t('report_detail.data_assets.open_link')}
+                  </Button>
+                </div>
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+      </Tabs>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base sm:text-lg">Ações Rápidas</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <Button variant="outline" className="w-full justify-start">
-                <Edit className="mr-2 h-4 w-4" />
-                Editar Relatório
-              </Button>
-              <Button variant="outline" className="w-full justify-start" onClick={handleShare}>
-                <Share2 className="mr-2 h-4 w-4" />
-                Compartilhar
-              </Button>
-              <Button variant="outline" className="w-full justify-start" onClick={handleDownload}>
-                <Download className="mr-2 h-4 w-4" />
-                Exportar PDF
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      {/* Mobile Bottom CTA Bar */}
-      <div className="sm:hidden fixed bottom-[3.5rem] left-0 right-0 bg-background/95 backdrop-blur-sm border-t p-3 z-40 flex gap-2 lg:bottom-0" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+      <div className="sm:hidden fixed bottom-[3.5rem] left-0 right-0 bg-background/95 backdrop-blur-sm border-t p-3 z-40 flex gap-2" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
         <Button variant="outline" className="flex-1" onClick={handleShare}>
           <Share2 className="h-4 w-4 mr-2" />
-          Compartilhar
+          {t('common.share')}
         </Button>
         <Button className="flex-1" onClick={handleDownload}>
           <Download className="h-4 w-4 mr-2" />
-          Download
+          {t('common.download')}
         </Button>
       </div>
     </div>

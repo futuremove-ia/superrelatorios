@@ -1,43 +1,48 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+
 import { TrendingUp, Users, DollarSign, Target, Eye, Download, BarChart3, CheckCircle, AlertTriangle, Lightbulb, FileText, ClipboardCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 import BrandName from "@/components/BrandName";
+import { useTranslation } from "react-i18next";
+
 
 const ReportExamples = () => {
+  const { t } = useTranslation();
+  
   const mainReport = {
-    title: "Relatório Modelo",
-    subtitle: "Análise Completa de Performance Empresarial",
+    title: t('landing.examples.main.title'),
+    subtitle: t('landing.examples.main.subtitle'),
     sections: [
       {
-        title: "Resumo Executivo",
+        title: t('landing.examples.main.sections.summary.title'),
         icon: FileText,
-        content: "Situação geral da empresa com principais métricas e direcionamentos estratégicos baseados nos dados analisados."
+        content: t('landing.examples.main.sections.summary.desc')
       },
       {
-        title: "Destaques",
+        title: t('landing.examples.main.sections.highlights.title'),
         icon: CheckCircle,
-        content: "• Crescimento de 23% nas vendas\n• Redução de 15% nos custos operacionais\n• Aumento de 40% na satisfação do cliente"
+        content: t('landing.examples.main.sections.highlights.desc')
       },
       {
-        title: "Análise",
+        title: t('landing.examples.main.sections.analysis.title'),
         icon: BarChart3,
-        content: "Gráficos interativos com tendências, comparativos mensais e análise de correlações entre diferentes métricas."
+        content: t('landing.examples.main.sections.analysis.desc')
       },
       {
-        title: "Riscos & Oportunidades",
+        title: t('landing.examples.main.sections.risks.title'),
         icon: AlertTriangle,
-        content: "Identificação de pontos de atenção e oportunidades de crescimento baseadas nos padrões encontrados nos dados."
+        content: t('landing.examples.main.sections.risks.desc')
       },
       {
-        title: "Insights",
+        title: t('landing.examples.main.sections.insights.title'),
         icon: Lightbulb,
-        content: "Recomendações específicas e próximos passos sugeridos para otimização dos resultados empresariais."
+        content: t('landing.examples.main.sections.insights.desc')
       },
       {
-        title: "Checklist",
+        title: t('landing.examples.main.sections.checklist.title'),
         icon: ClipboardCheck,
-        content: "Lista de ações práticas organizadas por prioridade e impacto esperado nos resultados."
+        content: t('landing.examples.main.sections.checklist.desc')
       }
     ]
   };
@@ -45,35 +50,35 @@ const ReportExamples = () => {
   const otherExamples = [
     {
       icon: TrendingUp,
-      title: "Relatório de Vendas",
-      description: "Performance comercial com insights acionáveis",
+      title: t('landing.examples.others.sales.title'),
+      description: t('landing.examples.others.sales.desc'),
       color: "bg-primary",
       template: "sales-monthly"
     },
     {
       icon: Users,
-      title: "Análise de Clientes",
-      description: "Segmentação e comportamento detalhado",
+      title: t('landing.examples.others.clients.title'),
+      description: t('landing.examples.others.clients.desc'),
       color: "bg-accent",
       template: "executive-quarterly"
     },
     {
       icon: DollarSign,
-      title: "Relatório Financeiro",
-      description: "Análise financeira executiva completa",
+      title: t('landing.examples.others.financial.title'),
+      description: t('landing.examples.others.financial.desc'),
       color: "bg-primary-dark",
       template: "financial-monthly"
     },
   ];
 
+
   return (
     <section className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="mb-4">Veja exemplos de relatórios gerados</h2>
+          <h2 className="mb-4">{t('landing.examples.title')}</h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Cada relatório é único, adaptado aos seus dados e contexto empresarial. 
-            Veja como seria um relatório baseado no seu negócio.
+            {t('landing.examples.subtitle')}
           </p>
         </div>
         
@@ -111,10 +116,11 @@ const ReportExamples = () => {
                   <Button variant="accent" size="lg" asChild>
                     <Link to="/app/novo-relatorio">
                       <Target className="w-5 h-5 mr-2" />
-                      Gerar Relatório Modelo
+                      {t('landing.examples.main.cta')}
                     </Link>
                   </Button>
                 </div>
+
               </div>
             </Card>
           </div>
@@ -139,9 +145,10 @@ const ReportExamples = () => {
                     <Button variant="outline" size="sm" className="flex-1" asChild>
                       <Link to={`/app/novo-relatorio?template=${report.template}`}>
                         <Eye className="w-4 h-4 mr-2" />
-                        Ver Exemplo
+                        {t('landing.examples.others.view')}
                       </Link>
                     </Button>
+
                     <Button variant="ghost" size="sm">
                       <Download className="w-4 h-4" />
                     </Button>
@@ -156,13 +163,14 @@ const ReportExamples = () => {
           <Button variant="accent" size="lg" className="px-8" asChild>
             <Link to="/app/novo-relatorio">
               <Target className="w-5 h-5 mr-2" />
-              Criar Meu Relatório Agora
+              {t('landing.examples.footer_cta')}
             </Link>
           </Button>
           <p className="text-sm text-muted-foreground mt-3">
-            Primeiro relatório grátis • Sem cartão de crédito
+            {t('landing.examples.footer_hint')}
           </p>
         </div>
+
       </div>
     </section>
   );

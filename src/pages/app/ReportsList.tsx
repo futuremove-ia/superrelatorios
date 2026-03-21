@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Search, Filter, Plus, Share2, Download, Eye, MoreHorizontal, Grid, List } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Search, Filter, Plus, Share2, Download, Eye, MoreHorizontal, Grid, List, FileText } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,15 +9,20 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { AISidebar } from '@/components/ai/AISidebar';
 import { reportsService, Report } from '@/services/mockReports';
+import { useTranslation } from 'react-i18next';
+
 
 const ReportsList = () => {
+  const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
   const [reports, setReports] = useState<Report[]>([]);
+
   const [filteredReports, setFilteredReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
 
   useEffect(() => {
     const loadReports = async () => {
@@ -58,11 +63,12 @@ const ReportsList = () => {
 
   const getStatusText = (status: Report['status']) => {
     switch (status) {
-      case 'completed': return 'Concluído';
-      case 'shared': return 'Compartilhado';
-      default: return 'Rascunho';
+      case 'completed': return t('reports.filters.completed');
+      case 'shared': return t('reports.filters.shared');
+      default: return t('reports.filters.draft');
     }
   };
+
 
   const categories = Array.from(new Set(reports.map(r => r.category)));
 
@@ -85,28 +91,30 @@ const ReportsList = () => {
   }
 
   return (
-    <div className="bg-gradient-subtle min-h-full">
-      <div className="flex">
+    <div className="bg-gradient-subtle min-h-full w-full">
+      <div className="flex w-full overflow-hidden">
         {/* Main Content */}
-        <div className="flex-1 p-4 sm:p-6 space-y-4 sm:space-y-6">
+        <div className="flex-1 min-w-0 p-4 sm:p-6 space-y-4 sm:space-y-6">
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground flex items-center gap-2 sm:gap-3">
                 <Filter className="h-5 w-5 sm:h-7 sm:w-7 text-primary" />
-                Meus Relatórios
+                {t('reports.title')}
               </h1>
               <p className="text-muted-foreground mt-1 text-sm">
-                Gerencie todos os seus relatórios em um só lugar
+                {t('reports.subtitle')}
               </p>
+
             </div>
             <Button asChild size="default" className="self-start sm:self-auto touch-target">
               <Link to="/app/novo-relatorio">
                 <Plus className="mr-2 h-4 w-4" />
-                <span className="hidden sm:inline">Novo Relatório</span>
-                <span className="sm:hidden">Novo</span>
+                <span className="hidden sm:inline">{t('reports.new_report_button')}</span>
+                <span className="sm:hidden">{t('reports.new_report_button')}</span>
               </Link>
             </Button>
+
           </div>
 
           {/* Filters */}
@@ -117,30 +125,33 @@ const ReportsList = () => {
                   <div className="relative flex-1">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                     <Input
-                      placeholder="Buscar relatórios..."
+                      placeholder={t('reports.filters.search_placeholder')}
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="pl-10"
                     />
+
                   </div>
                   <div className="flex gap-2">
                     <Select value={statusFilter} onValueChange={setStatusFilter}>
                       <SelectTrigger className="w-full sm:w-36">
-                        <SelectValue placeholder="Status" />
+                        <SelectValue placeholder={t('reports.filters.status')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all">Todos</SelectItem>
-                        <SelectItem value="draft">Rascunho</SelectItem>
-                        <SelectItem value="completed">Concluído</SelectItem>
-                        <SelectItem value="shared">Compartilhado</SelectItem>
+                        <SelectItem value="all">{t('reports.filters.all')}</SelectItem>
+                        <SelectItem value="draft">{t('reports.filters.draft')}</SelectItem>
+                        <SelectItem value="completed">{t('reports.filters.completed')}</SelectItem>
+                        <SelectItem value="shared">{t('reports.filters.shared')}</SelectItem>
                       </SelectContent>
                     </Select>
+
                     <Select value={categoryFilter} onValueChange={setCategoryFilter}>
                       <SelectTrigger className="w-full sm:w-36">
-                        <SelectValue placeholder="Categoria" />
+                        <SelectValue placeholder={t('reports.filters.category')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all">Todas</SelectItem>
+                        <SelectItem value="all">{t('reports.filters.all')}</SelectItem>
+
                         {categories.map(category => (
                           <SelectItem key={category} value={category}>{category}</SelectItem>
                         ))}
@@ -151,23 +162,28 @@ const ReportsList = () => {
                 
                 <div className="flex items-center justify-between">
                   <p className="text-xs sm:text-sm text-muted-foreground">
-                    {filteredReports.length} relatório{filteredReports.length !== 1 ? 's' : ''} encontrado{filteredReports.length !== 1 ? 's' : ''}
+                    {t('reports.counter', { count: filteredReports.length })}
                   </p>
+
                   <div className="hidden sm:flex items-center gap-1">
-                    <Button
-                      variant={viewMode === 'grid' ? 'default' : 'outline'}
-                      size="sm"
-                      onClick={() => setViewMode('grid')}
-                    >
-                      <Grid className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant={viewMode === 'list' ? 'default' : 'outline'}
-                      size="sm"
-                      onClick={() => setViewMode('list')}
-                    >
-                      <List className="h-4 w-4" />
-                    </Button>
+                      <Button
+                        variant={viewMode === 'grid' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setViewMode('grid')}
+                        aria-label={t('reports.view_grid')}
+                        title={t('reports.view_grid')}
+                      >
+                        <Grid className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant={viewMode === 'list' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setViewMode('list')}
+                        aria-label={t('reports.view_list')}
+                        title={t('reports.view_list')}
+                      >
+                        <List className="h-4 w-4" />
+                      </Button>
                   </div>
                 </div>
               </div>
@@ -183,72 +199,81 @@ const ReportsList = () => {
                     <Search className="h-8 w-8 text-muted-foreground" />
                   </div>
                   <h3 className="text-lg font-medium text-foreground mb-2">
-                    Nenhum relatório encontrado
+                    {t('reports.empty.title')}
                   </h3>
                   <p className="text-muted-foreground mb-6 text-sm">
                     {searchTerm || statusFilter !== 'all' || categoryFilter !== 'all' 
-                      ? 'Tente ajustar os filtros para encontrar o que procura.'
-                      : 'Você ainda não criou nenhum relatório. Que tal começar agora?'
+                      ? t('reports.empty.filter_desc')
+                      : t('reports.empty.brand_new_desc')
                     }
                   </p>
                   {!searchTerm && statusFilter === 'all' && categoryFilter === 'all' && (
                     <Button asChild>
                       <Link to="/app/novo-relatorio">
                         <Plus className="mr-2 h-4 w-4" />
-                        Criar Primeiro Relatório
+                        {t('reports.empty.cta')}
                       </Link>
                     </Button>
                   )}
+
                 </div>
               </CardContent>
             </Card>
           ) : viewMode === 'grid' ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-              {filteredReports.map((report) => (
-                <Card key={report.id} className="card-hover group">
-                  <CardHeader className="pb-2 p-4">
-                    <div className="flex items-start justify-between gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {filteredReports.map((report, index) => (
+                <Card 
+                  key={report.id} 
+                  className="card-hover group cursor-pointer overflow-hidden border-border/40 animate-fade-in"
+                  style={{ animationDelay: `${0.3 + index * 0.1}s` }}
+                  onClick={() => navigate(`/app/relatorios/${report.id}`)}
+                >
+                  <div className={`h-1.5 w-full ${getStatusColor(report.status).includes('green') ? 'bg-emerald-500' : getStatusColor(report.status).includes('yellow') ? 'bg-amber-500' : 'bg-slate-400'}`} />
+                  <CardHeader className="pb-2 p-5">
+                    <div className="flex items-start justify-between gap-3">
                       <div className="flex-1 min-w-0">
-                        <CardTitle className="text-sm sm:text-base text-foreground line-clamp-2 group-hover:text-primary transition-colors">
+                        <CardTitle className="text-base sm:text-lg font-bold text-foreground line-clamp-2 group-hover:text-primary transition-colors tracking-tight">
                           {report.title}
                         </CardTitle>
-                        {report.subtitle && (
-                          <CardDescription className="mt-1 line-clamp-1 text-xs">{report.subtitle}</CardDescription>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Badge className={`${getStatusColor(report.status)} text-xs`} variant="secondary">
+                        <Badge className={`mt-2 ${getStatusColor(report.status)} text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 border-none shadow-sm`} variant="secondary">
                           {getStatusText(report.status)}
                         </Badge>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem asChild>
-                              <Link to={`/app/relatorios/${report.id}`}>
-                                <Eye className="mr-2 h-4 w-4" />Visualizar
-                              </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem><Share2 className="mr-2 h-4 w-4" />Compartilhar</DropdownMenuItem>
-                            <DropdownMenuItem><Download className="mr-2 h-4 w-4" />Download PDF</DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
                       </div>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={(e) => { e.stopPropagation(); navigate(`/app/relatorios/${report.id}`); }}>
+                            <Eye className="mr-2 h-4 w-4" />{t('reports.actions.view')}
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={(e) => e.stopPropagation()}><Share2 className="mr-2 h-4 w-4" />{t('reports.actions.share')}</DropdownMenuItem>
+                          <DropdownMenuItem onClick={(e) => e.stopPropagation()}><Download className="mr-2 h-4 w-4" />{t('reports.actions.download')}</DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
                   </CardHeader>
-                  <CardContent className="pt-0 p-4">
-                    <div className="space-y-3">
-                      <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">{report.description}</p>
-                      <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span>{report.category}</span>
-                        <span>{new Date(report.updatedAt).toLocaleDateString('pt-BR')}</span>
+                  <CardContent className="px-5 pb-5 pt-0">
+                    <div className="space-y-4">
+                      <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed min-h-[2.5rem]">{report.description}</p>
+                      
+                      <div className="flex items-center justify-between pt-4 border-t border-border/30">
+                        <div className="flex items-center gap-2">
+                          <div className="w-7 h-7 rounded-lg bg-primary/5 flex items-center justify-center">
+                            <FileText className="h-4 w-4 text-primary/70" />
+                          </div>
+                          <span className="text-xs font-semibold text-muted-foreground">{report.category}</span>
+                        </div>
+                        <span className="text-[10px] font-medium text-muted-foreground/60 uppercase tracking-tighter">
+                          {new Date(report.updatedAt).toLocaleDateString(i18n.language)}
+                        </span>
                       </div>
-                      <Button variant="outline" size="sm" asChild className="w-full">
+
+                      <Button variant="outline" size="sm" asChild className="w-full font-bold hover:bg-primary hover:text-white transition-all duration-300">
                         <Link to={`/app/relatorios/${report.id}`}>
-                          <Eye className="mr-2 h-4 w-4" />Abrir
+                          <Eye className="mr-2 h-4 w-4" />{t('reports.actions.open')}
                         </Link>
                       </Button>
                     </div>
@@ -257,40 +282,76 @@ const ReportsList = () => {
               ))}
             </div>
           ) : (
-            <Card>
+            <Card className="animate-fade-in overflow-hidden border-border/40">
               <CardContent className="p-0">
-                {filteredReports.map((report) => (
-                  <div key={report.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 border-b last:border-b-0 hover:bg-muted/50 transition-colors group gap-2">
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-foreground text-sm line-clamp-1 group-hover:text-primary transition-colors">
-                        {report.title}
-                      </h3>
-                      <div className="flex flex-wrap items-center gap-2 mt-1 text-xs text-muted-foreground">
-                        <span>{report.category}</span>
-                        <Badge className={`${getStatusColor(report.status)} text-xs`} variant="secondary">
-                          {getStatusText(report.status)}
-                        </Badge>
-                        <span>{new Date(report.updatedAt).toLocaleDateString('pt-BR')}</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 self-end sm:self-auto">
-                      <Button variant="outline" size="sm" asChild>
-                        <Link to={`/app/relatorios/${report.id}`}>
-                          <Eye className="h-4 w-4 mr-1" />Abrir
-                        </Link>
-                      </Button>
-                    </div>
-                  </div>
-                ))}
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left" aria-label={t('reports.table_desc')}>
+                    <thead>
+                      <tr className="border-b border-border/50 bg-muted/30">
+                        <th className="py-3 px-4 font-semibold text-xs text-muted-foreground uppercase tracking-wider">{t('reports.title')}</th>
+                        <th className="py-3 px-4 font-semibold text-xs text-muted-foreground uppercase tracking-wider hidden sm:table-cell">{t('reports.filters.category')}</th>
+                        <th className="py-3 px-4 font-semibold text-xs text-muted-foreground uppercase tracking-wider">{t('reports.filters.status')}</th>
+                        <th className="py-3 px-4 font-semibold text-xs text-muted-foreground uppercase tracking-wider hidden md:table-cell">{t('report_detail.cards.updated_at')}</th>
+                        <th className="py-3 px-4 w-10"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredReports.map((report) => (
+                        <tr 
+                          key={report.id} 
+                          className="group border-b border-border/30 last:border-0 hover:bg-muted/30 transition-colors cursor-pointer"
+                          onClick={() => navigate(`/app/relatorios/${report.id}`)}
+                        >
+                          <td className="py-4 px-4">
+                            <div className="flex items-center gap-3">
+                              <div className="w-9 h-9 rounded-lg bg-primary/5 flex items-center justify-center border border-primary/10 shrink-0">
+                                <FileText className="h-4 w-4 text-primary/70" />
+                              </div>
+                              <div>
+                                <p className="font-bold text-foreground group-hover:text-primary transition-colors text-sm">{report.title}</p>
+                                <p className="text-xs text-muted-foreground hidden lg:block line-clamp-1 max-w-xs">{report.description}</p>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="py-4 px-4 hidden sm:table-cell text-sm font-medium text-muted-foreground">
+                            {report.category}
+                          </td>
+                          <td className="py-4 px-4">
+                            <Badge className={`${getStatusColor(report.status)} text-[10px] uppercase font-bold border-none`} variant="secondary">
+                              {getStatusText(report.status)}
+                            </Badge>
+                          </td>
+                          <td className="py-4 px-4 text-sm text-muted-foreground hidden md:table-cell">
+                            {new Date(report.updatedAt).toLocaleDateString(i18n.language)}
+                          </td>
+                          <td className="py-4 px-4 text-right">
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                  <MoreHorizontal className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); navigate(`/app/relatorios/${report.id}`); }}>
+                                  <Eye className="mr-2 h-4 w-4" />{t('reports.actions.view')}
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={(e) => e.stopPropagation()}><Share2 className="mr-2 h-4 w-4" />{t('reports.actions.share')}</DropdownMenuItem>
+                                <DropdownMenuItem onClick={(e) => e.stopPropagation()}><Download className="mr-2 h-4 w-4" />{t('reports.actions.download')}</DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </CardContent>
             </Card>
           )}
         </div>
 
-        {/* AI Sidebar */}
-        <div className="hidden xl:block w-80 p-6">
-          <AISidebar context="reports" />
-        </div>
+        {/* AI Sidebar - Collapsible */}
+        <AISidebar context="reports" className="hidden xl:block" />
       </div>
     </div>
   );

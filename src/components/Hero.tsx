@@ -1,9 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Play, CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
 
 const Hero = () => {
+  const { t } = useTranslation();
   return (
+
     <section className="min-h-[85vh] md:min-h-screen bg-primary flex items-center justify-center relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 opacity-50">
@@ -13,25 +17,29 @@ const Hero = () => {
       <div className="container mx-auto px-4 py-16 md:py-20 text-center relative z-10">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
-            Pare de perder tempo com relatórios manuais
+            {t('landing.hero.title')}
           </h1>
+
           
           <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-6 max-w-3xl mx-auto leading-relaxed">
-            Gere relatórios profissionais em 3 cliques, com análises feitas por IA que ajudam a decidir.
+            {t('landing.hero.subtitle')}
           </p>
+
           
           <div className="bg-white/10 backdrop-blur-sm rounded-lg px-6 py-3 mb-8 max-w-2xl mx-auto">
             <p className="text-base sm:text-lg text-white font-semibold">
-              Inteligência de consultor, por uma fração do custo.
+              {t('landing.hero.badge')}
             </p>
           </div>
+
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <Button variant="accent" size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-4 w-full sm:w-auto" asChild>
               <Link to="/app/novo-relatorio?template=executive-quarterly">
-                Criar Meu Primeiro Relatório
+                {t('landing.hero.cta_main')}
               </Link>
             </Button>
+
             <Button
               variant="outline"
               size="lg"
@@ -39,23 +47,27 @@ const Hero = () => {
               onClick={() => document.getElementById('exemplos')?.scrollIntoView({ behavior: 'smooth' })}
             >
               <Play className="w-5 h-5 mr-2" />
-              Ver Demonstração
+              {t('landing.hero.cta_sec')}
             </Button>
+
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center text-white/80 text-sm">
             <div className="flex items-center gap-2">
               <CheckCircle className="w-4 h-4 text-accent" />
-              <span>3 cliques do upload ao PDF</span>
+              <span>{t('landing.hero.features.clicks')}</span>
             </div>
+
             <div className="flex items-center gap-2">
               <CheckCircle className="w-4 h-4 text-accent" />
-              <span>Recomendações acionáveis</span>
+              <span>{t('landing.hero.features.insights')}</span>
             </div>
+
             <div className="flex items-center gap-2">
               <CheckCircle className="w-4 h-4 text-accent" />
-              <span>Seus dados, seu controle</span>
+              <span>{t('landing.hero.features.security')}</span>
             </div>
+
           </div>
         </div>
       </div>

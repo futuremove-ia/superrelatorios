@@ -1,9 +1,15 @@
 import BrandName from "@/components/BrandName";
 import LogoIcon from "@/components/LogoIcon";
+import { useTranslation } from "react-i18next";
+
 
 const Footer = () => {
+  const { t } = useTranslation();
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="bg-primary-dark text-white py-12">
+
       <div className="container mx-auto px-4">
         <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8">
           <div className="sm:col-span-2 md:col-span-1">
@@ -12,44 +18,49 @@ const Footer = () => {
               <BrandName variant="on-dark" />
             </div>
             <p className="text-sm text-white/70 leading-relaxed">
-              Relatórios inteligentes com IA para PMEs que querem crescer com análise de dados, cenários e projeções automatizadas.
+              {t('landing.footer.mission')}
             </p>
+
           </div>
           
           <div>
-            <h4 className="font-semibold mb-4">Produto</h4>
+            <h4 className="font-semibold mb-4">{t('landing.footer.sections.product.title')}</h4>
             <ul className="space-y-3 text-sm text-white/70">
-              <li><a href="#recursos" className="hover:text-white transition-colors py-1 inline-block">Recursos</a></li>
-              <li><a href="#como-funciona" className="hover:text-white transition-colors py-1 inline-block">Como Funciona</a></li>
-              <li><a href="#precos" className="hover:text-white transition-colors py-1 inline-block">Preços</a></li>
-              <li><a href="#" className="hover:text-white transition-colors py-1 inline-block">Integrações</a></li>
+              <li><a href="#recursos" className="hover:text-white transition-colors py-1 inline-block">{t('landing.footer.sections.product.features')}</a></li>
+              <li><a href="#como-funciona" className="hover:text-white transition-colors py-1 inline-block">{t('landing.footer.sections.product.how_it_works')}</a></li>
+              <li><a href="#precos" className="hover:text-white transition-colors py-1 inline-block">{t('landing.footer.sections.product.pricing')}</a></li>
+              <li><a href="#" className="hover:text-white transition-colors py-1 inline-block">{t('landing.footer.sections.product.integrations')}</a></li>
             </ul>
           </div>
+
           
           <div>
-            <h4 className="font-semibold mb-4">Suporte</h4>
+            <h4 className="font-semibold mb-4">{t('landing.footer.sections.support.title')}</h4>
             <ul className="space-y-3 text-sm text-white/70">
-              <li><a href="#" className="hover:text-white transition-colors py-1 inline-block">Central de Ajuda</a></li>
-              <li><a href="#" className="hover:text-white transition-colors py-1 inline-block">Documentação</a></li>
-              <li><a href="#" className="hover:text-white transition-colors py-1 inline-block">Status</a></li>
-              <li><a href="#" className="hover:text-white transition-colors py-1 inline-block">Contato</a></li>
+              <li><a href="#" className="hover:text-white transition-colors py-1 inline-block">{t('landing.footer.sections.support.help')}</a></li>
+              <li><a href="#" className="hover:text-white transition-colors py-1 inline-block">{t('landing.footer.sections.support.docs')}</a></li>
+              <li><a href="#" className="hover:text-white transition-colors py-1 inline-block">{t('landing.footer.sections.support.status')}</a></li>
+              <li><a href="#" className="hover:text-white transition-colors py-1 inline-block">{t('landing.footer.sections.support.contact')}</a></li>
             </ul>
           </div>
+
           
           <div>
-            <h4 className="font-semibold mb-4">Legal</h4>
+            <h4 className="font-semibold mb-4">{t('landing.footer.sections.legal.title')}</h4>
             <ul className="space-y-3 text-sm text-white/70">
-              <li><a href="#" className="hover:text-white transition-colors py-1 inline-block">Privacidade</a></li>
-              <li><a href="#" className="hover:text-white transition-colors py-1 inline-block">Termos</a></li>
-              <li><a href="#" className="hover:text-white transition-colors py-1 inline-block">Segurança</a></li>
-              <li><a href="#" className="hover:text-white transition-colors py-1 inline-block">Cookies</a></li>
+              <li><a href="#" className="hover:text-white transition-colors py-1 inline-block">{t('landing.footer.sections.legal.privacy')}</a></li>
+              <li><a href="#" className="hover:text-white transition-colors py-1 inline-block">{t('landing.footer.sections.legal.terms')}</a></li>
+              <li><a href="#" className="hover:text-white transition-colors py-1 inline-block">{t('landing.footer.sections.legal.security')}</a></li>
+              <li><a href="#" className="hover:text-white transition-colors py-1 inline-block">{t('landing.footer.sections.legal.cookies')}</a></li>
             </ul>
           </div>
+
         </div>
         
         <div className="border-t border-white/20 mt-8 pt-8 text-center text-sm text-white/70">
-          © 2025 <BrandName variant="on-dark" />. Todos os direitos reservados.
+          {t('landing.footer.copyright', { year: currentYear, brand: <BrandName variant="on-dark" /> })}
         </div>
+
       </div>
     </footer>
   );

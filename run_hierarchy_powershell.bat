@@ -1,0 +1,3 @@
+@echo off
+echo Executando script de hierarquia organizacional via PowerShell...
+powershell -ExecutionPolicy Bypass -File "EXECUTE_HIERARCHY.md"

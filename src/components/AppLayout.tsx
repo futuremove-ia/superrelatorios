@@ -9,7 +9,11 @@ import {
   Menu,
   Bell,
   Search,
-  Folder
+  Folder,
+  LogOut,
+  Target,
+  ListChecks,
+  Database
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,24 +22,32 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import BrandName from '@/components/BrandName';
 import LogoIcon from '@/components/LogoIcon';
+import { useAuth } from '@/contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
+
 
 const AppLayout = () => {
+  const { user, signOut } = useAuth();
+  const { t } = useTranslation();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+
   const navigation = [
-    { name: 'Dashboard', href: '/app', icon: LayoutDashboard },
-    { name: 'Relatórios', href: '/app/relatorios', icon: FileText },
-    { name: 'Pastas', href: '/app/pastas', icon: Folder },
-    { name: 'Novo Relatório', href: '/app/novo-relatorio', icon: Plus },
+    { name: t('nav.overview', { defaultValue: 'Visão Geral' }), href: '/app', icon: LayoutDashboard },
+    { name: t('nav.priorities', { defaultValue: 'Prioridades' }), href: '/app/prioridades', icon: Target },
+    { name: t('nav.action_plan', { defaultValue: 'Plano de Ação' }), href: '/app/plano-de-acao', icon: ListChecks },
+    { name: t('nav.reports', { defaultValue: 'Relatórios' }), href: '/app/relatorios', icon: FileText },
+    { name: t('nav.data', { defaultValue: 'Meus Dados' }), href: '/app/dados', icon: Database },
   ];
 
   const mobileNav = [
-    { name: 'Início', href: '/app', icon: LayoutDashboard },
-    { name: 'Relatórios', href: '/app/relatorios', icon: FileText },
-    { name: 'Novo', href: '/app/novo-relatorio', icon: Plus },
-    { name: 'Pastas', href: '/app/pastas', icon: Folder },
+    { name: t('nav.overview', { defaultValue: 'Visão Geral' }), href: '/app', icon: LayoutDashboard },
+    { name: t('nav.priorities', { defaultValue: 'Prioridades' }), href: '/app/prioridades', icon: Target },
+    { name: t('nav.action_plan', { defaultValue: 'Plano' }), href: '/app/plano-de-acao', icon: ListChecks },
+    { name: t('nav.data', { defaultValue: 'Dados' }), href: '/app/dados', icon: Database },
   ];
+
 
   const isActive = (href: string) => {
     if (href === '/app') {
@@ -51,7 +63,7 @@ const AppLayout = () => {
         <BrandName variant="header" />
       </div>
       
-      <nav className="flex-1 px-4 py-6 space-y-2">
+      <nav className="flex-1 px-4 py-6 space-y-2" aria-label={t('nav.main_navigation')}>
         {navigation.map((item) => {
           const active = isActive(item.href);
           return (
@@ -82,9 +94,10 @@ const AppLayout = () => {
             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
           >
             <Settings className="h-5 w-5" />
-            Configurações
+            {t('nav.settings')}
           </Link>
         </div>
+
       </div>
     </div>
   );
@@ -111,77 +124,79 @@ const AppLayout = () => {
         <header className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b shadow-sm">
           <div className="flex h-14 sm:h-16 items-center gap-4 px-4 sm:px-6">
             {/* Mobile Menu Button */}
-            <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="sm" className="lg:hidden">
-                  <Menu className="h-5 w-5" />
-                </Button>
-              </SheetTrigger>
-            </Sheet>
+            {/* Mobile Menu Button - Reuse the toggle since Sheet is already declared via SidebarContent for simplicity or keep one central Sheet */}
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="lg:hidden touch-target" 
+              onClick={() => setSidebarOpen(true)}
+              aria-label={t('nav.open_menu')}
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
 
             {/* Search */}
             <div className="flex-1 max-w-md hidden sm:block">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                 <Input
-                  placeholder="Buscar relatórios..."
+                  placeholder={t('search.placeholder')}
                   className="pl-10 bg-muted/50 border-muted focus:border-primary transition-colors"
                 />
               </div>
+
             </div>
 
             {/* Right Side */}
             <div className="flex items-center gap-2 ml-auto">
-              {/* Mobile Search */}
-              <Button variant="ghost" size="sm" className="sm:hidden">
-                <Search className="h-5 w-5" />
-              </Button>
-              
-              {/* Notifications */}
-              <Button variant="ghost" size="sm" className="relative hover-scale">
-                <Bell className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 h-3 w-3 bg-destructive rounded-full text-xs text-destructive-foreground flex items-center justify-center">
-                  3
-                </span>
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button variant="ghost" size="sm" className="relative hover-scale" aria-label={t('nav.notifications')}>
+                  <Bell className="h-5 w-5" />
+                </Button>
 
-              {/* User Menu */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-                    <Avatar className="h-9 w-9">
-                      <AvatarFallback>U</AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end">
-                  <div className="flex items-center justify-start gap-2 p-2">
-                    <div className="flex flex-col space-y-1 leading-none">
-                      <p className="font-medium">Usuário Demo</p>
-                      <p className="text-xs text-muted-foreground">usuario@exemplo.com</p>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="relative h-9 w-9 rounded-full" aria-label={t('nav.user_menu')}>
+                      <Avatar className="h-9 w-9">
+                        <AvatarFallback>
+                          {user?.email?.charAt(0).toUpperCase() || 'U'}
+                        </AvatarFallback>
+                      </Avatar>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56" align="end">
+                    <div className="flex items-center justify-start gap-2 p-2">
+                      <div className="flex flex-col space-y-1 leading-none">
+                        <p className="font-medium">{user?.user_metadata?.full_name || 'Usuário'}</p>
+                        <p className="text-xs text-muted-foreground">{user?.email}</p>
+                      </div>
                     </div>
-                  </div>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link to="/app/perfil">
-                      <User className="mr-2 h-4 w-4" />
-                      Perfil
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/app/configuracoes">
-                      <Settings className="mr-2 h-4 w-4" />
-                      Configurações
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link to="/">
-                      Sair
-                    </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                      <Link to="/app/perfil">
+                        <User className="mr-2 h-4 w-4" />
+                        {t('nav.profile')}
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to="/app/configuracoes">
+                        <Settings className="mr-2 h-4 w-4" />
+                        {t('nav.settings')}
+                      </Link>
+                    </DropdownMenuItem>
+
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem 
+                      onClick={() => signOut()} 
+                      className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"
+                    >
+                      <LogOut className="mr-2 h-4 w-4" />
+                      {t('nav.logout')}
+                    </DropdownMenuItem>
+
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </div>
           </div>
         </header>
@@ -192,7 +207,7 @@ const AppLayout = () => {
         </main>
 
         {/* Mobile Bottom Navigation */}
-        <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t z-50" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+        <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t z-50">
           <div className="flex items-center justify-around h-14">
             {mobileNav.map((item) => {
               const active = isActive(item.href);

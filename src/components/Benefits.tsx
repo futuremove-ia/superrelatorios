@@ -1,51 +1,56 @@
 import { Card } from "@/components/ui/card";
 import { Clock, TrendingUp, Target, FileText, Eye, Lock } from "lucide-react";
+import { useTranslation } from "react-i18next";
+
 
 const Benefits = () => {
+  const { t } = useTranslation();
   const benefits = [
     {
       icon: Clock,
-      title: "Resultados em minutos",
-      description: "O que levava horas agora leva minutos. Foque seu time no mais importante.",
+      title: t('landing.benefits.items.speed.title'),
+      description: t('landing.benefits.items.speed.desc'),
     },
     {
       icon: TrendingUp,
-      title: "Análises e Próximos Passos",
-      description: "Métricas de olho no dados, mas insights focados em ação e próximos passos decisão.",
+      title: t('landing.benefits.items.action.title'),
+      description: t('landing.benefits.items.action.desc'),
     },
     {
       icon: Target,
-      title: "Pronto pra enviar",
-      description: "Layout limpo, logotipo e bonito — causa boa impressão em clientes, sócios e investidores.",
+      title: t('landing.benefits.items.design.title'),
+      description: t('landing.benefits.items.design.desc'),
     },
     {
       icon: FileText,
-      title: "Visualizações Automáticas",
-      description: "Gráficos, tabelas e indicadores visuais para facilitar a compreensão.",
+      title: t('landing.benefits.items.viz.title'),
+      description: t('landing.benefits.items.viz.desc'),
     },
     {
       icon: Eye,
-      title: "Narrativa Adaptada",
-      description: "O sistema reescreve tudo de acordo com o setor e contexto empresarial.",
+      title: t('landing.benefits.items.narrative.title'),
+      description: t('landing.benefits.items.narrative.desc'),
     },
     {
       icon: Lock,
-      title: "Dados Seguros",
-      description: "Seus dados ficam protegidos com criptografia e são apenas seus.",
+      title: t('landing.benefits.items.security.title'),
+      description: t('landing.benefits.items.security.desc'),
     },
   ];
+
 
   return (
     <section className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Inteligência de consultor, por uma fração do custo
+            {t('landing.benefits.title')}
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Pare de gastar horas criando relatórios manuais. Nossa IA faz o trabalho pesado para você decidir o que fazer.
+            {t('landing.benefits.subtitle')}
           </p>
         </div>
+
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
           {benefits.map((benefit, index) => (
