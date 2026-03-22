@@ -48,4 +48,40 @@ export class ThresholdFactory {
     const all = this.getAll();
     return all[kpiCode] || null;
   }
+
+  static validate(threshold: Threshold): { isValid: boolean; errors: string[]; warnings: string[] } {
+    const errors: string[] = [];
+    const warnings: string[] = [];
+
+    if (typeof threshold.critical !== 'number' || threshold.critical < 0) {
+      errors.push('Critical threshold must be a non-negative number');
+    }
+
+    if (typeof threshold.warning !== 'number' || threshold.warning < 0) {
+      errors.push('Warning threshold must be a non-negative number');
+    }
+
+    if (typeof threshold.good !== 'number' || threshold.good < 0) {
+      errors.push('Good threshold must be a non-negative number');
+    }
+
+    // Logical validation
+    if (threshold.critical > threshold.warning) {
+      errors.push('Critical threshold should be less than or equal to warning threshold');
+    }
+
+    if (threshold.warning > threshold.good) {
+      errors.push('Warning threshold should be less than or equal to good threshold');
+    }
+
+    if (threshold.critical === threshold.warning && threshold.warning === threshold.good) {
+      warnings.push('All thresholds are the same - consider differentiating them');
+    }
+
+    return {
+      isValid: errors.length === 0,
+      errors,
+      warnings
+    };
+  }
 }

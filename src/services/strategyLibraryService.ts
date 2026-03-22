@@ -1,65 +1,58 @@
-import { ExtractedKPI } from './kpiExtractionService';
+import { ExtractedKPI } from '../types/extraction';
 
-/**
- * KPI da biblioteca estratégica
- */
-export interface StrategyKPI {
-  code: string;
+export interface StrategyTemplate {
+  id: string;
+  name: string;
+  description: string;
+  challenge: string;
+  objective: string;
+  actionLevers: ActionLever[];
+  priority: number;
+  complexity: 'low' | 'medium' | 'high';
+  estimatedTime: string;
+  expectedImpact: string;
+}
+
+export interface ActionLever {
+  id: string;
   title: string;
   description: string;
-  calculationFormula: string;
-  unit: string;
-  domain: 'finance' | 'marketing' | 'sales' | 'ops';
-  severity?: {
-    critical: { min: number; max: number };
-    warning: { min: number; max: number };
-    good: { min: number; max: number };
-  };
+  category: 'financial' | 'operational' | 'marketing' | 'sales' | 'strategic';
+  priority: number;
+  complexity: 'low' | 'medium' | 'high';
+  estimatedTime: string;
+  resources: string[];
+  expectedImpact: 'low' | 'medium' | 'high';
+  kpis: string[];
+  steps: ActionStep[];
 }
 
-/**
- * Desafio estratégico da biblioteca
- */
-export interface StrategyChallenge {
-  code: string;
+export interface ActionStep {
+  id: string;
   title: string;
   description: string;
-  domain: string;
-  severity: number;
-  symptoms: string[];
-  relatedKpiCodes: string[];
-  mainKpi: string;
-  thresholds: {
-    critical: { min: number; max: number };
-    warning: { min: number; max: number };
-    good: { min: number; max: number };
-  };
+  category: 'analysis' | 'planning' | 'execution' | 'monitoring';
+  estimatedTime: string;
+  dependencies?: string[];
+  deliverables: string[];
+  successCriteria: string[];
 }
 
-/**
- * Contexto de negócio detectado
- */
-export interface BusinessContext {
-  domain: 'finance' | 'marketing' | 'sales' | 'ops' | 'general';
-  industry?: string;
-  companySize?: 'small' | 'medium' | 'large';
-  dataCharacteristics: {
-    hasFinancialData: boolean;
-    hasSalesData: boolean;
-    hasOperationalData: boolean;
-    hasMarketingData: boolean;
+export interface StrategyRecommendation {
+  template: StrategyTemplate;
+  customization: {
+    industry?: string;
+    companySize?: 'small' | 'medium' | 'large';
+    specificChallenges?: string[];
+    availableResources?: string[];
   };
+  confidence: number;
+  reasoning: string;
 }
 
-/**
- * Serviço para conectar a biblioteca estratégica com a IA
- */
-export class StrategyLibraryService {
+class StrategyLibraryService {
   private static instance: StrategyLibraryService;
-  
-  // Cache de KPIs e desafios (simulado - viria do banco)
-  private kpiCache: Map<string, StrategyKPI> = new Map();
-  private challengeCache: Map<string, StrategyChallenge> = new Map();
+  private templates: StrategyTemplate[] = [];
 
   static getInstance(): StrategyLibraryService {
     if (!StrategyLibraryService.instance) {
@@ -69,294 +62,212 @@ export class StrategyLibraryService {
   }
 
   constructor() {
-    this.initializeLibrary();
+    this.initializeTemplates();
   }
 
-  /**
-   * Inicializa a biblioteca com dados estratégicos
-   */
-  private initializeLibrary() {
-    // KPIs Financeiros
-    this.addKPI({
-      code: 'NET_PROFIT_MARGIN',
-      title: 'Margem de Lucro Líquida',
-      description: '(Lucro Líquido / Receita Bruta) * 100 - A métrica definitiva de saúde do negócio',
-      calculationFormula: '(Lucro Líquido / Receita Bruta) * 100',
-      unit: '%',
-      domain: 'finance',
-      severity: {
-        critical: { min: 0, max: 5 },
-        warning: { min: 5, max: 10 },
-        good: { min: 10, max: 100 }
+  private initializeTemplates(): void {
+    this.templates = [
+      {
+        id: 'cash_flow_crunch_recovery',
+        name: 'Recuperação de Fluxo de Caixa',
+        description: 'Plano estratégico para resolver problemas de fluxo de caixa',
+        challenge: 'CASH_FLOW_CRUNCH',
+        objective: 'CASH_SAFETY_NET',
+        actionLevers: [
+          {
+            id: 'immediate_cash_conservation',
+            title: 'Conservação Imediata de Caixa',
+            description: 'Reduzir despesas não essenciais e otimizar fluxo de caixa',
+            category: 'financial',
+            priority: 1,
+            complexity: 'medium',
+            estimatedTime: '1-2 semanas',
+            resources: ['Controller', 'Planilha financeira', 'Acesso bancário'],
+            expectedImpact: 'high',
+            kpis: ['RUNWAY', 'BURN_RATE', 'DAYS_TO_RECEIVE'],
+            steps: [
+              {
+                id: 'analyze_expenses',
+                title: 'Análise de Despesas',
+                description: 'Mapear todas as despesas e categorizar por essencialidade',
+                category: 'analysis',
+                estimatedTime: '2-3 dias',
+                deliverables: ['Mapa de despesas detalhado', 'Categorização por prioridade'],
+                successCriteria: ['100% das despesas mapeadas', 'Categorias definidas']
+              },
+              {
+                id: 'implement_cost_reduction',
+                title: 'Implementar Redução de Custos',
+                description: 'Executar plano de redução de custos imediato',
+                category: 'execution',
+                estimatedTime: '1 semana',
+                dependencies: ['analyze_expenses'],
+                deliverables: ['Plano executado', 'Economia mensal documentada'],
+                successCriteria: ['Redução de 15-30% nos custos', 'Plano mantido por 3 meses']
+              }
+            ]
+          },
+          {
+            id: 'accelerate_receivables',
+            title: 'Acelerar Recebíveis',
+            description: 'Reduzir prazo médio de recebimento de clientes',
+            category: 'financial',
+            priority: 2,
+            complexity: 'medium',
+            estimatedTime: '2-3 semanas',
+            resources: ['Equipe de vendas', 'Sistema de cobrança', 'Jurídico'],
+            expectedImpact: 'high',
+            kpis: ['DAYS_TO_RECEIVE', 'RUNWAY'],
+            steps: [
+              {
+                id: 'review_current_terms',
+                title: 'Revisar Condições Atuais',
+                description: 'Analisar prazos e condições de pagamento vigentes',
+                category: 'analysis',
+                estimatedTime: '2-3 dias',
+                deliverables: ['Relatório de condições atuais', 'Identificação de gargalos'],
+                successCriteria: ['100% dos contratos analisados', 'Gargalos identificados']
+              }
+            ]
+          }
+        ],
+        priority: 1,
+        complexity: 'high',
+        estimatedTime: '4-6 semanas',
+        expectedImpact: 'Alta melhora na saúde financeira'
+      },
+      {
+        id: 'sales_machine_optimization',
+        name: 'Otimização da Máquina de Vendas',
+        description: 'Transformar o processo de vendas em máquina eficiente',
+        challenge: 'INEFFICIENT_SALES_MACHINE',
+        objective: 'PROFIT_MAXIMIZER',
+        actionLevers: [
+          {
+            id: 'sales_process_redesign',
+            title: 'Redesenho do Processo de Vendas',
+            description: 'Reestruturar completamente o funil de vendas',
+            category: 'sales',
+            priority: 1,
+            complexity: 'high',
+            estimatedTime: '3-4 semanas',
+            resources: ['Consultor de vendas', 'CRM', 'Equipe comercial'],
+            expectedImpact: 'high',
+            kpis: ['LTV_CAC_RATIO', 'SALES_CYCLE_DAYS', 'CAC'],
+            steps: [
+              {
+                id: 'map_current_process',
+                title: 'Mapear Processo Atual',
+                description: 'Documentar o processo de vendas do início ao fim',
+                category: 'analysis',
+                estimatedTime: '1 semana',
+                deliverables: ['Processo documentado', 'Pontos de gargalo identificados'],
+                successCriteria: ['Processo 100% mapeado', 'Ineficiências documentadas']
+              }
+            ]
+          }
+        ],
+        priority: 2,
+        complexity: 'high',
+        estimatedTime: '6-8 semanas',
+        expectedImpact: 'Aumento significativo na eficiência comercial'
       }
-    });
-
-    this.addKPI({
-      code: 'CASH_BURN_RATE',
-      title: 'Taxa de Queima de Caixa',
-      description: 'Média de saídas de caixa operacionais negativas - Velocidade de consumo de capital',
-      calculationFormula: 'SUM(Saídas Operacionais Negativas)',
-      unit: 'R$',
-      domain: 'finance',
-      severity: {
-        critical: { min: 10000, max: Infinity },
-        warning: { min: 5000, max: 10000 },
-        good: { min: 0, max: 5000 }
-      }
-    });
-
-    this.addKPI({
-      code: 'RUNWAY',
-      title: 'Runway (Meses de Sobrevivência)',
-      description: 'Saldo Total de Caixa / Burn Rate - Meses de sobrevivência sem nova receita',
-      calculationFormula: 'Saldo Caixa / Burn Rate Mensal',
-      unit: 'meses',
-      domain: 'finance',
-      severity: {
-        critical: { min: 0, max: 3 },
-        warning: { min: 3, max: 6 },
-        good: { min: 6, max: 24 }
-      }
-    });
-
-    // KPIs de Vendas
-    this.addKPI({
-      code: 'SALES_CONVERSION',
-      title: 'Taxa de Conversão de Vendas',
-      description: '(Vendas Fechadas / Leads) * 100 - Eficiência do funil de vendas',
-      calculationFormula: '(Vendas Fechadas / Total Leads) * 100',
-      unit: '%',
-      domain: 'sales',
-      severity: {
-        critical: { min: 0, max: 5 },
-        warning: { min: 5, max: 15 },
-        good: { min: 15, max: 100 }
-      }
-    });
-
-    this.addKPI({
-      code: 'CUSTOMER_ACQUISITION_COST',
-      title: 'Custo de Aquisição de Cliente',
-      description: '(Investimento Mkt + Vendas) / Novos Clientes - Eficiência do motor de crescimento',
-      calculationFormula: '(Investimento Mkt + Vendas) / Novos Clientes',
-      unit: 'R$',
-      domain: 'marketing',
-      severity: {
-        critical: { min: 500, max: Infinity },
-        warning: { min: 200, max: 500 },
-        good: { min: 0, max: 200 }
-      }
-    });
-
-    // Desafios Estratégicos
-    this.addChallenge({
-      code: 'CASH_FLOW_CRUNCH',
-      title: 'Crise de Liquidez',
-      description: 'Crise de liquidez que ameaça a sobrevivência do negócio. O ciclo financeiro está descasado.',
-      domain: 'finance',
-      severity: 5,
-      symptoms: [
-        'Runway < 3 meses - Risco de insolvência',
-        'Ciclo financeiro descasado (pagamentos > recebimentos)',
-        'Margem líquida < 5% - Sem geração de caixa',
-        'Dependência de empréstimos para pagar fornecedores'
-      ],
-      relatedKpiCodes: ['CASH_BURN_RATE', 'RUNWAY', 'NET_PROFIT_MARGIN'],
-      mainKpi: 'RUNWAY',
-      thresholds: {
-        critical: { min: 0, max: 1 },
-        warning: { min: 1, max: 3 },
-        good: { min: 3, max: 24 }
-      }
-    });
-
-    this.addChallenge({
-      code: 'SALES_INEFFICIENCY',
-      title: 'Ineficiência Comercial',
-      description: 'Funil de vendas com baixa conversão e alto custo de aquisição.',
-      domain: 'sales',
-      severity: 4,
-      symptoms: [
-        'Taxa de conversão < 10%',
-        'CAC elevado em relação ao LTV',
-        'Ciclo de vendas muito longo',
-        'Pipeline sem previsibilidade'
-      ],
-      relatedKpiCodes: ['SALES_CONVERSION', 'CUSTOMER_ACQUISITION_COST'],
-      mainKpi: 'SALES_CONVERSION',
-      thresholds: {
-        critical: { min: 0, max: 5 },
-        warning: { min: 5, max: 15 },
-        good: { min: 15, max: 100 }
-      }
-    });
+    ];
   }
 
-  private addKPI(kpi: StrategyKPI) {
-    this.kpiCache.set(kpi.code, kpi);
-  }
+  async getRecommendations(
+    kpis: ExtractedKPI[],
+    customization?: StrategyRecommendation['customization']
+  ): Promise<StrategyRecommendation[]> {
+    const recommendations: StrategyRecommendation[] = [];
 
-  private addChallenge(challenge: StrategyChallenge) {
-    this.challengeCache.set(challenge.code, challenge);
-  }
-
-  /**
-   * Detecta o contexto de negócio baseado nos dados
-   */
-  detectBusinessContext(data: unknown[]): BusinessContext {
-    const context: BusinessContext = {
-      domain: 'general',
-      dataCharacteristics: {
-        hasFinancialData: false,
-        hasSalesData: false,
-        hasOperationalData: false,
-        hasMarketingData: false
-      }
-    };
-
-    // Análise simples dos dados para detectar domínio
-    const dataString = JSON.stringify(data).toLowerCase();
-    
-    // Verificar sales primeiro (prioridade maior)
-    if (dataString.includes('venda') || dataString.includes('cliente') || 
-        dataString.includes('lead') || dataString.includes('fechamento') ||
-        dataString.includes('negócio') || dataString.includes('proposta') ||
-        dataString.includes('contrato') || dataString.includes('comissão')) {
-      context.domain = 'sales';
-      context.dataCharacteristics.hasSalesData = true;
-      return context;
-    }
-
-    // Verificar finance depois
-    if (dataString.includes('receita') || dataString.includes('lucro') || 
-        dataString.includes('caixa') || dataString.includes('custo') ||
-        dataString.includes('margem') || dataString.includes('fluxo') ||
-        dataString.includes('banco') || dataString.includes('pagamento') ||
-        dataString.includes('faturamento') || dataString.includes('dívida') ||
-        dataString.includes('patrimônio') || dataString.includes('balanço') ||
-        dataString.includes('dre') || dataString.includes('cash flow') ||
-        dataString.includes('burn rate')) {
-      context.domain = 'finance';
-      context.dataCharacteristics.hasFinancialData = true;
-      return context;
-    }
-
-    // Verificar marketing
-    if (dataString.includes('marketing') || dataString.includes('campanha') || 
-        dataString.includes('tráfego') || dataString.includes('anúncio') ||
-        dataString.includes('google') || dataString.includes('facebook') ||
-        dataString.includes('instagram') || dataString.includes('email marketing') ||
-        dataString.includes('ctr') || dataString.includes('cpc') ||
-        dataString.includes('cpa') || dataString.includes('roi')) {
-      context.domain = 'marketing';
-      context.dataCharacteristics.hasMarketingData = true;
-      return context;
-    }
-
-    // Verificar operações
-    if (dataString.includes('produção') || dataString.includes('estoque') || 
-        dataString.includes('operacional') || dataString.includes('eficiência') ||
-        dataString.includes('fornecedor') || dataString.includes('logística') ||
-        dataString.includes('armazém') || dataString.includes('entrega') ||
-        dataString.includes('qualidade') || dataString.includes('produtividade') ||
-        dataString.includes('funcionário') || dataString.includes('turnover') ||
-        dataString.includes('capacity')) {
-      context.domain = 'ops';
-      context.dataCharacteristics.hasOperationalData = true;
-      return context;
-    }
-
-    return context;
-  }
-
-  /**
-   * Obtém KPIs relevantes baseado no contexto
-   */
-  getRelevantKPIs(context: BusinessContext): StrategyKPI[] {
-    const relevantKPIs: StrategyKPI[] = [];
-
-    // KPIs do domínio principal
-    for (const kpi of this.kpiCache.values()) {
-      if (kpi.domain === context.domain || kpi.domain === 'finance') {
-        relevantKPIs.push(kpi);
-      }
-    }
-
-    // Limitar a 5 KPIs mais relevantes
-    return relevantKPIs.slice(0, 5);
-  }
-
-  /**
-   * Obtém desafios conhecidos baseados nos KPIs
-   */
-  getKnownChallenges(kpiCodes: string[]): StrategyChallenge[] {
-    const relevantChallenges: StrategyChallenge[] = [];
-
-    for (const challenge of this.challengeCache.values()) {
-      // Verificar se os KPIs do desafio estão presentes
-      const hasRelevantKPI = challenge.relatedKpiCodes.some(kpi => 
-        kpiCodes.includes(kpi)
-      );
+    for (const template of this.templates) {
+      const match = this.evaluateTemplateMatch(template, kpis, customization);
       
-      if (hasRelevantKPI) {
-        relevantChallenges.push(challenge);
+      if (match.confidence >= 0.6) {
+        recommendations.push({
+          template,
+          customization: customization || {},
+          confidence: match.confidence,
+          reasoning: match.reasoning
+        });
       }
     }
 
-    // Ordenar por severidade
-    return relevantChallenges.sort((a, b) => b.severity - a.severity);
+    return recommendations.sort((a, b) => b.confidence - a.confidence);
   }
 
-  /**
-   * Enriquece o prompt com contexto estratégico
-   */
-  enrichPrompt(basePrompt: string, context: BusinessContext): string {
-    const relevantKPIs = this.getRelevantKPIs(context);
-    const knownChallenges = this.getKnownChallenges(relevantKPIs.map(k => k.code));
+  private evaluateTemplateMatch(
+    template: StrategyTemplate,
+    kpis: ExtractedKPI[],
+    customization?: StrategyRecommendation['customization']
+  ): { confidence: number; reasoning: string } {
+    let confidence = 0;
+    const reasons: string[] = [];
 
-    const domainSpecialist = this.getDomainSpecialist(context.domain);
-    const kpiContext = this.formatKPIsForPrompt(relevantKPIs);
-    const challengesContext = this.formatChallengesForPrompt(knownChallenges);
+    // Check KPI alignment
+    const relevantKPIs = kpis.filter(kpi => template.actionLevers.some(lever => lever.kpis.includes(kpi.code)));
+    if (relevantKPIs.length > 0) {
+      confidence += 0.4;
+      reasons.push(`${relevantKPIs.length} KPIs relevantes encontrados`);
+    }
 
-    return `
-${basePrompt}
+    // Check challenge alignment
+    if (this.hasChallengeSymptoms(kpis, template.challenge)) {
+      confidence += 0.3;
+      reasons.push('Sintomas do desafio presentes');
+    }
 
-ESPECIALIZAÇÃO: ${domainSpecialist}
+    // Check customization fit
+    if (customization) {
+      if (this.matchesIndustry(template, customization.industry)) {
+        confidence += 0.2;
+        reasons.push('Alinhamento com indústria');
+      }
 
-KPIs RELEVANTES PARA ANÁLISE:
-${kpiContext}
+      if (this.matchesCompanySize(template, customization.companySize)) {
+        confidence += 0.1;
+        reasons.push('Adequado para porte da empresa');
+      }
+    }
 
-DESAFIOS CONHECIDOS NESTE DOMÍNIO:
-${challengesContext}
-
-IMPORTANTE: Use estes KPIs e desafios como referência para sua análise. Foque em métricas que realmente importam para o negócio.
-    `.trim();
+    return {
+      confidence: Math.min(1.0, confidence),
+      reasoning: reasons.join('; ')
+    };
   }
 
-  private getDomainSpecialist(domain: string): string {
-    const specialists = {
-      finance: 'Consultor Financeiro Senior especializado em análise de saúde financeira e fluxo de caixa',
-      sales: 'Especialista em Vendas e Performance Comercial com foco em otimização de funil',
-      marketing: 'Estrategista de Marketing Digital especializado em métricas de aquisição e retenção',
-      ops: 'Consultor Operacional especializado em eficiência produtiva e otimização de processos',
-      general: 'Analista de Negócios Senior com visão holística da empresa'
+  private hasChallengeSymptoms(kpis: ExtractedKPI[], challenge: string): boolean {
+    const challengeSymptoms: Record<string, string[]> = {
+      'CASH_FLOW_CRUNCH': ['RUNWAY', 'BURN_RATE', 'DAYS_TO_RECEIVE'],
+      'INEFFICIENT_SALES_MACHINE': ['LTV_CAC_RATIO', 'SALES_CYCLE_DAYS', 'CAC'],
+      'COMMODITY_TRAP': ['NET_PROFIT_MARG', 'CONTRIB_MARGIN']
     };
 
-    return specialists[domain as keyof typeof specialists] || specialists.general;
+    const relevantKPIs = challengeSymptoms[challenge] || [];
+    return relevantKPIs.some(kpi => 
+      kpis.some(kpi => kpi.code === kpi.code && kpi.status === 'critical')
+    );
   }
 
-  private formatKPIsForPrompt(kpis: StrategyKPI[]): string {
-    return kpis.map(kpi => 
-      `- ${kpi.title} (${kpi.code}): ${kpi.description}`
-    ).join('\n');
+  private matchesIndustry(template: StrategyTemplate, industry?: string): boolean {
+    // Simplified industry matching logic
+    return true; // TODO: Implement sophisticated industry matching
   }
 
-  private formatChallengesForPrompt(challenges: StrategyChallenge[]): string {
-    return challenges.map(challenge => 
-      `- ${challenge.title}: ${challenge.description}`
-    ).join('\n');
+  private matchesCompanySize(template: StrategyTemplate, size?: string): boolean {
+    // Simplified size matching logic
+    return true; // TODO: Implement sophisticated size matching
+  }
+
+  async getTemplate(id: string): Promise<StrategyTemplate | null> {
+    return this.templates.find(template => template.id === id) || null;
+  }
+
+  async getAllTemplates(): Promise<StrategyTemplate[]> {
+    return [...this.templates];
   }
 }
 
-// Export singleton instance
-export const strategyLibraryService = StrategyLibraryService.getInstance();
+export default StrategyLibraryService;
+export type { StrategyTemplate, ActionLever, ActionStep, StrategyRecommendation };

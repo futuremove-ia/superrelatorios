@@ -2,8 +2,6 @@ import { BlockType } from '@/types/reports';
 import { config } from '@/config/env';
 import { ApiError } from '@/lib/errors';
 import { Diagnostic, Priority } from '@/types/business';
-import { strategyLibraryService } from './strategyLibraryService';
-import { contextDetectorService } from './contextDetectorService';
 
 // Configuração centralizada (Infraestrutura)
 const GEMINI_API_KEY = config.gemini.apiKey;
@@ -30,7 +28,8 @@ export interface AIDiagnosticResult {
  */
 const buildAnalysisPrompt = (data: unknown[], context: string): string => {
   // Detectar contexto de negócio
-  const businessContext = contextDetectorService.createBusinessContext(data);
+  // TODO: Implementar detecção de contexto quando contextDetectorService estiver disponível
+  const businessContext = { domain: 'general', industry: 'unknown' };
   
   // Prompt base com especialização
   const basePrompt = `
@@ -56,7 +55,8 @@ const buildAnalysisPrompt = (data: unknown[], context: string): string => {
   `;
 
   // Enriquecer com biblioteca estratégica
-  return strategyLibraryService.enrichPrompt(basePrompt, businessContext);
+  // TODO: Implementar enriquecimento quando strategyLibraryService estiver disponível
+  return basePrompt;
 };
 
 /**
@@ -64,7 +64,8 @@ const buildAnalysisPrompt = (data: unknown[], context: string): string => {
  */
 const buildDiagnosticPrompt = (data: unknown[], context: string): string => {
   // Detectar contexto de negócio
-  const businessContext = contextDetectorService.createBusinessContext(data);
+  // TODO: Implementar detecção de contexto quando contextDetectorService estiver disponível
+  const businessContext = { domain: 'general', industry: 'unknown' };
   
   // Prompt base com especialização
   const basePrompt = `
@@ -98,7 +99,8 @@ const buildDiagnosticPrompt = (data: unknown[], context: string): string => {
   `;
 
   // Enriquecer com biblioteca estratégica
-  return strategyLibraryService.enrichPrompt(basePrompt, businessContext);
+  // TODO: Implementar enriquecimento quando strategyLibraryService estiver disponível
+  return basePrompt;
 };
 
 /**
