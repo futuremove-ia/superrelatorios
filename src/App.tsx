@@ -9,6 +9,7 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import AppLayout from "./components/AppLayout";
 import PageLoader from "./components/layout/PageLoader";
 import { AppErrorBoundary } from "./components/layout/AppErrorBoundary";
+import DemoBanner from "./components/DemoBanner";
 
 // Lazy loaded pages
 const Index = lazy(() => import("./pages/Index"));

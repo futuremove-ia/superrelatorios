@@ -28,6 +28,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import BrandName from '@/components/BrandName';
 import LogoIcon from '@/components/LogoIcon';
 import { useAuth } from '@/contexts/AuthContext';
+import DemoBanner from '@/components/DemoBanner';
 import { useTranslation } from 'react-i18next';
 
 
@@ -217,6 +218,7 @@ const AppLayout = () => {
 
         {/* Page Content */}
         <main className="min-h-[calc(100vh-4rem)] pb-20 lg:pb-0 animate-fade-in">
+          <DemoBanner />
           <Outlet />
         </main>
 
