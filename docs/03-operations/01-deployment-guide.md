@@ -1,524 +1,1070 @@
-# Guia de Deploy - SuperRelatórios
+# 🚀 Guia de Deploy SuperRelatórios
 
-## Overview
+## Visão Geral
 
-Deploy automatizado e escalável para ambiente de produção com CI/CD, monitoramento e rollback automático.
+Guia completo de deployment automatizado e escalável para ambiente de produção com CI/CD, monitoramento, rollback automático e SRE practices.
 
-## 🚀 Arquitetura de Deploy
+## Contexto e Importância
 
-### Ambientes
+Este guia é crucial porque:
+- **Garante deploy seguro** e consistente
+- **Minimiza downtime** e risco de falhas
+- **Facilita escalabilidade** e crescimento
+- **Automatiza processos** manuais
+- **Fornece resiliência** e recuperação rápida
 
-| Ambiente | URL | Propósito | Branch |
-|-----------|-----|-----------|--------|
-| **Development** | dev.superrelatorios.com | Desenvolvimento e testes | `develop` |
-| **Staging** | staging.superrelatorios.com | Homologação final | `main` |
-| **Production** | superrelatorios.com | Produção oficial | `main` (tagged) |
+## Arquitetura de Deploy
 
-### Stack Tecnológico
+### 🎯 Ambientes
 
-- **Frontend:** Vite + React 18 + TypeScript
-- **Backend:** Supabase (PostgreSQL + Auth + Storage)
-- **Hosting:** Vercel (Frontend) + Supabase (Backend)
-- **CI/CD:** GitHub Actions
-- **Monitoring:** Vercel Analytics + Supabase Logs
-- **CDN:** Vercel Edge Network
-- **DNS:** Cloudflare
+#### Estrutura de Ambientes
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    DEVELOPMENT                               │
+├─────────────────────────────────────────────────────────────┤
+│  • Branch: develop                                          │
+│  • URL: dev.superrelatorios.com                           │
+│  • Propósito: Desenvolvimento e testes                     │
+│  • CI/CD: Deploy automático a cada push                    │
+│  • Database: Dev (isolado)                                   │
+│  • Features: Todas as features em desenvolvimento         │
+└─────────────────────────────────────────────────────────────┘
+                              │
+┌─────────────────────────────────────────────────────────────┐
+│                    STAGING                                    │
+├─────────────────────────────────────────────────────────────┤
+│  • Branch: main (merge de develop)                         │
+│  • URL: staging.superrelatorios.com                      │
+│  • Propósito: Homologação final e QA                       │
+│  • CI/CD: Deploy automático a cada merge                    │
+│  • Database: Staging (clone de prod)                       │
+│  • Features: Features completas para validação             │
+└─────────────────────────────────────────────────────────────┘
+                              │
+┌─────────────────────────────────────────────────────────────┐
+│                    PRODUCTION                                 │
+├─────────────────────────────────────────────────────────────┤
+│  • Branch: main (tags de release)                         │
+│  • URL: superrelatorios.com                               │
+│  • Propósito: Produção oficial                             │
+│  • CI/CD: Deploy manual com aprovação                      │
+│  • Database: Production (backup diário)                   │
+│  • Features: Features validadas e estáveis               │
+└─────────────────────────────────────────────────────────────┘
+```
 
-## 📋 Pré-requisitos
+#### Configuração de Ambientes
+```typescript
+// Configuração de ambientes
+interface EnvironmentConfig {
+  name: string;
+  url: string;
+  branch: string;
+  deployTrigger: 'push' | 'merge' | 'manual' | 'tag';
+  database: {
+    type: 'postgresql';
+    host: string;
+    database: string;
+    ssl: boolean;
+    poolSize: number;
+  };
+  features: {
+    analytics: boolean;
+    monitoring: boolean;
+    debugging: boolean;
+    betaFeatures: boolean;
+  };
+  security: {
+    ssl: boolean;
+    cors: string[];
+    rateLimit: {
+      requests: number;
+      window: number;
+    };
+  };
+}
 
-### 1. Configuração Inicial
+const environments: Record<string, EnvironmentConfig> = {
+  development: {
+    name: 'Development',
+    url: 'https://dev.superrelatorios.com',
+    branch: 'develop',
+    deployTrigger: 'push',
+    database: {
+      type: 'postgresql',
+      host: 'dev-db.supabase.co',
+      database: 'dev_superrelatorios',
+      ssl: true,
+      poolSize: 5
+    },
+    features: {
+      analytics: false,
+      monitoring: true,
+      debugging: true,
+      betaFeatures: true
+    },
+    security: {
+      ssl: true,
+      cors: ['http://localhost:3000', 'https://dev.superrelatorios.com'],
+      rateLimit: {
+        requests: 1000,
+        window: 60000
+      }
+    }
+  },
+  
+  staging: {
+    name: 'Staging',
+    url: 'https://staging.superrelatorios.com',
+    branch: 'main',
+    deployTrigger: 'merge',
+    database: {
+      type: 'postgresql',
+      host: 'staging-db.supabase.co',
+      database: 'staging_superrelatorios',
+      ssl: true,
+      poolSize: 10
+    },
+    features: {
+      analytics: true,
+      monitoring: true,
+      debugging: false,
+      betaFeatures: true
+    },
+    security: {
+      ssl: true,
+      cors: ['https://staging.superrelatorios.com'],
+      rateLimit: {
+        requests: 500,
+        window: 60000
+      }
+    }
+  },
+  
+  production: {
+    name: 'Production',
+    url: 'https://superrelatorios.com',
+    branch: 'main',
+    deployTrigger: 'manual',
+    database: {
+      type: 'postgresql',
+      host: 'db.supabase.co',
+      database: 'superrelatorios',
+      ssl: true,
+      poolSize: 20
+    },
+    features: {
+      analytics: true,
+      monitoring: true,
+      debugging: false,
+      betaFeatures: false
+    },
+    security: {
+      ssl: true,
+      cors: ['https://superrelatorios.com'],
+      rateLimit: {
+        requests: 100,
+        window: 60000
+      }
+    }
+  }
+};
+```
 
+## Stack Tecnológico
+
+### 🛠️ Tecnologias de Deploy
+
+#### Frontend Stack
+```typescript
+// Frontend deployment configuration
+interface FrontendConfig {
+  framework: 'React 18';
+  language: 'TypeScript 5';
+  buildTool: 'Vite 5';
+  hosting: 'Vercel';
+  
+  build: {
+    target: 'es2022';
+    minify: true;
+    sourcemap: false;
+    treeshaking: true;
+    chunking: {
+      strategy: 'automatic';
+      maxChunks: 20;
+      minChunkSize: 20000;
+    };
+  };
+  
+  optimization: {
+    bundleAnalysis: true;
+    compression: true;
+    caching: {
+      browserCaching: '1y';
+      cdnCaching: '30d';
+    };
+  };
+}
+```
+
+#### Backend Stack
+```typescript
+// Backend deployment configuration
+interface BackendConfig {
+  database: 'Supabase (PostgreSQL 15)';
+  auth: 'Supabase Auth';
+  storage: 'Supabase Storage';
+  functions: 'Supabase Edge Functions';
+  
+  database: {
+    version: '15';
+    extensions: ['uuid-ossp', 'pgcrypto', 'pg_stat_statements'];
+    optimization: {
+      indexing: 'automatic';
+      vacuum: 'weekly';
+      analyze: 'daily';
+    };
+  };
+  
+  security: {
+    rowLevelSecurity: true;
+    encryption: 'at-rest';
+    backup: {
+      frequency: 'daily';
+      retention: '30d';
+      pointInTimeRecovery: true;
+    };
+  };
+}
+```
+
+#### CI/CD Stack
+```typescript
+// CI/CD configuration
+interface CICDConfig {
+  platform: 'GitHub Actions';
+  runners: 'ubuntu-latest';
+  
+  pipeline: {
+    triggers: ['push', 'pull_request', 'workflow_dispatch'];
+    concurrency: 'deploy';
+    timeout: '30m';
+    
+    stages: [
+      'build',
+      'test',
+      'security-scan',
+      'deploy-staging',
+      'e2e-tests',
+      'deploy-production'
+    ];
+  };
+  
+  artifacts: {
+    retention: '30d';
+    compression: true;
+    upload: {
+      build: true;
+      coverage: true;
+      reports: true;
+    };
+  };
+}
+```
+
+## Pré-requisitos
+
+### 🔧 Configuração Inicial
+
+#### 1. Setup Local
 ```bash
-# Clone o repositório
-git clone https://github.com/futuremove-ia/superrelatorios.git
+# Clone do repositório
+git clone https://github.com/your-org/superrelatorios.git
 cd superrelatorios
 
-# Instale dependências
+# Instalação de dependências
 npm install
 
-# Configure variáveis de ambiente
+# Configuração de ambiente
 cp .env.example .env.local
+# Editar .env.local com suas configurações
+
+# Verificação do setup
+npm run dev
+# Deverá iniciar o servidor de desenvolvimento
 ```
 
-### 2. Variáveis de Ambiente
-
+#### 2. Configuração de Variáveis de Ambiente
 ```bash
-# .env.local
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-VITE_GTM_ID=your_google_tag_manager_id
-VITE_SENTRY_DSN=your_sentry_dsn
-VITE_API_BASE_URL=https://api.superrelatorios.com/v1
+# .env.example
+# Database Configuration
+DATABASE_URL=postgresql://user:password@localhost:5432/superrelatorios
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-key
+
+# Authentication
+JWT_SECRET=your-super-secret-jwt-key
+NEXTAUTH_SECRET=your-nextauth-secret
+NEXTAUTH_URL=https://your-domain.com
+
+# External Services
+STRIPE_SECRET_KEY=sk_test_your-stripe-key
+STRIPE_WEBHOOK_SECRET=whsec_your-webhook-secret
+SENDGRID_API_KEY=SG.your-sendgrid-key
+
+# Monitoring
+SENTRY_DSN=https://your-sentry-dsn
+VERCEL_ANALYTICS_ID=your-vercel-analytics-id
+
+# Feature Flags
+ENABLE_ANALYTICS=true
+ENABLE_BETA_FEATURES=false
+ENABLE_DEBUG_MODE=false
 ```
 
-### 3. Configuração do Supabase
-
+#### 3. Configuração de Secrets
 ```bash
-# Instale CLI do Supabase
-npm install -g supabase
+# GitHub Secrets
+gh secret set DATABASE_URL --body "postgresql://..."
+gh secret set SUPABASE_URL --body "https://..."
+gh secret set SUPABASE_ANON_KEY --body "your-anon-key"
+gh secret set JWT_SECRET --body "your-jwt-secret"
+gh secret set STRIPE_SECRET_KEY --body "sk_test_..."
+gh secret set SENTRY_DSN --body "https://..."
 
-# Faça login
-supabase login
-
-# Link com projeto
-supabase link --project-ref your-project-ref
-
-# Aplique migrations
-supabase db push
-supabase db seed
+# Vercel Environment Variables
+vercel env add DATABASE_URL
+vercel env add SUPABASE_URL
+vercel env add JWT_SECRET
+vercel env add STRIPE_SECRET_KEY
 ```
 
-## 🔄 CI/CD Pipeline
+## CI/CD Pipeline
 
-### GitHub Actions Workflow
+### 🔄 GitHub Actions Workflow
 
+#### Pipeline Completo
 ```yaml
 # .github/workflows/deploy.yml
-name: Deploy to Production
+name: Deploy SuperRelatórios
 
 on:
   push:
-    branches: [main]
+    branches: [develop, main]
   pull_request:
     branches: [main]
-
-env:
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-      
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Run tests
-        run: npm run test
-      
-      - name: Run E2E tests
-        run: npm run test:e2e
-      
-      - name: Type checking
-        run: npm run type-check
-      
-      - name: Linting
-        run: npm run lint
-
-  build:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-      
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Build application
-        run: npm run build
-      
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-files
-          path: dist/
-
-  deploy-staging:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - uses: actions/checkout@v4
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-files
-          path: dist/
-      
-      - name: Deploy to Vercel Staging
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
-
-  deploy-production:
-    needs: deploy-staging
-    runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
-    steps:
-      - uses: actions/checkout@v4
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-files
-          path: dist/
-      
-      - name: Deploy to Vercel Production
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod --scope production'
-      
-      - name: Notify deployment
-        run: |
-          curl -X POST "https://api.slack.com/webhooks/YOUR_SLACK_WEBHOOK" \
-          -H 'Content-type: application/json' \
-          --data '{"text":"🚀 SuperRelatórios deployed to production!"}'
-```
-
-## 🌐 Deploy Manual
-
-### 1. Deploy de Desenvolvimento
-
-```bash
-# Instale Vercel CLI
-npm install -g vercel
-
-# Faça login
-vercel login
-
-# Deploy para desenvolvimento
-vercel --env VERCEL_ENV=development
-```
-
-### 2. Deploy de Staging
-
-```bash
-# Build da aplicação
-npm run build
-
-# Deploy para staging
-vercel --prod --env VERCEL_ENV=staging
-```
-
-### 3. Deploy de Produção
-
-```bash
-# Crie tag de release
-git tag -a v1.0.0 -m "Release version 1.0.0"
-git push origin v1.0.0
-
-# Deploy automático via GitHub Actions
-# Ou manual:
-vercel --prod --env VERCEL_ENV=production
-```
-
-## 📊 Monitoramento e Logging
-
-### 1. Configuração do Sentry
-
-```typescript
-// src/sentry.ts
-import * as Sentry from '@sentry/react';
-
-Sentry.init({
-  dsn: import.meta.env.VITE_SENTRY_DSN,
-  environment: import.meta.env.MODE,
-  tracesSampleRate: 1.0,
-  integrations: [
-    new Sentry.BrowserTracing(),
-    new Sentry.Replay({
-      maskAllText: false,
-      blockAllMedia: false,
-    }),
-  ],
-});
-```
-
-### 2. Analytics Vercel
-
-```typescript
-// src/analytics.ts
-import { Analytics } from '@vercel/analytics/react';
-
-export function App() {
-  return (
-    <>
-      <Analytics />
-      {/* Rest of app */}
-    </>
-  );
-}
-```
-
-### 3. Performance Monitoring
-
-```typescript
-// src/performance.ts
-export const reportWebVitals = (onPerfEntry?: (metric: any) => void) => {
-  if (onPerfEntry && onPerfEntry instanceof Function) {
-    import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
-      getCLS(onPerfEntry);
-      getFID(onPerfEntry);
-      getFCP(onPerfEntry);
-      getLCP(onPerfEntry);
-      getTTFB(onPerfEntry);
-    });
-  }
-};
-```
-
-## 🔒 Segurança
-
-### 1. Environment Variables
-
-```bash
-# .env.production (seguro)
-VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_ANON_KEY=your_anon_key
-VITE_GTM_ID=GTM-XXXXXXX
-VITE_SENTRY_DSN=https://your-sentry-dsn
-```
-
-### 2. CORS Configuration
-
-```sql
--- Supabase CORS
-ALTER TABLE auth.users
-ADD CONSTRAINT email_check 
-CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$');
-```
-
-### 3. Rate Limiting
-
-```typescript
-// src/middleware.ts
-export function middleware(request: NextRequest) {
-  const ip = request.ip || request.headers.get('x-forwarded-for');
-  
-  // Implement rate limiting logic
-  const rateLimit = checkRateLimit(ip);
-  
-  if (!rateLimit.allowed) {
-    return new Response('Too Many Requests', { status: 429 });
-  }
-  
-  return NextResponse.next();
-}
-```
-
-## 🚀 Rollback Automático
-
-### 1. GitHub Actions Rollback
-
-```yaml
-# .github/workflows/rollback.yml
-name: Emergency Rollback
-
-on:
   workflow_dispatch:
     inputs:
-      version:
-        description: 'Version to rollback to'
+      environment:
+        description: 'Environment to deploy to'
         required: true
+        default: 'staging'
+        type: choice
+        options:
+        - staging
+        - production
+
+env:
+  NODE_VERSION: '20'
+  CACHE_VERSION: 'v1'
 
 jobs:
-  rollback:
+  build:
+    name: Build and Test
     runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          ref: ${{ github.event.inputs.version }}
-      
-      - name: Deploy rollback version
-        uses: amondnet/vercel-action@v25
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run linting
+        run: npm run lint
+        
+      - name: Run type checking
+        run: npm run type-check
+        
+      - name: Run unit tests
+        run: npm run test:unit
+        
+      - name: Build application
+        run: npm run build
+        
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: dist/
+          retention-days: 1
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Run security audit
+        run: npm audit --audit-level high
+        
+      - name: Run Snyk security scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          
+      - name: Run CodeQL Analysis
+        uses: github/codeql-action/init@v2
+        with:
+          languages: javascript
+          
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [build, security-scan]
+    if: github.ref == 'refs/heads/develop'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          
+      - name: Deploy to Vercel
+        uses: vercel/action@v1
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           vercel-args: '--prod'
+          
+      - name: Run E2E tests
+        run: npm run test:e2e:staging
+        
+      - name: Run performance tests
+        run: npm run test:performance:staging
+
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [build, security-scan]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          
+      - name: Create deployment tag
+        run: |
+          TAG="v$(date +%Y%m%d-%H%M%S)"
+          echo "TAG=$TAG" >> $GITHUB_ENV
+          git tag $TAG
+          git push origin $TAG
+          
+      - name: Deploy to Vercel
+        uses: vercel/action@v1
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          
+      - name: Run smoke tests
+        run: npm run test:smoke:production
+        
+      - name: Update deployment status
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚀 Production Deploy - ${{ env.TAG }}`,
+              body: 'Deployment completed successfully!',
+              labels: ['deployment', 'production']
+            });
+
+  rollback:
+    name: Rollback Production
+    runs-on: ubuntu-latest
+    if: failure() && needs.deploy-production.result == 'failure'
+    needs: deploy-production
+    
+    steps:
+      - name: Rollback Vercel
+        uses: vercel/action@v1
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--rollback'
+          
+      - name: Notify rollback
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🔄 Production Rollback',
+              body: 'Automatic rollback triggered due to deployment failure',
+              labels: ['deployment', 'rollback', 'incident']
+            });
 ```
 
-### 2. Script de Rollback
+## Processo de Deploy
 
+### 🚀 Deploy Manual (Produção)
+
+#### 1. Preparação
 ```bash
-#!/bin/bash
-# scripts/rollback.sh
+# Verificar branch atual
+git branch
+# Deve estar em main
 
-VERSION=$1
-if [ -z "$VERSION" ]; then
-    echo "Usage: ./rollback.sh <version>"
-    exit 1
-fi
+# Atualizar código
+git pull origin main
 
-echo "Rolling back to version: $VERSION"
+# Verificar status
+git status
+# Não deve ter arquivos pendentes
 
-# Checkout da versão
-git checkout $VERSION
-
-# Deploy
-vercel --prod
-
-# Notificar rollback
-curl -X POST "https://api.slack.com/webhooks/YOUR_SLACK_WEBHOOK" \
-  -H 'Content-type: application/json' \
-  --data "{\"text\":\"🔄 Emergency rollback to version $VERSION completed!\"}"
-
-echo "Rollback completed!"
+# Verificar última tag
+git tag --sort=-version:refname | head -1
+# Anotar última versão
 ```
 
-## 📈 Performance Optimization
+#### 2. Testes Locais
+```bash
+# Rodar todos os testes
+npm run test:all
 
-### 1. Build Optimization
+# Verificar build
+npm run build
 
+# Testar localmente
+npm run dev
+# Verificar se tudo funciona
+```
+
+#### 3. Deploy via GitHub Actions
+```bash
+# Iniciar workflow manual
+gh workflow run deploy.yml --field environment=production
+
+# Ou via interface web:
+# 1. Acesse: https://github.com/your-org/superrelatorios/actions
+# 2. Clique em "Deploy SuperRelatórios"
+# 3. Selecione "Production"
+# 4. Clique "Run workflow"
+```
+
+#### 4. Monitoramento
+```bash
+# Verificar status do deploy
+gh run list --workflow="Deploy SuperRelatórios"
+
+# Verificar logs em tempo real
+gh run view --log --follow <run-id>
+
+# Verificar deploy no Vercel
+vercel ls
+```
+
+### 🔄 Deploy Automático (Staging)
+
+#### Processo Automático
 ```typescript
-// vite.config.ts
-export default defineConfig({
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          ui: ['@radix-ui/react-dialog', '@radix-ui/react-tabs'],
-          charts: ['recharts', 'lucide-react'],
-        },
-      },
+// Deploy automático para staging
+interface AutoDeployConfig {
+  trigger: 'push to develop';
+  conditions: [
+    'All tests passing',
+    'Security scan passing',
+    'Build successful'
+  ];
+  
+  process: [
+    'Build application',
+    'Run security scan',
+    'Deploy to staging',
+    'Run E2E tests',
+    'Performance validation'
+  ];
+  
+  notifications: {
+    success: 'Slack #deployments',
+    failure: 'Slack #alerts + PagerDuty'
+  };
+}
+```
+
+## Monitoramento e Observabilidade
+
+### 📊 Métricas de Deploy
+
+#### 1. Deploy Metrics
+```typescript
+// Métricas de deploy
+interface DeployMetrics {
+  frequency: {
+    daily: number;           // Deploys por dia
+    weekly: number;          // Deploys por semana
+    monthly: number;         // Deploys por mês
+  };
+  
+  duration: {
+    average: number;        // Tempo médio de deploy
+    p95: number;           // Tempo 95th percentile
+    max: number;           // Tempo máximo
+  };
+  
+  success: {
+    rate: number;           // Taxa de sucesso (%)
+    failures: number;       // Falhas no período
+    rollbackRate: number;    // Taxa de rollback (%)
+  };
+  
+  impact: {
+    downtime: number;       // Downtime em minutos
+    errorRate: number;      // Taxa de erro pós-deploy
+    performanceImpact: number; // Impacto na performance
+  };
+}
+```
+
+#### 2. Health Checks
+```typescript
+// Health check endpoints
+interface HealthCheck {
+  endpoint: string;
+  checks: {
+    database: 'connectivity';
+    cache: 'connectivity';
+    external_apis: 'connectivity';
+    disk_space: 'available';
+    memory: 'available';
+    cpu: 'available';
+  };
+  
+  responses: {
+    healthy: 200;
+    degraded: 200;
+    unhealthy: 503;
+  };
+  
+  monitoring: {
+    interval: '30s';
+    timeout: '5s';
+    retries: 3;
+    alerting: true;
+  };
+}
+```
+
+### 📈 Dashboard de Deploy
+
+#### Grafana Dashboard
+```typescript
+// Dashboard configuration
+interface DeployDashboard {
+  panels: [
+    {
+      title: 'Deploy Frequency';
+      type: 'stat';
+      metrics: ['deploy_count_total'];
+      timeRange: '7d';
     },
-    chunkSizeWarningLimit: 1000,
-  },
-  optimizeDeps: {
-    include: ['react', 'react-dom', 'lucide-react'],
-  },
-});
+    {
+      title: 'Deploy Duration';
+      type: 'graph';
+      metrics: ['deploy_duration_seconds'];
+      timeRange: '24h';
+    },
+    {
+      title: 'Success Rate';
+      type: 'gauge';
+      metrics: ['deploy_success_rate'];
+      timeRange: '30d';
+    },
+    {
+      title: 'Error Rate';
+      type: 'graph';
+      metrics: ['error_rate_5m'];
+      timeRange: '1h';
+    },
+    {
+      title: 'System Health';
+      type: 'table';
+      metrics: ['health_status'];
+      timeRange: '5m';
+    }
+  ];
+  
+  alerts: [
+    {
+      name: 'Deploy Failure';
+      condition: 'deploy_success_rate < 95%';
+      severity: 'critical';
+      notification: 'slack + pagerduty';
+    },
+    {
+      name: 'High Error Rate';
+      condition: 'error_rate_5m > 5%';
+      severity: 'warning';
+      notification: 'slack';
+    },
+    {
+      name: 'System Unhealthy';
+      condition: 'health_status != 200';
+      severity: 'critical';
+      notification: 'slack + pagerduty';
+    }
+  ];
+}
 ```
 
-### 2. Cache Strategy
+## Rollback e Recuperação
 
+### 🔄 Estratégias de Rollback
+
+#### 1. Automatic Rollback
 ```typescript
-// src/cache.ts
-export const cacheConfig = {
-  // KPIs: 5 minutos
-  kpi: { ttl: 300000 },
+// Automatic rollback configuration
+interface RollbackConfig {
+  triggers: [
+    'Error rate > 5%',
+    'Response time > 2s',
+    'Health check failure',
+    'E2E test failures'
+  ];
   
-  // Templates: 1 hora
-  templates: { ttl: 3600000 },
+  actions: [
+    'Immediate rollback to previous version',
+    'Notify team via Slack',
+    'Create incident in PagerDuty',
+    'Run smoke tests on rollback'
+  ];
   
-  // Relatórios: 30 minutos
-  reports: { ttl: 1800000 },
-  
-  // Análises: 15 minutos
-  analytics: { ttl: 900000 },
-};
+  validation: [
+    'Health checks passing',
+    'Error rate < 1%',
+    'Response time < 500ms',
+    'E2E tests passing'
+  ];
+}
 ```
 
-### 3. Image Optimization
-
-```typescript
-// src/components/OptimizedImage.tsx
-export const OptimizedImage = ({ src, alt, ...props }) => {
-  return (
-    <picture>
-      <source srcSet={`${src}?format=webp`} type="image/webp" />
-      <source srcSet={`${src}?format=avif`} type="image/avif" />
-      <img
-        src={`${src}?format=auto&quality=80`}
-        alt={alt}
-        loading="lazy"
-        {...props}
-      />
-    </picture>
-  );
-};
-```
-
-## 🔧 Troubleshooting
-
-### Problemas Comuns
-
-#### 1. Build Falhando
+#### 2. Manual Rollback
 ```bash
-# Limpe cache
-npm run clean
+# Rollback via CLI
+vercel rollback --prod
 
-# Reinstale dependências
+# Rollback via GitHub Actions
+gh workflow run rollback.yml
+
+# Rollback via API
+curl -X POST https://api.vercel.com/v1/deployments/rollback \
+  -H "Authorization: Bearer $VERCEL_TOKEN" \
+  -d '{"deploymentId": "deployment_id"}'
+```
+
+#### 3. Blue-Green Deploy
+```typescript
+// Blue-Green deployment strategy
+interface BlueGreenConfig {
+  blue: {
+    url: 'blue.superrelatorios.com';
+    version: 'current';
+    traffic: 100;
+  };
+  
+  green: {
+    url: 'green.superrelatorios.com';
+    version: 'new';
+    traffic: 0;
+  };
+  
+  process: [
+    'Deploy to green',
+    'Run smoke tests on green',
+    'Gradually shift traffic',
+    'Monitor metrics',
+    'Full cutover to green',
+    'Decommission blue'
+  ];
+  
+  rollback: {
+    instant: true;
+    traffic: '100% to blue';
+    validation: 'Health checks on blue';
+  };
+}
+```
+
+## Security e Compliance
+
+### 🔒 Security Measures
+
+#### 1. Deploy Security
+```typescript
+// Security configuration
+interface SecurityConfig {
+  authentication: {
+    mfa: true;
+    roleBasedAccess: true;
+    sessionTimeout: '8h';
+  };
+  
+  network: {
+    ssl: true;
+    firewall: true;
+    ddosProtection: true;
+    ipWhitelist: ['allowed-ips'];
+  };
+  
+  secrets: {
+    encryption: 'AES-256';
+    rotation: '90d';
+    storage: 'HashiCorp Vault';
+  };
+  
+  compliance: {
+    gdpr: true;
+    lgpd: true;
+    ccpa: true;
+    audit: 'continuous';
+  };
+}
+```
+
+#### 2. Compliance Checks
+```bash
+# Security scan
+npm audit --audit-level high
+
+# Dependency check
+npm ls --depth=0 | grep -v "^npm@" | awk '{print $1 "@" $2}' | xargs npm audit
+
+# OWASP ZAP scan
+docker run -t owasp/zap2docker-stable zap-baseline.py -t http://target-url
+
+# Snyk security scan
+snyk test --severity-threshold=high
+
+# CodeQL analysis
+gh codeql scan
+```
+
+## Performance e Otimização
+
+### ⚡ Performance Optimization
+
+#### 1. Build Optimization
+```typescript
+// Build optimization configuration
+interface BuildOptimization {
+  bundling: {
+    treeshaking: true;
+    minification: true;
+    compression: true;
+    codeSplitting: true;
+  };
+  
+  caching: {
+    browserCaching: '1y';
+    cdnCaching: '30d';
+    serviceWorker: true;
+  };
+  
+  optimization: {
+    imageOptimization: true;
+    fontOptimization: true;
+    cssOptimization: true;
+    jsOptimization: true;
+  };
+}
+```
+
+#### 2. Performance Monitoring
+```typescript
+// Performance monitoring
+interface PerformanceMonitoring {
+  webVitals: {
+    lcp: '2.5s';           // Largest Contentful Paint
+    fid: '100ms';          // First Input Delay
+    cls: '0.1';           // Cumulative Layout Shift
+    fcp: '1.8s';          // First Contentful Paint
+    ttfb: '600ms';         // Time to First Byte
+  };
+  
+  api: {
+    responseTime: '200ms';
+    throughput: '1000 req/s';
+    errorRate: '1%';
+    availability: '99.9%';
+  };
+  
+  infrastructure: {
+    cpu: '70%';
+    memory: '80%';
+    disk: '85%';
+    network: '60%';
+  };
+}
+```
+
+## Troubleshooting
+
+### 🔧 Common Issues
+
+#### 1. Build Failures
+```bash
+# Clear cache
+npm run clean
 rm -rf node_modules package-lock.json
 npm install
 
-# Verifique TypeScript
+# Check dependencies
+npm outdated
+npm audit
+
+# Verify TypeScript
 npm run type-check
+
+# Verify ESLint
+npm run lint
 ```
 
-#### 2. Deploy Lento
+#### 2. Deploy Failures
 ```bash
-# Verifique bundle size
-npm run build --analyze
-
-# Otimize imports
-npm run optimize
-
-# Configure cache
-vercel env add CACHE_DURATION
-```
-
-#### 3. Erros de Runtime
-```bash
-# Verifique logs
+# Check Vercel logs
 vercel logs
 
-# Debug localmente
-npm run dev
+# Check GitHub Actions logs
+gh run list --workflow="Deploy SuperRelatórios"
+gh run view <run-id>
 
-# Teste em staging
-vercel --prod --env VERCEL_ENV=staging
+# Check environment variables
+vercel env ls
+
+# Check domain configuration
+vercel domains ls
 ```
 
-### Health Checks
-
+#### 3. Runtime Issues
 ```bash
-# Verifique saúde da aplicação
-curl https://superrelatorios.com/api/health
+# Check application logs
+vercel logs --follow
 
-# Verifique status do deploy
-vercel ls
+# Check database connection
+npm run db:check
 
-# Monitore performance
-curl https://vitals.vercel.app/
+# Check external services
+npm run health-check
+
+# Check performance
+npm run performance-check
 ```
 
-## 📋 Checklist de Deploy
+## Melhores Práticas
 
-### Pre-Deploy
-- [ ] Testes unitários passando
-- [ ] Testes E2E passando
-- [ ] Build sem erros
-- [ ] Type checking OK
-- [ ] Linting OK
-- [ ] Variáveis de ambiente configuradas
-- [ ] Backup do banco de dados
-- [ ] Documentação atualizada
+### 🎯 Best Practices
 
-### Post-Deploy
-- [ ] Verificar funcionamento da aplicação
-- [ ] Testar login e autenticação
-- [ ] Validar integrações
-- [ ] Checar performance
-- [ ] Monitorar erros (Sentry)
-- [ ] Verificar analytics
-- [ ] Notificar equipe
-- [ ] Atualizar documentação
+#### 1. Deploy Practices
+- **Test before deploy** - Sempre rodar testes completos
+- **Incremental deploys** - Pequenas mudanças frequentes
+- **Rollback ready** - Sempre ter plano de rollback
+- **Monitor continuously** - Observar métricas em tempo real
+- **Document everything** - Manter logs detalhados
 
-### Emergência
-- [ ] Identificar causa raiz
-- [ ] Executar rollback se necessário
-- [ ] Comunicar stakeholders
-- [ ] Documentar incidente
-- [ ] Implementar prevenção
+#### 2. Security Practices
+- **Principle of least privilege** - Mínimo de permissões necessárias
+- **Regular updates** - Manter dependências atualizadas
+- **Security scans** - Scans regulares de vulnerabilidades
+- **Secrets management** - Gerenciamento seguro de secrets
+- **Compliance checks** - Verificação regular de compliance
+
+#### 3. Performance Practices
+- **Monitor metrics** - Monitorar métricas de performance
+- **Optimize continuously** - Otimização contínua
+- **Cache strategically** - Cache estratégico
+- **Lazy loading** - Carregamento preguiçoso
+- **Bundle optimization** - Otimização de bundle
+
+## Considerações Importantes
+
+### 🔄 Evolução Contínua
+
+#### Processo de Melhoria
+1. **Weekly reviews** - Revisão semanal de deploys
+2. **Monthly metrics** - Análise mensal de métricas
+3. **Quarterly audits** - Auditoria trimestral de processos
+4. **Annual planning** - Planejamento anual de melhorias
+
+#### Innovation Pipeline
+- **New technologies** - Avaliação de novas tecnologias
+- **Process automation** - Automação de processos manuais
+- **Performance optimization** - Otimização contínua de performance
+- **Security enhancements** - Melhorias de segurança
 
 ---
 
-**Deploy automatizado e monitorado para máxima confiabilidade e performance!**
+## Recursos Relacionados
+
+### 📚 Documentação Complementar
+- **[Performance Monitoring](./02-performance-monitoring.md)** - Monitoramento avançado
+- **[Hierarchy Execution](./03-hierarchy-execution.md)** - Processos organizacionais
+- **[API Reference](../04-api/01-api-reference.md)** - Documentação de APIs
+- **[User Guide](../05-user-guides/02-complete-user-guide.md)** - Guia do usuário
+
+### 🔗 Ferramentas e Recursos
+- **Vercel Dashboard** - Monitoramento de deploys
+- **GitHub Actions** - CI/CD pipeline
+- **Grafana** - Métricas e dashboards
+- **PagerDuty** - Alertas e incidentes
+
+---
+
+*Última atualização: 22/03/2026*  
+*Versão: 2.0*  
+*Status: Active*  
+*Maintainer: DevOps Team SuperRelatórios*
