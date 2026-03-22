@@ -22,6 +22,7 @@ const Profile = lazy(() => import("./pages/app/Profile"));
 const Settings = lazy(() => import("./pages/app/Settings"));
 const Priorities = lazy(() => import("./pages/app/Priorities"));
 const ActionPlan = lazy(() => import("./pages/app/ActionPlan"));
+const StrategicDashboard = lazy(() => import("./pages/app/StrategicDashboard"));
 const DataHub = lazy(() => import("./pages/app/DataHub"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Login = lazy(() => import("./pages/auth/Login"));
@@ -87,6 +88,7 @@ const App = () => (
                   <Route path="reports/:id" element={<ReportDetail />} />
                   <Route path="folders" element={<Folders />} />
                   <Route path="folders/:id" element={<FolderDetail />} />
+                  <Route path="strategic" element={<StrategicDashboard />} />
                   <Route path="action-plan" element={<ActionPlan />} />
                   <Route path="settings" element={<Settings />} />
                 </Route>
