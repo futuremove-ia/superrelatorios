@@ -10,12 +10,16 @@ import {
   CircleDollarSign,
   Plus,
   Calendar,
-  TrendingUp
+  TrendingUp,
+  Target,
+  Activity
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { KPICard } from '@/components/ui/kpi-card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Dashboard = () => {
   const { t, i18n } = useTranslation();

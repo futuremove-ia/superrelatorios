@@ -12,7 +12,7 @@ import { AppErrorBoundary } from "./components/layout/AppErrorBoundary";
 
 // Lazy loaded pages
 const Index = lazy(() => import("./pages/Index"));
-const Dashboard = lazy(() => import("./pages/app/Dashboard"));
+const Dashboard = lazy(() => import("./pages/app/Dashboard-Atualizado"));
 const ReportsList = lazy(() => import("./pages/app/ReportsList"));
 const ReportBuilder = lazy(() => import("./pages/app/ReportBuilder"));
 const ReportDetail = lazy(() => import("./pages/app/ReportDetail"));
@@ -22,9 +22,13 @@ const Profile = lazy(() => import("./pages/app/Profile"));
 const Settings = lazy(() => import("./pages/app/Settings"));
 const Priorities = lazy(() => import("./pages/app/Priorities"));
 const ActionPlan = lazy(() => import("./pages/app/ActionPlan"));
-const ConsolidatedDashboard = lazy(() => import("./pages/app/ConsolidatedDashboard"));
+const ConsolidatedDashboard = lazy(() => import("./pages/app/ConsolidatedDashboard-Atualizado"));
+const MetricsDashboard = lazy(() => import("./pages/app/MetricsDashboard-Otimizado"));
 const OrganizationManager = lazy(() => import("./pages/app/OrganizationManager"));
 const TemplateManager = lazy(() => import("./pages/app/TemplateManager"));
+const DecisionPanel = lazy(() => import("./pages/app/DecisionPanel"));
+const MetricsConfig = lazy(() => import("./pages/app/MetricsConfig"));
+const AdvancedAnalytics = lazy(() => import("./pages/app/AdvancedAnalytics"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Login = lazy(() => import("./pages/auth/Login"));
 const AuthCallback = lazy(() => import("./pages/auth/AuthCallback"));
@@ -89,11 +93,16 @@ const App = () => (
                   <Route path="reports/:id" element={<ReportDetail />} />
                   <Route path="folders" element={<Folders />} />
                   <Route path="folders/:id" element={<FolderDetail />} />
-                  <Route path="strategic" element={<StrategicDashboard />} />
+                  <Route path="metrics" element={<MetricsDashboard />} />
+                  <Route path="metrics/config" element={<MetricsConfig />} />
+                  <Route path="analytics" element={<AdvancedAnalytics />} />
+                  <Route path="decision-panel" element={<DecisionPanel />} />
                   <Route path="consolidated" element={<ConsolidatedDashboard />} />
                   <Route path="organization" element={<OrganizationManager />} />
                   <Route path="templates" element={<TemplateManager />} />
                   <Route path="action-plan" element={<ActionPlan />} />
+                  <Route path="prioridades" element={<Priorities />} />
+                  <Route path="profile" element={<Profile />} />
                   <Route path="settings" element={<Settings />} />
                 </Route>
                 

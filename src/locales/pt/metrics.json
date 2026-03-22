@@ -1,0 +1,53 @@
+{
+  "metricsDashboard": {
+    "title": "Painel de Indicadores",
+    "description": "Visualização completa de métricas por domínios"
+  },
+  "domains": {
+    "all": "Todos",
+    "finance": "Financeiro",
+    "operations": "Operações",
+    "commercial": "Comercial",
+    "strategy": "Estratégia",
+    "crossDomain": "Cross-Domain",
+    "financeDesc": "Métricas financeiras e de rentabilidade",
+    "operationsDesc": "Métricas operacionais e de eficiência",
+    "commercialDesc": "Métricas comerciais e de vendas",
+    "strategyDesc": "Métricas estratégicas e de execução",
+    "crossDomainDesc": "Métricas integradas e correlações"
+  },
+  "metrics": {
+    "totalMetrics": "Total de Métricas",
+    "healthScore": "Score Saúde",
+    "goodMetrics": "Métricas Boas",
+    "warningMetrics": "Métricas Atenção",
+    "criticalMetrics": "Métricas Críticas",
+    "overallHealth": "Saúde Geral",
+    "criticalRelationships": "Relações Críticas",
+    "recommendations": "Recomendações",
+    "needAttention": "Precisam atenção",
+    "available": "Disponíveis",
+    "crossDomainAnalytics": "Analytics Cross-Domain"
+  },
+  "periods": {
+    "week": "Semana",
+    "month": "Mês",
+    "quarter": "Trimestre",
+    "year": "Ano"
+  },
+  "view": {
+    "cards": "Cards",
+    "chart": "Gráfico",
+    "table": "Tabela"
+  },
+  "common": {
+    "metrics": "métricas",
+    "filters": "Filtros",
+    "export": "Exportar",
+    "refresh": "Atualizar",
+    "details": "Detalhes"
+  },
+  "nav": {
+    "metrics": "Indicadores"
+  }
+}

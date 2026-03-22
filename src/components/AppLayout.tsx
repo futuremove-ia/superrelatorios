@@ -13,7 +13,12 @@ import {
   LogOut,
   Target,
   ListChecks,
-  Database
+  Database,
+  BarChart3,
+  Brain,
+  TrendingUp,
+  PieChart,
+  Zap
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -35,17 +40,26 @@ const AppLayout = () => {
 
   const navigation = [
     { name: t('nav.overview', { defaultValue: 'Visão Geral' }), href: '/app', icon: LayoutDashboard },
+    { name: t('nav.metrics', { defaultValue: 'Indicadores' }), href: '/app/metrics', icon: BarChart3 },
+    { name: t('nav.decision_panel', { defaultValue: 'Painel de Decisão' }), href: '/app/decision-panel', icon: Brain },
+    { name: t('nav.analytics', { defaultValue: 'Analytics' }), href: '/app/analytics', icon: PieChart },
+    { name: t('nav.consolidated', { defaultValue: 'Consolidado' }), href: '/app/consolidated', icon: TrendingUp },
     { name: t('nav.priorities', { defaultValue: 'Prioridades' }), href: '/app/prioridades', icon: Target },
-    { name: t('nav.action_plan', { defaultValue: 'Plano de Ação' }), href: '/app/plano-de-acao', icon: ListChecks },
-    { name: t('nav.reports', { defaultValue: 'Relatórios' }), href: '/app/relatorios', icon: FileText },
-    { name: t('nav.data', { defaultValue: 'Meus Dados' }), href: '/app/dados', icon: Database },
+    { name: t('nav.action_plan', { defaultValue: 'Plano de Ação' }), href: '/app/action-plan', icon: ListChecks },
+    { name: t('nav.reports', { defaultValue: 'Relatórios' }), href: '/app/reports', icon: FileText },
+    { name: t('nav.data', { defaultValue: 'Meus Dados' }), href: '/app/folders', icon: Database },
   ];
 
   const mobileNav = [
     { name: t('nav.overview', { defaultValue: 'Visão Geral' }), href: '/app', icon: LayoutDashboard },
+    { name: t('nav.metrics', { defaultValue: 'Indicadores' }), href: '/app/metrics', icon: BarChart3 },
+    { name: t('nav.decision_panel', { defaultValue: 'Painel de Decisão' }), href: '/app/decision-panel', icon: Brain },
+    { name: t('nav.analytics', { defaultValue: 'Analytics' }), href: '/app/analytics', icon: PieChart },
+    { name: t('nav.consolidated', { defaultValue: 'Consolidado' }), href: '/app/consolidated', icon: TrendingUp },
     { name: t('nav.priorities', { defaultValue: 'Prioridades' }), href: '/app/prioridades', icon: Target },
-    { name: t('nav.action_plan', { defaultValue: 'Plano' }), href: '/app/plano-de-acao', icon: ListChecks },
-    { name: t('nav.data', { defaultValue: 'Dados' }), href: '/app/dados', icon: Database },
+    { name: t('nav.action_plan', { defaultValue: 'Plano' }), href: '/app/action-plan', icon: ListChecks },
+    { name: t('nav.reports', { defaultValue: 'Relatórios' }), href: '/app/reports', icon: FileText },
+    { name: t('nav.data', { defaultValue: 'Dados' }), href: '/app/folders', icon: Database },
   ];
 
 
