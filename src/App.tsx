@@ -22,8 +22,9 @@ const Profile = lazy(() => import("./pages/app/Profile"));
 const Settings = lazy(() => import("./pages/app/Settings"));
 const Priorities = lazy(() => import("./pages/app/Priorities"));
 const ActionPlan = lazy(() => import("./pages/app/ActionPlan"));
-const StrategicDashboard = lazy(() => import("./pages/app/StrategicDashboard"));
-const DataHub = lazy(() => import("./pages/app/DataHub"));
+const ConsolidatedDashboard = lazy(() => import("./pages/app/ConsolidatedDashboard"));
+const OrganizationManager = lazy(() => import("./pages/app/OrganizationManager"));
+const TemplateManager = lazy(() => import("./pages/app/TemplateManager"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Login = lazy(() => import("./pages/auth/Login"));
 const AuthCallback = lazy(() => import("./pages/auth/AuthCallback"));
@@ -89,6 +90,9 @@ const App = () => (
                   <Route path="folders" element={<Folders />} />
                   <Route path="folders/:id" element={<FolderDetail />} />
                   <Route path="strategic" element={<StrategicDashboard />} />
+                  <Route path="consolidated" element={<ConsolidatedDashboard />} />
+                  <Route path="organization" element={<OrganizationManager />} />
+                  <Route path="templates" element={<TemplateManager />} />
                   <Route path="action-plan" element={<ActionPlan />} />
                   <Route path="settings" element={<Settings />} />
                 </Route>
