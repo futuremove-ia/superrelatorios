@@ -49,14 +49,14 @@ export const useDashboardMetrics = (options: UseDashboardMetricsOptions = {}) =>
       const mockMetrics: DashboardMetrics = {
         kpis: [
           {
-            code: 'RUNWAY',
-            name: 'Runway (Meses)',
-            value: 4.2,
-            unit: 'meses',
-            threshold: { critical: 1, warning: 3, good: 6 },
-            trend: 'down',
-            previousValue: 4.8,
-            change: -12.5,
+            code: 'NET_PROFIT_MARGIN',
+            name: 'Margem de Lucro Líquida',
+            value: 12.5,
+            unit: '%',
+            threshold: { critical: 0, warning: 5, good: 10 },
+            trend: 'up',
+            previousValue: 10.2,
+            change: 22.5,
             category: 'financial'
           },
           {
@@ -71,14 +71,14 @@ export const useDashboardMetrics = (options: UseDashboardMetricsOptions = {}) =>
             category: 'marketing'
           },
           {
-            code: 'NET_PROFIT_MARG',
-            name: 'Margem Líquida',
-            value: 12.5,
-            unit: '%',
-            threshold: { critical: 0, warning: 5, good: 10 },
-            trend: 'up',
-            previousValue: 10.2,
-            change: 22.5,
+            code: 'RUNWAY',
+            name: 'Runway (Meses)',
+            value: 4.2,
+            unit: 'meses',
+            threshold: { critical: 1, warning: 3, good: 6 },
+            trend: 'down',
+            previousValue: 4.8,
+            change: -12.5,
             category: 'financial'
           },
           {
@@ -101,7 +101,7 @@ export const useDashboardMetrics = (options: UseDashboardMetricsOptions = {}) =>
             trend: 'stable',
             previousValue: 3.1,
             change: 3.2,
-            category: 'operational'
+            category: 'marketing'
           }
         ],
         summary: {

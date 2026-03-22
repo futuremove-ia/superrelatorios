@@ -7,13 +7,13 @@
 -- Cada KPI alimenta árvores de métricas com rigor de consultoria
 INSERT INTO kpi_master_library (code, title, description, calculation_formula, unit, domain, created_at) VALUES
 -- Financeiros (Core Business Metrics)
-('NET_PROFIT_MARG', 'Margem de Lucro Líquida', '(Lucro Líquido / Receita Bruta) * 100 - A métrica definitiva de saúde do negócio', '(Lucro Líquido / Receita Bruta) * 100', '%', 'finance', NOW()),
-('CONTRIB_MARGIN', 'Margem de Contribuição', '(Receita - Custos Variáveis) / Receita - Indica o poder de precificação real', '(Receita - Custos Variáveis) / Receita * 100', '%', 'finance', NOW()),
-('BURN_RATE', 'Queima de Caixa Mensal', 'Média de saídas de caixa operacionais negativas - Velocidade de consumo de capital', 'SUM(Saídas Operacionais Negativas)', 'R$', 'finance', NOW()),
-('RUNWAY', 'Runway (Sobrevivência)', 'Saldo Total de Caixa / Burn Rate - Meses de sobrevivência sem nova receita', 'Saldo Caixa / Burn Rate Mensal', 'meses', 'finance', NOW()),
+('NET_PROFIT_MARGIN', 'Margem de Lucro Líquida', '(Lucro Líquido / Receita Bruta) * 100 - A métrica definitiva de saúde do negócio', '(Lucro Líquido / Receita Bruta) * 100', '%', 'financial', NOW()),
+('CONTRIB_MARGIN', 'Margem de Contribuição', '(Receita - Custos Variáveis) / Receita - Indica o poder de precificação real', '(Receita - Custos Variáveis) / Receita * 100', '%', 'financial', NOW()),
+('BURN_RATE', 'Queima de Caixa Mensal', 'Média de saídas de caixa operacionais negativas - Velocidade de consumo de capital', 'SUM(Saídas Operacionais Negativas)', 'R$', 'financial', NOW()),
+('RUNWAY', 'Runway (Sobrevivência)', 'Saldo Total de Caixa / Burn Rate - Meses de sobrevivência sem nova receita', 'Saldo Caixa / Burn Rate Mensal', 'meses', 'financial', NOW()),
 ('CAC', 'Custo de Aquisição', 'Total Investido Mkt e Vendas / Novos Clientes - Eficiência do motor de crescimento', '(Investimento Mkt + Vendas) / Novos Clientes', 'R$', 'marketing', NOW()),
 ('LTV_CAC_RATIO', 'LTV / CAC Ratio', 'Valor do Ciclo de Vida do Cliente / Custo de Aquisição - Health do modelo de negócio', 'LTV / CAC', 'ratio', 'marketing', NOW()),
-('BREAK_EVEN', 'Ponto de Equilíbrio', 'Custos Fixos / % Margem de Contribuição - Volume mínimo para sobrevivência', 'Custos Fixos / Margem Contribuição', 'R$', 'finance', NOW()),
+('BREAK_EVEN', 'Ponto de Equilíbrio', 'Custos Fixos / % Margem de Contribuição - Volume mínimo para sobrevivência', 'Custos Fixos / Margem Contribuição', 'R$', 'financial', NOW()),
 ('CHURN_RATE', 'Taxa de Cancelamento', 'Clientes perdidos no período / Total de clientes - Retenção da base', '(Clientes Perdidos / Total Clientes) * 100', '%', 'marketing', NOW()),
 
 -- KPIs Leading Essenciais (Adicionados)
@@ -21,7 +21,7 @@ INSERT INTO kpi_master_library (code, title, description, calculation_formula, u
 ('SALES_CYCLE_DAYS', 'Ciclo de Vendas', 'Dias desde primeiro contato até fechamento - Eficiência comercial', 'Média de dias dos negócios fechados', 'dias', 'sales', NOW()),
 ('PIPELINE_COVERAGE', 'Cobertura de Pipeline', 'Pipeline / Meta Mensal - Previsibilidade de vendas', 'Valor Pipeline / Meta Mensal', 'ratio', 'sales', NOW()),
 ('CUSTOMER_LTV', 'Lifetime Value', 'Valor total gerado por cliente durante todo o relacionamento', '(Receita Média Mensal * Tempo de Vida Cliente) - CAC', 'R$', 'marketing', NOW()),
-('PRODUCTIVITY_PER_EMPLOYEE', 'Produtividade por Funcionário', 'Receita gerada por cada funcionário - Eficiência operacional', 'Receita Total / Número de Funcionários', 'R$', 'ops', NOW());
+('PRODUCTIVITY_PER_EMPLOYEE', 'Produtividade por Funcionário', 'Receita gerada por cada funcionário - Eficiência operacional', 'Receita Total / Número de Funcionários', 'R$', 'operational', NOW());
 
 -- 2. Biblioteca de Desafios (Dores Identificadas pela IA)
 -- Estrutura de Gestão: Problem Statement → Symptoms → Related Metrics

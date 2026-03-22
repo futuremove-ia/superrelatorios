@@ -1,17 +1,21 @@
 import { BaseDomainEntity } from '../shared/types';
-import { KPIValue } from '../../metrics/value-objects/KPIValue';
 import { Threshold } from '../../metrics/value-objects/Threshold';
 
-export type DomainType = 'financial' | 'marketing' | 'sales' | 'operations' | 'strategy' | 'customer-support' | 'logistics' | 'human-resources' | 'analytics' | 'commercial';
+export type DomainType = 'financial' | 'marketing' | 'sales' | 'operational' | 'customer-success' | 'hr' | 'it' | 'analytics' | 'commercial';
 
 export interface UnifiedMetricsEntity extends BaseDomainEntity {
-  domain: DomainType;
-  period: string;
-  kpis: Record<string, KPIValue>;
+  id: string;
+  code: string;
+  name: string;
+  value: number;
+  unit: string;
+  threshold: Threshold;
+  category: string;
+  timestamp: Date;
   metadata?: {
     source?: string;
-    lastUpdated?: string;
     confidence?: number;
+    lastUpdated?: string;
   };
 }
 
@@ -28,7 +32,17 @@ export interface UnifiedMetricsSummary {
   warningCount: number;
   goodCount: number;
   overallHealth: 'critical' | 'warning' | 'good';
+  period: string;
   lastUpdated: string;
+}
+
+export interface KPICode {
+  code: string;
+  name: string;
+  description: string;
+  unit: string;
+  domain: DomainType;
+  calculationFormula?: string;
 }
 
 export interface UnifiedMetricsCreateRequest {
