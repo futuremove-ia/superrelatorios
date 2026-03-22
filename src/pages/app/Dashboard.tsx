@@ -16,10 +16,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Dashboard as DashboardUnificado } from '@/components/dashboard/Dashboard';
-import { DiagnosticSection } from '@/components/business/DiagnosticSection';
-import { PriorityCard } from '@/components/business/PriorityCard';
-import StrategicFocusBar from '@/components/strategy/StrategicFocusBar';
 
 const Dashboard = () => {
   const { t, i18n } = useTranslation();

@@ -166,55 +166,57 @@ All colors MUST be HSL.
 
 @layer base {
   * {
-    @apply border-border;
+    border-color: hsl(var(--border));
   }
 
   body {
-    @apply bg-background text-foreground font-body;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   }
 
   /* Typography hierarchy - DSP Aligned */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading;
+    
   }
 
   h1 {
-    @apply typography-h1;
+    
   }
 
   h2 {
-    @apply typography-h2;
+    
   }
 
   h3 {
-    @apply typography-h2;
+    
   }
 
   h4 {
-    @apply typography-h2;
+    
   }
 
   h5 {
-    @apply typography-label;
+    
   }
 
   h6 {
-    @apply typography-label;
+    
   }
 
   /* Typography base */
   p, span, div {
-    @apply font-body;
+    
   }
 
   /* Typography for metrics */
   .metric {
-    @apply font-metric;
+    
   }
 
   /* Typography for labels */
   .label {
-    @apply font-label;
+    
   }
 
   /* Sections with scroll margin for fixed header */
@@ -245,42 +247,42 @@ All colors MUST be HSL.
 @layer components {
   /* Card System - Premium Elevation & Refined Borders */
   .card-hover {
-    @apply transition-all duration-300 border-border/50 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 bg-card;
+    
   }
 
   .card-interactive {
-    @apply card-hover cursor-pointer;
+    
   }
 
   /* Badge System */
   .badge-success {
-    @apply bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100;
+    
   }
 
   .badge-warning {
-    @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100;
+    
   }
 
   .badge-error {
-    @apply bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100;
+    
   }
 
   .badge-info {
-    @apply bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100;
+    
   }
 
   /* Animation Utilities */
   .animate-in {
-    @apply transition-all duration-300 ease-out;
+    
   }
 
   .fade-in {
-    @apply animate-in opacity-0;
+    
     animation: fadeIn 0.3s ease-out forwards;
   }
 
   .slide-up {
-    @apply animate-in opacity-0 translate-y-4;
+    
     animation: slideUp 0.3s ease-out forwards;
   }
 
@@ -291,46 +293,46 @@ All colors MUST be HSL.
 
   /* Hover scale utility */
   .hover-scale {
-    @apply transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98];
+    
   }
 
   /* Responsive Text Utilities */
   .text-responsive-xs {
-    @apply text-xs sm:text-sm;
+    
   }
 
   .text-responsive-sm {
-    @apply text-sm sm:text-base;
+    
   }
 
   .text-responsive-base {
-    @apply text-base sm:text-lg;
+    
   }
 
   .text-responsive-lg {
-    @apply text-lg sm:text-xl md:text-2xl;
+    
   }
 
   .text-responsive-xl {
-    @apply text-xl sm:text-2xl md:text-3xl;
+    
   }
 
   .text-responsive-2xl {
-    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl;
+    
   }
 
   /* Premium Shine Effect */
   .btn-shine {
-    @apply relative overflow-hidden;
+    
   }
 
   .btn-shine::after {
     content: '';
-    @apply absolute -inset-full top-0 block w-1/2 h-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[-25deg] transition-all duration-1000;
+    
   }
 
   .btn-shine:hover::after {
-    @apply left-full;
+    
   }
 }
 
@@ -373,11 +375,11 @@ All colors MUST be HSL.
   /* High contrast mode support */
   @media (prefers-contrast: high) {
     .text-muted-foreground {
-      @apply text-foreground;
+      
     }
     
     .border-muted {
-      @apply border-foreground;
+      
     }
   }
 
@@ -405,18 +407,18 @@ All colors MUST be HSL.
 
   /* Mobile-first responsive containers */
   .container-fluid {
-    @apply px-4 mx-auto w-full;
+    
   }
 
   @media (min-width: 640px) {
     .container-fluid {
-      @apply px-6;
+      
     }
   }
 
   @media (min-width: 1024px) {
     .container-fluid {
-      @apply px-8;
+      
     }
   }
 
@@ -435,7 +437,7 @@ All colors MUST be HSL.
 
   /* Fixed mobile bottom bar */
   .mobile-bottom-bar {
-    @apply fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border p-4 z-50;
+    
     padding-bottom: calc(16px + env(safe-area-inset-bottom));
   }
 
@@ -454,11 +456,11 @@ All colors MUST be HSL.
 
   /* Loading and skeleton states */
   .skeleton {
-    @apply animate-pulse bg-muted rounded;
+    
   }
 
   .loading-spinner {
-    @apply animate-spin rounded-full border-2 border-muted border-t-primary;
+    
   }
 
   /* Better text readability */
@@ -469,7 +471,7 @@ All colors MUST be HSL.
 
   /* Improved button states */
   .btn-enhanced {
-    @apply transition-all duration-200 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+    
   }
 
   /* Scroll behavior enhancements */
@@ -487,132 +489,132 @@ All colors MUST be HSL.
 
   /* DSP Typography Classes */
   .typography-h1 {
-    @apply text-2xl font-semibold tracking-tight;
+    
   }
 
   .typography-h2 {
-    @apply text-lg font-medium;
+    
   }
 
   .typography-label {
-    @apply text-[10px] font-bold uppercase tracking-wider;
+    
   }
 
   .typography-body {
-    @apply text-sm font-normal leading-relaxed;
+    
   }
 
   .typography-metric {
-    @apply font-mono text-xl tabular-nums;
+    
   }
 
   /* DSP Card System */
   .card-dsp {
-    @apply border border-border-light dark:border-border-dark;
-    @apply bg-background-light dark:bg-background-dark;
-    @apply shadow-sm dark:shadow-none;
-    @apply rounded-lg;
+    
+    
+    
+    
   }
 
   /* DSP Information Flow */
   .information-flow {
-    @apply space-y-4;
+    
   }
 
   .problem-section {
-    @apply text-foreground-light dark:text-foreground-dark;
+    
   }
 
   .action-section {
-    @apply text-accent-foreground bg-accent;
+    
   }
 
   .metric-section {
-    @apply font-metric text-xl tabular-nums;
+    
   }
 
   /* DSP Status Colors */
   .status-positive {
-    @apply text-status-positive;
+    
   }
 
   .status-negative {
-    @apply text-status-negative;
+    
   }
 
   .status-neutral {
-    @apply text-status-neutral;
+    
   }
 
   .status-pending {
-    @apply text-status-pending;
+    
   }
 
   /* DSP Spacing */
   .space-y-section {
-    @apply space-y-8;
+    
   }
 
   .space-y-element {
-    @apply space-y-4;
+    
   }
 
   .space-y-tight {
-    @apply space-y-2;
+    
   }
 
   .space-x-section {
-    @apply space-x-8;
+    
   }
 
   .space-x-element {
-    @apply space-x-4;
+    
   }
 
   .space-x-tight {
-    @apply space-x-2;
+    
   }
 
   /* DSP Background Colors */
   .bg-dsp-light {
-    @apply bg-background-light;
+    
   }
 
   .bg-dsp-dark {
-    @apply bg-background-dark;
+    
   }
 
   .bg-dsp-subtle-light {
-    @apply bg-background-subtle-light;
+    
   }
 
   .bg-dsp-subtle-dark {
-    @apply bg-background-subtle-dark;
+    
   }
 
   /* DSP Text Colors */
   .text-dsp-light {
-    @apply text-foreground-light;
+    
   }
 
   .text-dsp-dark {
-    @apply text-foreground-dark;
+    
   }
 
   .text-dsp-muted-light {
-    @apply text-foreground-muted-light;
+    
   }
 
   .text-dsp-muted-dark {
-    @apply text-foreground-muted-dark;
+    
   }
 
   /* DSP Border Colors */
   .border-dsp-light {
-    @apply border-border-light;
+    
   }
 
   .border-dsp-dark {
-    @apply border-border-dark;
+    
   }
 }
