@@ -3,18 +3,26 @@
 Sempre que atuar neste projeto, o agente de IA deve seguir estritamente as diretrizes abaixo:
 
 1. **Documentação Contínua (Continuous Documentation):**
-   - Para toda e qualquer nova feature (funcionalidade) de impacto médio ou grande implementada, o agente deve autodeclarar e atualizar a documentação na pasta `knowledge/`.
-   - Se for uma refatoração arquitetural, os arquivos de arquitetura (como log de decisões / arquivos `.md` explicativos) devem ser atualizados.
+   - **OBRIGATÓRIO:** Para toda e qualquer nova feature (funcionalidade) de impacto médio ou grande implementada, o agente deve autodeclarar e atualizar a documentação na pasta `docs/`.
+   - **OBRIGATÓRIO:** Se for uma refatoração arquitetural, os arquivos de arquitetura (como log de decisões / arquivos `.md` explicativos) devem ser atualizados.
+   - **OBRIGATÓRIO:** Manter o README.md sempre atualizado com o estado atual do projeto.
+   - **OBRIGATÓRIO:** Atualizar CHANGELOG.md para cada release significativo.
 
-2. **Estrutura de Conhecimento (`knowledge/`):**
+2. **Estrutura de Conhecimento (`docs/`):**
    - Todo conhecimento acumulado sobre arquitetura, dívidas técnicas, decisões (ADRs) e auditorias passadas fica concentrado neste diretório.
-   - Antes de sugerir grandes refatorações, leia o histórico em `knowledge/` para manter o contexto de desenvolvimento.
+   - Antes de sugerir grandes refatorações, leia o histórico em `docs/` para manter o contexto de desenvolvimento.
+   - **Subpastas obrigatórias:** `01-strategy/`, `02-technical/`, `03-operations/`, `04-api/`, `05-user-guides/`, `06-compliance/`, `07-knowledge/`
 
 3. **Geração de Artefatos & Relatórios:**
    - Use o formato de Markdown (.md) para escrever os relatórios.
    - Sempre adicione "changelogs" aos planos de implementação aprovados nas entregas.
    - **Fluxo de Implementação:** O agente deve SEMPRE analisar o contexto, elaborar um plano detalhado e apresentá-lo para revisão e aprovação do usuário antes de executar qualquer alteração no código.
-   - **Fluxo de Implementação:** O agente deve SEMPRE analisar o contexto, elaborar um plano detalhado e apresentá-lo para revisão e aprovação do usuário antes de executar qualquer alteração no código.
+
+4. **Qualidade da Documentação:**
+   - **OBRIGATÓRIO:** Toda documentação deve ser clara, concisa e atualizada.
+   - **OBRIGATÓRIO:** Usar linguagem profissional e acessível.
+   - **OBRIGATÓRIO:** Incluir exemplos práticos e código quando relevante.
+   - **OBRIGATÓRIO:** Manter consistência de formatação em todos os arquivos.
 
 5. **Internacionalização (i18n) & UX Writing:**
    - **Pensamento Nativo em i18n:** Todas as funções, telas, textos, tudo deve ser feito pensando na internacionalização desde o início. Proibido hard-coded strings nos componentes.
@@ -22,3 +30,24 @@ Sempre que atuar neste projeto, o agente de IA deve seguir estritamente as diret
    - **Qualidade UX Writing PT-BR:** Títulos, subtítulos, termos, textos e labels de interface na versão PT-BR devem estar 100% em Português do Brasil, com linguagem didática e autoexplicativa seguindo as melhores práticas de UX Writing de interfaces.
    - **Qualidade UX Writing EN & ES:** Idem para as versões em Inglês (EN) e Espanhol (ES), garantindo 100% de cobertura no idioma e seguindo as melhores práticas de UX Writing específicas para estas línguas, evitando traduções literais.
    - **Redução de Carga Cognitiva:** O foco deve ser sempre a clareza e a facilidade de uso para o usuário final (SMEs/Pequenas e Médias Empresas).
+
+6. **Documentação Técnica Obrigatória:**
+   - **OBRIGATÓRIO:** Manter API Documentation atualizada (docs/04-api/)
+   - **OBRIGATÓRIO:** Documentar arquitetura (docs/02-technical/)
+   - **OBRIGATÓRIO:** Manter guias de usuário (docs/05-user-guides/)
+   - **OBRIGATÓRIO:** Documentar processo de deploy (docs/03-operations/)
+   - **OBRIGATÓRIO:** Manter registro de decisões arquiteturais (docs/07-knowledge/)
+
+7. **Revisão e Atualização:**
+   - **OBRIGATÓRIO:** Revisar documentação mensalmente para garantir atualidade.
+   - **OBRIGATÓRIO:** Atualizar documentação antes de cada release.
+   - **OBRIGATÓRIO:** Documentar bugs conhecidos e suas soluções.
+   - **OBRIGATÓRIO:** Manter roadmap e changelog atualizados.
+
+8. **Padrões de Formatação:**
+   - Usar Markdown padrão com extensões GitHub
+   - Incluir TOC (Table of Contents) em documentos longos
+   - Usar badges e indicadores visuais para status
+   - Seguir convenção de nomes: `kebab-case` para arquivos, `PascalCase` para títulos
+
+**VIOLAÇÃO DESTAS REGRAS É CONSIDERADA CRÍTICA E PODE BLOQUEAR MERGES E RELEASES.**
