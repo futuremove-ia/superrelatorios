@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -27,7 +27,14 @@ const Login: React.FC = () => {
   const [socialLoading, setSocialLoading] = useState<'google' | 'facebook' | null>(null);
   const [isSignUp, setIsSignUp] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { t } = useTranslation();
+
+  // Get redirect URL from query params or use default
+  const getRedirectUrl = () => {
+    const redirect = searchParams.get('redirect');
+    return redirect || '/app';
+  };
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,11 +49,15 @@ const Login: React.FC = () => {
         });
         if (error) throw error;
         toast.success(t('auth.toast.signup_success'));
+        // For signup, redirect to login page with same redirect param
+        setTimeout(() => {
+          navigate(`/login?redirect=${encodeURIComponent(getRedirectUrl())}`);
+        }, 2000);
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         toast.success(t('auth.toast.login_success'));
-        navigate('/app');
+        navigate(getRedirectUrl());
       }
     } catch (error: any) {
       toast.error(error.message || t('auth.toast.error_generic'));
@@ -61,7 +72,7 @@ const Login: React.FC = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: `${window.location.origin}/auth/callback?redirect=${encodeURIComponent(getRedirectUrl())}`,
         },
       });
       if (error) throw error;

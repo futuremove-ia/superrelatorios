@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
 import PageLoader from '@/components/layout/PageLoader';
 
@@ -8,6 +9,9 @@ import PageLoader from '@/components/layout/PageLoader';
  * garante a troca segura do token via protocolo PKCE.
  */
 const AuthCallback = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
   useEffect(() => {
     const processAuth = async () => {
       try {
@@ -16,9 +20,12 @@ const AuthCallback = () => {
         
         if (error) throw error;
 
-        // Se a sessão for validada com sucesso, limpa a URL e envia para o Dashboard
+        // Get redirect URL from query params or use default
+        const redirect = searchParams.get('redirect') || '/app';
+
+        // Se a sessão for validada com sucesso, limpa a URL e envia para o destino
         if (data.session) {
-          window.location.href = '/app';
+          window.location.href = redirect;
         } else {
           window.location.href = '/login';
         }
@@ -29,7 +36,7 @@ const AuthCallback = () => {
     };
 
     processAuth();
-  }, []);
+  }, [navigate, searchParams]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-background">
