@@ -939,5 +939,194 @@
     "system": "Preparando su entorno...",
     "data": "Organizando información...",
     "standard": "Cargando..."
+  },
+  "decision_panel": {
+    "title": "Panel de Decisión",
+    "subtitle": "Análisis inteligente para la toma de decisiones estratégicas",
+    "period": {
+      "current": "Actual",
+      "last_month": "Último Mes",
+      "quarter": "Trimestre"
+    },
+    "actions": {
+      "filters": "Filtros",
+      "export": "Exportar",
+      "refresh": "Actualizar"
+    },
+    "alert": {
+      "critical_detected": "Situación Crítica Detectada:",
+      "analyze_now": "Analizar ahora"
+    },
+    "tabs": {
+      "overview": "Visión General",
+      "situation": "Situación",
+      "recommendations": "Recomendaciones",
+      "actions": "Plan de Acción"
+    },
+    "situation": {
+      "priority_title": "Situación Prioritaria",
+      "metrics_title": "Métricas Impactadas",
+      "technical_context": "Contexto Técnico",
+      "actionable_translation": "Traducción Accionable",
+      "detailed_analysis": "Análisis Detallado de la Situación",
+      "metrics_analysis": "Análisis de Métricas",
+      "crossed_impact": "Impacto Cruzado"
+    },
+    "kpi": {
+      "recommendations": "Recomendaciones",
+      "recommendations_subtitle": "Soluciones identificadas",
+      "average_confidence": "Confianza Promedio",
+      "average_confidence_subtitle": "Basada en datos",
+      "expected_impact": "Impacto Esperado",
+      "expected_impact_subtitle": "Recuperación en 90 días"
+    },
+    "recommendations": {
+      "title": "Recomendaciones Estratégicas",
+      "filter": "Filtrar",
+      "export": "Exportar",
+      "view_details": "Ver Detalles",
+      "implement": "Implementar",
+      "expected_impact": "Impacto Esperado",
+      "timeframe": "Plazo",
+      "confidence": "Confianza",
+      "actions_title": "Acciones Recomendadas",
+      "responsible": "Responsable",
+      "deadline": "Plazo"
+    },
+    "action_plan": {
+      "title": "Plan de Acción Consolidado",
+      "export_plan": "Exportar Plan",
+      "summary_title": "Resumen del Plan de Acción",
+      "immediate_actions": "Acciones Inmediatas",
+      "immediate_actions_desc": "Próximos 15 días",
+      "medium_term_actions": "Acciones de Mediano Plazo",
+      "medium_term_actions_desc": "Próximos 60 días",
+      "expected_impact": "Impacto Esperado",
+      "expected_impact_desc": "Recuperación en 90 días",
+      "implementation_timeline": "Timeline de Implementación",
+      "start_implementation": "Iniciar Implementación",
+      "view_details": "Ver Detalles"
+    }
+  },
+  "common": {
+    "public": "Público",
+    "loading": "Cargando...",
+    "processing": "Procesando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "view": "Visualizar",
+    "open": "Abrir",
+    "close": "Cerrar",
+    "share": "Compartir",
+    "download": "Descargar",
+    "upload": "Subir",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "export": "Exportar",
+    "import": "Importar",
+    "refresh": "Actualizar",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "back": "Volver",
+    "continue": "Continuar",
+    "finish": "Finalizar",
+    "submit": "Enviar",
+    "confirm": "Confirmar",
+    "yes": "Sí",
+    "no": "No",
+    "ok": "OK",
+    "done": "Completado",
+    "pending": "Pendiente",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "enabled": "Habilitado",
+    "disabled": "Deshabilitado",
+    "required": "Obligatorio",
+    "optional": "Opcional",
+    "all": "Todos",
+    "none": "Ninguno",
+    "month": "Mes",
+    "quarter": "Trimestre",
+    "year": "Año",
+    "current": "Actual",
+    "last_month": "Último Mes",
+    "details": "Detalles",
+    "settings": "Configuraciones",
+    "profile": "Perfil",
+    "logout": "Cerrar Sesión",
+    "login": "Iniciar Sesión",
+    "signup": "Registrarse",
+    "or": "o",
+    "and": "y",
+    "from": "de",
+    "to": "para",
+    "at": "en",
+    "by": "por",
+    "with": "con",
+    "without": "sin",
+    "please": "Por favor",
+    "thank_you": "Gracias"
+  },
+  "dashboard": {
+    "title": "Panel Principal",
+    "subtitle": "Resumen de métricas y rendimiento",
+    "period": {
+      "month": "Mes",
+      "quarter": "Trimestre", 
+      "year": "Año"
+    },
+    "summary": {
+      "title": "Resumen Ejecutivo",
+      "description": "Rendimiento general en alza con 82/100 en el score de salud. Los ingresos crecieron 18% y todos los dominios operacionales están en el camino correcto.",
+      "view_details": "Ver detalles"
+    },
+    "tabs": {
+      "overview": "Visión General",
+      "domains": "Por Dominio",
+      "trends": "Tendencias",
+      "insights": "Insights"
+    },
+    "sections": {
+      "metrics_by_domain": "Métricas por Dominio",
+      "trends_analysis": "Análisis de Tendencias",
+      "strategic_insights": "Insights Estratégicos",
+      "view_details_by_domain": "Ver Detalles por Dominio",
+      "decision_panel": "Panel de Decisión",
+      "view_details": "Ver Detalles",
+      "period": "Período",
+      "view_complete_analytics": "Ver Analytics Completo"
+    },
+    "settings": {
+      "profile": {
+        "change_photo": "Cambiar Foto",
+        "first_name": "Nombre",
+        "last_name": "Apellido", 
+        "email": "Correo Electrónico",
+        "company": "Empresa",
+        "role": "Cargo"
+      }
+    },
+    "profile": {
+      "fields": {
+        "email_hint": "Para cambiar tu correo, contacta soporte"
+      },
+      "actions": {
+        "revert_changes": "Revertir Cambios"
+      }
+    },
+    "wizard": {
+      "validating": "Validando...",
+      "finish": "Finalizar",
+      "next": "Siguiente",
+      "previous": "Anterior"
+    },
+    "validation": {
+      "required": "Obligatorio",
+      "invalid_format": "Formato inválido"
+    }
   }
 }

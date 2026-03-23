@@ -226,8 +226,8 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({ className }) => {
             <Brain className="w-6 h-6 text-blue-600" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Painel de Decisão</h1>
-            <p className="text-muted-foreground">Análise inteligente para tomada de decisão estratégica</p>
+            <h1 className="text-3xl font-bold text-foreground">{t('decision_panel.title')}</h1>
+            <p className="text-muted-foreground">{t('decision_panel.subtitle')}</p>
           </div>
         </div>
         
@@ -237,25 +237,25 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({ className }) => {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="current">Atual</SelectItem>
-              <SelectItem value="last_month">Último Mês</SelectItem>
-              <SelectItem value="quarter">Trimestre</SelectItem>
+              <SelectItem value="current">{t('decision_panel.period.current')}</SelectItem>
+              <SelectItem value="last_month">{t('decision_panel.period.last_month')}</SelectItem>
+              <SelectItem value="quarter">{t('decision_panel.period.quarter')}</SelectItem>
             </SelectContent>
           </Select>
 
           <Button variant="outline" size="sm">
             <Filter className="w-4 h-4 mr-2" />
-            Filtros
+            {t('decision_panel.actions.filters')}
           </Button>
           
           <Button variant="outline" size="sm">
             <Download className="w-4 h-4 mr-2" />
-            Exportar
+            {t('decision_panel.actions.export')}
           </Button>
           
           <Button variant="outline" size="sm">
             <RefreshCw className="w-4 h-4 mr-2" />
-            Atualizar
+            {t('decision_panel.actions.refresh')}
           </Button>
         </div>
       </div>
@@ -264,9 +264,9 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({ className }) => {
       <Alert className="border-red-200 bg-red-50">
         <AlertTriangle className="h-4 w-4 text-red-600" />
         <AlertDescription className="text-red-800">
-          <strong>Situação Crítica Detectada:</strong> {mockSituation.title}
+          <strong>{t('decision_panel.alert.critical_detected')}</strong> {mockSituation.title}
           <Button variant="link" size="sm" className="p-0 h-auto ml-2 text-red-600">
-            Analisar agora
+            {t('decision_panel.alert.analyze_now')}
           </Button>
         </AlertDescription>
       </Alert>
@@ -274,10 +274,10 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({ className }) => {
       {/* Main Content */}
       <Tabs value={selectedView} onValueChange={setSelectedView} className="space-y-6">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">Visão Geral</TabsTrigger>
-          <TabsTrigger value="situation">Situação</TabsTrigger>
-          <TabsTrigger value="recommendations">Recomendações</TabsTrigger>
-          <TabsTrigger value="actions">Plano de Ação</TabsTrigger>
+          <TabsTrigger value="overview">{t('decision_panel.tabs.overview')}</TabsTrigger>
+          <TabsTrigger value="situation">{t('decision_panel.tabs.situation')}</TabsTrigger>
+          <TabsTrigger value="recommendations">{t('decision_panel.tabs.recommendations')}</TabsTrigger>
+          <TabsTrigger value="actions">{t('decision_panel.tabs.actions')}</TabsTrigger>
         </TabsList>
 
         {/* Overview Tab */}
@@ -288,7 +288,7 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({ className }) => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <AlertTriangle className="w-5 h-5 text-red-600" />
-                  Situação Prioritária
+                  {t('decision_panel.situation.priority_title')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -328,7 +328,7 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({ className }) => {
                 <Separator />
                 
                 <div>
-                  <h4 className="font-semibold mb-3">Métricas Impactadas</h4>
+                  <h4 className="font-semibold mb-3">{t('decision_panel.situation.metrics_title')}</h4>
                   <div className="grid grid-cols-2 gap-3">
                     {mockSituation.metrics.map((metric, index) => (
                       <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
@@ -355,27 +355,27 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({ className }) => {
             {/* Quick Stats */}
             <div className="space-y-4">
               <KPICard
-                title="Recomendações"
+                title={t('decision_panel.kpi.recommendations')}
                 value="3"
                 icon={Lightbulb}
                 variant="info"
-                subtitle="Soluções identificadas"
+                subtitle={t('decision_panel.kpi.recommendations_subtitle')}
               />
               
               <KPICard
-                title="Confiança Média"
+                title={t('decision_panel.kpi.average_confidence')}
                 value="77%"
                 icon={Shield}
                 variant="success"
-                subtitle="Baseada em dados"
+                subtitle={t('decision_panel.kpi.average_confidence_subtitle')}
               />
               
               <KPICard
-                title="Impacto Esperado"
+                title={t('decision_panel.kpi.expected_impact')}
                 value="R$125K"
                 icon={TrendingUp}
                 variant="success"
-                subtitle="Recuperação em 90 dias"
+                subtitle={t('decision_panel.kpi.expected_impact_subtitle')}
               />
             </div>
           </div>
@@ -387,24 +387,24 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({ className }) => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Target className="w-5 h-5" />
-                Análise Detalhada da Situação
+                {t('decision_panel.situation.detailed_analysis')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div>
-                <h3 className="text-lg font-semibold mb-3">Contexto Técnico</h3>
+                <h3 className="text-lg font-semibold mb-3">{t('decision_panel.situation.technical_context')}</h3>
                 <div className="p-4 bg-blue-50 rounded-lg">
                   <p className="text-blue-800">
-                    <strong>Termo Técnico:</strong> {mockSituation.technicalTerm}
+                    <strong>{t('decision_panel.situation.technical_context')}:</strong> {mockSituation.technicalTerm}
                   </p>
                   <p className="text-blue-700 mt-2">
-                    <strong>Tradução Acionável:</strong> {mockSituation.actionableTranslation}
+                    <strong>{t('decision_panel.situation.actionable_translation')}:</strong> {mockSituation.actionableTranslation}
                   </p>
                 </div>
               </div>
               
               <div>
-                <h3 className="text-lg font-semibold mb-3">Análise de Métricas</h3>
+                <h3 className="text-lg font-semibold mb-3">{t('decision_panel.situation.metrics_analysis')}</h3>
                 <div className="space-y-4">
                   {mockSituation.metrics.map((metric, index) => (
                     <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
@@ -436,7 +436,7 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({ className }) => {
               </div>
               
               <div>
-                <h3 className="text-lg font-semibold mb-3">Impacto Cruzado</h3>
+                <h3 className="text-lg font-semibold mb-3">{t('decision_panel.situation.crossed_impact')}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <Card>
                     <CardContent className="p-4 text-center">
@@ -470,15 +470,15 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({ className }) => {
         {/* Recommendations Tab */}
         <TabsContent value="recommendations" className="space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold">Recomendações Estratégicas</h2>
+            <h2 className="text-2xl font-bold">{t('decision_panel.recommendations.title')}</h2>
             <div className="flex gap-2">
               <Button variant="outline" size="sm">
                 <Filter className="w-4 h-4 mr-2" />
-                Filtrar
+                {t('decision_panel.recommendations.filter')}
               </Button>
               <Button variant="outline" size="sm">
                 <Download className="w-4 h-4 mr-2" />
-                Exportar
+                {t('decision_panel.recommendations.export')}
               </Button>
             </div>
           </div>
@@ -507,15 +507,15 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({ className }) => {
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                      <span className="text-sm text-muted-foreground">Impacto Esperado</span>
+                      <span className="text-sm text-muted-foreground">{t('decision_panel.recommendations.expected_impact')}</span>
                       <p className="font-semibold">{recommendation.expectedImpact}</p>
                     </div>
                     <div>
-                      <span className="text-sm text-muted-foreground">Prazo</span>
+                      <span className="text-sm text-muted-foreground">{t('decision_panel.recommendations.timeframe')}</span>
                       <p className="font-semibold">{recommendation.timeframe}</p>
                     </div>
                     <div>
-                      <span className="text-sm text-muted-foreground">Confiança</span>
+                      <span className="text-sm text-muted-foreground">{t('decision_panel.recommendations.confidence')}</span>
                       <div className="flex items-center gap-2">
                         <Progress value={recommendation.confidence} className="flex-1 h-2" />
                         <span className="text-sm font-medium">{recommendation.confidence}%</span>
@@ -526,7 +526,7 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({ className }) => {
                   <Separator />
                   
                   <div>
-                    <h4 className="font-semibold mb-3">Ações Recomendadas</h4>
+                    <h4 className="font-semibold mb-3">{t('decision_panel.recommendations.actions_title')}</h4>
                     <div className="space-y-3">
                       {recommendation.actions.map((action, index) => (
                         <div key={index} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
@@ -538,10 +538,10 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({ className }) => {
                             <p className="text-sm text-muted-foreground">{action.description}</p>
                             <div className="flex gap-4 mt-2 text-sm">
                               {action.owner && (
-                                <span><strong>Responsável:</strong> {action.owner}</span>
+                                <span><strong>{t('decision_panel.recommendations.responsible')}:</strong> {action.owner}</span>
                               )}
                               {action.deadline && (
-                                <span><strong>Prazo:</strong> {action.deadline}</span>
+                                <span><strong>{t('decision_panel.recommendations.deadline')}:</strong> {action.deadline}</span>
                               )}
                             </div>
                           </div>
@@ -553,11 +553,11 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({ className }) => {
                   <div className="flex gap-2">
                     <Button className="flex-1">
                       <Eye className="w-4 h-4 mr-2" />
-                      Ver Detalhes
+                      {t('decision_panel.recommendations.view_details')}
                     </Button>
                     <Button variant="outline">
                       <ArrowRight className="w-4 h-4 mr-2" />
-                      Implementar
+                      {t('decision_panel.recommendations.implement')}
                     </Button>
                   </div>
                 </CardContent>
@@ -569,16 +569,16 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({ className }) => {
         {/* Actions Tab */}
         <TabsContent value="actions" className="space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold">Plano de Ação Consolidado</h2>
+            <h2 className="text-2xl font-bold">{t('decision_panel.action_plan.title')}</h2>
             <Button>
               <Download className="w-4 h-4 mr-2" />
-              Exportar Plano
+              {t('decision_panel.action_plan.export_plan')}
             </Button>
           </div>
           
           <Card>
             <CardHeader>
-              <CardTitle>Resumo do Plano de Ação</CardTitle>
+              <CardTitle>{t('decision_panel.action_plan.summary_title')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -586,34 +586,34 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({ className }) => {
                   <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
                     <Zap className="w-8 h-8 text-blue-600" />
                   </div>
-                  <h3 className="font-semibold mb-1">Ações Imediatas</h3>
+                  <h3 className="font-semibold mb-1">{t('decision_panel.action_plan.immediate_actions')}</h3>
                   <p className="text-2xl font-bold text-blue-600">5</p>
-                  <p className="text-sm text-muted-foreground">Próximos 15 dias</p>
+                  <p className="text-sm text-muted-foreground">{t('decision_panel.action_plan.immediate_actions_desc')}</p>
                 </div>
                 
                 <div className="text-center">
                   <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
                     <Clock className="w-8 h-8 text-orange-600" />
                   </div>
-                  <h3 className="font-semibold mb-1">Ações de Médio Prazo</h3>
+                  <h3 className="font-semibold mb-1">{t('decision_panel.action_plan.medium_term_actions')}</h3>
                   <p className="text-2xl font-bold text-orange-600">8</p>
-                  <p className="text-sm text-muted-foreground">Próximos 60 dias</p>
+                  <p className="text-sm text-muted-foreground">{t('decision_panel.action_plan.medium_term_actions_desc')}</p>
                 </div>
                 
                 <div className="text-center">
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
                     <CheckCircle className="w-8 h-8 text-green-600" />
                   </div>
-                  <h3 className="font-semibold mb-1">Impacto Esperado</h3>
+                  <h3 className="font-semibold mb-1">{t('decision_panel.action_plan.expected_impact')}</h3>
                   <p className="text-2xl font-bold text-green-600">R$125K</p>
-                  <p className="text-sm text-muted-foreground">Recuperação em 90 dias</p>
+                  <p className="text-sm text-muted-foreground">{t('decision_panel.action_plan.expected_impact_desc')}</p>
                 </div>
               </div>
               
               <Separator />
               
               <div>
-                <h3 className="font-semibold mb-4">Timeline de Implementação</h3>
+                <h3 className="font-semibold mb-4">{t('decision_panel.action_plan.implementation_timeline')}</h3>
                 <div className="space-y-4">
                   {[
                     { phase: 'Análise', actions: 2, timeframe: '15 dias', status: 'ready' },
@@ -646,11 +646,11 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({ className }) => {
               <div className="flex gap-3">
                 <Button className="flex-1" size="lg">
                   <Target className="w-4 h-4 mr-2" />
-                  Iniciar Implementação
+                  {t('decision_panel.action_plan.start_implementation')}
                 </Button>
                 <Button variant="outline" size="lg">
                   <Eye className="w-4 h-4 mr-2" />
-                  Ver Detalhes
+                  {t('decision_panel.action_plan.view_details')}
                 </Button>
               </div>
             </CardContent>

@@ -176,25 +176,25 @@ const ConsolidatedDashboard = () => {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="month">Mês</SelectItem>
-              <SelectItem value="quarter">Trimestre</SelectItem>
-              <SelectItem value="year">Ano</SelectItem>
+              <SelectItem value="month">{t('dashboard.period.month')}</SelectItem>
+              <SelectItem value="quarter">{t('dashboard.period.quarter')}</SelectItem>
+              <SelectItem value="year">{t('dashboard.period.year')}</SelectItem>
             </SelectContent>
           </Select>
 
           <Button variant="outline" size="sm">
             <Filter className="w-4 h-4 mr-2" />
-            Filtros
+            {t('common.filter')}
           </Button>
           
           <Button variant="outline" size="sm">
             <Download className="w-4 h-4 mr-2" />
-            Exportar
+            {t('common.export')}
           </Button>
           
           <Button variant="outline" size="sm">
             <RefreshCw className="w-4 h-4 mr-2" />
-            Atualizar
+            {t('common.refresh')}
           </Button>
         </div>
       </div>
@@ -203,10 +203,9 @@ const ConsolidatedDashboard = () => {
       <Alert className="border-blue-200 bg-blue-50">
         <TrendingUp className="h-4 w-4 text-blue-600" />
         <AlertDescription className="text-blue-800">
-          <strong>Resumo Executivo:</strong> Performance geral em alta com 82/100 no score de saúde. 
-          Receita cresceu 18% e todos os domínios operacionais estão no caminho certo.
+          <strong>{t('dashboard.summary.title')}:</strong> {t('dashboard.summary.description')}
           <Button variant="link" size="sm" className="p-0 h-auto ml-2 text-blue-600">
-            Ver detalhes
+            {t('dashboard.summary.view_details')}
           </Button>
         </AlertDescription>
       </Alert>
@@ -229,10 +228,10 @@ const ConsolidatedDashboard = () => {
       {/* Main Content */}
       <Tabs value={selectedView} onValueChange={setSelectedView} className="space-y-6">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">Visão Geral</TabsTrigger>
-          <TabsTrigger value="domains">Por Domínio</TabsTrigger>
-          <TabsTrigger value="trends">Tendências</TabsTrigger>
-          <TabsTrigger value="insights">Insights</TabsTrigger>
+          <TabsTrigger value="overview">{t('dashboard.tabs.overview')}</TabsTrigger>
+          <TabsTrigger value="domains">{t('dashboard.tabs.domains')}</TabsTrigger>
+          <TabsTrigger value="trends">{t('dashboard.tabs.trends')}</TabsTrigger>
+          <TabsTrigger value="insights">{t('dashboard.tabs.insights')}</TabsTrigger>
         </TabsList>
 
         {/* Overview Tab */}
@@ -283,7 +282,7 @@ const ConsolidatedDashboard = () => {
                 <Button variant="outline" className="w-full" asChild>
                   <Link to="/app/metrics">
                     <Eye className="w-4 h-4 mr-2" />
-                    Ver Detalhes por Domínio
+                    {t('dashboard.sections.view_details_by_domain')}
                   </Link>
                 </Button>
               </CardContent>
@@ -324,7 +323,7 @@ const ConsolidatedDashboard = () => {
                 <Button variant="outline" className="w-full" asChild>
                   <Link to="/app/decision-panel">
                     <Target className="w-4 h-4 mr-2" />
-                    Painel de Decisão
+                    {t('dashboard.sections.decision_panel')}
                   </Link>
                 </Button>
               </CardContent>
@@ -335,10 +334,10 @@ const ConsolidatedDashboard = () => {
         {/* Domains Tab */}
         <TabsContent value="domains" className="space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold">Métricas por Domínio</h2>
+            <h2 className="text-2xl font-bold">{t('dashboard.sections.metrics_by_domain')}</h2>
             <Button asChild>
               <Link to="/app/metrics">
-                Ver Dashboard Completo
+                {t('dashboard.sections.view_complete_analytics')}
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
             </Button>
@@ -392,7 +391,7 @@ const ConsolidatedDashboard = () => {
                   
                   <Button variant="outline" size="sm" className="w-full">
                     <Eye className="w-4 h-4 mr-2" />
-                    Ver Detalhes
+                    {t('common.view_details')}
                   </Button>
                 </CardContent>
               </Card>
@@ -403,15 +402,15 @@ const ConsolidatedDashboard = () => {
         {/* Trends Tab */}
         <TabsContent value="trends" className="space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold">Análise de Tendências</h2>
+            <h2 className="text-2xl font-bold">{t('dashboard.sections.trends_analysis')}</h2>
             <div className="flex gap-2">
               <Button variant="outline" size="sm">
                 <Calendar className="w-4 h-4 mr-2" />
-                Período
+                {t('dashboard.sections.period')}
               </Button>
               <Button variant="outline" size="sm">
                 <Download className="w-4 h-4 mr-2" />
-                Exportar
+                {t('common.export')}
               </Button>
             </div>
           </div>
@@ -459,7 +458,7 @@ const ConsolidatedDashboard = () => {
                   <PieChart className="w-16 h-16 mx-auto mb-4 opacity-50" />
                   <p>Gráficos de distribuição de performance por domínio</p>
                   <Button className="mt-4" variant="outline">
-                    Ver Analytics Completo
+                    {t('dashboard.sections.view_complete_analytics')}
                   </Button>
                 </div>
               </CardContent>
@@ -470,15 +469,15 @@ const ConsolidatedDashboard = () => {
         {/* Insights Tab */}
         <TabsContent value="insights" className="space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold">Insights Estratégicos</h2>
+            <h2 className="text-2xl font-bold">{t('dashboard.sections.strategic_insights')}</h2>
             <div className="flex gap-2">
               <Button variant="outline" size="sm">
                 <Settings className="w-4 h-4 mr-2" />
-                Configurar
+                {t('common.settings')}
               </Button>
               <Button variant="outline" size="sm">
                 <Download className="w-4 h-4 mr-2" />
-                Exportar Relatório
+                {t('common.export')} Relatório
               </Button>
             </div>
           </div>

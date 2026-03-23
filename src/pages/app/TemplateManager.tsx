@@ -218,7 +218,7 @@ const TemplateManager: React.FC = () => {
             {template.isFavorite && <Star className="w-4 h-4 text-yellow-500 fill-current" />}
           </div>
           <div className="flex items-center space-x-1">
-            {template.isPublic && <Badge variant="secondary" className="text-xs">Público</Badge>}
+            {template.isPublic && <Badge variant="secondary" className="text-xs">{t('common.public')}</Badge>}
             <Badge className={getStatusColor(template.status)}>
               {template.status}
             </Badge>
@@ -319,7 +319,7 @@ const TemplateManager: React.FC = () => {
             <Badge className={getStatusColor(template.status)}>
               {template.status}
             </Badge>
-            {template.isPublic && <Badge variant="secondary" className="text-xs">Público</Badge>}
+            {template.isPublic && <Badge variant="secondary" className="text-xs">{t('common.public')}</Badge>}
             <div className="flex space-x-1">
               <Button variant="ghost" size="sm">
                 <Eye className="w-4 h-4" />

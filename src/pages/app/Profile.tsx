@@ -109,7 +109,7 @@ const Profile = () => {
                   {loading ? t('common.processing') : t('common.save')}
                 </Button>
                 <Button variant="outline" className="flex-1">
-                  Reverter Mudanças
+                  {t('profile.actions.revert_changes')}
                 </Button>
               </div>
             </CardContent>

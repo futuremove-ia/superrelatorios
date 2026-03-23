@@ -359,5 +359,194 @@
       },
       "cta": "Create My Report Now"
     }
+  },
+  "decision_panel": {
+    "title": "Decision Panel",
+    "subtitle": "Intelligent analysis for strategic decision-making",
+    "period": {
+      "current": "Current",
+      "last_month": "Last Month",
+      "quarter": "Quarter"
+    },
+    "actions": {
+      "filters": "Filters",
+      "export": "Export",
+      "refresh": "Refresh"
+    },
+    "alert": {
+      "critical_detected": "Critical Situation Detected:",
+      "analyze_now": "Analyze now"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "situation": "Situation",
+      "recommendations": "Recommendations",
+      "actions": "Action Plan"
+    },
+    "situation": {
+      "priority_title": "Priority Situation",
+      "metrics_title": "Impacted Metrics",
+      "technical_context": "Technical Context",
+      "actionable_translation": "Actionable Translation",
+      "detailed_analysis": "Detailed Situation Analysis",
+      "metrics_analysis": "Metrics Analysis",
+      "crossed_impact": "Crossed Impact"
+    },
+    "kpi": {
+      "recommendations": "Recommendations",
+      "recommendations_subtitle": "Solutions identified",
+      "average_confidence": "Average Confidence",
+      "average_confidence_subtitle": "Based on data",
+      "expected_impact": "Expected Impact",
+      "expected_impact_subtitle": "Recovery in 90 days"
+    },
+    "recommendations": {
+      "title": "Strategic Recommendations",
+      "filter": "Filter",
+      "export": "Export",
+      "view_details": "View Details",
+      "implement": "Implement",
+      "expected_impact": "Expected Impact",
+      "timeframe": "Timeframe",
+      "confidence": "Confidence",
+      "actions_title": "Recommended Actions",
+      "responsible": "Responsible",
+      "deadline": "Deadline"
+    },
+    "action_plan": {
+      "title": "Consolidated Action Plan",
+      "export_plan": "Export Plan",
+      "summary_title": "Action Plan Summary",
+      "immediate_actions": "Immediate Actions",
+      "immediate_actions_desc": "Next 15 days",
+      "medium_term_actions": "Medium Term Actions",
+      "medium_term_actions_desc": "Next 60 days",
+      "expected_impact": "Expected Impact",
+      "expected_impact_desc": "Recovery in 90 days",
+      "implementation_timeline": "Implementation Timeline",
+      "start_implementation": "Start Implementation",
+      "view_details": "View Details"
+    }
+  },
+  "common": {
+    "public": "Public",
+    "loading": "Loading...",
+    "processing": "Processing...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "view": "View",
+    "open": "Open",
+    "close": "Close",
+    "share": "Share",
+    "download": "Download",
+    "upload": "Upload",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "import": "Import",
+    "refresh": "Refresh",
+    "next": "Next",
+    "previous": "Previous",
+    "back": "Back",
+    "continue": "Continue",
+    "finish": "Finish",
+    "submit": "Submit",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK",
+    "done": "Done",
+    "pending": "Pending",
+    "active": "Active",
+    "inactive": "Inactive",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "required": "Required",
+    "optional": "Optional",
+    "all": "All",
+    "none": "None",
+    "month": "Month",
+    "quarter": "Quarter",
+    "year": "Year",
+    "current": "Current",
+    "last_month": "Last Month",
+    "details": "Details",
+    "settings": "Settings",
+    "profile": "Profile",
+    "logout": "Logout",
+    "login": "Login",
+    "signup": "Sign Up",
+    "or": "or",
+    "and": "and",
+    "from": "from",
+    "to": "to",
+    "at": "at",
+    "by": "by",
+    "with": "with",
+    "without": "without",
+    "please": "Please",
+    "thank_you": "Thank you"
+  },
+  "dashboard": {
+    "title": "Main Dashboard",
+    "subtitle": "Overview of metrics and performance",
+    "period": {
+      "month": "Month",
+      "quarter": "Quarter", 
+      "year": "Year"
+    },
+    "summary": {
+      "title": "Executive Summary",
+      "description": "Overall performance up with 82/100 health score. Revenue grew 18% and all operational domains are on the right track.",
+      "view_details": "View details"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "domains": "By Domain",
+      "trends": "Trends",
+      "insights": "Insights"
+    },
+    "sections": {
+      "metrics_by_domain": "Metrics by Domain",
+      "trends_analysis": "Trends Analysis",
+      "strategic_insights": "Strategic Insights",
+      "view_details_by_domain": "View Details by Domain",
+      "decision_panel": "Decision Panel",
+      "view_details": "View Details",
+      "period": "Period",
+      "view_complete_analytics": "View Complete Analytics"
+    },
+    "settings": {
+      "profile": {
+        "change_photo": "Change Photo",
+        "first_name": "First Name",
+        "last_name": "Last Name", 
+        "email": "Email",
+        "company": "Company",
+        "role": "Role"
+      }
+    },
+    "profile": {
+      "fields": {
+        "email_hint": "To change your email, contact support"
+      },
+      "actions": {
+        "revert_changes": "Revert Changes"
+      }
+    },
+    "wizard": {
+      "validating": "Validating...",
+      "finish": "Finish",
+      "next": "Next",
+      "previous": "Previous"
+    },
+    "validation": {
+      "required": "Required",
+      "invalid_format": "Invalid Format"
+    }
   }
 }
