@@ -548,6 +548,11 @@
       "required": "Obrigatório",
       "invalid_format": "Formato inválido"
     },
+    "errors": {
+      "not_found_title": "Página não encontrada",
+      "not_found_desc": "A página que você está procurando não existe ou foi movida.",
+      "return_home": "Voltar para o início"
+    },
     "auth": {
       "login_title": "Entrar na sua conta",
       "signup_title": "Criar sua conta gratuitamente",
