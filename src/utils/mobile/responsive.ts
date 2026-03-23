@@ -1,5 +1,3 @@
-import { BreakpointValues } from './breakpoints';
-
 // Responsive design utilities with proper TypeScript typing
 export const breakpoints = {
   xs: 0,
@@ -162,7 +160,7 @@ export const mobilePerformance = {
 // PWA utilities
 export const pwa = {
   // Service worker registration
-  registerServiceWorker: async () => {
+  registerServiceWorker: async (): Promise<ServiceWorkerRegistration | null> => {
     if ('serviceWorker' in navigator) {
       try {
         const registration = await navigator.serviceWorker.register('/sw.js');
@@ -225,14 +223,16 @@ export const pwa = {
   },
 
   // Background sync
-  registerBackgroundSync: async (tag: string) => {
+  registerBackgroundSync: async (tag: string): Promise<boolean> => {
     if (!('serviceWorker' in navigator) || !('SyncManager' in window)) {
       return false;
     }
 
     try {
-      const registration = await navigator.serviceWorker.ready;
-      await registration.sync.register(tag);
+      const registration = await navigator.serviceWorker.ready as any;
+      if (registration.sync) {
+        await registration.sync.register(tag);
+      }
       return true;
     } catch (error) {
       console.error('Background sync registration failed:', error);
