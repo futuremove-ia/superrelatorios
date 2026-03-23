@@ -163,6 +163,7 @@ export const mockTemplates: ReportTemplate[] = [
           title: 'Insight de Canal', 
           body: 'O canal Meta Ads apresentou o menor CPA do período. Recomendamos aumentar o orçamento em 20% para a próxima semana.',
           settings: { variant: 'insight' } }
+      }
     ]
   },
   {
