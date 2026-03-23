@@ -19,6 +19,7 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  base: mode === 'production' ? './' : '/',
   build: {
     rollupOptions: {
       output: {
@@ -30,6 +31,7 @@ export default defineConfig(({ mode }) => ({
       },
     },
     chunkSizeWarningLimit: 500,
+    assetsDir: 'assets',
   },
   test: {
     globals: true,
