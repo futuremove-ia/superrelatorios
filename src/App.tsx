@@ -82,11 +82,70 @@ const App = () => (
                   <Route path="/auth/callback" element={<AuthCallback />} />
                   
                   {/* Public Routes */}
-                  <Route path="/" element={<Index />} />
+                  <Route path="/pt-BR" element={<Index />} />
+                  <Route path="/en-US" element={<Index />} />
+                  <Route path="/es-ES" element={<Index />} />
+                  <Route path="/pt-BR/login" element={<Login />} />
+                  <Route path="/en-US/login" element={<Login />} />
+                  <Route path="/es-ES/login" element={<Login />} />
                   <Route path="/login" element={<Login />} />
                   
                   {/* App Protected Routes using AppLayout */}
-                  <Route path="/app" element={
+                  <Route path="/pt-BR/app" element={
+                    <ProtectedRoute>
+                      <AppLayout />
+                    </ProtectedRoute>
+                  }>
+                    <Route index element={<Dashboard />} />
+                    <Route path="reports" element={<ReportsList />} />
+                    <Route path="reports/new" element={<ReportBuilder />} />
+                    <Route path="novo-relatorio" element={<ReportBuilder />} />
+                    <Route path="new-report" element={<ReportBuilder />} />
+                    <Route path="reports/:id" element={<ReportDetail />} />
+                    <Route path="folders" element={<Folders />} />
+                    <Route path="folders/:id" element={<FolderDetail />} />
+                    <Route path="metrics" element={<MetricsDashboard />} />
+                    <Route path="metrics/config" element={<MetricsConfig />} />
+                    <Route path="analytics" element={<AdvancedAnalytics />} />
+                    <Route path="decision-panel" element={<DecisionPanel />} />
+                    <Route path="painel-decisao" element={<DecisionPanel />} />
+                    <Route path="panel-decision" element={<DecisionPanel />} />
+                    <Route path="consolidated" element={<ConsolidatedDashboard />} />
+                    <Route path="organization" element={<OrganizationManager />} />
+                    <Route path="templates" element={<TemplateManager />} />
+                    <Route path="action-plan" element={<ActionPlan />} />
+                    <Route path="prioridades" element={<Priorities />} />
+                    <Route path="profile" element={<Profile />} />
+                    <Route path="settings" element={<Settings />} />
+                  </Route>
+                  <Route path="/en-US/app" element={
+                    <ProtectedRoute>
+                      <AppLayout />
+                    </ProtectedRoute>
+                  }>
+                    <Route index element={<Dashboard />} />
+                    <Route path="reports" element={<ReportsList />} />
+                    <Route path="reports/new" element={<ReportBuilder />} />
+                    <Route path="novo-relatorio" element={<ReportBuilder />} />
+                    <Route path="new-report" element={<ReportBuilder />} />
+                    <Route path="reports/:id" element={<ReportDetail />} />
+                    <Route path="folders" element={<Folders />} />
+                    <Route path="folders/:id" element={<FolderDetail />} />
+                    <Route path="metrics" element={<MetricsDashboard />} />
+                    <Route path="metrics/config" element={<MetricsConfig />} />
+                    <Route path="analytics" element={<AdvancedAnalytics />} />
+                    <Route path="decision-panel" element={<DecisionPanel />} />
+                    <Route path="painel-decisao" element={<DecisionPanel />} />
+                    <Route path="panel-decision" element={<DecisionPanel />} />
+                    <Route path="consolidated" element={<ConsolidatedDashboard />} />
+                    <Route path="organization" element={<OrganizationManager />} />
+                    <Route path="templates" element={<TemplateManager />} />
+                    <Route path="action-plan" element={<ActionPlan />} />
+                    <Route path="prioridades" element={<Priorities />} />
+                    <Route path="profile" element={<Profile />} />
+                    <Route path="settings" element={<Settings />} />
+                  </Route>
+                  <Route path="/es-ES/app" element={
                     <ProtectedRoute>
                       <AppLayout />
                     </ProtectedRoute>

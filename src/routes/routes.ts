@@ -9,70 +9,76 @@ export interface RouteMap {
 // Mapeamento de rotas internacionalizadas
 export const routeMap: RouteMap = {
   'pt-BR': {
-    '/app': '/app',
-    '/app/relatorios': '/app/reports',
-    '/app/relatorios/novo': '/app/reports/new',
-    '/app/relatorios/:id': '/app/reports/:id',
-    '/app/metricas': '/app/metrics',
-    '/app/metricas/configurar': '/app/metrics/config',
-    '/app/painel-decisao': '/app/decision-panel',
-    '/app/analytics': '/app/analytics',
-    '/app/consolidado': '/app/consolidated',
-    '/app/prioridades': '/app/priorities',
-    '/app/plano-acao': '/app/action-plan',
-    '/app/dados': '/app/folders',
-    '/app/dados/:id': '/app/folders/:id',
-    '/app/perfil': '/app/profile',
-    '/app/configuracoes': '/app/settings',
-    '/app/organizacao': '/app/organization',
-    '/app/modelos': '/app/templates',
-    '/app/login': '/login',
-    '/app/cadastro': '/register',
-    '/app/esqueci-senha': '/forgot-password',
+    '/': '/pt-BR',
+    '/login': '/pt-BR/login',
+    '/app': '/pt-BR/app',
+    '/app/relatorios': '/pt-BR/app/reports',
+    '/app/relatorios/novo': '/pt-BR/app/reports/new',
+    '/app/relatorios/:id': '/pt-BR/app/reports/:id',
+    '/app/metricas': '/pt-BR/app/metrics',
+    '/app/metricas/configurar': '/pt-BR/app/metrics/config',
+    '/app/painel-decisao': '/pt-BR/app/decision-panel',
+    '/app/analytics': '/pt-BR/app/analytics',
+    '/app/consolidado': '/pt-BR/app/consolidated',
+    '/app/prioridades': '/pt-BR/app/priorities',
+    '/app/plano-acao': '/pt-BR/app/action-plan',
+    '/app/dados': '/pt-BR/app/folders',
+    '/app/dados/:id': '/pt-BR/app/folders/:id',
+    '/app/perfil': '/pt-BR/app/profile',
+    '/app/configuracoes': '/pt-BR/app/settings',
+    '/app/organizacao': '/pt-BR/app/organization',
+    '/app/modelos': '/pt-BR/app/templates',
+    '/app/login': '/pt-BR/login',
+    '/app/cadastro': '/pt-BR/register',
+    '/app/esqueci-senha': '/pt-BR/forgot-password',
   },
   'en-US': {
-    '/app': '/app',
-    '/app/reports': '/app/reports',
-    '/app/reports/new': '/app/reports/new',
-    '/app/reports/:id': '/app/reports/:id',
-    '/app/metrics': '/app/metrics',
-    '/app/metrics/config': '/app/metrics/config',
-    '/app/decision-panel': '/app/decision-panel',
-    '/app/analytics': '/app/analytics',
-    '/app/consolidated': '/app/consolidated',
-    '/app/priorities': '/app/priorities',
-    '/app/action-plan': '/app/action-plan',
-    '/app/folders': '/app/folders',
-    '/app/folders/:id': '/app/folders/:id',
-    '/app/profile': '/app/profile',
-    '/app/settings': '/app/settings',
-    '/app/organization': '/app/organization',
-    '/app/templates': '/app/templates',
-    '/app/login': '/login',
-    '/app/register': '/app/register',
-    '/app/forgot-password': '/app/forgot-password',
+    '/': '/en-US',
+    '/login': '/en-US/login',
+    '/app': '/en-US/app',
+    '/app/reports': '/en-US/app/reports',
+    '/app/reports/new': '/en-US/app/reports/new',
+    '/app/reports/:id': '/en-US/app/reports/:id',
+    '/app/metrics': '/en-US/app/metrics',
+    '/app/metrics/config': '/en-US/app/metrics/config',
+    '/app/decision-panel': '/en-US/app/decision-panel',
+    '/app/analytics': '/en-US/app/analytics',
+    '/app/consolidated': '/en-US/app/consolidated',
+    '/app/priorities': '/en-US/app/priorities',
+    '/app/action-plan': '/en-US/app/action-plan',
+    '/app/folders': '/en-US/app/folders',
+    '/app/folders/:id': '/en-US/app/folders/:id',
+    '/app/profile': '/en-US/app/profile',
+    '/app/settings': '/en-US/app/settings',
+    '/app/organization': '/en-US/app/organization',
+    '/app/templates': '/en-US/app/templates',
+    '/app/login': '/en-US/login',
+    '/app/register': '/en-US/register',
+    '/app/forgot-password': '/en-US/forgot-password',
   },
   'es-ES': {
-    '/app': '/app',
-    '/app/informes': '/app/reports',
-    '/app/informes/nuevo': '/app/reports/new',
-    '/app/informes/:id': '/app/reports/:id',
-    '/app/metricas': '/app/metrics',
-    '/app/metricas/configurar': '/app/metrics/config',
-    '/app/panel-decision': '/app/decision-panel',
-    '/app/analytics': '/app/analytics',
-    '/app/consolidado': '/app/consolidated',
-    '/app/prioridades': '/app/priorities',
-    '/app/plan-accion': '/app/action-plan',
-    '/app/carpetas': '/app/folders',
-    '/app/carpetas/:id': '/app/folders/:id',
-    '/app/perfil': '/app/profile',
-    '/app/configuracion': '/app/settings',
-    '/app/organizacion': '/app/organization',
-    '/app/plantillas': '/app/templates',
-    '/app/inicio-sesion': '/app/login',
-    '/app/registro': '/app/register',
-    '/app/olvide-contrasena': '/app/forgot-password',
+    '/': '/es-ES',
+    '/login': '/es-ES/login',
+    '/app': '/es-ES/app',
+    '/app/informes': '/es-ES/app/reports',
+    '/app/informes/nuevo': '/es-ES/app/reports/new',
+    '/app/informes/:id': '/es-ES/app/reports/:id',
+    '/app/metricas': '/es-ES/app/metrics',
+    '/app/metricas/configurar': '/es-ES/app/metrics/config',
+    '/app/panel-decision': '/es-ES/app/decision-panel',
+    '/app/analytics': '/es-ES/app/analytics',
+    '/app/consolidado': '/es-ES/app/consolidated',
+    '/app/prioridades': '/es-ES/app/priorities',
+    '/app/plan-accion': '/es-ES/app/action-plan',
+    '/app/carpetas': '/es-ES/app/folders',
+    '/app/carpetas/:id': '/es-ES/app/folders/:id',
+    '/app/perfil': '/es-ES/app/profile',
+    '/app/configuracion': '/es-ES/app/settings',
+    '/app/organizacion': '/es-ES/app/organization',
+    '/app/plantillas': '/es-ES/app/templates',
+    '/app/inicio-sesion': '/es-ES/login',
+    '/app/registro': '/es-ES/register',
+    '/app/olvide-contrasena': '/es-ES/forgot-password',
   },
 };
 
@@ -106,12 +112,12 @@ export const getCanonicalRoute = (path: string): string => {
   for (const [lang, routes] of Object.entries(routeMap)) {
     for (const [localized, canonical] of Object.entries(routes)) {
       if (path === localized) {
-        return canonical;
+        return canonical as string;
       }
       // Verificar rotas com parâmetros
-      if (localized.includes(':') && path.startsWith(localized.split(':')[0])) {
-        const paramValue = path.replace(localized.split(':')[0], '');
-        return canonical.replace(':id', paramValue);
+      if ((localized as string).includes(':') && path.startsWith((localized as string).split(':')[0])) {
+        const paramValue = path.replace((localized as string).split(':')[0], '');
+        return (canonical as string).replace(':id', paramValue);
       }
     }
   }
@@ -122,7 +128,8 @@ export const getCanonicalRoute = (path: string): string => {
 export const detectLanguageFromRoute = (path: string): string => {
   for (const [lang, routes] of Object.entries(routeMap)) {
     for (const route of Object.values(routes)) {
-      if (path === route || (route.includes(':') && path.startsWith(route.split(':')[0]))) {
+      const routeStr = route as string;
+      if (path === routeStr || (routeStr.includes(':') && path.startsWith(routeStr.split(':')[0]))) {
         return lang;
       }
     }

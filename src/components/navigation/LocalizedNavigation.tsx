@@ -34,44 +34,44 @@ export const LocalizedNavigation: React.FC<LocalizedNavigationProps> = ({
   // Mapeamento de navegação por idioma
   const navigationMap = {
     'pt-BR': [
-      { name: t('nav.overview', { defaultValue: 'Visão Geral' }), href: '/app', icon: LayoutDashboard },
-      { name: t('nav.metrics', { defaultValue: 'Indicadores' }), href: '/app/metricas', icon: BarChart3 },
-      { name: t('nav.decision_panel', { defaultValue: 'Painel de Decisão' }), href: '/app/decision-panel', icon: Brain },
-      { name: t('nav.analytics', { defaultValue: 'Analytics' }), href: '/app/analytics', icon: PieChart },
-      { name: t('nav.consolidated', { defaultValue: 'Consolidado' }), href: '/app/consolidado', icon: TrendingUp },
-      { name: t('nav.priorities', { defaultValue: 'Prioridades' }), href: '/app/prioridades', icon: Target },
-      { name: t('nav.action_plan', { defaultValue: 'Plano de Ação' }), href: '/app/plano-acao', icon: ListChecks },
-      { name: t('nav.reports', { defaultValue: 'Relatórios' }), href: '/app/relatorios', icon: FileText },
-      { name: t('nav.data', { defaultValue: 'Meus Dados' }), href: '/app/dados', icon: Folder },
+      { name: t('nav.overview', { defaultValue: 'Visão Geral' }), href: '/pt-BR/app', icon: LayoutDashboard },
+      { name: t('nav.metrics', { defaultValue: 'Indicadores' }), href: '/pt-BR/app/metricas', icon: BarChart3 },
+      { name: t('nav.decision_panel', { defaultValue: 'Painel de Decisão' }), href: '/pt-BR/app/painel-decisao', icon: Brain },
+      { name: t('nav.analytics', { defaultValue: 'Analytics' }), href: '/pt-BR/app/analytics', icon: PieChart },
+      { name: t('nav.consolidated', { defaultValue: 'Consolidado' }), href: '/pt-BR/app/consolidado', icon: TrendingUp },
+      { name: t('nav.priorities', { defaultValue: 'Prioridades' }), href: '/pt-BR/app/prioridades', icon: Target },
+      { name: t('nav.action_plan', { defaultValue: 'Plano de Ação' }), href: '/pt-BR/app/plano-acao', icon: ListChecks },
+      { name: t('nav.reports', { defaultValue: 'Relatórios' }), href: '/pt-BR/app/relatorios', icon: FileText },
+      { name: t('nav.data', { defaultValue: 'Meus Dados' }), href: '/pt-BR/app/dados', icon: Folder },
     ],
     'en-US': [
-      { name: t('nav.overview', { defaultValue: 'Overview' }), href: '/app', icon: LayoutDashboard },
-      { name: t('nav.metrics', { defaultValue: 'Metrics' }), href: '/app/metrics', icon: BarChart3 },
-      { name: t('nav.decision_panel', { defaultValue: 'Decision Panel' }), href: '/app/decision-panel', icon: Brain },
-      { name: t('nav.analytics', { defaultValue: 'Analytics' }), href: '/app/analytics', icon: PieChart },
-      { name: t('nav.consolidated', { defaultValue: 'Consolidated' }), href: '/app/consolidated', icon: TrendingUp },
-      { name: t('nav.priorities', { defaultValue: 'Priorities' }), href: '/app/priorities', icon: Target },
-      { name: t('nav.action_plan', { defaultValue: 'Action Plan' }), href: '/app/action-plan', icon: ListChecks },
-      { name: t('nav.reports', { defaultValue: 'Reports' }), href: '/app/reports', icon: FileText },
-      { name: t('nav.data', { defaultValue: 'My Data' }), href: '/app/folders', icon: Folder },
+      { name: t('nav.overview', { defaultValue: 'Overview' }), href: '/en-US/app', icon: LayoutDashboard },
+      { name: t('nav.metrics', { defaultValue: 'Metrics' }), href: '/en-US/app/metrics', icon: BarChart3 },
+      { name: t('nav.decision_panel', { defaultValue: 'Decision Panel' }), href: '/en-US/app/decision-panel', icon: Brain },
+      { name: t('nav.analytics', { defaultValue: 'Analytics' }), href: '/en-US/app/analytics', icon: PieChart },
+      { name: t('nav.consolidated', { defaultValue: 'Consolidated' }), href: '/en-US/app/consolidated', icon: TrendingUp },
+      { name: t('nav.priorities', { defaultValue: 'Priorities' }), href: '/en-US/app/priorities', icon: Target },
+      { name: t('nav.action_plan', { defaultValue: 'Action Plan' }), href: '/en-US/app/action-plan', icon: ListChecks },
+      { name: t('nav.reports', { defaultValue: 'Reports' }), href: '/en-US/app/reports', icon: FileText },
+      { name: t('nav.data', { defaultValue: 'My Data' }), href: '/en-US/app/folders', icon: Folder },
     ],
     'es-ES': [
-      { name: t('nav.overview', { defaultValue: 'Visión General' }), href: '/app', icon: LayoutDashboard },
-      { name: t('nav.metrics', { defaultValue: 'Métricas' }), href: '/app/metricas', icon: BarChart3 },
-      { name: t('nav.decision_panel', { defaultValue: 'Panel de Decisión' }), href: '/app/panel-decision', icon: Brain },
-      { name: t('nav.analytics', { defaultValue: 'Analytics' }), href: '/app/analytics', icon: PieChart },
-      { name: t('nav.consolidated', { defaultValue: 'Consolidado' }), href: '/app/consolidado', icon: TrendingUp },
-      { name: t('nav.priorities', { defaultValue: 'Prioridades' }), href: '/app/prioridades', icon: Target },
-      { name: t('nav.action_plan', { defaultValue: 'Plan de Acción' }), href: '/app/plan-accion', icon: ListChecks },
-      { name: t('nav.reports', { defaultValue: 'Informes' }), href: '/app/informes', icon: FileText },
-      { name: t('nav.data', { defaultValue: 'Mis Datos' }), href: '/app/carpetas', icon: Folder },
+      { name: t('nav.overview', { defaultValue: 'Visión General' }), href: '/es-ES/app', icon: LayoutDashboard },
+      { name: t('nav.metrics', { defaultValue: 'Métricas' }), href: '/es-ES/app/metricas', icon: BarChart3 },
+      { name: t('nav.decision_panel', { defaultValue: 'Panel de Decisión' }), href: '/es-ES/app/panel-decision', icon: Brain },
+      { name: t('nav.analytics', { defaultValue: 'Analytics' }), href: '/es-ES/app/analytics', icon: PieChart },
+      { name: t('nav.consolidated', { defaultValue: 'Consolidado' }), href: '/es-ES/app/consolidado', icon: TrendingUp },
+      { name: t('nav.priorities', { defaultValue: 'Prioridades' }), href: '/es-ES/app/prioridades', icon: Target },
+      { name: t('nav.action_plan', { defaultValue: 'Plan de Acción' }), href: '/es-ES/app/plan-accion', icon: ListChecks },
+      { name: t('nav.reports', { defaultValue: 'Informes' }), href: '/es-ES/app/informes', icon: FileText },
+      { name: t('nav.data', { defaultValue: 'Mis Datos' }), href: '/es-ES/app/carpetas', icon: Folder },
     ],
   };
 
   const navigation = navigationMap[currentLanguage as keyof typeof navigationMap] || navigationMap['pt-BR'];
 
   const isActive = (href: string) => {
-    if (href === '/app') {
+    if (href.endsWith('/app')) {
       return location.pathname === href || location.pathname.startsWith(href + '/');
     }
     return location.pathname === href;
