@@ -6,7 +6,7 @@
   "devCommand": "npm run dev",
   "rewrites": [
     {
-      "source": "/((?!api/|assets/|static/|manifest\\.json|robots\\.txt|favicon\\.ico|.*\\.png|.*\\.svg).*)",
+      "source": "/((?!api/|assets/|static/|manifest\\.json|robots\\.txt|favicon\\.ico|.*\\.png|.*\\.svg|.*\\.jpg|.*\\.jpeg|.*\\.gif|.*\\.webp|.*\\.css|.*\\.js|.*\\.map).*)",
       "destination": "/index.html"
     }
   ],
