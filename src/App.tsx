@@ -10,6 +10,8 @@ import AppLayout from "./components/AppLayout";
 import PageLoader from "./components/layout/PageLoader";
 import { AppErrorBoundary } from "./components/layout/AppErrorBoundary";
 import DemoBanner from "./components/DemoBanner";
+import I18nRouter from "./components/I18nRouter";
+import { I18nSEO } from "./components/SEO/I18nSEO";
 
 // Lazy loaded pages
 const Index = lazy(() => import("./pages/Index"));
@@ -72,44 +74,46 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <RouteTracker />
-            <Suspense fallback={<PageLoader />}>
-              <Routes>
-                {/* Rota crítica do OAuth - Sem interferência */}
-                <Route path="/auth/callback" element={<AuthCallback />} />
-                
-                {/* Public Routes */}
-                <Route path="/" element={<Index />} />
-                <Route path="/login" element={<Login />} />
-                
-                {/* App Protected Routes using AppLayout */}
-                <Route path="/app" element={
-                  <ProtectedRoute>
-                    <AppLayout />
-                  </ProtectedRoute>
-                }>
-                  <Route index element={<Dashboard />} />
-                  <Route path="reports" element={<ReportsList />} />
-                  <Route path="reports/new" element={<ReportBuilder />} />
-                  <Route path="reports/:id" element={<ReportDetail />} />
-                  <Route path="folders" element={<Folders />} />
-                  <Route path="folders/:id" element={<FolderDetail />} />
-                  <Route path="metrics" element={<MetricsDashboard />} />
-                  <Route path="metrics/config" element={<MetricsConfig />} />
-                  <Route path="analytics" element={<AdvancedAnalytics />} />
-                  <Route path="decision-panel" element={<DecisionPanel />} />
-                  <Route path="consolidated" element={<ConsolidatedDashboard />} />
-                  <Route path="organization" element={<OrganizationManager />} />
-                  <Route path="templates" element={<TemplateManager />} />
-                  <Route path="action-plan" element={<ActionPlan />} />
-                  <Route path="prioridades" element={<Priorities />} />
-                  <Route path="profile" element={<Profile />} />
-                  <Route path="settings" element={<Settings />} />
-                </Route>
-                
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Suspense>
+            <I18nRouter>
+              <RouteTracker />
+              <Suspense fallback={<PageLoader />}>
+                <Routes>
+                  {/* Rota crítica do OAuth - Sem interferência */}
+                  <Route path="/auth/callback" element={<AuthCallback />} />
+                  
+                  {/* Public Routes */}
+                  <Route path="/" element={<Index />} />
+                  <Route path="/login" element={<Login />} />
+                  
+                  {/* App Protected Routes using AppLayout */}
+                  <Route path="/app" element={
+                    <ProtectedRoute>
+                      <AppLayout />
+                    </ProtectedRoute>
+                  }>
+                    <Route index element={<Dashboard />} />
+                    <Route path="reports" element={<ReportsList />} />
+                    <Route path="reports/new" element={<ReportBuilder />} />
+                    <Route path="reports/:id" element={<ReportDetail />} />
+                    <Route path="folders" element={<Folders />} />
+                    <Route path="folders/:id" element={<FolderDetail />} />
+                    <Route path="metrics" element={<MetricsDashboard />} />
+                    <Route path="metrics/config" element={<MetricsConfig />} />
+                    <Route path="analytics" element={<AdvancedAnalytics />} />
+                    <Route path="decision-panel" element={<DecisionPanel />} />
+                    <Route path="consolidated" element={<ConsolidatedDashboard />} />
+                    <Route path="organization" element={<OrganizationManager />} />
+                    <Route path="templates" element={<TemplateManager />} />
+                    <Route path="action-plan" element={<ActionPlan />} />
+                    <Route path="prioridades" element={<Priorities />} />
+                    <Route path="profile" element={<Profile />} />
+                    <Route path="settings" element={<Settings />} />
+                  </Route>
+                  
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Suspense>
+            </I18nRouter>
           </BrowserRouter>
         </TooltipProvider>
       </AuthProvider>

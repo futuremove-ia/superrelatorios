@@ -29,33 +29,56 @@
     "super": "Super",
     "reports": "Reports"
   },
-  "common": {
-    "save": "Save",
-    "cancel": "Cancel",
-    "edit": "Edit",
-    "delete": "Delete",
-    "back": "Back",
-    "active": "Active",
-    "inactive": "Inactive",
-    "loading": "Loading...",
-    "processing": "Processing...",
-    "error": "An error occurred",
-    "success": "Success",
-    "view": "View",
-    "open": "Open",
-    "close": "Close",
-    "share": "Share",
-    "download": "Download",
-    "next": "Next",
-    "generate": "Analyze with Artificial Intelligence",
-    "error_title": "Oops! Something went wrong",
-    "success_title": "All set!"
+  "nav": {
+    "overview": "Overview",
+    "metrics": "Metrics",
+    "decision_panel": "Decision Panel",
+    "analytics": "Analytics",
+    "consolidated": "Consolidated",
+    "priorities": "Priorities",
+    "action_plan": "Action Plan",
+    "reports": "Reports",
+    "new_report": "New Report",
+    "data": "My Data",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "notifications": "Notifications",
+    "user_menu": "User Menu",
+    "open_menu": "Open Menu",
+    "main_navigation": "Main Navigation",
+    "details": "Details",
+    "metrics_config": "Configure Metrics"
+  },
+  "routes": {
+    "dashboard": "Overview",
+    "reports": "Reports",
+    "reports_new": "New Report",
+    "metrics": "Metrics",
+    "metrics_config": "Configure Metrics",
+    "decision_panel": "Decision Panel",
+    "analytics": "Analytics",
+    "consolidated": "Consolidated",
+    "priorities": "Priorities",
+    "action_plan": "Action Plan",
+    "data": "My Data",
+    "profile": "Profile",
+    "settings": "Settings"
+  },
+  "search": {
+    "placeholder": "Search reports, metrics..."
   },
   "landing": {
+    "nav_links": {
+      "features": "Features",
+      "how_it_works": "How it Works",
+      "pricing": "Pricing",
+      "cta": "Create Free Report"
+    },
     "hero": {
       "title": "Transform your data into strategic decisions in minutes",
       "subtitle": "Generate professional reports in 3 clicks, with business intelligence that helps you grow.",
-      "badge": "Consultancy-level analysis, at a fraction of the price.",
+      "badge": "Consultancy-level analysis, at a fraction of price.",
       "cta_main": "Create My First Report",
       "cta_sec": "See Demo",
       "features": {
@@ -63,13 +86,6 @@
         "insights": "Clear Performance Indicators",
         "security": "Total security for your data"
       }
-    },
-    "nav_links": {
-      "features": "Features",
-      "how_it_works": "How it Works",
-      "pricing": "Pricing",
-      "cta": "Create Free Report",
-      "aria_menu": "Open main menu"
     },
     "trust_section": {
       "title": "Transparency and Trust",
@@ -171,11 +187,11 @@
           "desc": "Upload your spreadsheet (.xlsx or .csv) or simply paste your text. Our AI organizes everything."
         },
         "target": {
-          "title": "Choose the goal",
+          "title": "Choose goal",
           "desc": "Management Summary, Financial Analysis, or Action Plan — you choose the analysis focus."
         },
         "receive": {
-          "title": "Receive the report",
+          "title": "Receive report",
           "desc": "View instantly, share the link, or export to PDF with one click."
         }
       },
@@ -228,7 +244,7 @@
         },
         "narrative": {
           "title": "Adapted Narrative",
-          "desc": "The system adapts the tone of voice and vocabulary according to your sector and business context."
+          "desc": "The system adapts tone of voice and vocabulary according to your sector and business context."
         },
         "security": {
           "title": "Your Data, Your Property",
@@ -270,673 +286,78 @@
       "plans": {
         "free": {
           "name": "Free",
-          "desc": "Start now",
+          "desc": "Get started",
           "period": "/forever",
           "cta": "Create Free Report",
-          "features": ["2 reports/month", "Basic templates", "PDF export"]
+          "features": [
+            "2 reports/month",
+            "Basic templates",
+            "Export to PDF"
+          ]
         },
         "pro": {
-          "name": "Pro",
+          "name": "Professional",
           "desc": "Most popular",
           "period": "/month",
           "cta": "Try Now",
-          "features": ["20 reports/month", "Premium templates", "Link sharing", "Advanced narratives"]
+          "features": [
+            "20 reports/month",
+            "Premium templates",
+            "Link sharing",
+            "Advanced narratives"
+          ]
         },
         "business": {
           "name": "Business",
           "desc": "For teams",
           "period": "/month",
-          "cta": "Contact Sales",
-          "features": ["Unlimited reports", "Team area", "Access policies", "Advanced security"]
+          "cta": "Talk to Sales",
+          "features": [
+            "Unlimited reports",
+            "Team area",
+            "Access policies",
+            "Advanced security"
+          ]
         }
       }
     },
     "showcase": {
       "title": "Report Examples",
-      "subtitle": "See how your data comes to life with professional analysis ready to share.",
+      "subtitle": "See how your data comes to life with professional analyses ready to share.",
       "portrait": {
         "title": "Portrait Format (A4)",
         "header": "EXECUTIVE REPORT",
         "analysis": "Q4 Sales Analysis",
         "summary": "Management Summary",
-        "summary_text": "23% growth in sales compared to last quarter, with highlights in...",
+        "summary_text": "23% growth in sales compared to last quarter, with highlights for...",
         "metrics": "Key Indicators",
-        "revenue": "Revenue: $ 2.4M",
+        "revenue": "Revenue: $2.4M",
         "growth": "Growth: +23%",
         "dist": "Distribution by Region",
-        "south": "South",
         "southeast": "Southeast",
+        "south": "South",
         "northeast": "Northeast",
-        "generated": "Automatically generated"
+        "generated": "Generated automatically"
       },
       "landscape": {
         "title": "Landscape Format (Dashboard)",
-        "header": "ANALYTICAL DASHBOARD",
+        "header": "ANALYTICS REPORT",
         "subtitle": "Monthly Performance",
         "generated_on": "Generated on: {{date}}",
         "period": "Period: {{period}}",
         "kpi_title": "Key Indicators",
         "rev_total": "Total Revenue",
-        "new_clients": "New Clients",
+        "new_clients": "New Customers",
         "trend_title": "Sales Trend",
         "ai_title": "AI Recommendations",
         "opportunity": "Opportunity",
-        "opp_text": "Expand campaign in South region (+15% potential)",
+        "opp_text": "Expand campaign South region (+15% potential)",
         "attention": "Attention",
-        "att_text": "Drop in customer retention detected",
+        "att_text": "Customer retention drop detected",
         "ai_footer": "Data processed by strategic AI",
         "page_info": "Page {{current}} of {{total}}"
       },
       "cta": "Create My Report Now"
     }
-  },
-  "nav": {
-    "dashboard": "Dashboard",
-    "reports": "My Reports",
-    "folders": "My Folders",
-    "new_report": "Create Report",
-    "settings": "My Settings",
-    "profile": "My Profile",
-    "logout": "Logout Securely",
-    "home": "Home",
-    "main_navigation": "Main Navigation",
-    "open_menu": "Open Menu",
-    "user_menu": "User Menu",
-    "notifications": "Notifications"
-  },
-  "dashboard": {
-    "welcome": "Welcome back! Let's analyze something new today?",
-    "ai_summary": "AI analyzed your recent data. You have {{diagnostics}} diagnostics and {{priorities}} suggested priority.",
-    "metrics": {
-      "reports_created": "Reports Generated",
-      "templates_used": "Report Templates",
-      "hours_saved": "Time Saved in Management",
-      "success_rate": "Intelligent Analysis",
-      "active_priorities": "Active Priorities",
-      "execution_rate": "Execution Rate",
-      "estimated_impact": "Estimated Impact",
-      "actions_label": "Priority actions",
-      "efficiency_label": "Delivery efficiency",
-      "analysis_label": "Data analysis",
-      "roi_label": "Return on actions"
-    },
-    "sections": {
-      "ai_diagnosis": "Priority Diagnostic",
-      "ai_priorities": "Suggested Priorities",
-      "recent_reports": "Recent Reports",
-      "view_all": "View all",
-      "view_details": "View details"
-    },
-    "actions": {
-      "my_data": "My Data",
-      "new_report": "New Report"
-    },
-    "recent_reports": "My Last Reports",
-    "view_all": "View Full List",
-    "new_report": "Create New Report",
-    "status": {
-      "draft": "Draft",
-      "completed": "Completed",
-      "shared": "Shared"
-    },
-    "folders": {
-      "title": "My Folders",
-      "view_all": "View All",
-      "items_one": "report",
-      "items_other": "reports"
-    },
-    "trends": {
-      "vs_previous": "vs previous month",
-      "more_engagement": "more engagement",
-      "flow_optimization": "flow optimization",
-      "continuous_improvement": "continuous improvement"
-    },
-    "quick_actions": {
-      "title": "Quick Actions",
-      "subtitle": "Quickly create reports using our smart templates",
-      "executive": {
-        "title": "Executive Report",
-        "desc": "Quarterly performance"
-      },
-      "sales": {
-        "title": "Sales Report",
-        "desc": "Monthly analysis"
-      },
-      "custom": {
-        "title": "Custom Report",
-        "desc": "Create from scratch"
-      }
-    }
-  },
-  "auth": {
-    "login_title": "Sign in to your account",
-    "signup_title": "Create your account for free",
-    "email_label": "Professional E-mail",
-    "password_label": "Your Password",
-    "email_placeholder": "name@company.com",
-    "password_placeholder": "••••••••",
-    "google_button": "Continue with Google",
-    "separator": "or continue with e-mail",
-    "submit_login": "Sign in now",
-    "submit_signup": "Create my free account",
-    "switch_to_signup": "Don't have an account? Sign up for free",
-    "switch_to_login": "Already have an account? Sign in here",
-    "terms_prefix": "By continuing, you agree to our",
-    "terms_link": "Terms of Use",
-    "privacy_link": "Privacy Policy",
-    "and": "and",
-    "toast": {
-      "signup_success": "Registration completed! Check your e-mail to confirm.",
-      "login_success": "Welcome back! Great to have you here.",
-      "error_generic": "Oops! An error occurred during authentication. Please try again."
-    }
-  },
-  "builder": {
-    "steps": {
-      "summary": {
-        "data": {
-          "title": "Data Source",
-          "desc": "Upload or paste your data"
-        },
-        "model": {
-          "title": "Strategic Analysis",
-          "desc": "AI identifies patterns and suggests the best focus"
-        },
-        "blocks": {
-        "title": "Customize your Blocks",
-        "desc": "Reorder, remove or edit the sections AI suggested for your report.",
-        "add_block": "Add New Block",
-        "ai_hint_title": "AI Hint",
-        "ai_hint_body": "We reorganized the blocks to tell a story. Starting with the <strong>Executive Summary</strong> helps grab the reader's attention before diving into technical data.",
-        "auto_mapping_title": "Auto-Mapping",
-        "auto_mapping_body": "Each block is connected to your original data. If you change a block, AI automatically recalculates the insights.",
-        "loading_title": "Analyzing your data with AI...",
-        "loading_desc": "This may take a few seconds while we generate strategic insights."
-      },
-      "generation": {
-          "title": "Final Setup",
-          "desc": "Document structure"
-        },
-        "final": {
-          "title": "Ready Visualization",
-          "desc": "Professional report"
-        }
-      },
-      "data": {
-        "title": "Choose your data",
-        "desc": "Choose how you prefer to send us your business information.",
-        "sources": {
-          "upload": "Upload Files",
-          "upload_desc": "Excel, CSV, PDF, or Documents",
-          "paste": "Paste Data",
-          "paste_desc": "Copy and paste text directly",
-          "url": "Analyze Website",
-          "url_desc": "Extract data from a link"
-        },
-        "dropzone": {
-          "title": "Drag your files here or click to choose",
-          "hint": "We accept spreadsheets (.xlsx, .csv) and documents",
-          "success": "File uploaded successfully!"
-        },
-        "example": "Download sample template",
-        "labels": {
-          "paste_area": "Paste your data here",
-          "paste_placeholder": "Paste your data, text, numbers, tables here...",
-          "chars": "characters",
-          "url_input": "Page or website link",
-          "url_placeholder": "https://example.com/report"
-        }
-      },
-      "template": {
-        "title": "Confirmation and Template",
-        "desc": "Our artificial intelligence has analyzed your data. Now, define what the focus of your strategic analysis will be.",
-        "preview_title": "Identified Data",
-        "source_label": "Source:",
-        "size_label": "Volume:",
-        "status_label": "Quality:",
-        "status_val": "Ready for analysis",
-        "selection_title": "Report Focus",
-        "sections_label": "What will be analyzed:"
-      },
-      "generation": {
-        "title": "Document Details",
-        "desc": "Customize the name and objective so that the AI generates a more precise analysis.",
-        "form": {
-          "title_label": "Report Title",
-          "title_placeholder": "Ex: Monthly Sales - January 2024",
-          "cat_label": "Category / Area",
-          "cat_placeholder": "Choose strategic area",
-          "desc_label": "Analysis Objective (Optional)",
-          "desc_placeholder": "Describe what this report should focus on or the problem you want to solve..."
-        },
-        "structure": {
-          "title": "Intelligent Structure",
-          "desc": "Your analysis will include the following automatic modules:"
-        }
-      },
-      "preview": {
-        "title": "Analysis Completed",
-        "desc": "Review the generated analysis before saving it to your account.",
-        "ai_badge": "AI Generated Report",
-        "save_card_title": "Do you want to save this analysis?",
-        "save_card_desc": "By saving, this report will be available in your history for consultation and export.",
-        "save_button": "Save to my account",
-        "cta_initial": "Generate Report with AI",
-        "cta_loading": "Analyzing with AI...",
-        "ai_processing_desc": "Our AI is crossing your data with market patterns to generate recommendations.",
-        "diagnostic_title": "Diagnostic & Next Steps",
-        "recommended_priority": "Recommended Priority",
-        "recommended_priority_desc": "Based on the diagnostic above, the AI calculated that this is the action with the highest immediate return for your business.",
-        "ai_engine": "SuperReports AI — Gemini 1.5 Pro"
-      }
-    },
-    "title": "Report Assistant",
-    "step_indicator": {
-      "prefix": "Step",
-      "value": "{{current}} of {{total}}"
-    },
-    "sidebar": {
-      "summary_title": "Creation Progress",
-      "ai_hint_title": "Smart Hint",
-      "consultant_hint": "Consultant Hint",
-      "ai_suggestions": "Strategic Help",
-      "ai_hints": {
-        "step1": "We accept various formats. The cleaner the data, the more precise the analysis will be.",
-        "step2": "Each template focuses on different metrics. Choose the one that best aligns with your moment.",
-        "step3": "A clear title helps you and your team find this report in the future.",
-        "step4": "Review the points of attention and recommendations generated before finalizing."
-      },
-      "ai_will_do": {
-        "title": "Our AI Process",
-        "item1": "Data normalization and cleaning",
-        "item2": "Identification of trends and gaps",
-        "item3": "Creation of performance indicators",
-        "item4": "Drafting of practical recommendations"
-      }
-    },
-    "toasts": {
-      "data_required_title": "Data required",
-      "upload_required_desc": "Please upload a file to continue.",
-      "text_required_desc": "Please paste your data to continue.",
-      "url_required_desc": "Please enter a valid link (starting with http or https).",
-      "select_template_title": "Choose template",
-      "select_template_desc": "Select one of the templates above to guide the AI.",
-      "title_required_title": "Title required",
-      "title_required_desc": "Give your report a name to save it.",
-      "analysis_completed_title": "Analysis Finished!",
-      "analysis_completed_desc": "Your business intelligence is ready for review.",
-      "save_success_title": "Report Saved!",
-      "save_success_desc": "Your new analysis is now available on your dashboard.",
-      "file_uploaded_title": "File Uploaded!",
-      "file_uploaded_desc": "{{name}} was processed successfully.",
-      "model_downloaded_title": "Template Downloaded!",
-      "model_downloaded_desc": "Use the file as a guide for your next data."
-    },
-    "errors": {
-      "ia_title": "AI Error",
-      "ia_unknown": "We couldn't process the data right now. Please try again.",
-      "save_title": "Error saving",
-      "save_generic": "There was a technical problem. Your data is safe, please try again."
-    }
-  },
-  "reports": {
-    "title": "My Reports",
-    "subtitle": "Manage all your analysis and strategic decisions in one place.",
-    "new_report_button": "Create New Report",
-    "view_grid": "View in Grid",
-    "view_list": "View in List",
-    "table_desc": "List of available reports",
-    "filters": {
-      "search_placeholder": "Search by title or description...",
-      "status": "Filter by Status",
-      "category": "Filter by Category",
-      "all": "All",
-      "draft": "Draft",
-      "completed": "Completed",
-      "shared": "Shared"
-    },
-    "counter_one": "1 report found",
-    "counter_other": "{{count}} reports found",
-    "empty": {
-      "title": "Your report list is empty",
-      "filter_desc": "Try adjusting the filters to find your analysis.",
-      "brand_new_desc": "You haven't created any reports yet. How about starting now and transforming your data into decisions?",
-      "cta": "Create my First Report"
-    },
-    "actions": {
-      "view": "View",
-      "share": "Share",
-      "download": "Download PDF",
-      "open": "Open Analysis"
-    }
-  },
-  "report_detail": {
-    "back_button": "Back to List",
-    "presentation_mode": "Presentation Mode",
-    "status": "Analysis Status",
-    "tabs": {
-      "report": "Report",
-      "sources": "Data Sources"
-    },
-    "ai_section": {
-      "title": "Diagnostic & Next Steps",
-      "recommended_priority": "Recommended Priority",
-      "priority_desc": "Based on the diagnostic above, the AI calculated that this is the action with the highest immediate return for your business."
-    },
-    "data_assets": {
-      "title": "Data Assets",
-      "description": "Original files and links that powered this analysis.",
-      "download": "Download",
-      "open_link": "Open Link"
-    },
-    "cards": {
-      "category": "Report Category",
-      "created_at": "Generated on",
-      "updated_at": "Last Updated",
-      "views": "Total Views"
-    },
-    "content": {
-      "executive_summary": "Management Summary",
-      "executive_summary_desc": "This report presents a detailed analysis of key indicators and performance metrics, providing valuable insights for strategic decision-making.",
-      "highlights": "Points of Attention and Highlights",
-      "detailed_analysis": "Strategic Analysis",
-      "detailed_analysis_placeholder": "The presented data indicates performance consistent with established expectations. Key metrics demonstrate a positive trend, suggesting effectiveness in the implemented strategies.",
-      "ai_insight": "AI Intelligent Conclusion",
-      "ai_insight_placeholder": "Based on the provided data, it is recommended to maintain focus on high-performance areas and consider optimization strategies for indicators with the highest growth potential.",
-      "next_steps": "Recommended Action Plan",
-      "next_steps_placeholder_1": "Deepen analysis of metrics with best performance",
-      "next_steps_placeholder_2": "Implement corrective actions for declining indicators",
-      "next_steps_placeholder_3": "Establish schedule for re-evaluation in 30 days",
-      "generated_on": "Document on generated on {{date}}",
-      "verified": "System Verified"
-    },
-    "sidebar": {
-      "info_title": "Report Info",
-      "template": "Template Used",
-      "description": "Original Description",
-      "quick_actions": "Quick Actions",
-      "export_pdf": "Export to PDF"
-    },
-    "notifications": {
-      "error_load": "Error loading report",
-      "error_load_desc": "We couldn't load the requested report. It might have been deleted.",
-      "not_found": "Report not found",
-      "link_copied": "Link copied!",
-      "link_copied_desc": "Share this link with your team or clients.",
-      "download_start": "Download started",
-      "download_desc": "Your PDF is being generated and will be ready shortly."
-    }
-  },
-  "folders": {
-    "title": "My Folders",
-    "subtitle": "Organize your analysis and collaborate with your team simply and securely.",
-    "new_folder_button": "Create New Folder",
-    "table_desc": "List of organized folders",
-    "search_placeholder": "Search folders by name...",
-    "counter_one": "1 folder found",
-    "counter_other": "{{count}} folders found",
-    "empty": {
-      "title": "No folders here",
-      "title_search": "No folders found",
-      "desc": "Organize your reports by creating thematic folders to facilitate your daily life.",
-      "desc_search": "Try adjusting the search term to find your folder.",
-      "cta": "Create my First Folder"
-    },
-    "actions": {
-      "rename": "Rename Folder",
-      "delete": "Delete Folder",
-      "open": "Open Folder"
-    },
-    "meta": {
-      "modified": "Modified on",
-      "items": "reports",
-      "updated_ago": "Updated {{time}} ago"
-    }
-  },
-  "profile": {
-    "title": "Your Profile",
-    "subtitle": "Keep your data updated for a better experience.",
-    "fields": {
-      "full_name": "Full Name",
-      "email": "E-mail",
-      "email_hint": "E-mail cannot be changed directly.",
-      "save": "Save Changes"
-    },
-    "security": {
-      "title": "Account Security",
-      "desc": "Two-step protection is disabled."
-    },
-    "notifications": {
-      "title": "Notifications",
-      "desc": "You have {{count}} recent unread notices."
-    }
-  },
-  "settings": {
-    "title": "Account Settings",
-    "sections": {
-      "profile": "My Profile",
-      "notifications": "Notifications",
-      "appearance": "Visual & Language",
-      "security": "Security",
-      "plan": "Plan & Subscription"
-    },
-    "profile": {
-      "title": "Personal Information",
-      "desc": "Update how you appear to your team and in reports.",
-      "photo": "Profile Photo",
-      "photo_desc": "JPG, PNG, or GIF. Recommended 400x400px.",
-      "change_photo": "Change Photo",
-      "first_name": "Your Name",
-      "last_name": "Your Surname",
-      "email": "Professional E-mail",
-      "company": "Company Name",
-      "role": "Your Role / Position",
-      "save_button": "Save Profile Changes"
-    },
-    "notifications": {
-      "title": "How do you want to be notified?",
-      "desc": "Choose the most practical communication channels for you.",
-      "email": "E-mail Notifications",
-      "email_desc": "Weekly summaries and security updates.",
-      "push": "Browser Notices",
-      "push_desc": "Immediate alerts when a report is generated.",
-      "reports": "Reports Ready",
-      "reports_desc": "Get notified as soon as AI finishes your analysis.",
-      "marketing": "Tips and News",
-      "marketing_desc": "New report templates and management tips.",
-      "save_button": "Save Notice Preferences"
-    },
-    "security": {
-      "title": "Account Security",
-      "desc": "Protect your data with extra layers of protection.",
-      "change_password": "Change Access Password",
-      "last_change": "Last change: {{date}}",
-      "two_factor": "Two-Factor Authentication",
-      "two_factor_desc": "Adds an extra code to enter the account.",
-      "active_sessions": "Active Sessions",
-      "active_sessions_desc": "Manage the devices where you are connected.",
-      "view_sessions": "View All Devices",
-      "save_button": "Save Security Settings"
-    },
-    "plan": {
-      "title": "Your Plan and Subscription",
-      "desc": "Manage your investment in SuperReports.",
-      "professional": "Professional Plan",
-      "active_since": "Active since {{date}}",
-      "usage": {
-        "reports": "Created Analysis",
-        "storage": "Cloud Space",
-        "next_billing": "Next Billing"
-      },
-      "change_plan": "Change Plan",
-      "view_invoices": "Invoice/Bill History",
-      "danger_zone": "Cancellation Zone",
-      "danger_desc": "By canceling, you will lose access to AI features and unlimited history.",
-      "cancel_button": "Cancel my Subscription"
-    },
-    "appearance": {
-      "title": "Appearance & Language",
-      "description": "Customize the SuperReports interface",
-      "theme": "Theme",
-      "theme_light": "Light",
-      "theme_dark": "Dark",
-      "theme_system": "System",
-      "language": "Language",
-      "save_button": "Save Settings",
-      "save_success_title": "Settings saved",
-      "save_success_desc": "Appearance settings have been successfully updated."
-    }
-  },
-  "data_hub": {
-    "title": "My Data",
-    "subtitle": "Centralized repository of files, URLs, and intelligence sources for your business.",
-    "add_source": "Add Source",
-    "new_analysis": "New Analysis",
-    "search_placeholder": "Search by name, type or content...",
-    "tabs": {
-      "all": "All Assets",
-      "files": "Files & Spreadsheets",
-      "urls": "Links & Sites",
-      "text": "Texts & Notes"
-    },
-    "stats": {
-      "files": "Files",
-      "urls": "Connected Links",
-      "text": "Raw Texts",
-      "storage": "Total Storage"
-    },
-    "table": {
-      "source": "Data Source",
-      "type": "Type",
-      "reports": "Linked Reports",
-      "date": "Ingestion Date",
-      "actions": "Actions"
-    },
-    "empty": {
-      "title": "Your data hub is ready to be fed",
-      "description": "Upload spreadsheets, paste meeting notes, or connect links. Our AI will use these assets to generate deep diagnostics.",
-      "cta": "Add My First Source"
-    },
-    "actions": {
-      "generate": "Generate New Analysis",
-      "move": "Move to Folder",
-      "delete": "Permanently Delete",
-      "download": "Download Original",
-      "open_link": "Access External Link"
-    }
-  },
-  "priorities": {
-    "title": "Assisted Priorities",
-    "subtitle": "Strategic actions suggested by AI based on your real diagnostics.",
-    "search_placeholder": "Search priorities by title or description...",
-    "view_cards": "Cards",
-    "view_list": "List",
-    "items_count": "items found",
-    "filter": "Filter Priorities",
-    "new_analysis": "New Diagnostic",
-    "summary": {
-      "title": "Focus Summary",
-      "desc": "Where your energy should be concentrated now",
-      "high": "High Priority",
-      "medium": "Medium Priority",
-      "low": "Low Priority",
-      "validated": "Validated for Execution"
-    },
-    "levels": {
-      "high": "High",
-      "medium": "Medium",
-      "low": "Low"
-    },
-    "list_title": "AI Suggestions",
-    "empty": {
-      "title": "Waiting for new data to prioritize",
-      "description": "Generate a new report or upload recent data so AI can identify the next high-impact actions.",
-      "cta": "Generate AI Diagnostic"
-    },
-    "card": {
-      "score": "Impact Score",
-      "ai_suggested": "AI Suggested",
-      "validated": "Confirmed by you",
-      "cta_validate": "Validate Importance",
-      "cta_action": "Define Next Action"
-    },
-    "validation_modal": {
-      "title": "Strategic Validation",
-      "description": "Adjust the criteria below so the system understands the real priority according to your business moment.",
-      "why_important": "Why is this action a priority?",
-      "status_label": "Process Status",
-      "cta_cancel": "Cancel",
-      "cta_confirm": "Validate and Move to Execution",
-      "rice": {
-        "impact": "Impact on Profit",
-        "impact_tip": "How much does this action move the financial needle?",
-        "urgency": "Urgency",
-        "urgency_tip": "How critical is it to do this now?",
-        "confidence": "Result Confidence",
-        "confidence_tip": "How much do we believe this action will have the expected effect?",
-        "effort": "Implementation Effort",
-        "effort_tip": "Technical complexity and required team time.",
-        "final_score": "Final Calculated Score",
-        "formula": "RICE Formula (Impact x Urgency x Confidence) / Effort"
-      }
-    },
-    "toast": {
-      "validated_title": "Priority Confirmed!",
-      "validated_desc": "This action has been moved to your Execution Checklist."
-    }
-  },
-  "action_plan": {
-    "title": "Execution Checklist",
-    "subtitle": "Transforming diagnostics and priorities into practical results for your company.",
-    "view_impact": "View Real Impact",
-    "new_diagnostic": "New Diagnostic",
-    "active_cycle": "Active Growth Cycle",
-    "progress_label": "Execution Progress",
-    "completed_label": "Completed",
-    "high_impact_badge": "HIGH IMPACT",
-    "metric_label": "Target Metric:",
-    "metric_value": "Conversion Rate",
-    "deadline_label": "Estimated Deadline:",
-    "deadline_value": "April 15th",
-    "add_manual": "Add manual task",
-    "empty": {
-      "title": "Your action plan awaits your decision",
-      "description": "Validate AI-suggested priorities to transform them into practical tasks and start seeing ROI in your business.",
-      "cta": "See Priorities to Validate"
-    },
-    "impact_card": {
-      "title": "Expected Impact Summary",
-      "desc": "Estimated return from this cycle's actions",
-      "roi": "Estimated ROI",
-      "roi_value": "$ 14,200",
-      "time_saved": "Time Savings",
-      "time_saved_value": "12h",
-      "time_saved_unit": "/month",
-      "cta_evolution": "Analyze Business Evolution"
-    },
-    "next_target": {
-      "title": "Next Strategic Target",
-      "desc": "Complete current tasks so AI can generate the next growth cycle.",
-      "waiting": "Waiting for Execution"
-    },
-    "toast": {
-      "completed_title": "Action Completed! 🎉",
-      "completed_desc": "Impact has been recorded. Do you want to validate the result with a new diagnostic?",
-      "cta_validate": "Validate Now"
-    }
-  },
-  "seo": {
-    "index_title": "SuperReports | The Professional AI Report Generator",
-    "index_desc": "Generate professional reports with consultant-level analysis in minutes. The #1 platform for SMEs that don't want to waste time with manual spreadsheets."
-  },
-  "errors": {
-    "not_found_title": "Page not found",
-    "not_found_desc": "Oops! Looks like you followed a link that doesn't exist or the page was moved.",
-    "return_home": "Back to Home"
-  },
-  "loading_state": {
-    "system": "Preparing your environment...",
-    "data": "Organizing information...",
-    "standard": "Loading..."
   }
 }

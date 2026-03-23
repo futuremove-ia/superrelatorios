@@ -28,6 +28,8 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import BrandName from '@/components/BrandName';
 import LogoIcon from '@/components/LogoIcon';
 import { useAuth } from '@/contexts/AuthContext';
+import { LocalizedNavigation, LanguageSwitcher, LocalizedBreadcrumbs } from './navigation';
+import { I18nSEO } from './SEO/I18nSEO';
 import DemoBanner from '@/components/DemoBanner';
 import { useTranslation } from 'react-i18next';
 
@@ -38,39 +40,6 @@ const AppLayout = () => {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-
-  const navigation = [
-    { name: t('nav.overview', { defaultValue: 'Visão Geral' }), href: '/app', icon: LayoutDashboard },
-    { name: t('nav.metrics', { defaultValue: 'Indicadores' }), href: '/app/metrics', icon: BarChart3 },
-    { name: t('nav.decision_panel', { defaultValue: 'Painel de Decisão' }), href: '/app/decision-panel', icon: Brain },
-    { name: t('nav.analytics', { defaultValue: 'Analytics' }), href: '/app/analytics', icon: PieChart },
-    { name: t('nav.consolidated', { defaultValue: 'Consolidado' }), href: '/app/consolidated', icon: TrendingUp },
-    { name: t('nav.priorities', { defaultValue: 'Prioridades' }), href: '/app/prioridades', icon: Target },
-    { name: t('nav.action_plan', { defaultValue: 'Plano de Ação' }), href: '/app/action-plan', icon: ListChecks },
-    { name: t('nav.reports', { defaultValue: 'Relatórios' }), href: '/app/reports', icon: FileText },
-    { name: t('nav.data', { defaultValue: 'Meus Dados' }), href: '/app/folders', icon: Database },
-  ];
-
-  const mobileNav = [
-    { name: t('nav.overview', { defaultValue: 'Visão Geral' }), href: '/app', icon: LayoutDashboard },
-    { name: t('nav.metrics', { defaultValue: 'Indicadores' }), href: '/app/metrics', icon: BarChart3 },
-    { name: t('nav.decision_panel', { defaultValue: 'Painel de Decisão' }), href: '/app/decision-panel', icon: Brain },
-    { name: t('nav.analytics', { defaultValue: 'Analytics' }), href: '/app/analytics', icon: PieChart },
-    { name: t('nav.consolidated', { defaultValue: 'Consolidado' }), href: '/app/consolidated', icon: TrendingUp },
-    { name: t('nav.priorities', { defaultValue: 'Prioridades' }), href: '/app/prioridades', icon: Target },
-    { name: t('nav.action_plan', { defaultValue: 'Plano' }), href: '/app/action-plan', icon: ListChecks },
-    { name: t('nav.reports', { defaultValue: 'Relatórios' }), href: '/app/reports', icon: FileText },
-    { name: t('nav.data', { defaultValue: 'Dados' }), href: '/app/folders', icon: Database },
-  ];
-
-
-  const isActive = (href: string) => {
-    if (href === '/app') {
-      return location.pathname === '/app';
-    }
-    return location.pathname.startsWith(href);
-  };
-
   const SidebarContent = () => (
     <div className="flex h-full flex-col">
       <div className="flex items-center gap-3 px-6 py-4 border-b">
@@ -79,26 +48,7 @@ const AppLayout = () => {
       </div>
       
       <nav className="flex-1 px-4 py-6 space-y-2" aria-label={t('nav.main_navigation')}>
-        {navigation.map((item) => {
-          const active = isActive(item.href);
-          return (
-            <Link
-              key={item.name}
-              to={item.href}
-              onClick={() => setSidebarOpen(false)}
-              className={`
-                flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
-                ${active 
-                  ? 'bg-primary text-primary-foreground' 
-                  : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                }
-              `}
-            >
-              <item.icon className="h-5 w-5" />
-              {item.name}
-            </Link>
-          );
-        })}
+        <LocalizedNavigation className="space-y-2" />
       </nav>
 
       <div className="border-t p-4">
@@ -165,6 +115,7 @@ const AppLayout = () => {
             {/* Right Side */}
             <div className="flex items-center gap-2 ml-auto">
               <div className="flex items-center gap-2">
+                <LanguageSwitcher variant="ghost" size="sm" className="relative hover-scale" />
                 <Button variant="ghost" size="sm" className="relative hover-scale" aria-label={t('nav.notifications')}>
                   <Bell className="h-5 w-5" />
                 </Button>
@@ -218,29 +169,18 @@ const AppLayout = () => {
 
         {/* Page Content */}
         <main className="min-h-[calc(100vh-4rem)] pb-20 lg:pb-0 animate-fade-in">
+          <div className="container mx-auto px-4 py-6">
+            <div className="mb-6">
+              <LocalizedBreadcrumbs />
+            </div>
+          </div>
           <DemoBanner />
           <Outlet />
         </main>
 
         {/* Mobile Bottom Navigation */}
         <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t z-50">
-          <div className="flex items-center justify-around h-14">
-            {mobileNav.map((item) => {
-              const active = isActive(item.href);
-              return (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={`flex flex-col items-center justify-center gap-0.5 px-3 py-1.5 rounded-lg text-xs transition-colors ${
-                    active ? 'text-primary' : 'text-muted-foreground'
-                  }`}
-                >
-                  <item.icon className={`h-5 w-5 ${item.name === 'Novo' ? 'text-primary' : ''}`} />
-                  <span>{item.name}</span>
-                </Link>
-              );
-            })}
-          </div>
+          <LocalizedNavigation isMobile={true} />
         </nav>
       </div>
     </div>

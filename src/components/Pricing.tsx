@@ -4,7 +4,6 @@ import { Check } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-
 const Pricing = () => {
   const { t } = useTranslation();
   const plans = [
@@ -13,7 +12,9 @@ const Pricing = () => {
       price: "R$ 0",
       period: t('landing.pricing.plans.free.period'),
       description: t('landing.pricing.plans.free.desc'),
-      features: t('landing.pricing.plans.free.features', { returnObjects: true }),
+      features: Array.isArray(t('landing.pricing.plans.free.features')) 
+        ? t('landing.pricing.plans.free.features') 
+        : [],
       cta: t('landing.pricing.plans.free.cta'),
       highlighted: false,
       href: "/app/novo-relatorio",
@@ -23,7 +24,9 @@ const Pricing = () => {
       price: "R$ 59",
       period: t('landing.pricing.plans.pro.period'),
       description: t('landing.pricing.plans.pro.desc'),
-      features: t('landing.pricing.plans.pro.features', { returnObjects: true }),
+      features: Array.isArray(t('landing.pricing.plans.pro.features')) 
+        ? t('landing.pricing.plans.pro.features') 
+        : [],
       cta: t('landing.pricing.plans.pro.cta'),
       highlighted: true,
       href: "/app/novo-relatorio",
@@ -33,13 +36,14 @@ const Pricing = () => {
       price: "R$ 149",
       period: t('landing.pricing.plans.business.period'),
       description: t('landing.pricing.plans.business.desc'),
-      features: t('landing.pricing.plans.business.features', { returnObjects: true }),
+      features: Array.isArray(t('landing.pricing.plans.business.features')) 
+        ? t('landing.pricing.plans.business.features') 
+        : [],
       cta: t('landing.pricing.plans.business.cta'),
       highlighted: false,
       href: "mailto:contato@superrelatorios.com.br?subject=Plano%20Business",
     },
   ];
-
 
   return (
     <section id="precos" className="py-20 bg-background">
@@ -52,7 +56,6 @@ const Pricing = () => {
             {t('landing.pricing.subtitle')}
           </p>
         </div>
-
         
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto items-start">
           {plans.map((plan, index) => (
@@ -79,7 +82,7 @@ const Pricing = () => {
               </div>
               
               <ul className="space-y-3 sm:space-y-4 mb-8">
-                {plan.features.map((feature, featureIndex) => (
+                {Array.isArray(plan.features) && plan.features.map((feature, featureIndex) => (
                   <li key={featureIndex} className="flex items-center gap-3">
                     <Check className="w-5 h-5 text-accent flex-shrink-0" />
                     <span className="text-foreground text-sm sm:text-base">{feature}</span>

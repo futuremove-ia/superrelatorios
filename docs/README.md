@@ -18,8 +18,16 @@ Documentação fundamental que define visão, missão e direcionamento estratég
 
 ---
 
-### ⚙️ [02. Técnica](./02-technical/)
-Documentação técnica detalhada para desenvolvedores, arquitetos e equipes técnicas.
+## 🗂️ [03. Desenvolvimento](./03-development/)
+Documentação prática para desenvolvedores com guias de setup, fluxo de trabalho, convenções e boas práticas.
+
+#### Documentos Principais:
+- **[Guia de Desenvolvimento](./03-development/01-development-guide.md)** - Setup completo e fluxo de trabalho
+- **[Guia de i18n](./03-development/02-i18n-guide.md)** - Implementação de internacionalização
+- **[Referência de API](./03-development/03-api-reference.md)** - Documentação de APIs internas
+- **[Guia de Componentes](./03-development/04-component-guide.md)** - Como criar e usar componentes
+- **[Protocolo de Git](./03-development/05-git-protocol.md)** - Convenções e fluxo Git
+- **[Guia de Testes](./03-development/06-testing-guide.md)** - Estratégias e ferramentas de teste
 
 #### Documentos Principais:
 - **[Arquitetura de Software](./02-technical/01-software-architecture.md)** - Arquitetura limpa e padrões

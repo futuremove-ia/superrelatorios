@@ -1,5 +1,74 @@
 # 📋 Guia de Desenvolvimento
 
+## 🌐 Internacionalização (i18n)
+
+### Sistema de Roteamento Híbrido
+
+O projeto implementa um sistema avançado de roteamento internacionalizado que suporta:
+
+#### **🔧 Funcionalidades Principais**
+- **Detecção automática de idioma**: Browser, localStorage, geolocalização
+- **Redirecionamento inteligente**: Rotas canônicas vs localizadas
+- **Navegação localizada**: Sidebar, mobile, breadcrumbs com tradução
+- **Seletor de idiomas**: Dropdown no header com alternância instantânea
+- **SEO otimizado**: Canonical URLs, hreflang, Open Graph, structured data
+- **TypeScript seguro**: Tipagem forte e validação de rotas
+
+#### **📂 Estrutura de Arquivos**
+```
+src/
+├── routes/
+│   └── routes.ts              # Mapa de rotas internacionalizadas
+├── hooks/
+│   └── useI18nRouter.ts     # Hook personalizado para i18n routing
+├── components/
+│   ├── I18nRouter.tsx         # Componente principal de inicialização
+│   ├── navigation/
+│   │   ├── LocalizedNavigation.tsx
+│   │   ├── LanguageSwitcher.tsx
+│   │   └── LocalizedBreadcrumbs.tsx
+│   └── SEO/
+│       └── I18nSEO.tsx      # SEO multilíngue dinâmico
+└── locales/
+    ├── pt-BR.json              # Traduções português
+    └── en-US.json              # Traduções inglês
+```
+
+#### **🌐 Uso no App.tsx**
+```tsx
+<I18nRouter>
+  <BrowserRouter>
+    <Routes>
+      {/* Rotas existentes */}
+    </Routes>
+  </BrowserRouter>
+</I18nRouter>
+```
+
+#### **🔧 Configuração de Rotas**
+As rotas são definidas em `routes.ts` com suporte para:
+- Rotas canônicas (ex: `/app/dashboard`)
+- Rotas localizadas (ex: `/app/painel`, `/app/reports`)
+- Redirecionamento automático baseado no idioma
+
+#### **📝 Exemplo de Implementação**
+```typescript
+// Hook personalizado
+const { currentLanguage, changeLanguage, navigateLocalized } = useI18nRouter();
+
+// Navegação localizada
+<LocalizedNavigation className="space-y-2" />
+<LanguageSwitcher variant="ghost" />
+<LocalizedBreadcrumbs />
+```
+
+#### **🎯 Boas Práticas**
+1. **Sempre usar `navigateLocalized()`** para navegação
+2. **Manter traduções sincronizadas** entre arquivos de locale
+3. **Usar tipagem forte** para segurança de rotas
+4. **Testar redirecionamento** em diferentes cenários
+5. **Validar SEO metadata** para cada idioma
+
 ## 🚀 Fluxo de Trabalho
 
 ### 1. Setup Inicial
@@ -60,6 +129,7 @@ git push origin feature/nova-funcionalidade
 - `refactor`: Refatoração
 - `test`: Testes
 - `chore`: Build/dependências
+- `i18n`: Implementação de internacionalização
 
 ### Formato
 ```
@@ -68,6 +138,21 @@ tipo: descrição curta
 descrição detalhada se necessário
 
 closes #(issue)
+```
+
+### Exemplo de Commits para i18n
+```bash
+# Adicionar nova tradução
+git add src/locales/pt-BR.json src/locales/en-US.json
+git commit -m "i18n: adicionar traduções para navegação e rotas"
+
+# Implementar componente de navegação
+git add src/components/navigation/
+git commit -m "i18n: implementar LocalizedNavigation component"
+
+# Configurar SEO multilíngue
+git add src/components/SEO/
+git commit -m "i18n: implementar I18nSEO component"
 ```
 
 ## 🧪 Testes
@@ -79,6 +164,9 @@ npm run test
 
 # Testes com UI
 npm run test:ui
+
+# Testes de i18n
+npm run test:i18n
 
 # Lint
 npm run lint
