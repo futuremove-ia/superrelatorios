@@ -7,46 +7,34 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: [
-    ['html', { outputFolder: 'playwright-report' }],
-    ['json', { outputFile: 'test-results.json' }],
-    ['junit', { outputFile: 'test-results.xml' }]
+    ['html', { outputFolder: 'playwright-a11y-report' }],
+    ['json', { outputFile: 'a11y-test-results.json' }]
   ],
   use: {
     baseURL: 'http://localhost:3000',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
   },
   projects: [
     {
-      name: 'chromium',
+      name: 'accessibility-chromium',
       use: { ...devices['Desktop Chrome'] },
+      testMatch: '**/accessibility.spec.ts',
     },
     {
-      name: 'firefox',
+      name: 'accessibility-firefox',
       use: { ...devices['Desktop Firefox'] },
+      testMatch: '**/accessibility.spec.ts',
     },
     {
-      name: 'webkit',
+      name: 'accessibility-webkit',
       use: { ...devices['Desktop Safari'] },
-    },
-    {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-    },
-    {
-      name: 'Mobile Safari',
-      use: { ...devices['iPhone 12'] },
+      testMatch: '**/accessibility.spec.ts',
     },
   ],
   webServer: {
     command: 'npm run dev',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000,
-  },
-  timeout: 30 * 1000,
-  expect: {
-    timeout: 10 * 1000,
   },
 });
