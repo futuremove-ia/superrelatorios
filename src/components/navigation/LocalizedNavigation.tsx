@@ -36,7 +36,7 @@ export const LocalizedNavigation: React.FC<LocalizedNavigationProps> = ({
     'pt-BR': [
       { name: t('nav.overview', { defaultValue: 'Visão Geral' }), href: '/app', icon: LayoutDashboard },
       { name: t('nav.metrics', { defaultValue: 'Indicadores' }), href: '/app/metricas', icon: BarChart3 },
-      { name: t('nav.decision_panel', { defaultValue: 'Painel de Decisão' }), href: '/app/painel-decisao', icon: Brain },
+      { name: t('nav.decision_panel', { defaultValue: 'Painel de Decisão' }), href: '/app/decision-panel', icon: Brain },
       { name: t('nav.analytics', { defaultValue: 'Analytics' }), href: '/app/analytics', icon: PieChart },
       { name: t('nav.consolidated', { defaultValue: 'Consolidado' }), href: '/app/consolidado', icon: TrendingUp },
       { name: t('nav.priorities', { defaultValue: 'Prioridades' }), href: '/app/prioridades', icon: Target },

@@ -101,6 +101,8 @@ const App = () => (
                     <Route path="metrics/config" element={<MetricsConfig />} />
                     <Route path="analytics" element={<AdvancedAnalytics />} />
                     <Route path="decision-panel" element={<DecisionPanel />} />
+                    <Route path="painel-decisao" element={<DecisionPanel />} />
+                    <Route path="panel-decision" element={<DecisionPanel />} />
                     <Route path="consolidated" element={<ConsolidatedDashboard />} />
                     <Route path="organization" element={<OrganizationManager />} />
                     <Route path="templates" element={<TemplateManager />} />
