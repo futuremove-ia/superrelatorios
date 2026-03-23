@@ -33,7 +33,11 @@ export interface User {
 
 export interface AuthState {
   user: User | null;
-  session: any;
+  session: {
+    token: string;
+    expiresAt: number;
+    userId: string;
+  } | null;
   loading: boolean;
   error: string | null;
 }
