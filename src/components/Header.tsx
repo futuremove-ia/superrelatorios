@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import BrandName from "@/components/BrandName";
 import LogoIcon from "@/components/LogoIcon";
 import { useTranslation } from "react-i18next";
-
+import { LanguageToggle } from "./LanguageToggle";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -32,6 +32,7 @@ const Header = () => {
 
         
         <div className="flex items-center gap-2">
+          <LanguageToggle variant="ghost" size="sm" className="mr-2" />
           <Button variant="accent" className="font-semibold hidden sm:inline-flex" asChild>
             <Link to="/app/novo-relatorio">
               {t('landing.nav_links.cta')}

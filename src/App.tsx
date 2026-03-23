@@ -94,6 +94,8 @@ const App = () => (
                     <Route index element={<Dashboard />} />
                     <Route path="reports" element={<ReportsList />} />
                     <Route path="reports/new" element={<ReportBuilder />} />
+                    <Route path="novo-relatorio" element={<ReportBuilder />} />
+                    <Route path="new-report" element={<ReportBuilder />} />
                     <Route path="reports/:id" element={<ReportDetail />} />
                     <Route path="folders" element={<Folders />} />
                     <Route path="folders/:id" element={<FolderDetail />} />
