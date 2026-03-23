@@ -1127,6 +1127,25 @@
     "validation": {
       "required": "Obligatorio",
       "invalid_format": "Formato inválido"
+    },
+    "auth": {
+      "login_title": "Iniciar sesión en tu cuenta",
+      "signup_title": "Crear tu cuenta gratuita",
+      "google_button": "Iniciar sesión con Google",
+      "separator": "o",
+      "email_label": "Correo profesional",
+      "email_placeholder": "tu@correo.com",
+      "password_label": "Contraseña",
+      "password_placeholder": "Ingresa tu contraseña",
+      "submit_login": "Iniciar sesión",
+      "submit_signup": "Crear cuenta",
+      "switch_to_login": "¿Ya tienes una cuenta? Iniciar sesión",
+      "switch_to_signup": "¿No tienes una cuenta? Crear cuenta",
+      "forgot_password": "¿Olvidaste tu contraseña?",
+      "terms_prefix": "Al crear una cuenta, aceptas nuestros",
+      "terms_link": "Términos de Servicio",
+      "and": "y",
+      "privacy_link": "Política de Privacidad"
     }
   }
 }

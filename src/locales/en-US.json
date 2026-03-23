@@ -547,6 +547,25 @@
     "validation": {
       "required": "Required",
       "invalid_format": "Invalid Format"
+    },
+    "auth": {
+      "login_title": "Sign in to your account",
+      "signup_title": "Create your free account",
+      "google_button": "Sign in with Google",
+      "separator": "or",
+      "email_label": "Professional email",
+      "email_placeholder": "your@email.com",
+      "password_label": "Password",
+      "password_placeholder": "Enter your password",
+      "submit_login": "Sign in",
+      "submit_signup": "Create account",
+      "switch_to_login": "Already have an account? Sign in",
+      "switch_to_signup": "Don't have an account? Create account",
+      "forgot_password": "Forgot your password?",
+      "terms_prefix": "By creating an account, you agree to our",
+      "terms_link": "Terms of Service",
+      "and": "and",
+      "privacy_link": "Privacy Policy"
     }
   }
 }

@@ -547,6 +547,25 @@
     "validation": {
       "required": "Obrigatório",
       "invalid_format": "Formato inválido"
+    },
+    "auth": {
+      "login_title": "Entrar na sua conta",
+      "signup_title": "Criar sua conta gratuitamente",
+      "google_button": "Entrar com Google",
+      "separator": "ou",
+      "email_label": "E-mail profissional",
+      "email_placeholder": "seu@email.com",
+      "password_label": "Senha",
+      "password_placeholder": "Digite sua senha",
+      "submit_login": "Entrar",
+      "submit_signup": "Criar conta",
+      "switch_to_login": "Já tem uma conta? Entrar",
+      "switch_to_signup": "Não tem uma conta? Criar conta",
+      "forgot_password": "Esqueceu sua senha?",
+      "terms_prefix": "Ao criar uma conta, você concorda com nossos",
+      "terms_link": "Termos de Serviço",
+      "and": "e",
+      "privacy_link": "Política de Privacidade"
     }
   }
 }
