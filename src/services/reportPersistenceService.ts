@@ -9,8 +9,12 @@ export interface ReportSaveData {
   description?: string;
   category: string;
   template_id?: string;
-  blocks: any[];
-  data_json?: any;
+  blocks: Array<{
+    type: string;
+    content: string;
+    metadata?: Record<string, unknown>;
+  }>;
+  data_json?: Record<string, unknown>;
   status?: 'completed' | 'draft' | 'shared';
 }
 
@@ -32,7 +36,12 @@ export interface EnrichedDiagnostic {
  * Resultado da persistência em cascata
  */
 export interface CascadedSaveResult {
-  report: any;
+  report: {
+    id: string;
+    title: string;
+    status: string;
+    created_at: string;
+  };
   metricsCount: number;
   challengeCreated: boolean;
   challengeId?: string;
@@ -253,7 +262,14 @@ export const updateReportMetrics = async (
 /**
  * Busca métricas de um relatório específico
  */
-export const getReportMetrics = async (reportId: string): Promise<any[]> => {
+export const getReportMetrics = async (reportId: string): Promise<Array<{
+  id: string;
+  report_id: string;
+  metric_name: string;
+  metric_value: number;
+  metric_unit: string;
+  created_at: string;
+}>> => {
   const { data, error } = await supabase
     .from('user_metrics')
     .select('*')

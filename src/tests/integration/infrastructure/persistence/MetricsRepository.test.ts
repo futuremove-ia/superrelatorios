@@ -36,7 +36,20 @@ vi.mock('../../../../infrastructure/persistence/database/supabase-client', () =>
 
 describe('MetricsRepository', () => {
   let repository: MetricsRepository;
-  let mockSupabase: any;
+  let mockSupabase: {
+    from: vi.fn();
+    select: vi.fn();
+    insert: vi.fn();
+    update: vi.fn();
+    delete: vi.fn();
+    eq: vi.fn();
+    order: vi.fn();
+    single: vi.fn();
+    rpc: vi.fn();
+    channel: vi.fn();
+    storage: vi.fn();
+    auth: vi.fn();
+  };
 
   beforeEach(() => {
     vi.clearAllMocks();

@@ -101,7 +101,7 @@ export const extractKPIsFromAIResult = (
  * Extrai KPIs de dados tabulares
  */
 const extractFromTableData = (
-  data: any[],
+  data: Array<Record<string, unknown>>,
   blockIndex: number
 ): ExtractedKPI[] => {
   const kpis: ExtractedKPI[] = [];
@@ -282,7 +282,7 @@ const findKPICode = (text: string): string | null => {
 /**
  * Tenta converter um valor para número
  */
-const parseNumericValue = (value: any): number | null => {
+const parseNumericValue = (value: unknown): number | null => {
   if (value === null || value === undefined) return null;
   
   if (typeof value === 'number') return value;

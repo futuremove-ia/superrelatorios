@@ -28,6 +28,19 @@ export interface DetectionResult {
   summary: string;
 }
 
+export interface DetectionRule {
+  id: string;
+  name: string;
+  description: string;
+  kpis: string[];
+  rules: Array<{
+    kpi: string;
+    operator: '<=' | '>=' | '<=' | '>' | '<' | '=';
+    value: number;
+    weight: number;
+  }>;
+}
+
 export interface ActionLever {
   id: string;
   title: string;

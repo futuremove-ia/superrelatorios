@@ -417,7 +417,13 @@ describe('CrossDomainCache', () => {
         hitRate: 80,
         oldestItem: new Date(),
         newestItem: new Date(),
-      } as any);
+      } as {
+        totalItems: number;
+        memoryUsage: number;
+        hitRate: number;
+        oldestItem: Date;
+        newestItem: Date;
+      });
 
       const health = await cache.healthCheck();
 

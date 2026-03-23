@@ -1,7 +1,5 @@
 import { Report, ReportTemplate, ReportBlock } from '@/types/reports';
-import { TrendingUp, ShoppingCart, DollarSign, Activity, Users } from 'lucide-react';
-
-// Help helper for icons if needed (mock icons as strings for now or compatible type)
+import { TrendingUp, DollarSign, Users } from 'lucide-react';
 
 // Mock data for reports
 export const mockReports: Report[] = [
@@ -25,6 +23,10 @@ export const mockReports: Report[] = [
             { name: 'Out', value: 120000 },
             { name: 'Nov', value: 185000 },
             { name: 'Dez', value: 145000 },
+            { name: 'Set', value: 200000 },
+            { name: 'Out', value: 278000 },
+            { name: 'Nov', value: 310000 },
+            { name: 'Dez', value: 425000 }
           ]
         } 
       },
@@ -118,15 +120,10 @@ export const mockTemplates: ReportTemplate[] = [
             { name: 'Set', value: 2000 },
             { name: 'Out', value: 2780 },
             { name: 'Nov', value: 1890 },
-            { name: 'Dez', value: 2390 },
+            { name: 'Dez', value: 2390 }
           ]
         } 
-      },
-      { id: 'b5', type: 'ACTION_PLAN', layout: { w: 12 }, content: { title: 'Plano de Ação Estratégico', settings: {}, data: [
-        'Aumentar investimento em SEO para o funil de topo',
-        'Contratar 2 novos analistas para o time de CS',
-        'Revisar custos de infraestrutura em cloud'
-      ] } }
+      }
     ]
   },
   {
@@ -152,16 +149,20 @@ export const mockTemplates: ReportTemplate[] = [
       { id: 'm2', type: 'KPI_GRID', layout: { w: 12 }, content: { title: 'Métricas de Aquisição', settings: { columns: 3 }, data: { 'CPA': 'R$ 12,50', 'ROAS': '4.5x', 'Tráfego': '45.2k' } } },
       { id: 'm3', type: 'CHART_DONNUT', layout: { w: 12 }, content: { 
           title: 'Origem de Tráfego', 
+          description: 'Distribuição por canal de origem',
           settings: { height: 300 },
           data: [
             { name: 'Google Ads', value: 4500 },
             { name: 'Meta Ads', value: 3200 },
             { name: 'Orgânico', value: 2100 },
-            { name: 'E-mail', value: 800 },
+            { name: 'E-mail', value: 800 }
           ]
         } 
       },
-      { id: 'm4', type: 'CALLOUT', layout: { w: 12 }, content: { title: 'Insight de Canal', body: 'O canal Meta Ads apresentou o menor CPA do período. Recomendamos aumentar o orçamento em 20% para a próxima semana.', settings: { variant: 'insight' } } }
+      { id: 'm4', type: 'CALLOUT', layout: { w: 12 }, content: { 
+          title: 'Insight de Canal', 
+          body: 'O canal Meta Ads apresentou o menor CPA do período. Recomendamos aumentar o orçamento em 20% para a próxima semana.',
+          settings: { variant: 'insight' } }
     ]
   },
   {
@@ -172,13 +173,13 @@ export const mockTemplates: ReportTemplate[] = [
     icon: 'Users',
     defaultBlocks: [
       { id: 'h1', type: 'HERO', layout: { w: 12 }, content: { title: 'Diagnóstico de Capital Humano', body: 'Visão geral da saúde organizacional e métricas de retenção.', settings: {} } },
-      { id: 'h2', type: 'KPI_GRID', layout: { w: 12 }, content: { title: 'Indicadores Pessoas', settings: { columns: 3 }, data: { 'Turnover': '2.1%', 'eNPS': '74', 'Headcount': '42' } } },
+      { id: 'h2', type: 'KPI_GRID', layout: { w: 12 }, content: { title: 'Indicadores Pessoais', settings: { columns: 3 }, data: { 'Turnover': '2.1%', 'eNPS': '74', 'Headcount': '42' } } },
       { id: 'h3', type: 'BENCHMARK_COMPARISON', layout: { w: 12 }, content: { 
           title: 'Benchmark de Satisfação', 
           settings: {},
           data: [
             { label: 'eNPS', value: 74, benchmark: 70, percent: 105 },
-            { label: 'Retenção', value: 97.9, benchmark: 95, percent: 103 },
+            { label: 'Retenção', value: 97.9, benchmark: 95, percent: 103 }
           ]
         } 
       },
@@ -201,7 +202,7 @@ export const mockTemplates: ReportTemplate[] = [
             { name: 'Transportadora A', value: 12 },
             { name: 'Transportadora B', value: 45 },
             { name: 'Transportadora C', value: 28 },
-            { name: 'Correios', value: 18 },
+            { name: 'Correios', value: 18 }
           ]
         } 
       }
@@ -213,51 +214,18 @@ export const mockTemplates: ReportTemplate[] = [
 export const reportsService = {
   getAllReports: async (): Promise<Report[]> => {
     // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
     return mockReports;
   },
-
+  
   getReportById: async (id: string): Promise<Report | null> => {
-    await new Promise(resolve => setTimeout(resolve, 300));
+    await new Promise(resolve => setTimeout(resolve, 50));
     return mockReports.find(report => report.id === id) || null;
   },
-
-  getTemplates: async (): Promise<ReportTemplate[]> => {
-    await new Promise(resolve => setTimeout(resolve, 400));
-    return mockTemplates;
-  },
-
-  createReport: async (data: Partial<Report>): Promise<Report> => {
-    await new Promise(resolve => setTimeout(resolve, 800));
-    const newReport: Report = {
-      id: Date.now().toString(),
-      title: data.title || 'Novo Relatório',
-      category: data.category || 'Geral',
-      createdAt: new Date().toISOString().split('T')[0],
-      updatedAt: new Date().toISOString().split('T')[0],
-      status: 'draft',
-      description: data.description || '',
-      templateId: data.templateId || 'basic',
-      blocks: data.blocks || [],
-      rawData: data.rawData || {}
-    };
-    return newReport;
-  },
-
-  updateReport: async (id: string, data: Partial<Report>): Promise<Report> => {
-    await new Promise(resolve => setTimeout(resolve, 600));
-    const existingReport = mockReports.find(r => r.id === id);
-    if (!existingReport) throw new Error('Report not found');
-    
-    return {
-      ...existingReport,
-      ...data,
-      updatedAt: new Date().toISOString().split('T')[0]
-    };
-  },
-
-  deleteReport: async (_id: string): Promise<void> => {
-    await new Promise(resolve => setTimeout(resolve, 400));
-    // In a real app, this would make an API call
+  
+  getTemplateById: async (id: string): Promise<ReportTemplate | null> => {
+    await new Promise(resolve => setTimeout(resolve, 50));
+    return mockTemplates.find(template => template.id === id) || null;
   }
 };

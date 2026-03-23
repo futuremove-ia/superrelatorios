@@ -1,4 +1,4 @@
-import { KPIData, Challenge, DetectionResult } from '@/types/strategic';
+import { KPIData, Challenge, DetectionResult, DetectionRule } from '@/types/strategic';
 
 class DetectionService {
   private static instance: DetectionService;
@@ -11,7 +11,7 @@ class DetectionService {
   }
 
   // 15 regras de detecção baseadas em thresholds
-  private detectionRules = [
+  private detectionRules: DetectionRule[] = [
     {
       id: 'cash_flow_crunch',
       name: 'Cash Flow Crunch',
@@ -95,7 +95,7 @@ class DetectionService {
     };
   }
 
-  private calculateRuleScore(rule: any, kpis: KPIData[]): number {
+  private calculateRuleScore(rule: DetectionRule, kpis: KPIData[]): number {
     let totalScore = 0;
     let totalWeight = 0;
 
@@ -112,13 +112,13 @@ class DetectionService {
     return totalWeight > 0 ? totalScore / totalWeight : 0;
   }
 
-  private evaluateCondition(value: number, operator: string, threshold: number): boolean {
+  private evaluateCondition(value: number, operator: '<=' | '>=' | '<=' | '>' | '<' | '=', threshold: number): boolean {
     switch (operator) {
       case '<=': return value <= threshold;
       case '<': return value < threshold;
       case '>=': return value >= threshold;
       case '>': return value > threshold;
-      case '==': return value === threshold;
+      case '=': return value === threshold;
       default: return false;
     }
   }
