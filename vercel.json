@@ -6,13 +6,22 @@
   "devCommand": "npm run dev",
   "rewrites": [
     {
-      "source": "/((?!api/).*)",
+      "source": "/((?!api/|assets/|static/|manifest\\.json|robots\\.txt|favicon\\.ico|.*\\.png|.*\\.svg).*)",
       "destination": "/index.html"
     }
   ],
   "headers": [
     {
       "source": "/static/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
