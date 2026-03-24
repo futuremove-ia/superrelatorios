@@ -1,0 +1,378 @@
+import { j as e, d as u, B as i, u as v } from "./index-CZZTgEon.js";
+import { r as p } from "./vendor-BgR6OOld.js";
+import { C as c, b as o, c as m, a as x } from "./card-CeRYWmFS.js";
+import { B as w } from "./badge-Dywuca96.js";
+import {
+  H as h,
+  X as g,
+  a6 as k,
+  a7 as C,
+  L as j,
+  c as f,
+  g as y,
+} from "./utils-D0yiqoi7.js";
+const S = ({
+    title: t,
+    description: d,
+    actionLabel: a = "Aplicar Sugestão",
+    onAction: s,
+    onDismiss: r,
+    variant: b = "default",
+    className: l,
+  }) =>
+    b === "compact"
+      ? e.jsxs("div", {
+          className: u(
+            "flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800",
+            l,
+          ),
+          children: [
+            e.jsx("div", {
+              className: "flex-shrink-0 mt-0.5",
+              children: e.jsx(h, {
+                className: "h-4 w-4 text-blue-600 dark:text-blue-400",
+              }),
+            }),
+            e.jsxs("div", {
+              className: "flex-1 min-w-0",
+              children: [
+                e.jsx("p", {
+                  className:
+                    "text-sm font-medium text-blue-900 dark:text-blue-100",
+                  children: t,
+                }),
+                e.jsx("p", {
+                  className: "text-xs text-blue-700 dark:text-blue-300 mt-1",
+                  children: d,
+                }),
+                s &&
+                  e.jsx(i, {
+                    size: "sm",
+                    variant: "outline",
+                    onClick: s,
+                    className:
+                      "mt-2 h-7 text-xs border-blue-300 text-blue-700 hover:bg-blue-100 dark:border-blue-700 dark:text-blue-300 dark:hover:bg-blue-900/20",
+                    children: a,
+                  }),
+              ],
+            }),
+            r &&
+              e.jsx(i, {
+                size: "sm",
+                variant: "ghost",
+                onClick: r,
+                className:
+                  "h-6 w-6 p-0 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200",
+                children: e.jsx(g, { className: "h-3 w-3" }),
+              }),
+          ],
+        })
+      : e.jsxs(c, {
+          className: u("border-blue-200 dark:border-blue-800", l),
+          children: [
+            e.jsx(o, {
+              className: "pb-3",
+              children: e.jsxs("div", {
+                className: "flex items-start justify-between",
+                children: [
+                  e.jsxs("div", {
+                    className: "flex items-start gap-2",
+                    children: [
+                      e.jsx("div", {
+                        className: "flex-shrink-0 mt-1",
+                        children: e.jsx(h, {
+                          className: "h-4 w-4 text-blue-600 dark:text-blue-400",
+                        }),
+                      }),
+                      e.jsxs("div", {
+                        children: [
+                          e.jsx(m, {
+                            className:
+                              "text-sm font-medium text-blue-900 dark:text-blue-100",
+                            children: t,
+                          }),
+                          e.jsx(w, {
+                            variant: "secondary",
+                            className:
+                              "mt-1 text-xs bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300",
+                            children: "IA",
+                          }),
+                        ],
+                      }),
+                    ],
+                  }),
+                  r &&
+                    e.jsx(i, {
+                      size: "sm",
+                      variant: "ghost",
+                      onClick: r,
+                      className:
+                        "h-6 w-6 p-0 text-muted-foreground hover:text-foreground",
+                      children: e.jsx(g, { className: "h-3 w-3" }),
+                    }),
+                ],
+              }),
+            }),
+            e.jsxs(x, {
+              className: "pt-0",
+              children: [
+                e.jsx("p", {
+                  className: "text-sm text-blue-700 dark:text-blue-300 mb-3",
+                  children: d,
+                }),
+                s &&
+                  e.jsx(i, {
+                    size: "sm",
+                    onClick: s,
+                    className:
+                      "bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600",
+                    children: a,
+                  }),
+              ],
+            }),
+          ],
+        }),
+  B = ({ context: t = "dashboard", className: d }) => {
+    const { t: a } = v(),
+      [s, r] = p.useState(() =>
+        typeof window < "u"
+          ? localStorage.getItem("ai-sidebar-collapsed") === "true"
+          : !1,
+      );
+    p.useEffect(() => {
+      localStorage.setItem("ai-sidebar-collapsed", String(s));
+    }, [s]);
+    const l = (() => {
+      switch (t) {
+        case "dashboard":
+          return [
+            {
+              title: "Automatizar Relatório Mensal",
+              description:
+                "Criar template automático para relatórios de vendas mensais com seus dados históricos.",
+              actionLabel: "Configurar Automação",
+            },
+            {
+              title: "Nova Integração Disponível",
+              description:
+                "Conecte seu Google Sheets para importar dados automaticamente.",
+              actionLabel: "Conectar Agora",
+            },
+          ];
+        case "reports":
+          return [
+            {
+              title: "Organizar por Categorias",
+              description:
+                "Identifiquei que você tem muitos relatórios financeiros. Quer criar uma pasta específica?",
+              actionLabel: "Criar Pasta",
+            },
+          ];
+        case "builder":
+          return [
+            {
+              title: "Modelo Sugerido",
+              description:
+                "Com base nos seus dados, recomendo o template 'Relatório Executivo Trimestral'.",
+              actionLabel: "Usar Modelo",
+            },
+          ];
+        case "detail":
+          return [
+            {
+              title: "Análises Adicionais",
+              description:
+                "Posso gerar análises complementares sobre tendências de crescimento.",
+              actionLabel: "Gerar Análises",
+            },
+          ];
+        default:
+          return [];
+      }
+    })();
+    return l.length === 0
+      ? null
+      : e.jsxs("aside", {
+          className: u(
+            "relative flex-shrink-0 transition-[width] duration-300 ease-in-out border-l bg-muted/30 overflow-hidden",
+            s ? "w-16" : "w-80",
+            d,
+          ),
+          children: [
+            e.jsx(i, {
+              variant: "secondary",
+              size: "icon",
+              className:
+                "absolute -left-3 top-6 h-6 w-6 rounded-full shadow-md z-10 border",
+              onClick: () => r(!s),
+              children: s
+                ? e.jsx(k, { className: "h-3 w-3" })
+                : e.jsx(C, { className: "h-3 w-3" }),
+            }),
+            e.jsx("div", {
+              className: u(
+                "h-full overflow-y-auto overflow-x-hidden p-4 space-y-4",
+                s && "items-center p-2",
+              ),
+              children: s
+                ? e.jsxs("div", {
+                    className: "flex flex-col items-center gap-4 mt-8",
+                    children: [
+                      e.jsx("div", {
+                        className:
+                          "w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center animate-pulse",
+                        children: e.jsx(h, {
+                          className: "h-5 w-5 text-primary",
+                        }),
+                      }),
+                      e.jsx("div", { className: "h-px w-8 bg-border" }),
+                      e.jsx(j, {
+                        className: "h-5 w-5 text-yellow-600 opacity-50",
+                      }),
+                      e.jsx(f, {
+                        className: "h-5 w-5 text-green-600 opacity-50",
+                      }),
+                    ],
+                  })
+                : e.jsxs(e.Fragment, {
+                    children: [
+                      e.jsxs(c, {
+                        children: [
+                          e.jsx(o, {
+                            className: "pb-3 px-4",
+                            children: e.jsxs(m, {
+                              className:
+                                "text-sm font-medium flex items-center gap-2",
+                              children: [
+                                e.jsx(j, {
+                                  className: "h-4 w-4 text-yellow-600",
+                                }),
+                                "Sugestões da IA",
+                              ],
+                            }),
+                          }),
+                          e.jsx(x, {
+                            className: "space-y-3 px-4",
+                            children: l.map((n, N) =>
+                              e.jsx(
+                                S,
+                                {
+                                  variant: "compact",
+                                  title: n.title,
+                                  description: n.description,
+                                  actionLabel: n.actionLabel,
+                                  onAction: () => {},
+                                  onDismiss: () => {},
+                                },
+                                N,
+                              ),
+                            ),
+                          }),
+                        ],
+                      }),
+                      t === "dashboard" &&
+                        e.jsxs(c, {
+                          children: [
+                            e.jsx(o, {
+                              className: "pb-3 px-4",
+                              children: e.jsxs(m, {
+                                className:
+                                  "text-sm font-medium flex items-center gap-2",
+                                children: [
+                                  e.jsx(f, {
+                                    className: "h-4 w-4 text-green-600",
+                                  }),
+                                  a("ai_sidebar.insights_title"),
+                                ],
+                              }),
+                            }),
+                            e.jsx(x, {
+                              className: "px-4 pb-4",
+                              children: e.jsx("div", {
+                                className: "space-y-3 text-xs sm:text-sm",
+                                children: e.jsxs("div", {
+                                  className: "flex items-start gap-2",
+                                  children: [
+                                    e.jsx("div", {
+                                      className:
+                                        "w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0",
+                                    }),
+                                    e.jsx("p", {
+                                      className: "text-muted-foreground italic",
+                                      children: a("ai_sidebar.insight_growth"),
+                                    }),
+                                  ],
+                                }),
+                              }),
+                            }),
+                          ],
+                        }),
+                      t === "detail" &&
+                        e.jsxs(c, {
+                          children: [
+                            e.jsx(o, {
+                              className: "pb-3 px-4",
+                              children: e.jsxs(m, {
+                                className:
+                                  "text-sm font-medium flex items-center gap-2",
+                                children: [
+                                  e.jsx(y, {
+                                    className: "h-4 w-4 text-blue-600",
+                                  }),
+                                  a("ai_sidebar.engagement_title"),
+                                ],
+                              }),
+                            }),
+                            e.jsx(x, {
+                              className: "px-4 pb-4 text-xs sm:text-sm",
+                              children: e.jsxs("div", {
+                                className: "space-y-2",
+                                children: [
+                                  e.jsxs("div", {
+                                    className: "flex justify-between",
+                                    children: [
+                                      e.jsx("span", {
+                                        className:
+                                          "text-muted-foreground text-xs",
+                                        children: a(
+                                          "ai_sidebar.engagement_managers",
+                                        ),
+                                      }),
+                                      e.jsx("span", {
+                                        className: "text-primary font-medium",
+                                        children: a("ai_sidebar.views", {
+                                          count: 12,
+                                        }),
+                                      }),
+                                    ],
+                                  }),
+                                  e.jsxs("div", {
+                                    className: "flex justify-between",
+                                    children: [
+                                      e.jsx("span", {
+                                        className:
+                                          "text-muted-foreground text-xs",
+                                        children: a(
+                                          "ai_sidebar.engagement_partners",
+                                        ),
+                                      }),
+                                      e.jsx("span", {
+                                        className: "text-primary font-medium",
+                                        children: a("ai_sidebar.views", {
+                                          count: 8,
+                                        }),
+                                      }),
+                                    ],
+                                  }),
+                                ],
+                              }),
+                            }),
+                          ],
+                        }),
+                    ],
+                  }),
+            }),
+          ],
+        });
+  };
+export { B as A };

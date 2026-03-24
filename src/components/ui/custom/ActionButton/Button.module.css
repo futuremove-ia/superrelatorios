@@ -1,0 +1,213 @@
+/* SuperRelatórios Button Component v2.0 */
+/* Brand System Compliant Button Styles */
+
+.btn {
+  font-family: var(--font-sans);
+  font-weight: var(--font-medium);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: 1px solid transparent;
+  background: none;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Primary Button - Trust Color */
+.btn-primary {
+  background-color: var(--color-brand-primary);
+  color: white;
+  border: 1px solid var(--color-brand-primary);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #0047cc;
+  border-color: #0047cc;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:active:not(:disabled) {
+  background-color: #003daa;
+  border-color: #003daa;
+}
+
+/* Secondary Button - Intelligence Color */
+.btn-secondary {
+  background-color: var(--color-brand-secondary);
+  color: var(--color-neutral-900);
+  border: 1px solid var(--color-brand-secondary);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: #d97706;
+  border-color: #d97706;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-secondary:active:not(:disabled) {
+  background-color: #c2620c;
+  border-color: #c2620c;
+}
+
+/* Outline Button - Trust Border */
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-brand-primary);
+  border: 1px solid var(--color-brand-primary);
+}
+
+.btn-outline:hover:not(:disabled) {
+  background-color: var(--color-brand-primary);
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-outline:active:not(:disabled) {
+  background-color: #0047cc;
+  border-color: #0047cc;
+}
+
+/* Ghost Button - Neutral */
+.btn-ghost {
+  background-color: transparent;
+  color: var(--color-neutral-600);
+  border: 1px solid transparent;
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background-color: var(--color-neutral-100);
+  color: var(--color-neutral-900);
+}
+
+.btn-ghost:active:not(:disabled) {
+  background-color: var(--color-neutral-200);
+}
+
+/* Sizes */
+.btn-sm {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+  min-height: 32px;
+}
+
+.btn-md {
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-base);
+  min-height: 40px;
+}
+
+.btn-lg {
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--text-lg);
+  min-height: 48px;
+}
+
+/* Loading State */
+.btn-loading {
+  color: transparent;
+}
+
+.btn-loading::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Spinner */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .btn-lg {
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--text-base);
+    min-height: 44px;
+  }
+}
+
+/* Accessibility */
+.btn:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 2px;
+}
+
+.btn:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .btn {
+    border-width: 2px;
+  }
+
+  .btn:focus-visible {
+    outline-width: 3px;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+  }
+
+  .btn:hover:not(:disabled) {
+    transform: none;
+  }
+
+  .btn-loading::before {
+    animation: none;
+  }
+
+  .spinner {
+    animation: none;
+    border-top-color: currentColor;
+  }
+}

@@ -1,0 +1,40 @@
+import { j as e, _ as c, s as i } from "./index-CZZTgEon.js";
+import { r as n } from "./vendor-BgR6OOld.js";
+import { a as l, d } from "./router-D2JcpG7e.js";
+import "./utils-D0yiqoi7.js";
+const x = () => {
+  const t = l(),
+    [s] = d();
+  return (
+    n.useEffect(() => {
+      (async () => {
+        try {
+          const { data: a, error: r } = await i.auth.getSession();
+          if (r) throw r;
+          const o = s.get("redirect") || "/app";
+          a.session
+            ? (window.location.href = o)
+            : (window.location.href = "/login");
+        } catch (a) {
+          (console.error("Auth: Falha crítica na validação do callback:", a),
+            (window.location.href = "/login?error=auth_callback_failed"));
+        }
+      })();
+    }, [t, s]),
+    e.jsx("div", {
+      className:
+        "flex flex-col items-center justify-center min-h-screen bg-background",
+      children: e.jsxs("div", {
+        className: "text-center space-y-4",
+        children: [
+          e.jsx(c, {}),
+          e.jsx("p", {
+            className: "text-sm text-muted-foreground animate-pulse",
+            children: "Finalizando login seguro...",
+          }),
+        ],
+      }),
+    })
+  );
+};
+export { x as default };
