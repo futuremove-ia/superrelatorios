@@ -33,7 +33,7 @@ export const config: EnvConfig = {
     anonKey: getEnvVar("VITE_SUPABASE_ANON_KEY"),
   },
   gemini: {
-    apiKey: getEnvVar("VITE_GEMINI_API_KEY", false),
+    apiKey: import.meta.env.VITE_GEMINI_API_KEY || "",
   },
   isDev: import.meta.env.DEV,
   isProd: import.meta.env.PROD,

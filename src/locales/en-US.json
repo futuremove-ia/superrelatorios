@@ -592,5 +592,9 @@
     "terms_link": "Terms of Service",
     "and": "and",
     "privacy_link": "Privacy Policy"
+  },
+  "seo": {
+    "index_title": "SuperRelatórios - Transform Data into Decisions",
+    "index_desc": "Generate intelligent reports in minutes. The BI platform built for SMEs seeking real growth."
   }
 }

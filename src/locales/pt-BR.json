@@ -620,5 +620,9 @@
     "terms_link": "Termos de Serviço",
     "and": "e",
     "privacy_link": "Política de Privacidade"
+  },
+  "seo": {
+    "index_title": "SuperRelatórios - Transforme Dados em Decisões",
+    "index_desc": "Gere relatórios inteligentes em minutos. A plataforma de BI feita para PMEs que buscam crescimento real."
   }
 }
