@@ -1,12 +1,12 @@
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { 
-  getLocalizedRoute, 
-  getCanonicalRoute, 
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import {
+  getLocalizedRoute,
+  getCanonicalRoute,
   detectLanguageFromRoute,
-  routeMap 
-} from '../routes/routes';
+  routeMap,
+} from "../routes/routes";
 
 export const useI18nRouter = () => {
   const location = useLocation();
@@ -17,25 +17,25 @@ export const useI18nRouter = () => {
   // Detectar idioma preferido do usuário
   const detectPreferredLanguage = (): string => {
     // 1. Verificar se há preferência salva
-    const savedLanguage = localStorage.getItem('preferred-language');
-    if (savedLanguage && ['pt-BR', 'en-US', 'es-ES'].includes(savedLanguage)) {
+    const savedLanguage = localStorage.getItem("preferred-language");
+    if (savedLanguage && ["pt-BR", "en-US", "es-ES"].includes(savedLanguage)) {
       return savedLanguage;
     }
 
     // 2. Detectar idioma do navegador
     const browserLanguage = navigator.language;
-    if (browserLanguage.startsWith('pt')) {
-      return 'pt-BR';
-    } else if (browserLanguage.startsWith('es')) {
-      return 'es-ES';
-    } else if (browserLanguage.startsWith('en')) {
-      return 'en-US';
+    if (browserLanguage.startsWith("pt")) {
+      return "pt-BR";
+    } else if (browserLanguage.startsWith("es")) {
+      return "es-ES";
+    } else if (browserLanguage.startsWith("en")) {
+      return "en-US";
     }
 
     // 3. Verificar geolocalização (se disponível)
     // Isso pode ser implementado com uma API de geolocalização
     // Por enquanto, fallback para pt-BR (mercado brasileiro)
-    return 'pt-BR';
+    return "pt-BR";
   };
 
   // Navegar para rota localizada
@@ -51,21 +51,27 @@ export const useI18nRouter = () => {
   // Verificar se a rota atual precisa de redirecionamento
   const checkRouteRedirect = () => {
     const currentPath = location.pathname;
-    const currentLanguage = i18n.language;
-    const preferredLanguage = detectPreferredLanguage();
 
-    // Detectar idioma da rota atual
+    // Especial: Raiz sempre redireciona para o idioma preferido
+    if (currentPath === "/" || currentPath === "") {
+      return true;
+    }
+
+    const preferredLanguage = detectPreferredLanguage();
     const routeLanguage = detectLanguageFromRoute(currentPath);
 
-    // Se a rota não está no idioma preferido, redirecionar
+    // Se a rota não está no idioma preferido e não é uma rota agnóstica
     if (routeLanguage !== preferredLanguage) {
       const canonicalRoute = getCanonicalRoute(currentPath);
-      const localizedRoute = getLocalizedRoute(canonicalRoute, preferredLanguage);
-      
+      const localizedRoute = getLocalizedRoute(
+        canonicalRoute,
+        preferredLanguage,
+      );
+
       if (localizedRoute !== currentPath) {
         setIsRedirecting(true);
         // Salvar preferência
-        localStorage.setItem('preferred-language', preferredLanguage);
+        localStorage.setItem("preferred-language", preferredLanguage);
         // Mudar idioma e redirecionar
         i18n.changeLanguage(preferredLanguage);
         navigate(localizedRoute, { replace: true });
@@ -81,10 +87,10 @@ export const useI18nRouter = () => {
     const currentPath = location.pathname;
     const canonicalRoute = getCanonicalRoute(currentPath);
     const localizedRoute = getLocalizedRoute(canonicalRoute, language);
-    
+
     // Salvar preferência
-    localStorage.setItem('preferred-language', language);
-    
+    localStorage.setItem("preferred-language", language);
+
     // Mudar idioma e navegar
     i18n.changeLanguage(language);
     navigate(localizedRoute, { replace: true });
@@ -100,11 +106,11 @@ export const useI18nRouter = () => {
   const getAlternateUrls = (): Record<string, string> => {
     const canonicalRoute = getCanonicalRoute(location.pathname);
     const alternates: Record<string, string> = {};
-    
-    for (const lang of ['pt-BR', 'en-US', 'es-ES']) {
+
+    for (const lang of ["pt-BR", "en-US", "es-ES"]) {
       alternates[lang] = getLocalizedRoute(canonicalRoute, lang);
     }
-    
+
     return alternates;
   };
 
@@ -112,7 +118,9 @@ export const useI18nRouter = () => {
   const isRouteAvailable = (path: string, language?: string): boolean => {
     const lang = language || i18n.language;
     const availableRoutes = routeMap[lang as keyof typeof routeMap];
-    return availableRoutes ? Object.values(availableRoutes).includes(path) : false;
+    return availableRoutes
+      ? Object.values(availableRoutes).includes(path)
+      : false;
   };
 
   useEffect(() => {
@@ -126,8 +134,14 @@ export const useI18nRouter = () => {
     const shouldRedirect = checkRouteRedirect();
     if (shouldRedirect) {
       setIsRedirecting(false);
-      localStorage.setItem('preferred-language', preferredLanguage);
-      navigate(getLocalizedRoute(getCanonicalRoute(location.pathname), preferredLanguage), { replace: true });
+      localStorage.setItem("preferred-language", preferredLanguage);
+      navigate(
+        getLocalizedRoute(
+          getCanonicalRoute(location.pathname),
+          preferredLanguage,
+        ),
+        { replace: true },
+      );
     }
   }, []); // Array vazio para executar apenas uma vez
 

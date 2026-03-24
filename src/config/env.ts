@@ -27,6 +27,9 @@ export const config: EnvConfig = {
     url: getEnvVar("VITE_SUPABASE_URL"),
     anonKey: getEnvVar("VITE_SUPABASE_ANON_KEY"),
   },
+  gemini: {
+    apiKey: getEnvVar("VITE_GEMINI_API_KEY", false),
+  },
   isDev: import.meta.env.DEV,
   isProd: import.meta.env.PROD,
 };
