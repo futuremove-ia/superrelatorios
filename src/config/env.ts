@@ -9,6 +9,9 @@ interface EnvConfig {
     url: string;
     anonKey: string;
   };
+  gemini: {
+    apiKey: string;
+  };
   isDev: boolean;
   isProd: boolean;
 }
