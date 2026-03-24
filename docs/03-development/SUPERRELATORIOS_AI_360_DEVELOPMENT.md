@@ -8,7 +8,7 @@ Guia completo para desenvolvedores trabalhando no SuperRelatórios AI 360, inclu
 
 ### Pré-requisitos
 
-- Node.js 18+
+- Node.js 20+
 - npm ou yarn
 - Git
 - VS Code (recomendado)
@@ -38,8 +38,9 @@ npm run dev
 VITE_SUPABASE_URL=your_supabase_url
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 
-# AI Configuration
-VITE_GEMINI_API_KEY=your_gemini_api_key
+# AI Configuration (PROXIED)
+# A GEMINI_API_KEY NÃO deve ser colocada no .env.local do frontend.
+# Ela deve ser configurada apenas nas Environment Variables da Vercel para a Edge Function.
 
 # Environment
 VITE_ENV=development

@@ -7,9 +7,14 @@ Documentação completa da API do SuperRelatórios AI 360 para integração com 
 ## Base URL
 
 ```
-Production: https://api.superrelatorios.com/v1
-Development: https://dev-api.superrelatorios.com/v1
+Production: https://superrelatorios.com/api
+Development: http://localhost:5173/api
 ```
+
+### AI Proxy (Secure)
+
+Toda comunicação com o Gemini é feita via proxy seguro para proteger a API Key:
+`POST /api/gemini`
 
 ## Authentication
 
