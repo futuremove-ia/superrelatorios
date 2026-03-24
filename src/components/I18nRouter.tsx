@@ -16,11 +16,26 @@ export const I18nRouter: React.FC<I18nRouterProps> = ({ children }) => {
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    // 1. Redirecionamento de raiz (Hotfix para 404 na home)
-    if (location.pathname === "/" || location.pathname === "") {
+    // 1. Redirecionamento de raiz e caminhos absolutos sem prefixo
+    const pathParts = location.pathname.split("/").filter(Boolean);
+    const validLocales = ["pt-BR", "en-US", "es-ES"];
+
+    // Se estiver na raiz ou se o primeiro segmento não for um locale válido
+    if (
+      location.pathname === "/" ||
+      location.pathname === "" ||
+      (pathParts.length > 0 && !validLocales.includes(pathParts[0]))
+    ) {
       const preferred = detectPreferredLanguage();
-      navigate(`/${preferred}`, { replace: true });
-      return;
+
+      // Se já estivermos em um caminho que NÃO é um locale (ex: /app), redirecionamos prefixando
+      const newPath = `/${preferred}${location.pathname === "/" ? "" : location.pathname}${location.search}`;
+
+      // Evitar loop se por algum motivo Preferred for igual ao que já está (improvável aqui devido à condição !validLocales)
+      if (newPath !== location.pathname + location.search) {
+        navigate(newPath, { replace: true });
+        return;
+      }
     }
 
     // 2. Atualizar atributo lang no HTML
