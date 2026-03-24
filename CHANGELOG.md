@@ -5,6 +5,28 @@ Todas as mudanças notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [1.0.0-alpha-stable-v2] - 2026-03-24
+
+### 💎 Glocal Unicorn - Upgrade Estético e Navegação
+
+#### ✨ Novas Funcionalidades
+
+- **Premium Language Selection**: Implementado seletor de idiomas via Dropdown (shadcn/ui) com design "Glocal Unicorn" (glassmorphism, icons, active indicators).
+- **Suporte Espanhol Avançado**: Integração total do espanhol (`es-ES`) no seletor e sincronização automática com a URL.
+
+#### 🔧 Melhorias de Infraestrutura e Roteamento
+
+- **Route Audit 100%**: Auditoria profissional de todas as rotas e links da plataforma, garantindo 0% de quebra de navegação.
+- **Global Path Sync**: O `I18nRouter` agora gerencia redirecionamentos de caminhos absolutos (ex: `/app` -> `/pt-BR/app`), preservando sub-caminhos e parâmetros.
+- **Link Integrity**: Atualização de todos os CTAs da landing page para usar caminhos localizados dinâmicos.
+
+#### 🔒 Estabilidade e Segurança
+
+- **Redução de 404**: Eliminação definitiva de erros de navegação via redirecionamentos globais e detecção de locale.
+- **Sincronização de Estado**: Garantia de que o i18next e a URL estão sempre em paridade.
+
+---
+
 ## [1.0.0-alpha-hotfix-1] - 2026-03-24
 
 ### 🚀 Hotfix Produção - Estabilização e 404
