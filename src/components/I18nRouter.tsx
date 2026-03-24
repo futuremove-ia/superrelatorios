@@ -38,7 +38,13 @@ export const I18nRouter: React.FC<I18nRouterProps> = ({ children }) => {
       }
     }
 
-    // 2. Atualizar atributo lang no HTML
+    // 2. Sincronizar idioma com o prefixo da URL (pt-BR, en-US, es-ES)
+    const localePrefix = pathParts[0];
+    if (validLocales.includes(localePrefix) && i18n.language !== localePrefix) {
+      i18n.changeLanguage(localePrefix);
+    }
+
+    // 3. Atualizar atributo lang no HTML
     document.documentElement.lang = i18n.language;
 
     // Marcar como inicializado para evitar loops
@@ -47,7 +53,7 @@ export const I18nRouter: React.FC<I18nRouterProps> = ({ children }) => {
     }
   }, [
     location.pathname,
-    i18n.language,
+    i18n,
     isInitialized,
     navigate,
     detectPreferredLanguage,
