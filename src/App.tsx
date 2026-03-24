@@ -164,4 +164,6 @@ const App = () => (
   </ErrorBoundary>
 );
 
+console.log("SuperRelatórios v1.0.0-alpha-hotfix-404-stable-v1");
+
 export default App;

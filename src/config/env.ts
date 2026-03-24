@@ -18,11 +18,13 @@ interface EnvConfig {
 
 const getEnvVar = (key: string, required = true): string => {
   const value = import.meta.env[key];
-  if (required && !value) {
-    console.error(`Missing required environment variable: ${key}`);
+  if (!value) {
+    if (required) {
+      console.error(`Missing required environment variable: ${key}`);
+    }
     return "";
   }
-  return value || "";
+  return value;
 };
 
 export const config: EnvConfig = {
