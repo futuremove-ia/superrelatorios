@@ -106,12 +106,12 @@ const buildDiagnosticPrompt = (data: unknown[], context: string): string => {
 /**
  * Serviço de análise de dados via IA (Application Service)
  */
-export const _analyzeDataWithAI = async (data: unknown[], _context: string): Promise<AIAnalysisResult> => {
+export const analyzeDataWithAI = async (data: unknown[], context: string): Promise<AIAnalysisResult> => {
   if (!GEMINI_API_KEY) {
     throw new ApiError('Chave da API do Gemini não configurada.');
   }
 
-  const prompt = buildAnalysisPrompt(data, _context);
+  const prompt = buildAnalysisPrompt(data, context);
 
   try {
     const response = await fetch(GEMINI_URL, {
