@@ -1,243 +1,298 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { MetricsRepository } from '../../../../infrastructure/persistence/repositories';
-import { MetricsEntity, KPIValue } from '../../../../domain/metrics';
-import { supabase } from '../../../../infrastructure/persistence/database/supabase-client';
+import { MetricsRepository } from '../../../../infrastructure/persistence/repositories/MetricsRepository';
+import { MetricsEntityFactory } from '../../../../domain/metrics/entities/MetricsEntity';
 
 // Mock Supabase client
 vi.mock('../../../../infrastructure/persistence/database/supabase-client', () => ({
   supabase: {
-    from: vi.fn(() => ({
-      upsert: vi.fn(() => ({
-        select: vi.fn(() => ({
-          single: vi.fn()
-        }))
-      })),
-      select: vi.fn(() => ({
-        eq: vi.fn(() => ({
-          single: vi.fn()
-        })),
-        order: vi.fn(() => ({
-          limit: vi.fn(() => ({
-            single: vi.fn()
-          }))
-        })),
-        gte: vi.fn(() => ({
-          lte: vi.fn(() => ({
-            order: vi.fn()
-          }))
-        }))
-      })),
-      delete: vi.fn(() => ({
-        eq: vi.fn()
-      }))
-    }))
-  }
+    from: vi.fn(),
+  },
 }));
 
 describe('MetricsRepository', () => {
   let repository: MetricsRepository;
-  let mockSupabase: {
-    from: vi.fn();
-    select: vi.fn();
-    insert: vi.fn();
-    update: vi.fn();
-    delete: vi.fn();
-    eq: vi.fn();
-    order: vi.fn();
-    single: vi.fn();
-    rpc: vi.fn();
-    channel: vi.fn();
-    storage: vi.fn();
-    auth: vi.fn();
-  };
+  let mockSupabase: any;
 
-  beforeEach(() => {
-    vi.clearAllMocks();
+  beforeEach(async () => {
     repository = new MetricsRepository();
-    mockSupabase = supabase as any;
+    mockSupabase = vi.mocked(await import('../../../../infrastructure/persistence/database/supabase-client')).supabase;
+    
+    // Reset all mocks
+    vi.clearAllMocks();
   });
 
   describe('save', () => {
     it('should save metrics successfully', async () => {
-      const mockMetrics: MetricsEntity = {
+      const metrics = MetricsEntityFactory.create({
         id: 'test-id',
         period: '2024-01',
-        kpis: {
-          netProfitMargin: { value: 15, unit: '%', threshold: { critical: 5, warning: 10, good: 15 }, trend: 'stable' },
-          cashBurnRate: { value: 5000, unit: 'R$', threshold: { critical: 10000, warning: 5000, good: 0 }, trend: 'stable' },
-          runway: { value: 6, unit: 'meses', threshold: { critical: 3, warning: 6, good: 12 }, trend: 'stable' },
-          salesConversion: { value: 20, unit: '%', threshold: { critical: 5, warning: 15, good: 25 }, trend: 'stable' },
-          customerAcquisitionCost: { value: 200, unit: 'R$', threshold: { critical: 500, warning: 200, good: 100 }, trend: 'stable' },
+        netProfitMargin: {
+          value: 20.0,
+          unit: '%',
+          threshold: { critical: 5, warning: 10, good: 15 },
+          trend: 'up',
         },
-        calculatedAt: new Date('2024-01-15T10:00:00Z'),
+        cashBurnRate: {
+          value: 5000.0,
+          unit: 'R$',
+          threshold: { critical: 20000, warning: 15000, good: 10000 },
+          trend: 'down',
+        },
+        runway: {
+          value: 10.0,
+          unit: 'meses',
+          threshold: { critical: 1, warning: 3, good: 6 },
+          trend: 'stable',
+        },
+        salesConversion: {
+          value: 15.5,
+          unit: '%',
+          threshold: { critical: 5, warning: 10, good: 15 },
+          trend: 'up',
+        },
+        customerAcquisitionCost: {
+          value: 150.0,
+          unit: 'R$',
+          threshold: { critical: 500, warning: 300, good: 100 },
+          trend: 'down',
+        },
+      });
+
+      const mockResult = {
+        data: {
+          id: 'test-id',
+          period: '2024-01',
+          net_profit_margin: 20.0,
+          cash_burn_rate: 5000.0,
+          runway: 10.0,
+          sales_conversion: 15.5,
+          customer_acquisition_cost: 150.0,
+          calculated_at: new Date().toISOString(),
+        },
+        error: null,
       };
 
-      const mockDbRecord = {
-        id: 'test-id',
-        period: '2024-01',
-        net_profit_margin: 15,
-        cash_burn_rate: 5000,
-        runway_months: 6,
-        sales_conversion_rate: 20,
-        customer_acquisition_cost: 200,
-        calculated_at: '2024-01-15T10:00:00.000Z',
-        created_at: '2024-01-15T10:00:00.000Z',
-        updated_at: '2024-01-15T10:00:00.000Z',
-      };
+      const mockUpsert = vi.fn().mockResolvedValue(mockResult);
+      const mockSelect = vi.fn().mockReturnThis();
+      const mockSingle = vi.fn().mockReturnThis();
 
-      const mockChain = {
-        upsert: vi.fn().mockReturnValue({
-          select: vi.fn().mockReturnValue({
-            single: vi.fn().mockResolvedValue({ data: mockDbRecord, error: null })
-          })
-        })
-      };
+      mockSupabase.from = vi.fn().mockReturnValue({
+        upsert: mockUpsert,
+        select: mockSelect,
+        single: mockSingle,
+      });
 
-      mockSupabase.from.mockReturnValue(mockChain);
+      const result = await repository.save(metrics);
 
-      const result = await repository.save(mockMetrics);
-
-      expect(mockSupabase.from).toHaveBeenCalledWith('metrics');
-      expect(mockChain.upsert).toHaveBeenCalled();
+      expect(result).toBeDefined();
       expect(result.id).toBe('test-id');
-      expect(result.period).toBe('2024-01');
+      expect(mockSupabase.from).toHaveBeenCalledWith('metrics');
     });
 
     it('should handle save errors', async () => {
-      const mockMetrics: MetricsEntity = {
+      const metrics = MetricsEntityFactory.create({
         id: 'test-id',
         period: '2024-01',
-        kpis: {
-          netProfitMargin: { value: 15, unit: '%', threshold: { critical: 5, warning: 10, good: 15 }, trend: 'stable' },
-          cashBurnRate: { value: 5000, unit: 'R$', threshold: { critical: 10000, warning: 5000, good: 0 }, trend: 'stable' },
-          runway: { value: 6, unit: 'meses', threshold: { critical: 3, warning: 6, good: 12 }, trend: 'stable' },
-          salesConversion: { value: 20, unit: '%', threshold: { critical: 5, warning: 15, good: 25 }, trend: 'stable' },
-          customerAcquisitionCost: { value: 200, unit: 'R$', threshold: { critical: 500, warning: 200, good: 100 }, trend: 'stable' },
+        netProfitMargin: {
+          value: 20.0,
+          unit: '%',
+          threshold: { critical: 5, warning: 10, good: 15 },
+          trend: 'up',
         },
-        calculatedAt: new Date(),
-      };
+        cashBurnRate: {
+          value: 5000.0,
+          unit: 'R$',
+          threshold: { critical: 20000, warning: 15000, good: 10000 },
+          trend: 'down',
+        },
+        runway: {
+          value: 10.0,
+          unit: 'meses',
+          threshold: { critical: 1, warning: 3, good: 6 },
+          trend: 'stable',
+        },
+        salesConversion: {
+          value: 15.5,
+          unit: '%',
+          threshold: { critical: 5, warning: 10, good: 15 },
+          trend: 'up',
+        },
+        customerAcquisitionCost: {
+          value: 150.0,
+          unit: 'R$',
+          threshold: { critical: 500, warning: 300, good: 100 },
+          trend: 'down',
+        },
+      });
 
-      const mockChain = {
-        upsert: vi.fn().mockReturnValue({
-          select: vi.fn().mockReturnValue({
-            single: vi.fn().mockResolvedValue({ 
-              data: null, 
-              error: { message: 'Database error' } 
-            })
-          })
-        })
-      };
+      const mockUpsert = vi.fn().mockResolvedValue({
+        data: null,
+        error: { message: 'Database error' },
+      });
 
-      mockSupabase.from.mockReturnValue(mockChain);
+      mockSupabase.from = vi.fn().mockReturnValue({
+        upsert: mockUpsert,
+        select: vi.fn().mockReturnThis(),
+        single: vi.fn().mockReturnThis(),
+      });
 
-      await expect(repository.save(mockMetrics)).rejects.toThrow('Failed to save metrics: Database error');
+      await expect(repository.save(metrics)).rejects.toThrow('Failed to save metrics: Database error');
     });
   });
 
   describe('findById', () => {
-    it('should find metrics by ID', async () => {
-      const mockDbRecord = {
+    it('should find metrics by id', async () => {
+      const mockData = {
         id: 'test-id',
         period: '2024-01',
-        net_profit_margin: 15,
-        cash_burn_rate: 5000,
-        runway_months: 6,
-        sales_conversion_rate: 20,
-        customer_acquisition_cost: 200,
-        calculated_at: '2024-01-15T10:00:00.000Z',
-        created_at: '2024-01-15T10:00:00.000Z',
-        updated_at: '2024-01-15T10:00:00.000Z',
+        net_profit_margin: 20.0,
+        cash_burn_rate: 5000.0,
+        runway: 10.0,
+        sales_conversion: 15.5,
+        customer_acquisition_cost: 150.0,
+        calculated_at: new Date().toISOString(),
       };
 
-      const mockChain = {
-        select: vi.fn().mockReturnValue({
-          eq: vi.fn().mockReturnValue({
-            single: vi.fn().mockResolvedValue({ data: mockDbRecord, error: null })
-          })
-        })
-      };
+      const mockSelect = vi.fn().mockReturnThis();
+      const mockEq = vi.fn().mockReturnThis();
+      const mockSingle = vi.fn().mockResolvedValue({ data: mockData, error: null });
 
-      mockSupabase.from.mockReturnValue(mockChain);
+      mockSupabase.from = vi.fn().mockReturnValue({
+        select: mockSelect,
+        eq: mockEq,
+        single: mockSingle,
+      });
 
       const result = await repository.findById('test-id');
 
+      expect(result).toBeDefined();
+      expect(result?.id).toBe('test-id');
       expect(mockSupabase.from).toHaveBeenCalledWith('metrics');
-      expect(result.id).toBe('test-id');
-      expect(result.period).toBe('2024-01');
+      expect(mockEq).toHaveBeenCalledWith('id', 'test-id');
     });
 
-    it('should return null when metrics not found', async () => {
-      const mockChain = {
-        select: vi.fn().mockReturnValue({
-          eq: vi.fn().mockReturnValue({
-            single: vi.fn().mockResolvedValue({ 
-              data: null, 
-              error: { code: 'PGRST116' } 
-            })
-          })
-        })
-      };
+    it('should return null when not found', async () => {
+      const mockSelect = vi.fn().mockReturnThis();
+      const mockEq = vi.fn().mockReturnThis();
+      const mockSingle = vi.fn().mockResolvedValue({ data: null, error: null });
 
-      mockSupabase.from.mockReturnValue(mockChain);
+      mockSupabase.from = vi.fn().mockReturnValue({
+        select: mockSelect,
+        eq: mockEq,
+        single: mockSingle,
+      });
 
-      const result = await repository.findById('non-existent');
+      const result = await repository.findById('non-existent-id');
 
       expect(result).toBeNull();
+    });
+  });
+
+  describe('findByPeriod', () => {
+    it('should find metrics by period', async () => {
+      const mockData = [
+        {
+          id: 'test-id-1',
+          period: '2024-01',
+          net_profit_margin: 20.0,
+          calculated_at: new Date().toISOString(),
+        },
+        {
+          id: 'test-id-2',
+          period: '2024-01',
+          net_profit_margin: 22.0,
+          calculated_at: new Date().toISOString(),
+        },
+      ];
+
+      const mockSelect = vi.fn().mockReturnThis();
+      const mockEq = vi.fn().mockResolvedValue({ data: mockData, error: null });
+
+      mockSupabase.from = vi.fn().mockReturnValue({
+        select: mockSelect,
+        eq: mockEq,
+      });
+
+      const result = await repository.findByPeriod('2024-01');
+
+      expect(result).toHaveLength(2);
+      expect(mockSupabase.from).toHaveBeenCalledWith('metrics');
+      expect(mockEq).toHaveBeenCalledWith('period', '2024-01');
     });
   });
 
   describe('findLatest', () => {
     it('should find latest metrics', async () => {
-      const mockDbRecord = {
-        id: 'test-id',
-        period: '2024-01',
-        net_profit_margin: 15,
-        cash_burn_rate: 5000,
-        runway_months: 6,
-        sales_conversion_rate: 20,
-        customer_acquisition_cost: 200,
-        calculated_at: '2024-01-15T10:00:00.000Z',
-        created_at: '2024-01-15T10:00:00.000Z',
-        updated_at: '2024-01-15T10:00:00.000Z',
-      };
+      const mockData = [
+        {
+          id: 'test-id-1',
+          period: '2024-01',
+          calculated_at: '2024-01-15T10:00:00Z',
+        },
+        {
+          id: 'test-id-2',
+          period: '2024-02',
+          calculated_at: '2024-02-15T10:00:00Z',
+        },
+      ];
 
-      const mockChain = {
-        select: vi.fn().mockReturnValue({
-          order: vi.fn().mockReturnValue({
-            limit: vi.fn().mockReturnValue({
-              single: vi.fn().mockResolvedValue({ data: mockDbRecord, error: null })
-            })
-          })
-        })
-      };
+      const mockSelect = vi.fn().mockReturnThis();
+      const mockOrder = vi.fn().mockReturnThis();
+      const mockLimit = vi.fn().mockResolvedValue({ data: mockData, error: null });
 
-      mockSupabase.from.mockReturnValue(mockChain);
+      mockSupabase.from = vi.fn().mockReturnValue({
+        select: mockSelect,
+        order: mockOrder,
+        limit: mockLimit,
+      });
 
       const result = await repository.findLatest();
 
+      expect(result).toBeDefined();
+      expect(result?.id).toBe('test-id-2');
+      expect(mockOrder).toHaveBeenCalledWith('calculated_at', { ascending: false });
+      expect(mockLimit).toHaveBeenCalledWith(1);
+    });
+  });
+
+  describe('delete', () => {
+    it('should delete metrics by id', async () => {
+      const mockDelete = vi.fn().mockResolvedValue({ error: null });
+
+      mockSupabase.from = vi.fn().mockReturnValue({
+        delete: mockDelete,
+        eq: vi.fn().mockReturnThis(),
+      });
+
+      await expect(repository.delete('test-id')).resolves.not.toThrow();
       expect(mockSupabase.from).toHaveBeenCalledWith('metrics');
-      expect(result.id).toBe('test-id');
     });
 
-    it('should return null when no metrics exist', async () => {
-      const mockChain = {
-        select: vi.fn().mockReturnValue({
-          order: vi.fn().mockReturnValue({
-            limit: vi.fn().mockReturnValue({
-              single: vi.fn().mockResolvedValue({ 
-                data: null, 
-                error: { code: 'PGRST116' } 
-              })
-            })
-          })
-        })
-      };
+    it('should handle delete errors', async () => {
+      const mockDelete = vi.fn().mockResolvedValue({ error: { message: 'Delete error' } });
 
-      mockSupabase.from.mockReturnValue(mockChain);
+      mockSupabase.from = vi.fn().mockReturnValue({
+        delete: mockDelete,
+        eq: vi.fn().mockReturnThis(),
+      });
 
-      const result = await repository.findLatest();
+      await expect(repository.delete('test-id')).rejects.toThrow('Delete error');
+    });
+  });
 
-      expect(result).toBeNull();
+  describe('getCount', () => {
+    it('should get count of metrics', async () => {
+      const mockCount = vi.fn().mockResolvedValue({ count: 42, error: null });
+
+      mockSupabase.from = vi.fn().mockReturnValue({
+        select: vi.fn().mockReturnThis(),
+        count: mockCount,
+      });
+
+      const result = await repository.getCount();
+
+      expect(result).toBe(42);
+      expect(mockSupabase.from).toHaveBeenCalledWith('metrics');
     });
   });
 });

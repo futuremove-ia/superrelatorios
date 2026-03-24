@@ -1,4 +1,4 @@
-import { MetricsEntity, FinancialData, SalesData } from '../../../domain/metrics';
+import { MetricsEntity, FinancialData, SalesData, KPIValue } from '../../../domain/metrics';
 import { IMetricsCalculator, IMetricsRepository } from '../../../domain/metrics';
 import { CreateMetricsDTO, MetricsDTO } from '../dtos';
 import { MetricsMapper } from '../mappers/MetricsMapper';
@@ -101,7 +101,7 @@ export class CalculateMetricsUseCase {
     return results;
   }
 
-  private getKPIStatus(kpi: any): 'critical' | 'warning' | 'good' {
+  private getKPIStatus(kpi: KPIValue): 'critical' | 'warning' | 'good' {
     const { value, threshold } = kpi;
     
     if (value <= threshold.critical) {
@@ -115,7 +115,7 @@ export class CalculateMetricsUseCase {
     return 'good';
   }
 
-  private getKPIColor(kpi: any): string {
+  private getKPIColor(kpi: KPIValue): string {
     const status = this.getKPIStatus(kpi);
     
     switch (status) {

@@ -1,4 +1,4 @@
-import { AlertEntity, MetricsEntity } from '../entities';
+import { AlertEntity, MetricsEntity, KPIValue } from '../entities';
 
 /**
  * Service interface for Alert management
@@ -14,7 +14,7 @@ export interface IAlertService {
   /**
    * Check specific KPI against threshold
    */
-  checkKPI(kpiCode: string, value: number, threshold: any): AlertEntity | null;
+  checkKPI(kpiCode: string, value: number, threshold: KPIValue['threshold']): AlertEntity | null;
 
   /**
    * Acknowledge alert (mark as seen)

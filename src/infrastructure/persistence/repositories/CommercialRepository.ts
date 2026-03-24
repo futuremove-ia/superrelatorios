@@ -1,7 +1,18 @@
 import { ICommercialRepository } from '../../../domain/commercial/repositories/ICommercialRepository';
-import { CommercialMetricsEntity } from '../../../domain/commercial/entities/CommercialMetricsEntity';
-import { CommercialMetricsEntityFactory } from '../../../domain/commercial/entities/CommercialMetricsEntity';
+import { CommercialMetricsEntity, CommercialMetricsEntityFactory, KPIValue } from '../../../domain/commercial/entities/CommercialMetricsEntity';
 import { supabase } from '../database/supabase-client';
+
+interface CommercialDatabaseRecord {
+  id: string;
+  period: string;
+  sales_conversion_rate: number;
+  customer_acquisition_cost: number;
+  customer_lifetime_value: number;
+  churn_rate: number;
+  average_ticket: number;
+  pipeline_velocity: number;
+  calculated_at: string;
+}
 
 export class CommercialRepository implements ICommercialRepository {
   async save(metrics: CommercialMetricsEntity): Promise<CommercialMetricsEntity> {
@@ -223,7 +234,7 @@ export class CommercialRepository implements ICommercialRepository {
     }
   }
 
-  private mapDataToEntity(data: any): CommercialMetricsEntity {
+  private mapDataToEntity(data: CommercialDatabaseRecord): CommercialMetricsEntity {
     return CommercialMetricsEntityFactory.create({
       id: data.id,
       period: data.period,

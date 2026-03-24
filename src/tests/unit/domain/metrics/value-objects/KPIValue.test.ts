@@ -10,7 +10,7 @@ describe('KPIValue', () => {
     });
 
     it('should create KPI value with all required fields', () => {
-      const kpiValue = KPIValueFactory.create(12.5, '%', threshold, 'up');
+      const kpiValue = KPIValueFactory.create({ value: 12.5, unit: '%', threshold, trend: 'up' });
 
       expect(kpiValue.value).toBe(12.5);
       expect(kpiValue.unit).toBe('%');
@@ -19,13 +19,13 @@ describe('KPIValue', () => {
     });
 
     it('should use stable trend by default', () => {
-      const kpiValue = KPIValueFactory.create(12.5, '%', threshold);
+      const kpiValue = KPIValueFactory.create({ value: 12.5, unit: '%', threshold });
 
       expect(kpiValue.trend).toBe('stable');
     });
 
     it('should update trend correctly', () => {
-      const base = KPIValueFactory.create(12.5, '%', threshold);
+      const base = KPIValueFactory.create({ value: 12.5, unit: '%', threshold });
       const withUpTrend = KPIValueFactory.withTrend(base, 'up');
       const withDownTrend = KPIValueFactory.withTrend(base, 'down');
 
@@ -37,31 +37,31 @@ describe('KPIValue', () => {
 
     describe('getStatus', () => {
       it('should return critical when value <= critical threshold', () => {
-        const kpiValue = KPIValueFactory.create(3, '%', threshold);
+        const kpiValue = KPIValueFactory.create({ value: 3, unit: '%', threshold });
         
         expect(KPIValueFactory.getStatus(kpiValue)).toBe('critical');
       });
 
       it('should return warning when value <= warning threshold', () => {
-        const kpiValue = KPIValueFactory.create(7, '%', threshold);
+        const kpiValue = KPIValueFactory.create({ value: 7, unit: '%', threshold });
         
         expect(KPIValueFactory.getStatus(kpiValue)).toBe('warning');
       });
 
       it('should return good when value > warning threshold', () => {
-        const kpiValue = KPIValueFactory.create(12, '%', threshold);
+        const kpiValue = KPIValueFactory.create({ value: 12, unit: '%', threshold });
         
         expect(KPIValueFactory.getStatus(kpiValue)).toBe('good');
       });
 
       it('should handle edge case at warning threshold', () => {
-        const kpiValue = KPIValueFactory.create(10, '%', threshold);
+        const kpiValue = KPIValueFactory.create({ value: 10, unit: '%', threshold });
         
         expect(KPIValueFactory.getStatus(kpiValue)).toBe('warning');
       });
 
       it('should handle edge case at critical threshold', () => {
-        const kpiValue = KPIValueFactory.create(5, '%', threshold);
+        const kpiValue = KPIValueFactory.create({ value: 5, unit: '%', threshold });
         
         expect(KPIValueFactory.getStatus(kpiValue)).toBe('critical');
       });

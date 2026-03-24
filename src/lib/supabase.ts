@@ -16,3 +16,6 @@ export const supabase = createClient(supabaseUrl || '', supabaseAnonKey || '', {
     autoRefreshToken: true,
   }
 });
+
+// Export createClient for services that need their own instance
+export { createClient };

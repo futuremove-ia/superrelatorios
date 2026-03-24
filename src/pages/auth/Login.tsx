@@ -59,8 +59,9 @@ const Login: React.FC = () => {
         toast.success(t('auth.toast.login_success'));
         navigate(getRedirectUrl());
       }
-    } catch (error: any) {
-      toast.error(error.message || t('auth.toast.error_generic'));
+    } catch (error: Error | unknown) {
+      const errorMessage = error instanceof Error ? error.message : t('auth.toast.error_generic');
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -76,8 +77,9 @@ const Login: React.FC = () => {
         },
       });
       if (error) throw error;
-    } catch (error: any) {
-      toast.error(error.message || `Erro ao entrar com ${provider}`);
+    } catch (error: Error | unknown) {
+      const errorMessage = error instanceof Error ? error.message : `Erro ao entrar com ${provider}`;
+      toast.error(errorMessage);
       setSocialLoading(null);
     }
   };

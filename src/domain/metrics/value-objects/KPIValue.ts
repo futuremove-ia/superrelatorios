@@ -15,6 +15,7 @@ export interface KPIValueCreate {
   value: number;
   unit: string;
   threshold?: Threshold;
+  trend?: 'up' | 'down' | 'stable';
 }
 
 export interface KPIValueUpdate {
@@ -40,10 +41,15 @@ export class KPIValueFactory {
       value: data.value,
       unit: data.unit,
       threshold: data.threshold || this.getDefaultThreshold(),
-      trend: 'stable',
+      trend: data.trend || 'stable',
       lastUpdated: now,
       confidence: 1.0
     };
+  }
+
+  // Legacy method for backward compatibility with tests
+  static createLegacy(value: number, unit: string, threshold: Threshold, trend?: 'up' | 'down' | 'stable'): KPIValue {
+    return this.create({ value, unit, threshold, trend });
   }
 
   static update(current: KPIValue, updates: KPIValueUpdate): KPIValue {
@@ -87,6 +93,54 @@ export class KPIValueFactory {
       errors,
       warnings
     };
+  }
+
+  static withTrend(base: KPIValue, trend: 'up' | 'down' | 'stable'): KPIValue {
+    return {
+      ...base,
+      trend,
+      lastUpdated: new Date()
+    };
+  }
+
+  static getStatus(kpiValue: KPIValue): 'critical' | 'warning' | 'good' {
+    const { value, threshold } = kpiValue;
+    
+    if (value <= threshold.critical) {
+      return 'critical';
+    }
+    
+    if (value <= threshold.warning) {
+      return 'warning';
+    }
+    
+    return 'good';
+  }
+
+  static getColor(status: 'critical' | 'warning' | 'good'): string {
+    switch (status) {
+      case 'critical':
+        return '#ef4444'; // red-500
+      case 'warning':
+        return '#f59e0b'; // amber-500
+      case 'good':
+        return '#10b981'; // emerald-500
+      default:
+        return '#6b7280'; // gray-500
+    }
+  }
+
+  static getTrendIcon(trend: 'up' | 'down' | 'stable'): string {
+    switch (trend) {
+      case 'up':
+        return '↗️';
+      case 'down':
+        return '↘️';
+      case 'stable':
+        return '→';
+      default:
+        return '→';
+    }
   }
 
   private static getDefaultThreshold(): Threshold {

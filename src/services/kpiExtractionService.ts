@@ -355,12 +355,26 @@ const deduplicateKPIs = (kpis: ExtractedKPI[]): ExtractedKPI[] => {
   return Array.from(kpiMap.values());
 };
 
+interface AIDiagnostic {
+  title?: string;
+  description?: string;
+  challenge?: string;
+  priority?: string;
+  impact?: string;
+}
+
+interface EnrichedDiagnostic {
+  challenge_code: string;
+  suggested_lever_code?: string;
+  severity: string;
+}
+
 /**
  * Enriquece o diagnóstico da IA com códigos padronizados
  */
 export const enrichDiagnosticWithCodes = (
-  diagnostic: any
-): { challenge_code: string; suggested_lever_code?: string; severity: string } => {
+  diagnostic: AIDiagnostic
+): EnrichedDiagnostic => {
   const title = diagnostic?.title?.toLowerCase() || '';
   const description = diagnostic?.description?.toLowerCase() || '';
   const fullText = `${title} ${description}`;

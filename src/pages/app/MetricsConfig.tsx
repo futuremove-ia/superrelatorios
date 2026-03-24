@@ -553,7 +553,7 @@ const MetricsConfig = () => {
               
               <div>
                 <Label htmlFor="inputType">Tipo de Input</Label>
-                <Select value={formData.inputType} onValueChange={(value: any) => setFormData({ ...formData, inputType: value })}>
+                <Select value={formData.inputType} onValueChange={(value: 'cumulative' | 'non_cumulative') => setFormData({ ...formData, inputType: value })}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -569,7 +569,7 @@ const MetricsConfig = () => {
               
               <div>
                 <Label htmlFor="groupDataPeriod">Período de Agrupamento</Label>
-                <Select value={formData.groupDataPeriod} onValueChange={(value: any) => setFormData({ ...formData, groupDataPeriod: value })}>
+                <Select value={formData.groupDataPeriod} onValueChange={(value: 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'half_yearly' | 'yearly') => setFormData({ ...formData, groupDataPeriod: value })}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -585,7 +585,7 @@ const MetricsConfig = () => {
               
               <div>
                 <Label htmlFor="totalIs">Cálculo do Total</Label>
-                <Select value={formData.totalIs} onValueChange={(value: any) => setFormData({ ...formData, totalIs: value })}>
+                <Select value={formData.totalIs} onValueChange={(value: 'sum_of_values' | 'average_of_values' | 'last_value' | 'all_time' | 'ytd_as_of') => setFormData({ ...formData, totalIs: value })}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -601,7 +601,7 @@ const MetricsConfig = () => {
               
               <div>
                 <Label htmlFor="trendDirection">Direção da Tendência</Label>
-                <Select value={formData.trendDirection} onValueChange={(value: any) => setFormData({ ...formData, trendDirection: value })}>
+                <Select value={formData.trendDirection} onValueChange={(value: 'higher_is_better' | 'lower_is_better' | 'no_trend') => setFormData({ ...formData, trendDirection: value })}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>

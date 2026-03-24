@@ -38,10 +38,11 @@ export const DataInputStep = () => {
           title: t('builder.toasts.file_uploaded_title'),
           description: t('builder.toasts.file_uploaded_desc', { name: uploadedFile.name })
         });
-      } catch (error: any) {
+      } catch (error: Error | unknown) {
+        const errorMessage = error instanceof Error ? error.message : t('builder.errors.ia_unknown');
         toast({
           title: t('common.error_title'),
-          description: error.message || t('builder.errors.ia_unknown'),
+          description: errorMessage,
           variant: "destructive"
         });
       } finally {
