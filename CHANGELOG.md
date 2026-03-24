@@ -5,11 +5,31 @@ Todas as mudanças notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [1.0.0-alpha-hotfix-1] - 2026-03-24
+
+### 🚀 Hotfix Produção - Estabilização e 404
+
+#### 🔧 Correções Críticas
+
+- **Roteamento**: Resolvido erro 404 na raiz (/) com redirecionamento automático para /pt-BR.
+- **Build**: Corrigidos conflitos de case-sensitivity (Linux build blockers) renomeando componentes legados.
+- **SEO**: Corrigidas chaves de tradução de metadados (seo.index_title) em todos os idiomas.
+- **Environment**: Silenciados avisos de console para variáveis de ambiente opcionais (Gemini API Key).
+
+#### 🛠️ Mudanças Técnicas
+
+- Novo componente `I18nRouter` e `I18nSEO` para gestão de metadados.
+- Reorganização de componentes para `src/components/ui/custom/` (ActionButton, DashboardCard).
+- Limpeza de arquivos e dependências obsoletas (bun.lock, pnpm-lock).
+
+---
+
 ## [1.0.0] - 2026-03-22
 
 ### 🚀 Lançamento Inicial
 
 #### ✨ Funcionalidades
+
 - **Dashboards Completos**
   - Dashboard Principal com KPICards e tabs organizacionais
   - Painel de Indicadores com separação por domínios
@@ -36,6 +56,7 @@ e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
   - Transição suave para modo real
 
 #### 🔧 Implementação Técnica
+
 - **Frontend Moderno**
   - React 18.3+ com TypeScript
   - Vite 5.4+ para build rápido
@@ -55,6 +76,7 @@ e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
   - RESTful API design pattern
 
 #### 🚀 DevOps
+
 - **CI/CD Completo**
   - GitHub Actions automatizados
   - Deploy automático para produção
@@ -68,6 +90,7 @@ e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
   - Documentação completa
 
 #### 📚 Documentação
+
 - **Guias Completos**
   - Setup Guide com instruções passo a passo
   - Development Guide com padrões e convenções
@@ -81,6 +104,7 @@ e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
   - Guia de deploy
 
 #### 🌐 Internacionalização
+
 - **Suporte Completo**
   - Português (Brasil) - Principal
   - Inglês - Suporte completo
@@ -88,6 +112,7 @@ e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
   - UX Writing otimizado
 
 #### 🛣️ Estrutura
+
 - **8 Telas Principais**
   - Dashboard Principal (`/app`)
   - Painel de Indicadores (`/app/metrics`)
@@ -99,12 +124,14 @@ e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
   - Configurações (`/app/settings`)
 
 #### 🔧 Configuração
+
 - **Environment Variables**
   - `VITE_SUPABASE_URL` - URL do projeto Supabase
   - `VITE_SUPABASE_ANON_KEY` - Chave anônima Supabase
   - `VITE_GEMINI_API_KEY` - API key Gemini (opcional)
 
 #### 📱 Deploy
+
 - **Produção**
   - URL: https://superrelatorios.vercel.app
   - Deploy automático via GitHub Actions
@@ -112,6 +139,7 @@ e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
   - Segurança reforçada
 
 #### 🎯 Qualidade
+
 - **Testes**
   - Testes unitários configurados
   - Lint automatizado
@@ -125,6 +153,7 @@ e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
   - CSP implementado
 
 ### 🐛 Correções
+
 - **Tela Branca**
   - Implementado fallback inteligente
   - Modo demo automático
@@ -138,9 +167,11 @@ e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
   - Cache estratégico
 
 ### 🔧 Mudanças Quebradas
+
 - Nenhuma
 
 ### 🔒 Segurança
+
 - Headers de segurança implementados
 - Auditoria de dependências automatizada
 - Proteção contra XSS e CSRF
@@ -153,6 +184,7 @@ e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
 ### [1.1.0] - Planejado
 
 #### 🚀 Funcionalidades
+
 - **Integração Supabase Real**
   - Autenticação completa
   - Banco de dados real
@@ -172,6 +204,7 @@ e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
   - Domínios customizados
 
 #### 🔧 Melhorias
+
 - **Performance**
   - PWA implementation
   - Service workers
@@ -187,6 +220,7 @@ e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
 ### [2.0.0] - Futuro
 
 #### 🌟 Funcionalidades Visionárias
+
 - **Machine Learning**
   - Previsões avançadas
   - Análise preditiva
@@ -210,6 +244,7 @@ e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
 ## 📊 Estatísticas
 
 ### 📈 Versão 1.0.0
+
 - **Arquivos criados:** 50+
 - **Linhas de código:** 15.000+
 - **Componentes:** 30+
@@ -218,6 +253,7 @@ e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - **CI/CD:** 100% automatizado
 
 ### 🚀 Performance
+
 - **Build time:** < 15s
 - **Bundle size:** < 800KB gzipped
 - **Lighthouse score:** > 90
@@ -228,6 +264,7 @@ e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
 ## 🤝 Contribuição
 
 ### 📋 Como Contribuir
+
 1. Verifique o [Development Guide](./docs/DEVELOPMENT.md)
 2. Siga as convenções de commits
 3. Adicione testes para novas funcionalidades
@@ -235,6 +272,7 @@ e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
 5. Abra um Pull Request
 
 ### 🔧 Convenções
+
 - **feat:** Nova funcionalidade
 - **fix:** Correção de bug
 - **docs:** Documentação
@@ -248,11 +286,13 @@ e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
 ## 📞 Suporte
 
 ### 🐛 Reportar Bugs
+
 - Use [GitHub Issues](https://github.com/futuremove-ia/superrelatorios/issues)
 - Inclua ambiente, steps to reproduce, expected behavior
 - Adicione screenshots se relevante
 
 ### 💡 Sugestões
+
 - Use [GitHub Discussions](https://github.com/futuremove-ia/superrelatorios/discussions)
 - Descreva o problema que quer resolver
 - Sugira soluções se tiver ideias
