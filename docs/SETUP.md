@@ -11,11 +11,13 @@
 O SuperRelatórios funciona imediatamente em modo demo, sem necessidade de configuração:
 
 ### Acesso
+
 ```
 https://superrelatorios.vercel.app
 ```
 
 ### Funcionalidades
+
 - ✅ Todas as telas funcionais
 - ✅ Design System completo
 - ✅ Navegação intuitiva
@@ -36,14 +38,16 @@ Para usar dados reais, configure o Supabase:
 ### 2. Configurar Variáveis de Ambiente
 
 #### Local (Desenvolvimento)
+
 ```bash
 # Criar arquivo .env.local
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-key-here
-VITE_GEMINI_API_KEY=your-gemini-api-key-here
+# A GEMINI_API_KEY NÃO DEVE SER COLOCADA AQUI EM DESENVOLVIMENTO/PRODUÇÃO
 ```
 
 #### Produção (Vercel)
+
 1. Acesse [vercel.com](https://vercel.com)
 2. Vá para o projeto `superrelatorios`
 3. Settings → Environment Variables
@@ -51,11 +55,11 @@ VITE_GEMINI_API_KEY=your-gemini-api-key-here
 
 ### 3. Executar Scripts SQL
 
-Execute os scripts SQL no Supabase SQL Editor:
+Execute os scripts SQL na pasta `supabase/migrations/` usando o Supabase SQL Editor ou a CLI:
 
-```sql
--- Script principal
-SCRIPT_DEFINITIVO_SUPABASE.sql
+```bash
+# Se usar a CLI
+supabase db push
 ```
 
 ### 4. Reiniciar Aplicação
@@ -76,24 +80,26 @@ O deploy é automático via GitHub Actions:
 
 ## 🔧 Configuração Adicional
 
-### Gemini API (Opcional)
-Para funcionalidades de IA:
+### Gemini API (Segurança)
+
+Para funcionalidades de IA, a chave é configurada apenas como variável de ambiente no servidor (Vercel):
 
 1. Acesse [Google AI Studio](https://makersuite.google.com/app/apikey)
 2. Crie uma API key
-3. Configure `VITE_GEMINI_API_KEY`
+3. Configure `GEMINI_API_KEY` apenas na Vercel (ou no painel da Edge Function). Não use o prefixo `VITE_` para esta chave.
 
 ### Environment Variables
 
-| Variável | Descrição | Obrigatório |
-|----------|-----------|-------------|
-| `VITE_SUPABASE_URL` | URL do projeto Supabase | Não (modo demo) |
-| `VITE_SUPABASE_ANON_KEY` | Chave anônima Supabase | Não (modo demo) |
-| `VITE_GEMINI_API_KEY` | API key Gemini | Não (opcional) |
+| Variável                 | Descrição                 | Obrigatório     |
+| ------------------------ | ------------------------- | --------------- |
+| `VITE_SUPABASE_URL`      | URL do projeto Supabase   | Não (modo demo) |
+| `VITE_SUPABASE_ANON_KEY` | Chave anônima Supabase    | Não (modo demo) |
+| `GEMINI_API_KEY`         | API key Gemini (Servidor) | Não (opcional)  |
 
 ## 🚀 Testes
 
 ### Testar Localmente
+
 ```bash
 # Instalar dependências
 npm install
@@ -109,6 +115,7 @@ npm run preview
 ```
 
 ### Testar em Produção
+
 ```bash
 # Deploy para produção
 npx vercel --prod
@@ -120,11 +127,13 @@ npx vercel logs
 ## 🔍 Troubleshooting
 
 ### Tela Branca
+
 - Verifique se as variáveis de ambiente estão configuradas
 - Em modo demo, a aplicação deve funcionar sem Supabase
 - Limpe o cache do navegador
 
 ### Erros de Build
+
 ```bash
 # Limpar cache
 npm run build -- --force
@@ -135,6 +144,7 @@ npm install
 ```
 
 ### Problemas de Autenticação
+
 - Verifique as credenciais do Supabase
 - Confirme se o projeto está ativo
 - Teste a conexão com o Supabase
@@ -142,6 +152,7 @@ npm install
 ## 📱 Acesso Rápido
 
 ### Demo
+
 ```
 🌐 https://superrelatorios.vercel.app
 📧 demo@superrelatorios.com
@@ -149,6 +160,7 @@ npm install
 ```
 
 ### Desenvolvimento
+
 ```
 🏠 http://localhost:8080
 📋 npm run dev
