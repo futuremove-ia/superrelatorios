@@ -102,9 +102,11 @@ const App = () => (
               <RouteTracker />
               <Suspense fallback={<PageLoader />}>
                 <Routes>
-                  {/* Rota crítica do OAuth - Sem interferência */}
+                  {/* Root and Auth Routes */}
+                  <Route path="/" element={<Navigate to="/pt-BR" replace />} />
                   <Route path="/auth/callback" element={<AuthCallback />} />
-                  {/* Public Routes */}
+
+                  {/* Public Landing & Login Routes */}
                   <Route path="/pt-BR" element={<Index />} />
                   <Route path="/en-US" element={<Index />} />
                   <Route path="/es-ES" element={<Index />} />
@@ -112,9 +114,7 @@ const App = () => (
                   <Route path="/en-US/login" element={<Login />} />
                   <Route path="/es-ES/login" element={<Login />} />
                   <Route path="/login" element={<Login />} />
-                  import LocaleGuard from '@/components/navigation/LocaleGuard';
-                  // ... (dentro de Routes)
-                  {/* App Protected Routes using AppLayout */}
+
                   <Route
                     path="/:locale/app"
                     element={

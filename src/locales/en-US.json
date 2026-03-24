@@ -1,28 +1,52 @@
 {
   "bi": {
     "areas": {
-      "strategy": { "name": "Strategy", "desc": "Long-term vision and objectives" },
-      "management": { "name": "Management", "desc": "Efficiency and governance" },
+      "strategy": {
+        "name": "Strategy",
+        "desc": "Long-term vision and objectives"
+      },
+      "management": {
+        "name": "Management",
+        "desc": "Efficiency and governance"
+      },
       "finance": { "name": "Finance", "desc": "Cash flow and profitability" },
       "sales": { "name": "Sales", "desc": "Funnel and sales performance" },
       "marketing": { "name": "Marketing", "desc": "Acquisition and channels" },
-      "operations": { "name": "Operations", "desc": "Processes and productivity" },
+      "operations": {
+        "name": "Operations",
+        "desc": "Processes and productivity"
+      },
       "logistics": { "name": "Logistics", "desc": "Supply chain and delivery" },
-      "customer_service": { "name": "Customer Service", "desc": "Support and satisfaction" },
+      "customer_service": {
+        "name": "Customer Service",
+        "desc": "Support and satisfaction"
+      },
       "hr": { "name": "HR", "desc": "Human capital and retention" }
     },
     "metrics": {
-      "revenue": { "name": "Revenue", "desc": "Total gross revenue for the period" },
-      "gross_margin": { "name": "Gross Margin", "desc": "Profit percentage on sales" },
+      "revenue": {
+        "name": "Revenue",
+        "desc": "Total gross revenue for the period"
+      },
+      "gross_margin": {
+        "name": "Gross Margin",
+        "desc": "Profit percentage on sales"
+      },
       "ebitda": { "name": "EBITDA", "desc": "Operating profit before taxes" },
       "cac": { "name": "CAC", "desc": "Customer Acquisition Cost" },
       "ltv": { "name": "LTV", "desc": "Customer Lifetime Value" },
       "churn": { "name": "Churn", "desc": "Customer cancellation rate" },
       "roas": { "name": "ROAS", "desc": "Return on Advertising Spend" },
       "cpa": { "name": "CPA", "desc": "Cost per acquisition" },
-      "conversion_rate": { "name": "Conversion Rate", "desc": "Leads to sales conversion" },
+      "conversion_rate": {
+        "name": "Conversion Rate",
+        "desc": "Leads to sales conversion"
+      },
       "turnover": { "name": "Turnover", "desc": "Employee turnover rate" },
-      "enps": { "name": "eNPS", "desc": "Employee loyalty and satisfaction level" }
+      "enps": {
+        "name": "eNPS",
+        "desc": "Employee loyalty and satisfaction level"
+      }
     }
   },
   "brand": {
@@ -289,11 +313,7 @@
           "desc": "Get started",
           "period": "/forever",
           "cta": "Create Free Report",
-          "features": [
-            "2 reports/month",
-            "Basic templates",
-            "Export to PDF"
-          ]
+          "features": ["2 reports/month", "Basic templates", "Export to PDF"]
         },
         "pro": {
           "name": "Professional",
@@ -491,12 +511,17 @@
     "please": "Please",
     "thank_you": "Thank you"
   },
+  "errors": {
+    "not_found_title": "Page not found",
+    "not_found_desc": "The page you are looking for does not exist or has been moved.",
+    "return_home": "Return to home"
+  },
   "dashboard": {
     "title": "Main Dashboard",
     "subtitle": "Overview of metrics and performance",
     "period": {
       "month": "Month",
-      "quarter": "Quarter", 
+      "quarter": "Quarter",
       "year": "Year"
     },
     "summary": {
@@ -524,7 +549,7 @@
       "profile": {
         "change_photo": "Change Photo",
         "first_name": "First Name",
-        "last_name": "Last Name", 
+        "last_name": "Last Name",
         "email": "Email",
         "company": "Company",
         "role": "Role"
@@ -547,30 +572,25 @@
     "validation": {
       "required": "Required",
       "invalid_format": "Invalid Format"
-    },
-    "errors": {
-      "not_found_title": "Page not found",
-      "not_found_desc": "The page you are looking for does not exist or has been moved.",
-      "return_home": "Return to home"
-    },
-    "auth": {
-      "login_title": "Sign in to your account",
-      "signup_title": "Create your free account",
-      "google_button": "Sign in with Google",
-      "separator": "or",
-      "email_label": "Professional email",
-      "email_placeholder": "your@email.com",
-      "password_label": "Password",
-      "password_placeholder": "Enter your password",
-      "submit_login": "Sign in",
-      "submit_signup": "Create account",
-      "switch_to_login": "Already have an account? Sign in",
-      "switch_to_signup": "Don't have an account? Create account",
-      "forgot_password": "Forgot your password?",
-      "terms_prefix": "By creating an account, you agree to our",
-      "terms_link": "Terms of Service",
-      "and": "and",
-      "privacy_link": "Privacy Policy"
     }
+  },
+  "auth": {
+    "login_title": "Sign in to your account",
+    "signup_title": "Create your free account",
+    "google_button": "Sign in with Google",
+    "separator": "or",
+    "email_label": "Professional email",
+    "email_placeholder": "your@email.com",
+    "password_label": "Password",
+    "password_placeholder": "Enter your password",
+    "submit_login": "Sign in",
+    "submit_signup": "Create account",
+    "switch_to_login": "Already have an account? Sign in",
+    "switch_to_signup": "Don't have an account? Create account",
+    "forgot_password": "Forgot your password?",
+    "terms_prefix": "By creating an account, you agree to our",
+    "terms_link": "Terms of Service",
+    "and": "and",
+    "privacy_link": "Privacy Policy"
   }
 }
