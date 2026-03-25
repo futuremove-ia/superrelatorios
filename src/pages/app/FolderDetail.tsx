@@ -9,6 +9,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { AISidebar } from '@/components/ai/AISidebar';
 import { reportsService, Report } from '@/services/mockReports';
 import { useTranslation } from 'react-i18next';
+import { foldersIndexPath, newReportPath, reportDetailPath } from '@/lib/appPaths';
 
 const FolderDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -61,7 +62,7 @@ const FolderDetail = () => {
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <Button variant="ghost" size="sm" onClick={() => navigate('/app/pastas')}>
+              <Button variant="ghost" size="sm" onClick={() => navigate(foldersIndexPath(lang))}>
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 {t('common.back')}
               </Button>
@@ -75,7 +76,7 @@ const FolderDetail = () => {
                 </p>
               </div>
             </div>
-            <Button onClick={() => navigate('/app/novo-relatorio')}>
+            <Button onClick={() => navigate(newReportPath(lang))}>
               <Plus className="h-4 w-4 mr-2" />
               {t('reports.new_report_button')}
             </Button>
@@ -133,7 +134,7 @@ const FolderDetail = () => {
                   key={report.id} 
                   className="card-hover group cursor-pointer overflow-hidden border-border/40 animate-fade-in"
                   style={{ animationDelay: `${index * 0.1}s` }}
-                  onClick={() => navigate(`/app/relatorios/${report.id}`)}
+                  onClick={() => navigate(reportDetailPath(lang, report.id))}
                 >
                   <div className={`h-1.5 w-full ${report.category.toLowerCase().includes('finan') ? 'bg-blue-500' : 'bg-indigo-500'}`} />
                   <CardHeader className="pb-3 px-5 pt-5">
@@ -146,7 +147,7 @@ const FolderDetail = () => {
                            </Button>
                          </DropdownMenuTrigger>
                          <DropdownMenuContent align="end">
-                           <DropdownMenuItem onClick={(e) => { e.stopPropagation(); navigate(`/app/relatorios/${report.id}`); }}>
+                           <DropdownMenuItem onClick={(e) => { e.stopPropagation(); navigate(reportDetailPath(lang, report.id)); }}>
                              <FileText className="h-4 w-4 mr-2" /> {t('reports.actions.view')}
                            </DropdownMenuItem>
                            <DropdownMenuItem onClick={(e) => e.stopPropagation()}>
@@ -184,7 +185,7 @@ const FolderDetail = () => {
                         <tr 
                           key={report.id} 
                           className="group border-b border-border/30 last:border-0 hover:bg-muted/30 transition-colors cursor-pointer"
-                          onClick={() => navigate(`/app/relatorios/${report.id}`)}
+                          onClick={() => navigate(reportDetailPath(lang, report.id))}
                         >
                           <td className="py-4 px-4">
                             <div className="flex items-center gap-3">
@@ -211,7 +212,7 @@ const FolderDetail = () => {
                                 </Button>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end">
-                                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); navigate(`/app/relatorios/${report.id}`); }}>
+                                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); navigate(reportDetailPath(lang, report.id)); }}>
                                   <FileText className="h-4 w-4 mr-2" />{t('reports.actions.view')}
                                 </DropdownMenuItem>
                                 <DropdownMenuItem onClick={(e) => e.stopPropagation()}><Share2 className="mr-2 h-4 w-4" />{t('reports.actions.share')}</DropdownMenuItem>

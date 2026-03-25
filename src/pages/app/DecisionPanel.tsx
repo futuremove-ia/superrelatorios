@@ -219,6 +219,19 @@ const DecisionPanel: React.FC<DecisionPanelProps> = ({ className }) => {
 
   return (
     <div className={`container-fluid space-y-8 py-6 ${className}`}>
+      <Alert
+        className="border-amber-200 bg-amber-50 dark:bg-amber-950/20 dark:border-amber-800"
+        data-testid="decision-panel-demo-banner"
+      >
+        <AlertTriangle className="h-4 w-4 text-amber-600" />
+        <AlertDescription className="text-amber-900 dark:text-amber-100">
+          {t("decision_panel.demo_notice", {
+            defaultValue:
+              "Demonstração: cenários e números abaixo são ilustrativos até a integração com os seus dados reais.",
+          })}
+        </AlertDescription>
+      </Alert>
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-3">

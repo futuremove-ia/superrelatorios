@@ -92,6 +92,8 @@
     "settings": "Configurações",
     "logout": "Sair",
     "notifications": "Notificações",
+    "notifications_empty": "Nenhuma notificação no momento.",
+    "more_menu": "Mais",
     "user_menu": "Menu do Usuário",
     "open_menu": "Abrir Menu",
     "main_navigation": "Navegação Principal",
@@ -114,7 +116,8 @@
     "settings": "Configurações"
   },
   "search": {
-    "placeholder": "Buscar relatórios, métricas..."
+    "placeholder": "Buscar relatórios, métricas...",
+    "coming_soon": "Busca global em breve. Use a lista de relatórios e filtros nas páginas correspondentes."
   },
   "landing": {
     "nav_links": {
@@ -411,6 +414,7 @@
   "decision_panel": {
     "title": "Painel de Decisão",
     "subtitle": "Análise inteligente para tomada de decisão estratégica",
+    "demo_notice": "Demonstração: cenários e números abaixo são ilustrativos até a integração com os seus relatórios e métricas reais.",
     "period": {
       "current": "Atual",
       "last_month": "Último Mês",
@@ -601,6 +605,15 @@
       "required": "Obrigatório",
       "invalid_format": "Formato inválido"
     }
+  },
+  "error": {
+    "title": "Algo deu errado",
+    "description": "Ocorreu um erro inesperado. Tente novamente ou volte ao início. Se continuar, fale com o suporte.",
+    "try_again": "Tentar novamente",
+    "go_home": "Voltar ao início"
+  },
+  "metrics_dashboard": {
+    "demo_kpi_alert": "Os cartões de resumo abaixo usam valores de demonstração. Métricas reais aparecem conforme seus dados e configurações."
   },
   "auth": {
     "login_title": "Entrar na sua conta",

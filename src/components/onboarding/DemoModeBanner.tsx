@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useI18nRouter } from "@/hooks/useI18nRouter";
+import { settingsPath } from "@/lib/appPaths";
 
 const DemoModeBanner = () => {
   const { isDemoMode } = useAuth();
@@ -41,7 +42,7 @@ const DemoModeBanner = () => {
           className="bg-amber-50 hover:bg-amber-100 text-amber-900 border-amber-300 dark:bg-amber-950 dark:hover:bg-amber-900 dark:border-amber-700 dark:text-amber-100 shrink-0"
           asChild
         >
-          <Link to={`/${currentLanguage}/app/configuracoes`}>
+          <Link to={settingsPath(currentLanguage)}>
             <Database className="mr-2 h-3.5 w-3.5" />
             {t("demo.connect_db", { defaultValue: "Conectar Supabase" })}
             <ArrowRight className="ml-2 h-3.5 w-3.5" />

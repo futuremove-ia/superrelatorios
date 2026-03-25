@@ -3,9 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Upload, Settings, Download, TrendingUp, Target, FileSpreadsheet } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { newReportPath } from "@/lib/appPaths";
 
 const HowItWorks = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const builderBase = newReportPath(i18n.language);
   
   const steps = [
     {
@@ -89,7 +91,7 @@ const HowItWorks = () => {
                   {t('landing.how_it_works.quick_start.exec.desc')}
                 </p>
                 <Button variant="default" size="sm" asChild className="w-full">
-                  <Link to="/app/novo-relatorio?template=executivo">
+                  <Link to={`${builderBase}?template=executivo`}>
                     {t('landing.how_it_works.quick_start.cta')}
                   </Link>
                 </Button>
@@ -107,7 +109,7 @@ const HowItWorks = () => {
                   {t('landing.how_it_works.quick_start.sales.desc')}
                 </p>
                 <Button variant="default" size="sm" asChild className="w-full">
-                  <Link to="/app/novo-relatorio?template=vendas">
+                  <Link to={`${builderBase}?template=vendas`}>
                     {t('landing.how_it_works.quick_start.cta')}
                   </Link>
                 </Button>
@@ -125,7 +127,7 @@ const HowItWorks = () => {
                   {t('landing.how_it_works.quick_start.full.desc')}
                 </p>
                 <Button variant="outline" size="sm" asChild className="w-full">
-                  <Link to="/app/novo-relatorio">
+                  <Link to={builderBase}>
                     {t('landing.how_it_works.quick_start.cta')}
                   </Link>
                 </Button>

@@ -33,6 +33,7 @@ Documentação técnica com arquitetura, padrões, auditorias e guidelines de de
 - **[Guidelines de Contribuição](./02-technical/05-contributing-guidelines.md)** - Como contribuir com o projeto
 - **[Protocolo de Design System](./02-technical/06-design-system-protocol.md)** - Protocolo detalhado do Design System
 - **[Plano de Alinhamento Arquitetural](./02-technical/07-architecture-alignment-plan.md)** - Alinhamento e melhorias
+- **[Auditoria operacional Produto/UX/UI](./02-technical/08-product-ux-operational-audit.md)** - Matriz achados × evidência × sprint (ritual de grooming)
 
 ---
 

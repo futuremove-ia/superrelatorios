@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { supabase } from '@/lib/supabase';
-import PageLoader from '@/components/layout/PageLoader';
+import React, { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { supabase } from "@/lib/supabase";
+import PageLoader from "@/components/layout/PageLoader";
+import { ensurePathHasLocale, preferredLocaleFromStorage } from "@/lib/localePath";
+import { appHomePath } from "@/lib/appPaths";
 
 /**
  * AuthCallback: Página dedicada para processar o retorno de autenticação social (OAuth).
@@ -9,34 +11,34 @@ import PageLoader from '@/components/layout/PageLoader';
  * garante a troca segura do token via protocolo PKCE.
  */
 const AuthCallback = () => {
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
     const processAuth = async () => {
+      const fallbackHome = appHomePath(preferredLocaleFromStorage());
+
       try {
-        // O cliente Supabase processa automaticamente o código presente na URL
         const { data, error } = await supabase.auth.getSession();
-        
+
         if (error) throw error;
 
-        // Get redirect URL from query params or use default
-        const redirect = searchParams.get('redirect') || '/app';
+        const rawRedirect = searchParams.get("redirect");
+        const target =
+          data.session != null
+            ? rawRedirect
+              ? ensurePathHasLocale(rawRedirect)
+              : fallbackHome
+            : ensurePathHasLocale("/login?error=auth_no_session");
 
-        // Se a sessão for validada com sucesso, limpa a URL e envia para o destino
-        if (data.session) {
-          window.location.href = redirect;
-        } else {
-          window.location.href = '/login';
-        }
+        window.location.assign(target);
       } catch (err) {
         console.error("Auth: Falha crítica na validação do callback:", err);
-        window.location.href = '/login?error=auth_callback_failed';
+        window.location.assign(ensurePathHasLocale("/login?error=auth_callback_failed"));
       }
     };
 
     processAuth();
-  }, [navigate, searchParams]);
+  }, [searchParams]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-background">

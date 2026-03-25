@@ -1,0 +1,1 @@
+import{u as e}from"./useQuery-CJk_ZXyZ.js";import{r as o}from"./mockReports-M8RckX2V.js";import{f as s}from"./supabaseReportsService-B32n_wWT.js";import{b as t}from"./index-BUGVCGRj.js";const f=()=>{const{isDemoMode:r}=t();return e({queryKey:["reports",r],queryFn:()=>r?o.getAllReports():s()})};export{f as u};

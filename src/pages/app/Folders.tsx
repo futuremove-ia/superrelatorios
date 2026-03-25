@@ -10,6 +10,7 @@ import { FloatingButton } from '@/components/ui/floating-button';
 import { AISidebar } from '@/components/ai/AISidebar';
 import { Grid, List } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { folderDetailPath, newReportPath } from '@/lib/appPaths';
 
 
 interface FolderData {
@@ -145,7 +146,7 @@ const Folders = () => {
               </p>
 
             </div>
-            <Button size="lg" className="self-start sm:self-auto card-hover" onClick={() => navigate('/app/novo-relatorio')}>
+            <Button size="lg" className="self-start sm:self-auto card-hover" onClick={() => navigate(newReportPath(lang))}>
                 <Plus className="mr-2 h-5 w-5" />
                 <span className="hidden sm:inline">{t('folders.new_folder_button')}</span>
                 <span className="sm:hidden">{t('common.next')}</span>
@@ -218,7 +219,7 @@ const Folders = () => {
                   </p>
                   {!searchTerm && (
                     <Button asChild>
-                      <Link to="/app/novo-relatorio">
+                      <Link to={newReportPath(lang)}>
                         <Plus className="mr-2 h-4 w-4" />
                         {t('folders.empty.cta')}
                       </Link>
@@ -235,7 +236,7 @@ const Folders = () => {
                     key={folder.id} 
                     className="card-hover group cursor-pointer animate-fade-in overflow-hidden border-border/40" 
                     style={{ animationDelay: `${0.3 + index * 0.1}s` }}
-                    onClick={() => navigate(`/app/pastas/${folder.id}`)}
+                    onClick={() => navigate(folderDetailPath(lang, folder.id))}
                   >
                     <div className={`h-1.5 w-full ${folder.color.split(' ')[0]}`} />
                     <CardHeader className="pb-3 px-5 pt-5">
@@ -312,7 +313,7 @@ const Folders = () => {
                           <tr 
                             key={folder.id} 
                             className="group border-b border-border/30 last:border-0 hover:bg-muted/30 transition-colors cursor-pointer"
-                            onClick={() => navigate(`/app/pastas/${folder.id}`)}
+                            onClick={() => navigate(folderDetailPath(lang, folder.id))}
                           >
                             <td className="py-4 px-4">
                               <div className="flex items-center gap-3">
@@ -369,7 +370,7 @@ const Folders = () => {
 
       {/* Floating Action Button */}
       <FloatingButton 
-        onClick={() => navigate('/app/novo-relatorio')}
+        onClick={() => navigate(newReportPath(lang))}
         icon={<Plus className="h-6 w-6" />}
         className="lg:hidden"
       >

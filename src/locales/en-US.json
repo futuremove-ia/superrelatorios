@@ -68,6 +68,8 @@
     "settings": "Settings",
     "logout": "Logout",
     "notifications": "Notifications",
+    "notifications_empty": "No notifications right now.",
+    "more_menu": "More",
     "user_menu": "User Menu",
     "open_menu": "Open Menu",
     "main_navigation": "Main Navigation",
@@ -90,7 +92,8 @@
     "settings": "Settings"
   },
   "search": {
-    "placeholder": "Search reports, metrics..."
+    "placeholder": "Search reports, metrics...",
+    "coming_soon": "Global search is coming soon. Use report lists and filters on each page."
   },
   "landing": {
     "nav_links": {
@@ -383,6 +386,7 @@
   "decision_panel": {
     "title": "Decision Panel",
     "subtitle": "Intelligent analysis for strategic decision-making",
+    "demo_notice": "Demo: scenarios and figures below are illustrative until connected to your live reports and metrics.",
     "period": {
       "current": "Current",
       "last_month": "Last Month",
@@ -573,6 +577,15 @@
       "required": "Required",
       "invalid_format": "Invalid Format"
     }
+  },
+  "error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. Try again or go home. If it keeps happening, contact support.",
+    "try_again": "Try again",
+    "go_home": "Back to home"
+  },
+  "metrics_dashboard": {
+    "demo_kpi_alert": "The summary cards below use demo values. Real metrics appear as your data and settings are connected."
   },
   "auth": {
     "login_title": "Sign in to your account",

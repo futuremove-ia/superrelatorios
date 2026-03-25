@@ -342,7 +342,23 @@
     "main_navigation": "Navegación Principal",
     "open_menu": "Abrir Menú",
     "user_menu": "Menú de Usuario",
-    "notifications": "Notificaciones"
+    "notifications": "Notificaciones",
+    "notifications_empty": "No hay notificaciones por ahora.",
+    "more_menu": "Más",
+    "overview": "Visión General",
+    "metrics": "Métricas",
+    "decision_panel": "Panel de Decisión",
+    "analytics": "Analytics",
+    "consolidated": "Consolidado",
+    "priorities": "Prioridades",
+    "action_plan": "Plan de Acción",
+    "data": "Mis Datos",
+    "details": "Detalles",
+    "metrics_config": "Configurar métricas"
+  },
+  "search": {
+    "placeholder": "Buscar informes, métricas...",
+    "coming_soon": "Búsqueda global próximamente. Use las listas y filtros en cada página."
   },
   "dashboard": {
     "welcome": "¡Bienvenido de nuevo! ¿Analizamos algo nuevo hoy?",
@@ -407,6 +423,15 @@
         "desc": "Crear desde cero"
       }
     }
+  },
+  "error": {
+    "title": "Algo salió mal",
+    "description": "Ocurrió un error inesperado. Intente de nuevo o vaya al inicio. Si persiste, contacte a soporte.",
+    "try_again": "Intentar de nuevo",
+    "go_home": "Volver al inicio"
+  },
+  "metrics_dashboard": {
+    "demo_kpi_alert": "Las tarjetas de resumen usan valores de demostración. Las métricas reales aparecen al conectar sus datos y configuración."
   },
   "auth": {
     "login_title": "Entre en su cuenta",
@@ -943,6 +968,7 @@
   "decision_panel": {
     "title": "Panel de Decisión",
     "subtitle": "Análisis inteligente para la toma de decisiones estratégicas",
+    "demo_notice": "Demostración: los escenarios y cifras siguientes son ilustrativos hasta conectar con sus informes y métricas reales.",
     "period": {
       "current": "Actual",
       "last_month": "Último Mes",

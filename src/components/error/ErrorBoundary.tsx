@@ -37,7 +37,7 @@ const ErrorBoundaryFallback = ({
       <p className="text-muted-foreground mb-8 max-w-md">
         {t("error.description", {
           defaultValue:
-            "Ocorreu um erro inesperado. Nossa equipe já foi notificada. Por favor, tente recarregar a página.",
+            "Ocorreu um erro inesperado. Tente novamente ou volte ao início. Se continuar, fale com o suporte.",
         })}
       </p>
 
@@ -51,14 +51,14 @@ const ErrorBoundaryFallback = ({
       <div className="flex gap-4">
         <Button onClick={resetError} size="lg">
           <RefreshCcw className="mr-2 h-4 w-4" />
-          {t("error.try_again", { defaultValue: "Tentar Novamente" })}
+          {t("error.try_again")}
         </Button>
         <Button
           variant="outline"
           size="lg"
           onClick={() => (window.location.href = "/")}
         >
-          {t("error.go_home", { defaultValue: "Voltar ao Início" })}
+          {t("error.go_home", { defaultValue: "Voltar ao início" })}
         </Button>
       </div>
     </div>

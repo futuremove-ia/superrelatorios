@@ -8,36 +8,23 @@ import { Badge } from '@/components/ui/badge';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { AISidebar } from '@/components/ai/AISidebar';
-import { reportsService, Report } from '@/services/mockReports';
+import { Report } from '@/types/reports';
 import { useTranslation } from 'react-i18next';
+import { useReports } from '@/hooks/useReports';
+import { newReportPath, reportDetailPath } from '@/lib/appPaths';
 
 
 const ReportsList = () => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const [reports, setReports] = useState<Report[]>([]);
+  const lang = i18n.language;
+  const { data: reports = [], isLoading: loading } = useReports();
 
   const [filteredReports, setFilteredReports] = useState<Report[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
-
-  useEffect(() => {
-    const loadReports = async () => {
-      try {
-        const data = await reportsService.getAllReports();
-        setReports(data);
-        setFilteredReports(data);
-      } catch (error) {
-        console.error('Error loading reports:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadReports();
-  }, []);
 
   useEffect(() => {
     let filtered = reports;
@@ -108,7 +95,7 @@ const ReportsList = () => {
 
             </div>
             <Button asChild size="default" className="self-start sm:self-auto touch-target">
-              <Link to="/app/novo-relatorio">
+              <Link to={newReportPath(lang)}>
                 <Plus className="mr-2 h-4 w-4" />
                 <span className="hidden sm:inline">{t('reports.new_report_button')}</span>
                 <span className="sm:hidden">{t('reports.new_report_button')}</span>
@@ -209,7 +196,7 @@ const ReportsList = () => {
                   </p>
                   {!searchTerm && statusFilter === 'all' && categoryFilter === 'all' && (
                     <Button asChild>
-                      <Link to="/app/novo-relatorio">
+                      <Link to={newReportPath(lang)}>
                         <Plus className="mr-2 h-4 w-4" />
                         {t('reports.empty.cta')}
                       </Link>
@@ -226,7 +213,7 @@ const ReportsList = () => {
                   key={report.id} 
                   className="card-hover group cursor-pointer overflow-hidden border-border/40 animate-fade-in"
                   style={{ animationDelay: `${0.3 + index * 0.1}s` }}
-                  onClick={() => navigate(`/app/relatorios/${report.id}`)}
+                  onClick={() => navigate(reportDetailPath(lang, report.id))}
                 >
                   <div className={`h-1.5 w-full ${getStatusColor(report.status).includes('green') ? 'bg-emerald-500' : getStatusColor(report.status).includes('yellow') ? 'bg-amber-500' : 'bg-slate-400'}`} />
                   <CardHeader className="pb-2 p-5">
@@ -246,7 +233,7 @@ const ReportsList = () => {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={(e) => { e.stopPropagation(); navigate(`/app/relatorios/${report.id}`); }}>
+                          <DropdownMenuItem onClick={(e) => { e.stopPropagation(); navigate(reportDetailPath(lang, report.id)); }}>
                             <Eye className="mr-2 h-4 w-4" />{t('reports.actions.view')}
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={(e) => e.stopPropagation()}><Share2 className="mr-2 h-4 w-4" />{t('reports.actions.share')}</DropdownMenuItem>
@@ -272,7 +259,7 @@ const ReportsList = () => {
                       </div>
 
                       <Button variant="outline" size="sm" asChild className="w-full font-bold hover:bg-primary hover:text-white transition-all duration-300">
-                        <Link to={`/app/relatorios/${report.id}`}>
+                        <Link to={reportDetailPath(lang, report.id)}>
                           <Eye className="mr-2 h-4 w-4" />{t('reports.actions.open')}
                         </Link>
                       </Button>
@@ -300,7 +287,7 @@ const ReportsList = () => {
                         <tr 
                           key={report.id} 
                           className="group border-b border-border/30 last:border-0 hover:bg-muted/30 transition-colors cursor-pointer"
-                          onClick={() => navigate(`/app/relatorios/${report.id}`)}
+                          onClick={() => navigate(reportDetailPath(lang, report.id))}
                         >
                           <td className="py-4 px-4">
                             <div className="flex items-center gap-3">
@@ -332,7 +319,7 @@ const ReportsList = () => {
                                 </Button>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end">
-                                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); navigate(`/app/relatorios/${report.id}`); }}>
+                                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); navigate(reportDetailPath(lang, report.id)); }}>
                                   <Eye className="mr-2 h-4 w-4" />{t('reports.actions.view')}
                                 </DropdownMenuItem>
                                 <DropdownMenuItem onClick={(e) => e.stopPropagation()}><Share2 className="mr-2 h-4 w-4" />{t('reports.actions.share')}</DropdownMenuItem>

@@ -71,18 +71,25 @@ const RouteTracker = () => {
   return null;
 };
 
+const SUPPORTED_LOCALES = ["pt-BR", "en-US", "es-ES"] as const;
+
 // Componente para proteger rotas
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { session, loading } = useAuth();
+  const { session, loading, isDemoMode, user } = useAuth();
   const location = useLocation();
 
   if (loading) return <PageLoader />;
-  if (!session) {
-    // Preserve the redirect URL for post-login navigation
+
+  const allowed = session != null || (isDemoMode && user != null);
+  if (!allowed) {
     const redirectPath = location.pathname + location.search;
+    const first = location.pathname.split("/").filter(Boolean)[0];
+    const locale = SUPPORTED_LOCALES.includes(first as (typeof SUPPORTED_LOCALES)[number])
+      ? first
+      : "pt-BR";
     return (
       <Navigate
-        to={`/login?redirect=${encodeURIComponent(redirectPath)}`}
+        to={`/${locale}/login?redirect=${encodeURIComponent(redirectPath)}`}
         replace
       />
     );

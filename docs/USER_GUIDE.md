@@ -4,6 +4,16 @@
 
 SuperRelatórios é o GPS Estratégico para PMEs que transforma dados em decisões inteligentes através de inteligência artificial e analytics avançados.
 
+## Interface atual do produto (2026)
+
+O aplicativo evolui continuamente. **Na versão atual da aplicação web:**
+
+- **Novo relatório:** fluxo em **etapas** (fonte de dados → escolha do modelo → edição de blocos → geração → pré-visualização), com suporte a upload (ex.: CSV/Excel) e texto. Não há, nesta versão, um editor tipo *canvas* com arrastar e soltar como em ferramentas de BI clássicas.
+- **Exportação** (PDF, PowerPoint, etc.) e **integrações** (ERP, APIs): dependem do que estiver disponível na sua conta e no roadmap; use apenas o que a interface oferecer.
+- **Painel de Indicadores** e **Painel de Decisão** podem mostrar **cenários de demonstração** até que seus dados e relatórios reais estejam integrados (avisos também aparecem na própria interface).
+
+As seções abaixo descrevem a **experiência alvo** e boas práticas; onde houver diferença, prevalece o comportamento da tela que você vê ao usar o sistema.
+
 ## 🚀 Começando Rápido
 
 ### 1. Primeiro Acesso

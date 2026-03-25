@@ -6,7 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Paper } from '@/components/ui/paper';
-import { reportsService, Report } from '@/services/mockReports';
+import { reportsService } from '@/services/mockReports';
+import { Report } from '@/types/reports';
+import { useAuth } from '@/contexts/AuthContext';
+import { fetchReportByIdFromSupabase } from '@/services/supabaseReportsService';
+import { reportsIndexPath } from '@/lib/appPaths';
 import { useToast } from '@/hooks/use-toast';
 import BrandName from '@/components/BrandName';
 import { useTranslation } from 'react-i18next';
@@ -23,6 +27,8 @@ const ReportDetail = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t, i18n } = useTranslation();
+  const lang = i18n.language;
+  const { isDemoMode } = useAuth();
 
   const [report, setReport] = useState<Report | null>(null);
   const [loading, setLoading] = useState(true);
@@ -48,9 +54,11 @@ const ReportDetail = () => {
       if (!id) return;
       
       try {
-        const data = await reportsService.getReportById(id);
+        const data = isDemoMode
+          ? await reportsService.getReportById(id)
+          : await fetchReportByIdFromSupabase(id);
         if (!data) {
-          navigate('/app/relatorios');
+          navigate(reportsIndexPath(lang));
           return;
         }
         setReport(data);
@@ -67,7 +75,7 @@ const ReportDetail = () => {
     };
 
     loadReport();
-  }, [id, navigate, toast, t]);
+  }, [id, navigate, toast, t, isDemoMode, lang]);
 
   const getStatusColor = (status: Report['status']) => {
     switch (status) {
@@ -125,7 +133,7 @@ const ReportDetail = () => {
               {t('report_detail.notifications.error_load_desc')}
             </p>
             <Button asChild>
-              <Link to="/app/relatorios">{t('report_detail.back_button')}</Link>
+              <Link to={reportsIndexPath(lang)}>{t('report_detail.back_button')}</Link>
             </Button>
           </CardContent>
         </Card>
@@ -139,7 +147,7 @@ const ReportDetail = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3 min-w-0">
           <Button variant="ghost" size="sm" asChild className="flex-shrink-0">
-            <Link to="/app/relatorios">
+            <Link to={reportsIndexPath(lang)}>
               <ArrowLeft className="h-4 w-4 mr-1 sm:mr-2" />
               <span className="hidden sm:inline">{t('common.back')}</span>
             </Link>

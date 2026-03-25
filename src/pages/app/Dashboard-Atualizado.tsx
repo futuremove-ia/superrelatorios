@@ -7,7 +7,6 @@ import {
   ListChecks,
   Zap,
   FileText,
-  CircleDollarSign,
   Plus,
   Calendar,
   TrendingUp,
@@ -22,6 +21,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { KPICard } from "@/components/ui/kpi-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link } from "react-router-dom";
+import {
+  consolidatedPath,
+  metricsPath,
+  newReportPath,
+  prioritiesPath,
+  reportDetailPath,
+  reportsIndexPath,
+} from "@/lib/appPaths";
 
 const Dashboard = () => {
   const { t, i18n } = useTranslation();
@@ -30,68 +37,40 @@ const Dashboard = () => {
 
   const loading = reportsLoading || metricsLoading;
   const reports = allReports.slice(0, 4);
+  const lang = i18n.language;
 
-  // Usando os dados formatados do hook useDashboardSummary
-  const mockStats = [
+  const summaryStats = [
     {
-      title: t("dashboard.stats.active_priorities", {
-        defaultValue: "Prioridades Ativas",
+      title: t("dashboard.stats.total_reports", {
+        defaultValue: "Total de relatórios",
       }),
-      value: summaryData?.activeUsers.toString() || "0",
-      icon: Target,
-      trend: {
-        value: 8,
-        isPositive: true,
-        label: t("dashboard.stats.vs_last_month", {
-          defaultValue: "vs. mês passado",
-        }),
-      },
-      variant: "info" as const,
-    },
-    {
-      title: t("dashboard.stats.execution_rate", {
-        defaultValue: "Taxa de Execução",
-      }),
-      value: `${summaryData?.recentActivity || 0}%`,
-      icon: ListChecks,
-      trend: {
-        value: 12,
-        isPositive: true,
-        label: t("dashboard.stats.vs_last_month", {
-          defaultValue: "vs. mês passado",
-        }),
-      },
-      variant: "success" as const,
-    },
-    {
-      title: t("dashboard.stats.created_reports", {
-        defaultValue: "Relatórios Criados",
-      }),
-      value: summaryData?.completionRate.toString() || "0",
+      value: summaryData?.totalReports?.toString() ?? "0",
       icon: FileText,
-      trend: {
-        value: 15,
-        isPositive: true,
-        label: t("dashboard.stats.vs_last_month", {
-          defaultValue: "vs. mês passado",
-        }),
-      },
       variant: "info" as const,
     },
     {
-      title: t("dashboard.stats.estimated_impact", {
-        defaultValue: "Impacto Estimado",
+      title: t("dashboard.stats.completed_reports", {
+        defaultValue: "Relatórios concluídos",
       }),
-      value: summaryData?.estimatedImpact || "R$0K",
-      icon: CircleDollarSign,
-      trend: {
-        value: 22,
-        isPositive: true,
-        label: t("dashboard.stats.vs_last_month", {
-          defaultValue: "vs. mês passado",
-        }),
-      },
+      value: summaryData?.completedReports?.toString() ?? "0",
+      icon: ListChecks,
       variant: "success" as const,
+    },
+    {
+      title: t("dashboard.stats.completion_rate", {
+        defaultValue: "Taxa de conclusão",
+      }),
+      value: `${summaryData?.completionRatePercent ?? 0}%`,
+      icon: Target,
+      variant: "default" as const,
+    },
+    {
+      title: t("dashboard.stats.reports_last_7_days", {
+        defaultValue: "Novos nos últimos 7 dias",
+      }),
+      value: summaryData?.reportsCreatedLast7Days?.toString() ?? "0",
+      icon: Calendar,
+      variant: "info" as const,
     },
   ];
 
@@ -156,14 +135,14 @@ const Dashboard = () => {
 
         <div className="flex gap-3">
           <Button variant="outline" size="sm" asChild>
-            <Link to={`/${i18n.language}/app/metrics`}>
+            <Link to={metricsPath(lang)}>
               <Activity className="w-4 h-4 mr-2" />
               {t("nav.metrics", { defaultValue: "Indicadores" })}
             </Link>
           </Button>
 
           <Button size="sm" asChild>
-            <Link to={`/${i18n.language}/app/reports/new`}>
+            <Link to={newReportPath(lang)}>
               <Plus className="w-4 h-4 mr-2" />
               {t("dashboard.new_report", { defaultValue: "Novo Relatório" })}
             </Link>
@@ -173,13 +152,12 @@ const Dashboard = () => {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {mockStats.map((stat, index) => (
+        {summaryStats.map((stat, index) => (
           <KPICard
             key={index}
             title={stat.title}
             value={stat.value}
             icon={stat.icon}
-            trend={stat.trend}
             variant={stat.variant}
           />
         ))}
@@ -236,7 +214,7 @@ const Dashboard = () => {
                         </Badge>
                         <Button variant="ghost" size="sm" asChild>
                           <Link
-                            to={`/${i18n.language}/app/reports/${report.id}`}
+                            to={reportDetailPath(lang, report.id)}
                           >
                             <ArrowRight className="w-4 h-4" />
                           </Link>
@@ -253,7 +231,7 @@ const Dashboard = () => {
                       })}
                     </p>
                     <Button className="mt-4" size="sm" asChild>
-                      <Link to={`/${i18n.language}/app/reports/new`}>
+                      <Link to={newReportPath(lang)}>
                         {t("dashboard.create_first", {
                           defaultValue: "Criar primeiro relatório",
                         })}
@@ -280,7 +258,7 @@ const Dashboard = () => {
                   className="w-full justify-start"
                   asChild
                 >
-                  <Link to={`/${i18n.language}/app/reports/new`}>
+                  <Link to={newReportPath(lang)}>
                     <FileText className="w-4 h-4 mr-2" />
                     {t("dashboard.new_report", {
                       defaultValue: "Novo Relatório",
@@ -293,7 +271,7 @@ const Dashboard = () => {
                   className="w-full justify-start"
                   asChild
                 >
-                  <Link to={`/${i18n.language}/app/prioridades`}>
+                  <Link to={prioritiesPath(lang)}>
                     <Target className="w-4 h-4 mr-2" />
                     {t("dashboard.view_priorities", {
                       defaultValue: "Ver Prioridades",
@@ -306,7 +284,7 @@ const Dashboard = () => {
                   className="w-full justify-start"
                   asChild
                 >
-                  <Link to={`/${i18n.language}/app/metrics`}>
+                  <Link to={metricsPath(lang)}>
                     <Activity className="w-4 h-4 mr-2" />
                     {t("nav.metrics", {
                       defaultValue: "Painel de Indicadores",
@@ -319,7 +297,7 @@ const Dashboard = () => {
                   className="w-full justify-start"
                   asChild
                 >
-                  <Link to={`/${i18n.language}/app/consolidated`}>
+                  <Link to={consolidatedPath(lang)}>
                     <TrendingUp className="w-4 h-4 mr-2" />
                     {t("nav.consolidated", {
                       defaultValue: "Dashboard Consolidado",
@@ -340,7 +318,7 @@ const Dashboard = () => {
               })}
             </h2>
             <Button asChild>
-              <Link to={`/${i18n.language}/app/reports`}>
+              <Link to={reportsIndexPath(lang)}>
                 {t("dashboard.view_all", { defaultValue: "Ver todos" })}
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
@@ -376,7 +354,7 @@ const Dashboard = () => {
                     className="w-full"
                     asChild
                   >
-                    <Link to={`/${i18n.language}/app/reports/${report.id}`}>
+                    <Link to={reportDetailPath(lang, report.id)}>
                       {t("dashboard.view_details", {
                         defaultValue: "Ver detalhes",
                       })}
@@ -397,7 +375,7 @@ const Dashboard = () => {
               })}
             </h2>
             <Button asChild>
-              <Link to={`/${i18n.language}/app/prioridades`}>
+              <Link to={prioritiesPath(lang)}>
                 {t("dashboard.manage", { defaultValue: "Gerenciar" })}
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
@@ -419,7 +397,7 @@ const Dashboard = () => {
                 })}
               </p>
               <Button asChild>
-                <Link to={`/${i18n.language}/app/prioridades`}>
+                <Link to={prioritiesPath(lang)}>
                   {t("dashboard.view_priorities", {
                     defaultValue: "Ver prioridades",
                   })}
@@ -439,7 +417,7 @@ const Dashboard = () => {
               })}
             </h2>
             <Button asChild>
-              <Link to={`/${i18n.language}/app/metrics`}>
+              <Link to={metricsPath(lang)}>
                 {t("dashboard.view_analytics", {
                   defaultValue: "Ver analytics",
                 })}
@@ -464,7 +442,7 @@ const Dashboard = () => {
                   })}
                 </p>
                 <Button variant="outline" className="w-full" asChild>
-                  <Link to={`/${i18n.language}/app/metrics`}>
+                  <Link to={metricsPath(lang)}>
                     <Activity className="w-4 h-4 mr-2" />
                     {t("nav.metrics", {
                       defaultValue: "Painel de Indicadores",
@@ -490,7 +468,7 @@ const Dashboard = () => {
                   })}
                 </p>
                 <Button variant="outline" className="w-full" asChild>
-                  <Link to={`/${i18n.language}/app/consolidated`}>
+                  <Link to={consolidatedPath(lang)}>
                     <TrendingUp className="w-4 h-4 mr-2" />
                     {t("nav.consolidated", {
                       defaultValue: "Dashboard Consolidado",
