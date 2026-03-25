@@ -228,5 +228,23 @@ export const reportsService = {
   getTemplateById: async (id: string): Promise<ReportTemplate | null> => {
     await new Promise(resolve => setTimeout(resolve, 50));
     return mockTemplates.find(template => template.id === id) || null;
-  }
+  },
+
+  createReport: async (data: Partial<Report>): Promise<Report> => {
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    const newReport: Report = {
+      id: typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+      title: data.title || "Novo relatório",
+      category: data.category || "Geral",
+      createdAt: new Date().toISOString().slice(0, 10),
+      updatedAt: new Date().toISOString().slice(0, 10),
+      status: data.status || "draft",
+      description: data.description || "",
+      templateId: data.templateId || "",
+      blocks: data.blocks || [],
+      rawData: data.rawData,
+    };
+    mockReports.unshift(newReport);
+    return newReport;
+  },
 };

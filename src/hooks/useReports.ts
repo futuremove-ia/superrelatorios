@@ -1,31 +1,29 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { reportsService, Report } from '@/services/mockReports';
+import { useQuery } from "@tanstack/react-query";
+import { reportsService } from "@/services/mockReports";
+import { fetchReportsFromSupabase, fetchReportByIdFromSupabase } from "@/services/supabaseReportsService";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const useReports = () => {
+  const { isDemoMode } = useAuth();
+
   return useQuery({
-    queryKey: ['reports'],
-    queryFn: () => reportsService.getAllReports(),
+    queryKey: ["reports", isDemoMode],
+    queryFn: () =>
+      isDemoMode ? reportsService.getAllReports() : fetchReportsFromSupabase(),
   });
 };
 
 export const useReport = (id: string | undefined) => {
+  const { isDemoMode } = useAuth();
+
   return useQuery({
-    queryKey: ['reports', id],
+    queryKey: ["reports", id, isDemoMode],
     queryFn: () => {
-      if (!id) throw new Error('ID is required');
-      return reportsService.getReportById(id);
+      if (!id) throw new Error("ID is required");
+      return isDemoMode
+        ? reportsService.getReportById(id)
+        : fetchReportByIdFromSupabase(id);
     },
     enabled: !!id,
-  });
-};
-
-export const useCreateReport = () => {
-  const queryClient = useQueryClient();
-  
-  return useMutation({
-    mutationFn: (data: Partial<Report>) => reportsService.createReport(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['reports'] });
-    },
   });
 };

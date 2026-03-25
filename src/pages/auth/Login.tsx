@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,6 +10,9 @@ import { toast } from 'sonner';
 import LogoIcon from '@/components/LogoIcon';
 import BrandName from '@/components/BrandName';
 import { useTranslation } from 'react-i18next';
+import { appHomePath } from '@/lib/appPaths';
+
+const LOGIN_LOCALES = ['pt-BR', 'en-US', 'es-ES'] as const;
 
 const GoogleIcon = () => (
   <svg className="w-5 h-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -51,7 +54,7 @@ const Login: React.FC = () => {
         toast.success(t('auth.toast.signup_success'));
         // For signup, redirect to login page with same redirect param
         setTimeout(() => {
-          navigate(`/login?redirect=${encodeURIComponent(getRedirectUrl())}`);
+          navigate(`/${locale}/login?redirect=${encodeURIComponent(getRedirectUrl())}`);
         }, 2000);
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });

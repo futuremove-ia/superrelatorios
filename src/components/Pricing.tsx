@@ -3,9 +3,11 @@ import { Card } from "@/components/ui/card";
 import { Check } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { newReportPath } from "@/lib/appPaths";
 
 const Pricing = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const reportHref = newReportPath(i18n.language);
   const plans = [
     {
       name: t('landing.pricing.plans.free.name'),
@@ -17,7 +19,7 @@ const Pricing = () => {
         : [],
       cta: t('landing.pricing.plans.free.cta'),
       highlighted: false,
-      href: "/app/novo-relatorio",
+      href: reportHref,
     },
     {
       name: t('landing.pricing.plans.pro.name'),
@@ -29,7 +31,7 @@ const Pricing = () => {
         : [],
       cta: t('landing.pricing.plans.pro.cta'),
       highlighted: true,
-      href: "/app/novo-relatorio",
+      href: reportHref,
     },
     {
       name: t('landing.pricing.plans.business.name'),

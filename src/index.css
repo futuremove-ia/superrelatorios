@@ -1,3 +1,13 @@
+@import "@fontsource/fira-sans/300.css";
+@import "@fontsource/fira-sans/400.css";
+@import "@fontsource/fira-sans/500.css";
+@import "@fontsource/fira-sans/600.css";
+@import "@fontsource/fira-sans/700.css";
+@import "@fontsource/fira-code/400.css";
+@import "@fontsource/fira-code/500.css";
+@import "@fontsource/fira-code/600.css";
+@import "@fontsource/fira-code/700.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,25 +23,25 @@ All colors MUST be HSL.
     --background-dark: 220 13% 5%;
     --background-subtle-light: 0 0% 98%;
     --background-subtle-dark: 220 13% 7%;
-    
+
     /* DSP Foreground System */
     --foreground-light: 210 24% 8%;
     --foreground-dark: 0 0% 98%;
     --foreground-muted-light: 215 16% 47%;
     --foreground-muted-dark: 215 20% 65%;
-    
+
     /* DSP Border System */
     --border-light: 211 20% 94%;
     --border-dark: 215 28% 17%;
-    
+
     /* Primary: Azul mais escuro */
     --primary: 217 91% 27%; /* #1e40af */
     --primary-foreground: 0 0% 100%;
-    
+
     /* DSP Accent */
     --accent: 38 92% 50%; /* #F59E0B */
     --accent-foreground: 0 0% 100%;
-    
+
     /* DSP Status */
     --status-positive: 142 76% 36%;
     --status-negative: 0 84% 60%;
@@ -39,8 +49,8 @@ All colors MUST be HSL.
     --status-pending: 38 92% 50%;
 
     /* Base System Colors (Compatibilidade) */
-    --background: 0 0% 100%;
-    --foreground: 222 84% 4.9%;
+    --background: 210 40% 98%; /* Slate 50 */
+    --foreground: 224 64% 33%; /* Blue 900 */
     --card: 0 0% 100%;
     --card-foreground: 222 84% 4.9%;
     --popover: 0 0% 100%;
@@ -51,7 +61,7 @@ All colors MUST be HSL.
     --primary-foreground-legacy: 0 0% 100%;
     --primary-dark: 220 91% 15%;
     --primary-dark-foreground: 0 0% 100%;
-    
+
     /* Brand Colors */
     --brand-super: 222 84% 4.9%;
     --brand-relatorios: 217 91% 27%;
@@ -127,7 +137,7 @@ All colors MUST be HSL.
     --primary-foreground-legacy: 222 84% 4.9%;
     --primary-dark: 220 91% 15%;
     --primary-dark-foreground: 210 40% 98%;
-    
+
     --brand-super: 210 40% 98%;
     --brand-relatorios: 217.2 91.2% 59.8%;
 
@@ -172,51 +182,47 @@ All colors MUST be HSL.
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   }
 
   /* Typography hierarchy - DSP Aligned */
-  h1, h2, h3, h4, h5, h6 {
-    
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
   }
 
   h1 {
-    
   }
 
   h2 {
-    
   }
 
   h3 {
-    
   }
 
   h4 {
-    
   }
 
   h5 {
-    
   }
 
   h6 {
-    
   }
 
   /* Typography base */
-  p, span, div {
-    
+  p,
+  span,
+  div {
   }
 
   /* Typography for metrics */
   .metric {
-    
   }
 
   /* Typography for labels */
   .label {
-    
   }
 
   /* Sections with scroll margin for fixed header */
@@ -247,95 +253,79 @@ All colors MUST be HSL.
 @layer components {
   /* Card System - Premium Elevation & Refined Borders */
   .card-hover {
-    
   }
 
   .card-interactive {
-    
   }
 
   /* Badge System */
   .badge-success {
-    
   }
 
   .badge-warning {
-    
   }
 
   .badge-error {
-    
   }
 
   .badge-info {
-    
   }
 
   /* Animation Utilities */
   .animate-in {
-    
   }
 
   .fade-in {
-    
     animation: fadeIn 0.3s ease-out forwards;
   }
 
   .slide-up {
-    
     animation: slideUp 0.3s ease-out forwards;
   }
 
   /* Gradient subtle background */
   .bg-gradient-subtle {
-    background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted) / 0.5) 100%);
+    background: linear-gradient(
+      135deg,
+      hsl(var(--background)) 0%,
+      hsl(var(--muted) / 0.5) 100%
+    );
   }
 
   /* Hover scale utility */
   .hover-scale {
-    
   }
 
   /* Responsive Text Utilities */
   .text-responsive-xs {
-    
   }
 
   .text-responsive-sm {
-    
   }
 
   .text-responsive-base {
-    
   }
 
   .text-responsive-lg {
-    
   }
 
   .text-responsive-xl {
-    
   }
 
   .text-responsive-2xl {
-    
   }
 
   /* Premium Shine Effect */
   .btn-shine {
-    
   }
 
   .btn-shine::after {
-    content: '';
-    
+    content: "";
   }
 
   .btn-shine:hover::after {
-    
   }
 }
-
 
 @keyframes fadeIn {
   to {
@@ -375,11 +365,9 @@ All colors MUST be HSL.
   /* High contrast mode support */
   @media (prefers-contrast: high) {
     .text-muted-foreground {
-      
     }
-    
+
     .border-muted {
-      
     }
   }
 
@@ -407,18 +395,15 @@ All colors MUST be HSL.
 
   /* Mobile-first responsive containers */
   .container-fluid {
-    
   }
 
   @media (min-width: 640px) {
     .container-fluid {
-      
     }
   }
 
   @media (min-width: 1024px) {
     .container-fluid {
-      
     }
   }
 
@@ -437,7 +422,6 @@ All colors MUST be HSL.
 
   /* Fixed mobile bottom bar */
   .mobile-bottom-bar {
-    
     padding-bottom: calc(16px + env(safe-area-inset-bottom));
   }
 
@@ -456,11 +440,9 @@ All colors MUST be HSL.
 
   /* Loading and skeleton states */
   .skeleton {
-    
   }
 
   .loading-spinner {
-    
   }
 
   /* Better text readability */
@@ -471,7 +453,6 @@ All colors MUST be HSL.
 
   /* Improved button states */
   .btn-enhanced {
-    
   }
 
   /* Scroll behavior enhancements */
@@ -489,132 +470,99 @@ All colors MUST be HSL.
 
   /* DSP Typography Classes */
   .typography-h1 {
-    
   }
 
   .typography-h2 {
-    
   }
 
   .typography-label {
-    
   }
 
   .typography-body {
-    
   }
 
   .typography-metric {
-    
   }
 
   /* DSP Card System */
   .card-dsp {
-    
-    
-    
-    
   }
 
   /* DSP Information Flow */
   .information-flow {
-    
   }
 
   .problem-section {
-    
   }
 
   .action-section {
-    
   }
 
   .metric-section {
-    
   }
 
   /* DSP Status Colors */
   .status-positive {
-    
   }
 
   .status-negative {
-    
   }
 
   .status-neutral {
-    
   }
 
   .status-pending {
-    
   }
 
   /* DSP Spacing */
   .space-y-section {
-    
   }
 
   .space-y-element {
-    
   }
 
   .space-y-tight {
-    
   }
 
   .space-x-section {
-    
   }
 
   .space-x-element {
-    
   }
 
   .space-x-tight {
-    
   }
 
   /* DSP Background Colors */
   .bg-dsp-light {
-    
   }
 
   .bg-dsp-dark {
-    
   }
 
   .bg-dsp-subtle-light {
-    
   }
 
   .bg-dsp-subtle-dark {
-    
   }
 
   /* DSP Text Colors */
   .text-dsp-light {
-    
   }
 
   .text-dsp-dark {
-    
   }
 
   .text-dsp-muted-light {
-    
   }
 
   .text-dsp-muted-dark {
-    
   }
 
   /* DSP Border Colors */
   .border-dsp-light {
-    
   }
 
   .border-dsp-dark {
-    
   }
 }

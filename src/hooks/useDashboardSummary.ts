@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
 
-interface DashboardSummary {
+/** Resumo do dashboard alinhado aos rótulos exibidos na UI (sem reuso enganoso de campos). */
+export interface DashboardSummary {
   totalReports: number;
-  activeUsers: number;
-  recentActivity: number;
-  completionRate: number;
-  estimatedImpact: string;
+  completedReports: number;
+  completionRatePercent: number;
+  reportsCreatedLast7Days: number;
 }
 
 export const useDashboardSummary = () => {
@@ -22,13 +22,11 @@ export const useDashboardSummary = () => {
         setLoading(true);
 
         if (isDemoMode) {
-          // Demo mode mock
           setData({
             totalReports: 24,
-            activeUsers: 12,
-            recentActivity: 78,
-            completionRate: 85,
-            estimatedImpact: "R$45K",
+            completedReports: 20,
+            completionRatePercent: 83,
+            reportsCreatedLast7Days: 5,
           });
           setLoading(false);
           return;
@@ -40,33 +38,23 @@ export const useDashboardSummary = () => {
 
         if (reportsError) throw reportsError;
 
-        const totalReports = reports ? reports.length : 0;
-        const completedReports = reports
-          ? reports.filter((r) => r.status === "completed").length
-          : 0;
-        const completionRate =
-          totalReports > 0 ? (completedReports / totalReports) * 100 : 0;
+        const list = reports ?? [];
+        const totalReports = list.length;
+        const completedReports = list.filter((r) => r.status === "completed").length;
+        const completionRatePercent =
+          totalReports > 0 ? Math.round((completedReports / totalReports) * 100) : 0;
 
-        // Simulação de atividades recentes (relatórios nos últimos 7 dias)
-        const recentActivity = reports
-          ? reports.filter((r) => {
-              if (!r.created_at) return false;
-              return (
-                new Date(r.created_at).getTime() >
-                Date.now() - 7 * 24 * 60 * 60 * 1000
-              );
-            }).length
-          : 0;
-
-        // Aqui você integraria com a tabela de prioridades reais
-        const activePrioritiesCount = 3;
+        const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+        const reportsCreatedLast7Days = list.filter((r) => {
+          if (!r.created_at) return false;
+          return new Date(r.created_at).getTime() > weekAgo;
+        }).length;
 
         setData({
           totalReports,
-          activeUsers: activePrioritiesCount, // Reaproveitando propriedade para "Prioridades"
-          recentActivity: Math.round(completionRate), // Reaproveitando para "Taxa Execução"
-          completionRate: totalReports, // Reaproveitando para "Relatórios Criados"
-          estimatedImpact: "R$" + (totalReports * 1.5 || 0).toFixed(1) + "K",
+          completedReports,
+          completionRatePercent,
+          reportsCreatedLast7Days,
         });
       } catch (err) {
         console.error("Dashboard summary error:", err);

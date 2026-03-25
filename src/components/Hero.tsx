@@ -2,9 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Play, CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { newReportPath } from "@/lib/appPaths";
 
 const Hero = () => {
   const { t, i18n } = useTranslation();
+  const builderWithTemplate = `${newReportPath(i18n.language)}?template=executive-quarterly`;
   return (
     <section className="min-h-[85vh] md:min-h-screen bg-primary flex items-center justify-center relative overflow-hidden">
       {/* Background decorative elements */}
@@ -35,11 +37,7 @@ const Hero = () => {
               className="text-base sm:text-lg px-6 sm:px-8 py-4 w-full sm:w-auto"
               asChild
             >
-              <Link
-                to={`/${i18n.language}/app/reports/new?template=executive-quarterly`}
-              >
-                {t("landing.hero.cta_main")}
-              </Link>
+              <Link to={builderWithTemplate}>{t("landing.hero.cta_main")}</Link>
             </Button>
 
             <Button

@@ -18,7 +18,8 @@ import {
   Eye,
   ArrowRight,
   Plus,
-  Search
+  Search,
+  Info,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -343,6 +344,19 @@ const MetricsDashboard = () => {
           </Button>
         </div>
       </div>
+
+      <Alert
+        className="border-blue-200 bg-blue-50 dark:bg-blue-950/20 dark:border-blue-900"
+        data-testid="metrics-demo-kpis-banner"
+      >
+        <Info className="h-4 w-4 text-blue-600" />
+        <AlertDescription className="text-blue-900 dark:text-blue-100">
+          {t("metrics_dashboard.demo_kpi_alert", {
+            defaultValue:
+              "Os cartões de resumo abaixo usam valores de demonstração. Métricas reais aparecem conforme seus dados e configurações.",
+          })}
+        </AlertDescription>
+      </Alert>
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">

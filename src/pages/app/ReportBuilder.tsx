@@ -1,17 +1,18 @@
 import { useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { ArrowRight, CheckCircle, ArrowLeft, Sparkles, Database, Brain, FileText, Eye } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { mockTemplates } from '@/services/mockReports';
 import { useToast } from '@/hooks/use-toast';
 import { ReportBuilderProvider, useReportBuilderContext } from '@/contexts/ReportBuilderContext';
-import { useCreateReport } from '@/hooks/useReports';
 import { parseFile } from '@/services/fileParserService';
 import { analyzeDataWithAI } from '@/services/aiService';
 import { saveReportWithMetrics } from '@/services/reportPersistenceService';
 import { supabase } from '@/lib/supabase';
 import { useTranslation } from 'react-i18next';
+import { appHomePath } from '@/lib/appPaths';
 import { AISidebar } from '@/components/ai/AISidebar';
 
 // Step Components
@@ -24,8 +25,9 @@ import { PreviewStep } from './components/report-builder/PreviewStep';
 const ReportBuilderContent = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   
   const steps = [
     { title: t('builder.steps.summary.data.title'), description: t('builder.steps.summary.data.desc'), icon: Database, key: 'data' },
@@ -50,8 +52,6 @@ const ReportBuilderContent = () => {
     enrichedDiagnostic,
     runAIAnalysis
   } = useReportBuilderContext();
-
-  const { mutateAsync: createReport } = useCreateReport();
 
   // Check if template was pre-selected from URL
   useEffect(() => {
@@ -137,7 +137,8 @@ const ReportBuilderContent = () => {
         title: t('builder.toasts.save_success_title'), 
         description: `${t('builder.toasts.save_success_desc')} (${result.metricsCount} métricas extraídas, ${result.challengeCreated ? 'desafio criado' : 'desafio atualizado'})` 
       });
-      navigate('/app');
+      await queryClient.invalidateQueries({ queryKey: ['reports'] });
+      navigate(appHomePath(i18n.language));
     } catch (error: any) {
       toast({ title: t('builder.errors.save_title'), description: error?.message || t('builder.errors.save_generic'), variant: 'destructive' });
     } finally {
@@ -155,7 +156,7 @@ const ReportBuilderContent = () => {
           <Button 
             variant="ghost" 
             size="sm" 
-            onClick={() => navigate('/app')}
+            onClick={() => navigate(appHomePath(i18n.language))}
             className="flex items-center gap-2"
           >
             <ArrowLeft className="h-4 w-4" />

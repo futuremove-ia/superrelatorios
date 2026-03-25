@@ -22,6 +22,11 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   DropdownMenu,
@@ -43,6 +48,7 @@ import { I18nSEO } from "./SEO/I18nSEO";
 import DemoModeBanner from "@/components/onboarding/DemoModeBanner";
 import { useTranslation } from "react-i18next";
 import { useI18nRouter } from "@/hooks/useI18nRouter";
+import { profilePath, settingsPath } from "@/lib/appPaths";
 
 const AppLayout = () => {
   const { user, signOut } = useAuth();
@@ -68,7 +74,7 @@ const AppLayout = () => {
       <div className="border-t p-4">
         <div className="space-y-2">
           <Link
-            to={`/${currentLanguage}/app/configuracoes`}
+            to={settingsPath(currentLanguage)}
             onClick={() => setSidebarOpen(false)}
             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
           >
@@ -113,16 +119,29 @@ const AppLayout = () => {
               <Menu className="h-5 w-5" />
             </Button>
 
-            {/* Search */}
-            <div className="flex-1 max-w-md hidden sm:block">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                <Input
-                  placeholder={t("search.placeholder")}
-                  className="pl-10 bg-muted/50 border-muted focus:border-primary transition-colors"
-                />
-              </div>
-            </div>
+            {/* Busca global: placeholder até haver produto (OP-014) */}
+            <Tooltip delayDuration={300}>
+              <TooltipTrigger asChild>
+                <div className="flex-1 max-w-md hidden sm:block">
+                  <div className="relative rounded-md border border-transparent">
+                    <Search
+                      className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 pointer-events-none"
+                      aria-hidden
+                    />
+                    <Input
+                      readOnly
+                      tabIndex={-1}
+                      placeholder={t("search.placeholder")}
+                      className="pl-10 bg-muted/50 border-muted cursor-default pointer-events-none opacity-80"
+                      aria-disabled="true"
+                    />
+                  </div>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent side="bottom" className="max-w-xs">
+                {t("search.coming_soon")}
+              </TooltipContent>
+            </Tooltip>
 
             {/* Right Side */}
             <div className="flex items-center gap-2 ml-auto">
@@ -132,14 +151,24 @@ const AppLayout = () => {
                   size="sm"
                   className="relative hover-scale"
                 />
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="relative hover-scale"
-                  aria-label={t("nav.notifications")}
-                >
-                  <Bell className="h-5 w-5" />
-                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="relative hover-scale"
+                      aria-label={t("nav.notifications")}
+                      aria-haspopup="menu"
+                    >
+                      <Bell className="h-5 w-5" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-64">
+                    <p className="px-2 py-3 text-sm text-muted-foreground">
+                      {t("nav.notifications_empty")}
+                    </p>
+                  </DropdownMenuContent>
+                </DropdownMenu>
 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -168,13 +197,13 @@ const AppLayout = () => {
                     </div>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <Link to={`/${currentLanguage}/app/perfil`}>
+                      <Link to={profilePath(currentLanguage)}>
                         <User className="mr-2 h-4 w-4" />
                         {t("nav.profile")}
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link to={`/${currentLanguage}/app/configuracoes`}>
+                      <Link to={settingsPath(currentLanguage)}>
                         <Settings className="mr-2 h-4 w-4" />
                         {t("nav.settings")}
                       </Link>
