@@ -3,6 +3,7 @@ import { CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import BrandName from "@/components/BrandName";
 import { useTranslation } from "react-i18next";
+import { newReportPath } from "@/lib/appPaths";
 
 const CTA = () => {
   const { t, i18n } = useTranslation();
@@ -31,7 +32,7 @@ const CTA = () => {
             className="text-lg px-12 py-4 mb-8"
             asChild
           >
-            <Link to={`/${i18n.language}/app/reports/new`}>
+            <Link to={newReportPath(i18n.language)}>
               {t("landing.cta.button")}
             </Link>
           </Button>

@@ -6,9 +6,11 @@ import BrandName from "@/components/BrandName";
 import LogoIcon from "@/components/LogoIcon";
 import { useTranslation } from "react-i18next";
 import { LanguageToggle } from "./LanguageToggle";
+import { newReportPath } from "@/lib/appPaths";
 
 const Header = () => {
   const { t, i18n } = useTranslation();
+  const reportHref = newReportPath(i18n.language);
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
@@ -84,9 +86,7 @@ const Header = () => {
                   {t("landing.nav_links.pricing")}
                 </a>
                 <Button variant="accent" className="mt-4" asChild>
-                  <Link to={`/${i18n.language}/app/reports/new`}>
-                    {t("landing.nav_links.cta")}
-                  </Link>
+                  <Link to={reportHref}>{t("landing.nav_links.cta")}</Link>
                 </Button>
               </nav>
             </SheetContent>
