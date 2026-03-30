@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { AISidebar } from '@/components/ai/AISidebar';
 import { reportsService, Report } from '@/services/mockReports';
 import { useTranslation } from 'react-i18next';
 
@@ -349,9 +348,6 @@ const ReportsList = () => {
             </Card>
           )}
         </div>
-
-        {/* AI Sidebar - Collapsible */}
-        <AISidebar context="reports" className="hidden xl:block" />
       </div>
     </div>
   );

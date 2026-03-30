@@ -12,7 +12,6 @@ import { analyzeDataWithAI } from '@/services/aiService';
 import { saveReportWithMetrics } from '@/services/reportPersistenceService';
 import { supabase } from '@/lib/supabase';
 import { useTranslation } from 'react-i18next';
-import { AISidebar } from '@/components/ai/AISidebar';
 
 // Step Components
 import { DataInputStep } from './components/report-builder/DataInputStep';
@@ -239,9 +238,6 @@ const ReportBuilderContent = () => {
               </div>
             </div>
           </main>
-
-          {/* Right Sidebar - Collapsible AI Assistance */}
-          <AISidebar context="builder" className="hidden xl:block h-full" />
         </div>
       </div>
 

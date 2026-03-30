@@ -7,10 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { FloatingButton } from '@/components/ui/floating-button';
-import { AISidebar } from '@/components/ai/AISidebar';
 import { Grid, List } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-
 
 interface FolderData {
   id: string;
@@ -362,9 +360,6 @@ const Folders = () => {
             )
           )}
         </div>
-
-        {/* AI Sidebar */}
-        <AISidebar context="reports" className="hidden xl:block" />
       </div>
 
       {/* Floating Action Button */}
