@@ -78,7 +78,8 @@
     "reports": "Relatórios"
   },
   "nav": {
-    "overview": "Visão Geral",
+    "overview": "Início",
+    "radar": "Radar",
     "metrics": "Indicadores",
     "decision_panel": "Painel de Decisão",
     "analytics": "Analytics",
@@ -99,7 +100,7 @@
     "metrics_config": "Configurar Métricas"
   },
   "routes": {
-    "dashboard": "Visão Geral",
+    "dashboard": "Painel de Controle",
     "reports": "Relatórios",
     "reports_new": "Novo Relatório",
     "metrics": "Indicadores",
@@ -545,8 +546,8 @@
     "return_home": "Voltar para o início"
   },
   "dashboard": {
-    "title": "Painel Principal",
-    "subtitle": "Visão geral das métricas e performance",
+    "title": "Painel de Controle",
+    "subtitle": "Monitoramento de Sobrevivência, Estabilidade e Crescimento.",
     "period": {
       "month": "Mês",
       "quarter": "Trimestre",

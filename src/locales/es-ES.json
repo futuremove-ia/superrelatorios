@@ -331,6 +331,8 @@
     }
   },
   "nav": {
+    "overview": "Inicio",
+    "radar": "Radar",
     "dashboard": "Panel Principal",
     "reports": "Mis Reportes",
     "folders": "Mis Carpetas",
@@ -343,6 +345,21 @@
     "open_menu": "Abrir Menú",
     "user_menu": "Menú de Usuario",
     "notifications": "Notificaciones"
+  },
+  "routes": {
+    "dashboard": "Panel de Control",
+    "reports": "Reportes",
+    "reports_new": "Nuevo Reporte",
+    "metrics": "Indicadores",
+    "metrics_config": "Configurar Métricas",
+    "decision_panel": "Panel de Decisión",
+    "analytics": "Analytics",
+    "consolidated": "Consolidado",
+    "priorities": "Prioridades",
+    "action_plan": "Plan de Acción",
+    "data": "Mis Datos",
+    "profile": "Perfil",
+    "settings": "Configuraciones"
   },
   "dashboard": {
     "welcome": "¡Bienvenido de nuevo! ¿Analizamos algo nuevo hoy?",
@@ -1072,8 +1089,8 @@
     "thank_you": "Gracias"
   },
   "dashboard": {
-    "title": "Panel Principal",
-    "subtitle": "Resumen de métricas y rendimiento",
+    "title": "Panel de Control",
+    "subtitle": "Monitoreo de Supervivencia, Estabilidad y Crecimiento.",
     "period": {
       "month": "Mes",
       "quarter": "Trimestre", 

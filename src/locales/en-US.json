@@ -54,7 +54,8 @@
     "reports": "Reports"
   },
   "nav": {
-    "overview": "Overview",
+    "overview": "Home",
+    "radar": "Radar",
     "metrics": "Metrics",
     "decision_panel": "Decision Panel",
     "analytics": "Analytics",
@@ -517,8 +518,8 @@
     "return_home": "Return to home"
   },
   "dashboard": {
-    "title": "Main Dashboard",
-    "subtitle": "Overview of metrics and performance",
+    "title": "Control Panel",
+    "subtitle": "Monitoring Survival, Stability and Growth.",
     "period": {
       "month": "Month",
       "quarter": "Quarter",

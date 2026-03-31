@@ -44,6 +44,8 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const Login = lazy(() => import("./pages/auth/Login"));
 const AuthCallback = lazy(() => import("./pages/auth/AuthCallback"));
 const AppLayout = lazy(() => import("./components/AppLayout"));
+const DesignSystem = lazy(() => import("./pages/design-system"));
+const Flows = lazy(() => import("./pages/Flows"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -115,6 +117,18 @@ const App = () => (
                   <Route path="/es-ES/login" element={<Login />} />
                   <Route path="/login" element={<Login />} />
 
+                  {/* Design System - Public */}
+                  <Route path="/design-system/*" element={<DesignSystem />} />
+                  <Route path="/pt-BR/design-system/*" element={<DesignSystem />} />
+                  <Route path="/en-US/design-system/*" element={<DesignSystem />} />
+                  <Route path="/es-ES/design-system/*" element={<DesignSystem />} />
+
+                  {/* Flows - Public */}
+                  <Route path="/flows" element={<Flows />} />
+                  <Route path="/pt-BR/flows" element={<Flows />} />
+                  <Route path="/en-US/flows" element={<Flows />} />
+                  <Route path="/es-ES/flows" element={<Flows />} />
+
                   <Route
                     path="/:locale/app"
                     element={
@@ -137,6 +151,7 @@ const App = () => (
                     <Route path="metrics/config" element={<MetricsConfig />} />
                     <Route path="analytics" element={<AdvancedAnalytics />} />
                     <Route path="decision-panel" element={<DecisionPanel />} />
+                    <Route path="radar" element={<Radar />} />
                     <Route path="painel-decisao" element={<DecisionPanel />} />
                     <Route path="panel-decision" element={<DecisionPanel />} />
                     <Route

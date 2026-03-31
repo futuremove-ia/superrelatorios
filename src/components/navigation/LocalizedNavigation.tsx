@@ -16,6 +16,7 @@ import {
   TrendingUp,
   PieChart,
   Zap,
+  Radar as RadarIcon,
 } from "lucide-react";
 
 interface LocalizedNavigationProps {
@@ -35,9 +36,14 @@ export const LocalizedNavigation: React.FC<LocalizedNavigationProps> = ({
   const navigationMap = {
     "pt-BR": [
       {
-        name: t("nav.overview", { defaultValue: "Visão Geral" }),
+        name: t("nav.overview", { defaultValue: "Início" }),
         href: "/pt-BR/app",
         icon: LayoutDashboard,
+      },
+      {
+        name: t("nav.radar", { defaultValue: "Radar" }),
+        href: "/pt-BR/app/radar",
+        icon: RadarIcon,
       },
       {
         name: t("nav.metrics", { defaultValue: "Indicadores" }),
@@ -129,9 +135,14 @@ export const LocalizedNavigation: React.FC<LocalizedNavigationProps> = ({
     ],
     "es-ES": [
       {
-        name: t("nav.overview", { defaultValue: "Visión General" }),
+        name: t("nav.overview", { defaultValue: "Inicio" }),
         href: "/es-ES/app",
         icon: LayoutDashboard,
+      },
+      {
+        name: t("nav.radar", { defaultValue: "Radar" }),
+        href: "/es-ES/app/radar",
+        icon: RadarIcon,
       },
       {
         name: t("nav.metrics", { defaultValue: "Métricas" }),

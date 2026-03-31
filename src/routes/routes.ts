@@ -10,6 +10,7 @@ export interface RouteMap {
 export const routeMap: RouteMap = {
   "pt-BR": {
     "/": "/pt-BR",
+    "/flows": "/pt-BR/flows",
     "/login": "/pt-BR/login",
     "/app": "/pt-BR/app",
     "/app/relatorios": "/pt-BR/app/reports",
@@ -34,6 +35,7 @@ export const routeMap: RouteMap = {
   },
   "en-US": {
     "/": "/en-US",
+    "/flows": "/en-US/flows",
     "/login": "/en-US/login",
     "/app": "/en-US/app",
     "/app/reports": "/en-US/app/reports",
@@ -58,6 +60,7 @@ export const routeMap: RouteMap = {
   },
   "es-ES": {
     "/": "/es-ES",
+    "/flows": "/es-ES/flows",
     "/login": "/es-ES/login",
     "/app": "/es-ES/app",
     "/app/informes": "/es-ES/app/reports",
