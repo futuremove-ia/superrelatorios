@@ -39,7 +39,7 @@ const OrganizationManager = lazy(
 const TemplateManager = lazy(() => import("./pages/app/TemplateManager"));
 const DecisionPanel = lazy(() => import("./pages/app/DecisionPanel"));
 const MetricsConfig = lazy(() => import("./pages/app/MetricsConfig"));
-const AdvancedAnalytics = lazy(() => import("./pages/app/AdvancedAnalytics"));
+const AdvancedAnalytics = lazy(() => import("./pages/app/Analytics"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Login = lazy(() => import("./pages/auth/Login"));
 const AuthCallback = lazy(() => import("./pages/auth/AuthCallback"));
