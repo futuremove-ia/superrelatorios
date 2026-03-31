@@ -17,7 +17,7 @@ import LocaleGuard from "@/components/navigation/LocaleGuard";
 
 // Lazy loaded pages
 const Index = lazy(() => import("./pages/Index"));
-const Dashboard = lazy(() => import("./pages/app/Dashboard-Atualizado"));
+const Dashboard = lazy(() => import("./pages/app/ControlPanel"));
 const ReportsList = lazy(() => import("./pages/app/ReportsList"));
 const ReportBuilder = lazy(() => import("./pages/app/ReportBuilder"));
 const ReportDetail = lazy(() => import("./pages/app/ReportDetail"));
