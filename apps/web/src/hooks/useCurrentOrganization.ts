@@ -44,39 +44,35 @@ async function fetchOrganizationByUser(
     };
   }
 
-  // Buscar organização real vinculada ao usuário
-  const { data, error } = await supabase
-    .from("organizations")
-    .select("id, name, slug, created_at")
-    .eq("owner_id", userId)
+  // Buscar organização via profiles (tabela correta no banco)
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("organization_id")
+    .eq("user_id", userId)
     .single();
 
-  if (error) {
-    // Se não encontrar por owner_id, tentar pelo campo user_id (fallback)
-    const { data: fallback, error: fallbackError } = await supabase
-      .from("organizations")
-      .select("id, name, slug, created_at")
-      .eq("user_id", userId)
-      .single();
+  if (profileError || !profile?.organization_id) {
+    console.warn("Profile or organization not found for user:", userId);
+    return null;
+  }
 
-    if (fallbackError) {
-      console.warn("Organization not found for user:", userId);
-      return null;
-    }
+  // Buscar dados da organização
+  const { data: org, error: orgError } = await supabase
+    .from("organizations")
+    .select("id, name, slug, created_at")
+    .eq("id", profile.organization_id)
+    .single();
 
-    return {
-      id: fallback.id,
-      name: fallback.name,
-      slug: fallback.slug,
-      createdAt: fallback.created_at,
-    };
+  if (orgError) {
+    console.warn("Organization not found:", profile.organization_id);
+    return null;
   }
 
   return {
-    id: data.id,
-    name: data.name,
-    slug: data.slug,
-    createdAt: data.created_at,
+    id: org.id,
+    name: org.name,
+    slug: org.slug,
+    createdAt: org.created_at,
   };
 }
 
