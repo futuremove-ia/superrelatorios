@@ -1,0 +1,414 @@
+{
+  "files": {
+    "apps/web/dist/assets/Radar-DNWSCdZG.js": {
+      "size": 24624,
+      "mtime_nanos": 1775067473270194000,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/SupabaseConnectionTest-B34t9lT8.js": {
+      "size": 6988,
+      "mtime_nanos": 1775067473271208700,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/LogoIcon-DDoK1mWW.js": {
+      "size": 604,
+      "mtime_nanos": 1775067473270194000,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/MetricsDashboard-Otimizado-IO-2_jqc.js": {
+      "size": 19860,
+      "mtime_nanos": 1775067473267408200,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/mockReports-3cW05Ka2.js": {
+      "size": 7346,
+      "mtime_nanos": 1775067473267408200,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/BrandName-Cfb7lsLO.js": {
+      "size": 1007,
+      "mtime_nanos": 1775067473271208700,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/mockBusiness-Ba7JG3Ae.js": {
+      "size": 2884,
+      "mtime_nanos": 1775067473267408200,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/MetricsConfig-B9igLxv_.js": {
+      "size": 14324,
+      "mtime_nanos": 1775067473270194000,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/FolderDetail-Ce0i7oLW.js": {
+      "size": 7447,
+      "mtime_nanos": 1775067473267408200,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/useMutation-Bm6B-fB6.js": {
+      "size": 2914,
+      "mtime_nanos": 1775067473271208700,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/radarItemService-DLp7Z56m.js": {
+      "size": 12115,
+      "mtime_nanos": 1775067473271208700,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/badge-DD2chybY.js": {
+      "size": 710,
+      "mtime_nanos": 1775067473271208700,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/ReportDetail-C5nHL9zk.js": {
+      "size": 11508,
+      "mtime_nanos": 1775067473267408200,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/.turbo/turbo-build.log": {
+      "size": 7811,
+      "mtime_nanos": 1775067474121747000,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/index-DRWQgA5q.js": {
+      "size": 893723,
+      "mtime_nanos": 1775067473272242800,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/ConsolidatedDashboard-Atualizado-B1hDnZaF.js": {
+      "size": 15045,
+      "mtime_nanos": 1775067473267408200,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/TemplateManager-Bpw_ZFvU.js": {
+      "size": 12812,
+      "mtime_nanos": 1775067473269425000,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/use-toast-BUB6lCCL.js": {
+      "size": 1212,
+      "mtime_nanos": 1775067473269425000,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/Login-CFdWu3R9.js": {
+      "size": 4726,
+      "mtime_nanos": 1775067473270194000,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/useMetricsLibrary-XBP0Fd36.js": {
+      "size": 311,
+      "mtime_nanos": 1775067473270194000,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/router-XBfdTQ0K.js": {
+      "size": 165314,
+      "mtime_nanos": 1775067473265378300,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/Analytics-BmjeH0AU.js": {
+      "size": 20802,
+      "mtime_nanos": 1775067473270194000,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/NotFound-BFc6ixsg.js": {
+      "size": 925,
+      "mtime_nanos": 1775067473270194000,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/AuthCallback-vjOgqOiP.js": {
+      "size": 824,
+      "mtime_nanos": 1775067473270194000,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/useRadarItems-DdsbfOae.js": {
+      "size": 1330,
+      "mtime_nanos": 1775067473271208700,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/utils-Er8ll4su.js": {
+      "size": 73406,
+      "mtime_nanos": 1775067473267408200,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/Flows-BgSovp_A.js": {
+      "size": 3809,
+      "mtime_nanos": 1775067473271208700,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/placeholder.svg": {
+      "size": 3253,
+      "mtime_nanos": 1774834050254098600,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/AppLayout-D_tt6hDf.js": {
+      "size": 14461,
+      "mtime_nanos": 1775067473270194000,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets": {
+      "size": 0,
+      "mtime_nanos": 0,
+      "mode": 0,
+      "is_dir": true
+    },
+    "apps/web/dist/assets/PriorityCard-DylADg1e.js": {
+      "size": 2056,
+      "mtime_nanos": 1775067473267408200,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/types-JQgdQoTs.js": {
+      "size": 59179,
+      "mtime_nanos": 1775067473272242800,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/icon-512.png": {
+      "size": 16658,
+      "mtime_nanos": 1774834050251315300,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/manifest.json": {
+      "size": 683,
+      "mtime_nanos": 1774834050251315300,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist": { "size": 0, "mtime_nanos": 0, "mode": 0, "is_dir": true },
+    "apps/web/dist/assets/ReportsList-DgHnAMSh.js": {
+      "size": 11039,
+      "mtime_nanos": 1775067473267408200,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/DiagnosticSection-7A-7X37n.js": {
+      "size": 24003,
+      "mtime_nanos": 1775067473267408200,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/Priorities-COPCsrOR.js": {
+      "size": 10282,
+      "mtime_nanos": 1775067473267408200,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/DomainTag-CESWA3VE.js": {
+      "size": 3070,
+      "mtime_nanos": 1775067473270194000,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/vendor-jCADqgT7.js": {
+      "size": 30,
+      "mtime_nanos": 1775067473265378300,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/ActionPlan-EjLvRxW3.js": {
+      "size": 8908,
+      "mtime_nanos": 1775067473267408200,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/PieChart-CZGG4NxX.js": {
+      "size": 371078,
+      "mtime_nanos": 1775067473269425000,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/OrganizationManager-BEHUDC0F.js": {
+      "size": 9774,
+      "mtime_nanos": 1775067473269425000,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/Index-Ckvduilw.js": {
+      "size": 37002,
+      "mtime_nanos": 1775067473265378300,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/Folders-CroQiCQO.js": {
+      "size": 10703,
+      "mtime_nanos": 1775067473267408200,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/useReports-D5xAhhIU.js": {
+      "size": 385,
+      "mtime_nanos": 1775067473267408200,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/Profile-CEUpDpyY.js": {
+      "size": 5036,
+      "mtime_nanos": 1775067473267408200,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/robots.txt": {
+      "size": 174,
+      "mtime_nanos": 1774834050254607400,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/index.html": {
+      "size": 1189,
+      "mtime_nanos": 1775067473271208700,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/ReportBuilder-CLiCCymH.js": {
+      "size": 927005,
+      "mtime_nanos": 1775067473272242800,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/kpi-card-DODMrT55.js": {
+      "size": 2206,
+      "mtime_nanos": 1775067473269425000,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/index-B5c-PsrM.js": {
+      "size": 156617,
+      "mtime_nanos": 1775067473271208700,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/DecisionPanel-DF0kxjrM.js": {
+      "size": 18805,
+      "mtime_nanos": 1775067473269425000,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/Settings-CUb4tXfc.js": {
+      "size": 11163,
+      "mtime_nanos": 1775067473267408200,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/useQuery-pMG9BRxa.js": {
+      "size": 10319,
+      "mtime_nanos": 1775067473271208700,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/riskService-Cr9Nt8xW.js": {
+      "size": 18386,
+      "mtime_nanos": 1775067473271208700,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/favicon.ico": {
+      "size": 7645,
+      "mtime_nanos": 1774834050249303800,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/ControlPanel-BtcFkw4q.js": {
+      "size": 15554,
+      "mtime_nanos": 1775067473265378300,
+      "mode": 420,
+      "is_dir": false
+    },
+    "apps/web/dist/assets/index-CkIYzqzH.css": {
+      "size": 82015,
+      "mtime_nanos": 1775067473258882900,
+      "mode": 420,
+      "is_dir": false
+    }
+  },
+  "order": [
+    "apps/web/.turbo/turbo-build.log",
+    "apps/web/dist",
+    "apps/web/dist/assets",
+    "apps/web/dist/assets/ActionPlan-EjLvRxW3.js",
+    "apps/web/dist/assets/Analytics-BmjeH0AU.js",
+    "apps/web/dist/assets/AppLayout-D_tt6hDf.js",
+    "apps/web/dist/assets/AuthCallback-vjOgqOiP.js",
+    "apps/web/dist/assets/BrandName-Cfb7lsLO.js",
+    "apps/web/dist/assets/ConsolidatedDashboard-Atualizado-B1hDnZaF.js",
+    "apps/web/dist/assets/ControlPanel-BtcFkw4q.js",
+    "apps/web/dist/assets/DecisionPanel-DF0kxjrM.js",
+    "apps/web/dist/assets/DiagnosticSection-7A-7X37n.js",
+    "apps/web/dist/assets/DomainTag-CESWA3VE.js",
+    "apps/web/dist/assets/Flows-BgSovp_A.js",
+    "apps/web/dist/assets/FolderDetail-Ce0i7oLW.js",
+    "apps/web/dist/assets/Folders-CroQiCQO.js",
+    "apps/web/dist/assets/Index-Ckvduilw.js",
+    "apps/web/dist/assets/Login-CFdWu3R9.js",
+    "apps/web/dist/assets/LogoIcon-DDoK1mWW.js",
+    "apps/web/dist/assets/MetricsConfig-B9igLxv_.js",
+    "apps/web/dist/assets/MetricsDashboard-Otimizado-IO-2_jqc.js",
+    "apps/web/dist/assets/NotFound-BFc6ixsg.js",
+    "apps/web/dist/assets/OrganizationManager-BEHUDC0F.js",
+    "apps/web/dist/assets/PieChart-CZGG4NxX.js",
+    "apps/web/dist/assets/Priorities-COPCsrOR.js",
+    "apps/web/dist/assets/PriorityCard-DylADg1e.js",
+    "apps/web/dist/assets/Profile-CEUpDpyY.js",
+    "apps/web/dist/assets/Radar-DNWSCdZG.js",
+    "apps/web/dist/assets/ReportBuilder-CLiCCymH.js",
+    "apps/web/dist/assets/ReportDetail-C5nHL9zk.js",
+    "apps/web/dist/assets/ReportsList-DgHnAMSh.js",
+    "apps/web/dist/assets/Settings-CUb4tXfc.js",
+    "apps/web/dist/assets/SupabaseConnectionTest-B34t9lT8.js",
+    "apps/web/dist/assets/TemplateManager-Bpw_ZFvU.js",
+    "apps/web/dist/assets/badge-DD2chybY.js",
+    "apps/web/dist/assets/index-B5c-PsrM.js",
+    "apps/web/dist/assets/index-CkIYzqzH.css",
+    "apps/web/dist/assets/index-DRWQgA5q.js",
+    "apps/web/dist/assets/kpi-card-DODMrT55.js",
+    "apps/web/dist/assets/mockBusiness-Ba7JG3Ae.js",
+    "apps/web/dist/assets/mockReports-3cW05Ka2.js",
+    "apps/web/dist/assets/radarItemService-DLp7Z56m.js",
+    "apps/web/dist/assets/riskService-Cr9Nt8xW.js",
+    "apps/web/dist/assets/router-XBfdTQ0K.js",
+    "apps/web/dist/assets/types-JQgdQoTs.js",
+    "apps/web/dist/assets/use-toast-BUB6lCCL.js",
+    "apps/web/dist/assets/useMetricsLibrary-XBP0Fd36.js",
+    "apps/web/dist/assets/useMutation-Bm6B-fB6.js",
+    "apps/web/dist/assets/useQuery-pMG9BRxa.js",
+    "apps/web/dist/assets/useRadarItems-DdsbfOae.js",
+    "apps/web/dist/assets/useReports-D5xAhhIU.js",
+    "apps/web/dist/assets/utils-Er8ll4su.js",
+    "apps/web/dist/assets/vendor-jCADqgT7.js",
+    "apps/web/dist/favicon.ico",
+    "apps/web/dist/icon-512.png",
+    "apps/web/dist/index.html",
+    "apps/web/dist/manifest.json",
+    "apps/web/dist/placeholder.svg",
+    "apps/web/dist/robots.txt"
+  ]
+}

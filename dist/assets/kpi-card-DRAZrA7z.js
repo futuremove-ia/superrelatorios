@@ -1,0 +1,123 @@
+import { j as e, c as r } from "./index-BNBvVWlM.js";
+import { C as u, a as b } from "./card-ChPN7OiP.js";
+import { B as h } from "./badge-BPr2YYbt.js";
+import { d as f, $ as j } from "./utils-CrQ_Kxni.js";
+const k = ({
+  title: l,
+  value: i,
+  icon: d,
+  trend: s,
+  subtitle: a,
+  variant: t = "default",
+  className: n,
+  role: c,
+  "aria-label": x,
+  style: o,
+}) => {
+  const m = () => {
+      switch (t) {
+        case "success":
+          return "border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950/20";
+        case "warning":
+          return "border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-950/20";
+        case "info":
+          return "border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950/20";
+        default:
+          return "";
+      }
+    },
+    g = () => {
+      switch (t) {
+        case "success":
+          return "text-green-600 dark:text-green-400";
+        case "warning":
+          return "text-yellow-600 dark:text-yellow-400";
+        case "info":
+          return "text-blue-600 dark:text-blue-400";
+        default:
+          return "text-primary";
+      }
+    };
+  return e.jsx(u, {
+    className: r("card-hover touch-target", m(), n),
+    style: o,
+    role: c,
+    "aria-label": x,
+    children: e.jsxs(b, {
+      className: "p-4 sm:p-6",
+      children: [
+        e.jsxs("div", {
+          className: "flex items-start justify-between",
+          children: [
+            e.jsxs("div", {
+              className: "flex-1",
+              children: [
+                e.jsxs("div", {
+                  className: "flex items-center gap-2 mb-2",
+                  children: [
+                    e.jsx(d, {
+                      className: r("h-4 w-4 sm:h-5 sm:w-5", g()),
+                      "aria-hidden": "true",
+                    }),
+                    e.jsx("p", {
+                      className:
+                        "text-xs sm:text-sm font-medium text-muted-foreground",
+                      children: l,
+                    }),
+                  ],
+                }),
+                e.jsxs("div", {
+                  className: "space-y-1",
+                  children: [
+                    e.jsx("p", {
+                      className:
+                        "text-2xl sm:text-3xl font-bold text-foreground",
+                      children: i,
+                    }),
+                    a &&
+                      e.jsx("p", {
+                        className: "text-xs sm:text-sm text-muted-foreground",
+                        children: a,
+                      }),
+                  ],
+                }),
+              ],
+            }),
+            s &&
+              e.jsxs("div", {
+                className: "flex items-center gap-1",
+                children: [
+                  s.isPositive
+                    ? e.jsx(f, {
+                        className: "h-3 w-3 sm:h-4 sm:w-4 text-green-600",
+                        "aria-hidden": "true",
+                      })
+                    : e.jsx(j, {
+                        className: "h-3 w-3 sm:h-4 sm:w-4 text-red-600",
+                        "aria-hidden": "true",
+                      }),
+                  e.jsxs(h, {
+                    variant: "secondary",
+                    className: r(
+                      "text-xs",
+                      s.isPositive
+                        ? "bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300"
+                        : "bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300",
+                    ),
+                    "aria-label": `Tendência ${s.isPositive ? "positiva" : "negativa"} de ${Math.abs(s.value)}%`,
+                    children: [s.isPositive ? "+" : "", s.value, "%"],
+                  }),
+                ],
+              }),
+          ],
+        }),
+        (s == null ? void 0 : s.label) &&
+          e.jsx("p", {
+            className: "text-xs text-muted-foreground mt-2",
+            children: s.label,
+          }),
+      ],
+    }),
+  });
+};
+export { k as K };
