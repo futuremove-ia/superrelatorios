@@ -663,3 +663,135 @@ Tarefas de implementação para garantir que o projeto SuperRelatórios esteja e
   - Verificar que Knowledge Snapshot é gerado com ai_narrative ao final do período
   - Verificar que rastreabilidade doc→KPI funciona end-to-end (upload → extração → dashboard)
   - Perguntar ao usuário se há ajustes finais.
+
+---
+
+## Tarefas — Consolidação e Evolução do Banco de Dados
+
+- [ ] 38. Consolidar tabelas de KPI — Migration de Limpeza
+  - Criar migration que verifica existência de tabelas legadas (`kpi_master_library`, `kpi_library`, `metrics_library`, `kpi_master_unified`)
+  - Migrar dados únicos de cada tabela legada para `library_kpis` com `ON CONFLICT DO NOTHING`
+  - Criar views de compatibilidade temporárias para código que ainda usa nomes antigos: `CREATE VIEW kpi_master_library AS SELECT * FROM library_kpis`
+  - Remover tabelas legadas após validação: `kpi_master_library`, `kpi_library`, `metrics_library`, `kpi_master_unified`
+  - Migrar `organization_kpis` para `user_metrics` preservando dados históricos
+  - Remover tabelas legadas: `metrics`, `metric_values`, `organization_kpis`
+  - _Requirements: 4.1, 5.1_
+
+  - [ ] 38.1 Corrigir `risk_registry.risk_score` para GENERATED ALWAYS AS
+    - `ALTER TABLE risk_registry DROP COLUMN risk_score`
+    - `ALTER TABLE risk_registry ADD COLUMN risk_score INTEGER GENERATED ALWAYS AS (likelihood * impact) STORED`
+    - Verificar que invariante `risk_score = likelihood * impact` é mantida em updates
+    - Atualizar todas as queries que fazem SET risk_score manualmente
+    - _Requirements: 10.2, 10.9_
+
+  - [ ] 38.2 Criar tabelas ausentes no banco
+    - Criar `report_folders(id, organization_id FK, name, icon, description, created_at)` se não existir
+    - Criar `consent_records(id, user_id FK, purpose, decision, timestamp, ip_address, user_agent)` se não existir
+    - Adicionar RLS em ambas as tabelas com política `org_isolation`
+    - _Requirements: 15.7, 18.7_
+
+  - [ ] 38.3 Migrar `organization_blueprint` para campos estruturados
+    - Adicionar colunas estruturadas à tabela `organization_blueprint`: `legal_name`, `trade_name`, `cnpj_encrypted`, `founding_year`, `company_stage`, `business_model`, `industry_sector`, `employee_count_range`, `annual_revenue_range`
+    - Migrar dados do campo `context_data` JSONB para as novas colunas onde possível
+    - Manter `context_data` como campo de overflow para dados não estruturados
+    - _Requirements: 34.2_
+
+  - [ ] 38.4 Padronizar domínios de negócio
+    - Definir conjunto canônico: `commercial`, `finance`, `marketing`, `operations`, `people`, `strategy`
+    - Criar migration para atualizar todos os registros com `domain = 'sales'` para `domain = 'commercial'`
+    - Atualizar CHECK constraints em `library_kpis`, `library_challenges`, `radar_items`, `library_diagnoses`
+    - _Requirements: 4.1_
+
+- [ ] 39. Implementar hierarquia organizacional completa
+  - Verificar que `business_units`, `departments`, `teams`, `memberships`, `roles_permissions` existem e têm RLS correto
+  - Criar função PostgreSQL `get_user_scope(user_id UUID)` que retorna business_units, departments e teams acessíveis
+  - Criar hook `useOrganizationHierarchy` com TanStack Query (`staleTime: 5min`)
+  - Criar componentes: `BusinessUnitsPage`, `DepartmentsPage`, `TeamsPage`, `MembershipsPage`
+  - Integrar hierarquia com sistema de RBAC (7 papéis + escopo granular via `memberships`)
+  - Adicionar rotas: `/:lang/app/settings/hierarchy`, `/:lang/app/settings/teams`
+  - _Requirements: 35.1, 35.2, 35.3, 35.4, 35.5, 35.7, 35.8_
+
+- [ ] 40. Implementar templates por setor industrial
+  - Popular `industry_templates` com templates para: Varejo, Serviços, SaaS/Tech, Indústria, Consultoria, Saúde, Educação, Alimentação, Construção, Agronegócio
+  - Cada template com: `default_kpis[]`, `default_challenges[]`, `benchmark_excellent`, `benchmark_good`, `benchmark_average`
+  - Criar fluxo de onboarding que aplica template automaticamente baseado no `industry_sector` informado
+  - Criar hook `useIndustryTemplate` com TanStack Query
+  - Implementar tela de configuração de setor em `/:lang/app/settings/industry`
+  - _Requirements: 36.1, 36.2, 36.3, 36.4, 36.5_
+
+- [ ] 41. Implementar motor de relevância de KPIs
+  - Criar função PostgreSQL `get_relevant_kpis(organization_id UUID, available_data_types TEXT[])` que retorna:
+    - KPIs com `is_core = true` (sempre ativos)
+    - KPIs cujos dados estão disponíveis em `user_metrics` para a organização
+    - KPIs do `industry_template` da organização
+  - Criar hook `useRelevantKPIs` que usa o motor de relevância via TanStack Query (`staleTime: 5min`)
+  - Garantir que dashboard exibe apenas KPIs relevantes para a empresa
+  - Criar testes unitários para `get_relevant_kpis` com diferentes perfis de empresa
+  - _Requirements: 4.5, 4.6, 4.7_
+
+- [ ] 42. Expandir biblioteca de KPIs para 100+ indicadores
+  - Popular `library_kpis` com todos os KPIs documentados em `LIBRARY_STRATEGY.md`
+  - Classificar cada KPI com `tier` (`core`/`domain`/`segment`/`advanced`/`custom`)
+  - Preencher campos: `benchmark_excellent`, `benchmark_good`, `benchmark_average`, `benchmark_warning`, `benchmark_critical`
+  - Marcar KPIs universais com `is_core = true` (18 KPIs core conforme LIBRARY_STRATEGY.md)
+  - Garantir cobertura dos 6 domínios: `finance`, `commercial`, `marketing`, `operations`, `people`, `strategy`
+  - _Requirements: 4.1, 4.2, 4.3, 4.7_
+
+  - [ ] 42.1 Popular `library_diagnoses` com diagnósticos estruturados
+    - Criar diagnósticos para cada combinação de desafio + domínio
+    - Cada diagnóstico com: `technical_term`, `cause`, `effect`, `why`, `challenge_code`, `domain`, `severity_default`, `symptom_codes[]`, `suggested_lever_codes[]`
+    - Garantir que todos os `radar_items` existentes tenham `diagnosis_code` válido
+    - _Requirements: 12.9_
+
+  - [ ] 42.2 Popular `library_impacts` com impactos quantificados
+    - Criar impactos para cada alavanca com: `target_kpi_code`, `impact_type`, `impact_value`, `impact_direction`, `category`
+    - Garantir que todos os `radar_items` existentes tenham `impact_code` válido
+    - _Requirements: 12.10_
+
+  - [ ] 42.3 Popular `industry_templates` para 10+ setores
+    - Varejo, Serviços, SaaS/Tech, Indústria, Consultoria, Saúde, Educação, Alimentação, Construção, Agronegócio
+    - Cada template com: `default_kpis[]`, `default_challenges[]`, benchmarks setoriais
+    - _Requirements: 36.1_
+
+- [ ] 43. Implementar funcionalidades existentes no banco mas não documentadas
+  - [ ] 43.1 SWOT e Análise de Forças/Fraquezas
+    - Criar hook `useSwotAnalysis` com TanStack Query (`staleTime: 5min`)
+    - Criar hook `useForcesWeaknesses` com TanStack Query
+    - Criar componente `SwotPage` com quadrante visual (Forças/Fraquezas/Oportunidades/Ameaças)
+    - Criar componente `ForcesWeaknessesPage` com análise estruturada
+    - Integrar geração assistida por IA via AI Proxy usando KPIs e Blueprint como contexto
+    - Adicionar rotas: `/:lang/app/strategy/swot`, `/:lang/app/strategy/forces`
+    - _Requirements: 37.1, 37.2, 37.3, 37.5_
+
+  - [ ] 43.2 Previsões de Curto Prazo
+    - Criar hook `useShortTermForecasts` com TanStack Query (`staleTime: 10min`)
+    - Criar componente `ForecastPage` com gráficos de linha para horizontes 7/30/60/90 dias
+    - Implementar métodos de previsão: média móvel, tendência linear, sazonalidade
+    - Integrar método IA via AI Proxy com dados históricos de `user_metrics` como contexto
+    - Adicionar rota: `/:lang/app/forecasts`
+    - _Requirements: 38.1, 38.2, 38.4_
+
+  - [ ] 43.3 Gestão de Fornecedores
+    - Criar hooks `useSupplierScorecards` e `useSupplierRiskAlerts` com TanStack Query
+    - Criar componentes `SuppliersPage`, `SupplierScorecard` e `SupplierRiskAlerts`
+    - Implementar cálculo automático de `score_geral` como média ponderada
+    - Implementar geração automática de alertas quando `score_geral < 5.0`
+    - Adicionar rota: `/:lang/app/suppliers`
+    - _Requirements: 39.1, 39.2, 39.3, 39.4, 39.5_
+
+  - [ ] 43.4 Saúde e Ciclo de Vida de Clientes
+    - Criar hooks `useClientHealthScores` e `useClientLifecycle` com TanStack Query
+    - Criar componentes `ClientHealthPage` e `ClientLifecycleBoard`
+    - Implementar cálculo de `rfm_score` e classificação de `health_status`
+    - Implementar geração de alerta no Radar quando `churn_risk_score > 0.7`
+    - Adicionar rota: `/:lang/app/clients`
+    - _Requirements: 40.1, 40.2, 40.3, 40.6, 40.7_
+
+  - [ ] 43.5 Gestão de Custos de RH
+    - Criar hooks `useEmployeeCosts` e `usePayrollProjections` com TanStack Query
+    - Criar componentes `EmployeeCostsPage` e `PayrollProjectionsPage`
+    - Implementar cálculo automático de `custo_total_mensal` (salário + INSS + FGTS + benefícios)
+    - Implementar cálculo de `total_com_provisoes` (13º + férias + FGTS sobre provisões)
+    - Integrar com KPI `LABOR_COST_PCT` para cálculo automático
+    - Adicionar rota: `/:lang/app/hr/costs`
+    - _Requirements: 41.1, 41.2, 41.3, 41.4, 41.5, 41.6_

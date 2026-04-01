@@ -13,7 +13,7 @@
 9. [Segurança](#segurança)
 10. [Performance e Caching](#performance-e-caching)
 11. [CI/CD e Infraestrutura](#cicd-e-infraestrutura)
-12. [Decisões Arquiteturais (ADRs)](#decisões-arquiteturais-adrs)
+12. [Decisões Arquiteturais (ADRs)](#decisões-arquiteturais-adrs) — ADR-001 a ADR-016
 13. [Propriedades de Corretude](#propriedades-de-corretude)
 14. [Tratamento de Erros](#tratamento-de-erros)
 15. [Estratégia de Testes](#estratégia-de-testes)
@@ -370,12 +370,86 @@ Edge Function Vercel que atua como proxy seguro para o Google Gemini API:
 
 ### Diagrama ER Principal
 
+> **Nota:** O diagrama abaixo reflete o schema real do banco Supabase. Nomes de tabelas e campos foram atualizados para corresponder ao banco real (ver ADR-015).
+
 ```mermaid
 erDiagram
     organizations {
         uuid id PK
         text name
         text slug UK
+        text cnpj
+        text subscription_tier
+        integer max_users
+        integer max_reports
+        integer max_business_units
+        jsonb settings
+        boolean is_active
+        timestamp created_at
+    }
+
+    business_units {
+        uuid id PK
+        uuid organization_id FK
+        text name
+        text code
+        text type
+        text address
+        text city
+        text state
+        boolean is_primary
+        boolean is_active
+        timestamp created_at
+    }
+
+    departments {
+        uuid id PK
+        uuid organization_id FK
+        uuid business_unit_id FK
+        text name
+        text code
+        uuid parent_department_id FK
+        uuid manager_id FK
+        text cost_center
+        decimal budget_limit
+        timestamp created_at
+    }
+
+    teams {
+        uuid id PK
+        uuid organization_id FK
+        uuid business_unit_id FK
+        uuid department_id FK
+        text name
+        text type
+        uuid leader_id FK
+        boolean is_active
+        timestamp created_at
+    }
+
+    roles_permissions {
+        uuid id PK
+        uuid organization_id FK
+        text name
+        text code
+        text level
+        jsonb permissions
+        uuid[] scope_business_units
+        uuid[] scope_departments
+        uuid[] scope_teams
+        timestamp created_at
+    }
+
+    memberships {
+        uuid id PK
+        uuid user_id FK
+        uuid organization_id FK
+        uuid business_unit_id FK
+        uuid department_id FK
+        uuid team_id FK
+        uuid role_id FK
+        boolean is_primary
+        boolean is_active
         timestamp created_at
     }
 
@@ -383,39 +457,56 @@ erDiagram
         uuid id PK
         uuid user_id FK
         uuid organization_id FK
+        text name
+        text email
         text role
         timestamp created_at
     }
 
-    kpi_master_library {
-        text code PK
+    library_kpis {
+        uuid id PK
+        text code UK
         text title
         text description
         text formula
         text unit
         text domain
         text direction
+        text tier
+        boolean is_core
+        decimal benchmark_excellent
+        decimal benchmark_good
+        decimal benchmark_average
+        decimal benchmark_warning
+        decimal benchmark_critical
         jsonb default_thresholds
         timestamp created_at
     }
 
-    organization_kpi_values {
+    user_metrics {
         uuid id PK
-        uuid kpi_id FK
         uuid organization_id FK
-        text period_key
+        uuid report_id FK
+        text kpi_code FK
+        decimal value
+        text unit
+        text reference_period
         date period_start
         date period_end
-        decimal value
-        text currency
-        text data_source
+        decimal benchmark_value
+        decimal delta_percentage
+        decimal extracted_confidence
+        boolean is_manual_entry
         boolean is_verified
+        uuid source_file_id FK
+        integer source_block_index
+        text notes
         timestamp created_at
     }
 
     benchmarks {
         uuid id PK
-        uuid kpi_id FK
+        text kpi_code FK
         uuid organization_id FK
         text benchmark_type
         text period_reference
@@ -441,21 +532,112 @@ erDiagram
         timestamp created_at
     }
 
-    action_levers {
+    library_levers {
         uuid id PK
-        uuid challenge_id FK
+        text code UK
         text title
-        text description
         text category
-        integer priority
-        text complexity
-        text estimated_time
-        text expected_impact
-        jsonb steps
+        text target_kpi_code FK
+        text impact_level
+        text implementation_complexity_code FK
+        text typical_timeframe_code FK
+        text expected_impact_code FK
         timestamp created_at
     }
 
-    risks {
+    library_actions {
+        uuid id PK
+        text code UK
+        text lever_code FK
+        text title
+        text description
+        jsonb steps
+        integer estimated_effort_hours
+        text complexity_code FK
+        integer priority_score
+        boolean quick_win
+        timestamp created_at
+    }
+
+    library_diagnoses {
+        uuid id PK
+        text code UK
+        text technical_term
+        text cause
+        text effect
+        text why
+        text challenge_code FK
+        text domain
+        text severity_default
+        text[] symptom_codes
+        text[] suggested_lever_codes
+        timestamp created_at
+    }
+
+    library_impacts {
+        uuid id PK
+        text code UK
+        text description
+        text target_kpi_code FK
+        text impact_type
+        decimal impact_value
+        text impact_direction
+        text category
+        timestamp created_at
+    }
+
+    library_timeframes {
+        uuid id PK
+        text code UK
+        text label
+        integer days
+        text category
+        integer min_days
+        integer max_days
+        timestamp created_at
+    }
+
+    library_complexities {
+        uuid id PK
+        text code UK
+        text label
+        integer typical_effort_hours
+        integer typical_effort_days
+        timestamp created_at
+    }
+
+    library_goals {
+        uuid id PK
+        text code UK
+        text title
+        text description
+        text success_definition
+        text target_type
+        text suggested_timeframe_code FK
+        text[] related_kpi_codes
+        timestamp created_at
+    }
+
+    library_challenge_lever_mapping {
+        uuid id PK
+        text challenge_code FK
+        uuid lever_id FK
+        integer priority
+        boolean is_primary
+        decimal confidence_score
+        timestamp created_at
+    }
+
+    library_goal_lever_mapping {
+        uuid id PK
+        text goal_code FK
+        uuid lever_id FK
+        integer priority
+        decimal effectiveness_score
+        timestamp created_at
+    }
+
+    risk_registry {
         uuid id PK
         uuid organization_id FK
         text title
@@ -466,12 +648,12 @@ erDiagram
         integer impact
         integer risk_score
         text status
-        text kpi_code
+        text kpi_code FK
         timestamp created_at
         timestamp updated_at
     }
 
-    mitigation_plans {
+    risk_mitigations {
         uuid id PK
         uuid risk_id FK
         uuid organization_id FK
@@ -488,28 +670,57 @@ erDiagram
     radar_items {
         uuid id PK
         uuid organization_id FK
-        text title
         text type
+        text title
+        text diagnosis_code FK
+        text impact_code FK
+        text timeframe_code FK
+        text complexity_code FK
         text severity
+        decimal priority_score
         text domain
         text status
-        text diagnosis_term
-        text diagnosis_cause
-        text diagnosis_effect
-        text diagnosis_why
-        decimal impact_value
-        text impact_type
-        text impact_direction
-        text impact_category
-        text impact_description
-        text timeframe_label
-        text complexity_label
-        integer typical_effort_hours
-        text[] suggested_lever_codes
+        timestamp detected_at
+        timestamp acknowledged_at
+        timestamp started_at
+        timestamp resolved_at
+        timestamp dismissed_at
+        text source_type
         decimal ai_confidence_score
         text ai_model_version
+        text ai_raw_analysis
+        text custom_notes
+        integer actual_resolution_days
+        text resolution_summary
+        decimal resolution_impact_value
         timestamp created_at
         timestamp updated_at
+    }
+
+    radar_item_suggested_levers {
+        uuid radar_item_id FK
+        text lever_code FK
+        integer priority
+        boolean is_primary
+        decimal confidence_score
+    }
+
+    radar_item_metrics {
+        uuid radar_item_id FK
+        text kpi_code FK
+        decimal current_value
+        decimal previous_value
+        decimal change_percent
+        boolean is_primary_driver
+    }
+
+    radar_item_data_sources {
+        uuid radar_item_id FK
+        uuid report_id FK
+        uuid file_id FK
+        text data_type
+        text evidence_summary
+        decimal relevance_score
     }
 
     action_items {
@@ -555,20 +766,293 @@ erDiagram
         text user_agent
     }
 
+    audit_logs {
+        uuid id PK
+        uuid organization_id FK
+        uuid user_id FK
+        text action
+        text entity_type
+        uuid entity_id
+        jsonb old_values
+        jsonb new_values
+        text ip_address
+        text severity
+        timestamp created_at
+    }
+
+    organization_blueprint {
+        uuid id PK
+        uuid organization_id UK
+        jsonb context_data
+        timestamp last_updated
+    }
+
+    organization_ui_preferences {
+        uuid id PK
+        uuid organization_id UK
+        text modo_operacao
+        boolean show_radar
+        boolean show_kpis
+        boolean show_risks
+        text linguagem_preferencia
+        text dashboard_default
+        text industry_sector
+        text company_size
+        boolean onboarding_completed
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    organization_industry_settings {
+        uuid id PK
+        uuid organization_id UK
+        uuid industry_template_id FK
+        jsonb customized_kpis
+        text cnae_principal
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    industry_templates {
+        uuid id PK
+        text code UK
+        text name
+        text sector
+        text subsector
+        text target_size
+        jsonb default_kpis
+        jsonb default_challenges
+        decimal benchmark_excellent
+        decimal benchmark_good
+        decimal benchmark_average
+        timestamp created_at
+    }
+
+    internal_benchmarks {
+        uuid id PK
+        uuid organization_id FK
+        uuid kpi_id FK
+        text comparison_type
+        decimal current_value
+        decimal previous_value
+        decimal change_percent
+        text trend_classification
+        decimal percentil_historico
+        timestamp created_at
+    }
+
+    strategic_templates {
+        uuid id PK
+        text code UK
+        text challenge_code FK
+        text recommended_goal_code FK
+        text[] suggested_lever_codes
+        text[] suggested_action_codes
+        boolean is_public
+        timestamp created_at
+    }
+
+    user_strategy_focus {
+        uuid id PK
+        uuid organization_id FK
+        text challenge_code FK
+        text goal_code FK
+        text status
+        decimal progress_percentage
+        text context_notes
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    progress_history {
+        uuid id PK
+        uuid user_strategy_focus_id FK
+        uuid report_id FK
+        decimal progress_percentage
+        decimal delta_from_previous
+        text trend_direction
+        jsonb calculated_result
+        timestamp created_at
+    }
+
+    short_term_forecasts {
+        uuid id PK
+        uuid organization_id FK
+        text forecast_type
+        integer horizon_days
+        text forecast_method
+        jsonb daily_values
+        decimal total_projected
+        decimal confidence_score
+        boolean alert_triggered
+        timestamp created_at
+    }
+
+    swot_simple {
+        uuid id PK
+        uuid organization_id FK
+        date analysis_date
+        jsonb forcas
+        jsonb fraquezas
+        jsonb oportunidades
+        jsonb ameacas
+        decimal balance_score
+        timestamp created_at
+    }
+
+    forces_weaknesses_analysis {
+        uuid id PK
+        uuid organization_id FK
+        date analysis_date
+        text forca_1_title
+        text forca_1_description
+        text fraqueza_1_title
+        text fraqueza_1_description
+        text prioridade_1_title
+        text prioridade_1_acao
+        text status
+        timestamp created_at
+    }
+
+    client_health_scores {
+        uuid id PK
+        uuid organization_id FK
+        text client_id
+        decimal rfm_score
+        text health_status
+        decimal churn_risk_score
+        date next_purchase_forecast
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    client_lifecycle_stages {
+        uuid id PK
+        text code UK
+        text name
+        integer sequence_order
+        text color
+        text icon
+        timestamp created_at
+    }
+
+    client_lifecycle_history {
+        uuid id PK
+        uuid organization_id FK
+        text client_id
+        uuid stage_from_id FK
+        uuid stage_to_id FK
+        date transition_date
+        decimal transaction_value
+        timestamp created_at
+    }
+
+    employee_costs {
+        uuid id PK
+        uuid organization_id FK
+        text nome
+        text cargo
+        text departamento
+        decimal salario_base
+        decimal inss_patronal
+        decimal fgts
+        decimal custo_total_mensal
+        text status
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    payroll_projections {
+        uuid id PK
+        uuid organization_id FK
+        integer projection_month
+        integer projection_year
+        decimal folha_normal
+        decimal total_projetado
+        decimal total_com_provisoes
+        timestamp created_at
+    }
+
+    supplier_scorecards {
+        uuid id PK
+        uuid organization_id FK
+        text nome
+        text categoria
+        decimal score_preco
+        decimal score_prazo_entrega
+        decimal score_qualidade
+        decimal score_geral
+        text status
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    supplier_performance_history {
+        uuid id PK
+        uuid supplier_scorecard_id FK
+        integer period_year
+        integer period_month
+        decimal taxa_atraso_percent
+        decimal taxa_defeito_percent
+        timestamp created_at
+    }
+
+    supplier_risk_alerts {
+        uuid id PK
+        uuid organization_id FK
+        uuid supplier_scorecard_id FK
+        text alert_type
+        text severity
+        text title
+        text status
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    organizations ||--o{ business_units : "tem"
+    organizations ||--o{ departments : "tem"
+    organizations ||--o{ teams : "tem"
+    organizations ||--o{ roles_permissions : "define"
+    organizations ||--o{ memberships : "gerencia"
     organizations ||--o{ profiles : "tem"
-    organizations ||--o{ organization_kpi_values : "registra"
+    organizations ||--o{ user_metrics : "registra"
     organizations ||--o{ benchmarks : "possui"
-    organizations ||--o{ risks : "gerencia"
+    organizations ||--o{ risk_registry : "gerencia"
     organizations ||--o{ radar_items : "monitora"
     organizations ||--o{ action_items : "executa"
     organizations ||--o{ report_folders : "organiza"
-    organizations ||--o{ mitigation_plans : "planeja"
-    kpi_master_library ||--o{ organization_kpi_values : "define"
-    kpi_master_library ||--o{ benchmarks : "referencia"
-    library_challenges ||--o{ action_levers : "tem"
-    risks ||--o{ mitigation_plans : "tem"
+    organizations ||--o{ risk_mitigations : "planeja"
+    organizations ||--o{ audit_logs : "audita"
+    organizations ||--|| organization_blueprint : "tem"
+    organizations ||--|| organization_ui_preferences : "configura"
+    organizations ||--|| organization_industry_settings : "usa"
+    organizations ||--o{ user_strategy_focus : "foca"
+    organizations ||--o{ short_term_forecasts : "prevê"
+    organizations ||--o{ swot_simple : "analisa"
+    organizations ||--o{ supplier_scorecards : "avalia"
+    organizations ||--o{ client_health_scores : "monitora"
+    organizations ||--o{ employee_costs : "gerencia"
+    business_units ||--o{ departments : "contém"
+    departments ||--o{ teams : "contém"
+    library_kpis ||--o{ user_metrics : "define"
+    library_kpis ||--o{ benchmarks : "referencia"
+    library_challenges ||--o{ library_challenge_lever_mapping : "mapeia"
+    library_levers ||--o{ library_actions : "tem"
+    library_levers ||--o{ library_challenge_lever_mapping : "mapeada"
+    library_levers ||--o{ library_goal_lever_mapping : "mapeada"
+    library_goals ||--o{ library_goal_lever_mapping : "mapeia"
+    risk_registry ||--o{ risk_mitigations : "tem"
     radar_items ||--o{ action_items : "origina"
+    radar_items ||--o{ radar_item_suggested_levers : "sugere"
+    radar_items ||--o{ radar_item_metrics : "mede"
+    radar_items ||--o{ radar_item_data_sources : "referencia"
     report_folders ||--o{ reports : "contém"
+    industry_templates ||--o{ organization_industry_settings : "aplicada"
+    user_strategy_focus ||--o{ progress_history : "registra"
+    supplier_scorecards ||--o{ supplier_performance_history : "tem"
+    supplier_scorecards ||--o{ supplier_risk_alerts : "gera"
+    client_lifecycle_stages ||--o{ client_lifecycle_history : "origem"
+    client_lifecycle_stages ||--o{ client_lifecycle_history : "destino"
 ```
 
 ### Políticas RLS (Row Level Security)
@@ -586,11 +1070,14 @@ CREATE POLICY "org_isolation" ON {tabela}
 
 ### Invariantes do Modelo de Dados
 
-- `kpi_master_library`: `threshold.critical < threshold.warning < threshold.good`
+- `library_kpis`: `benchmark_critical < benchmark_warning < benchmark_average < benchmark_good < benchmark_excellent`
 - `benchmarks`: `value_critical < value_warning < value_good < value_excellent`
-- `risks`: `risk_score = likelihood * impact` (1 ≤ likelihood ≤ 10, 1 ≤ impact ≤ 10)
+- `risk_registry`: `risk_score = likelihood * impact` (GENERATED ALWAYS AS, 1 ≤ likelihood ≤ 10, 1 ≤ impact ≤ 10)
 - `action_items`: `radar_item_id` deve referenciar um `radar_items.id` existente
 - `radar_items`: `ai_confidence_score ∈ [0.0, 1.0]`
+- `user_metrics`: `kpi_code` referencia `library_kpis(code)` (text FK, não UUID)
+- `knowledge_snapshots`: imutável após criação (append-only ledger via trigger)
+- `company_blueprints`: exatamente um registro por organização (UK em organization_id)
 
 ---
 
@@ -721,12 +1208,17 @@ sequenceDiagram
 
 ### RBAC — Hierarquia de Permissões
 
-| Papel     | Permissões                                       |
-| --------- | ------------------------------------------------ |
-| `viewer`  | Visualizar dashboards e relatórios               |
-| `analyst` | viewer + criar/editar relatórios e KPIs          |
-| `manager` | analyst + gerenciar dados do departamento        |
-| `admin`   | Acesso total: usuários, configurações, auditoria |
+| Papel        | Nível | Permissões                                                          |
+| ------------ | ----- | ------------------------------------------------------------------- |
+| `guest`      | 1     | Acesso somente leitura a recursos públicos da organização           |
+| `viewer`     | 2     | Visualizar dashboards, relatórios e KPIs                            |
+| `analyst`    | 3     | viewer + criar/editar relatórios e KPIs                             |
+| `supervisor` | 4     | analyst + gerenciar dados da sua equipe                             |
+| `manager`    | 5     | supervisor + gerenciar dados do departamento e equipes subordinadas |
+| `admin`      | 6     | Acesso total: usuários, configurações, auditoria                    |
+| `owner`      | 7     | admin + gestão de plano, faturamento e exclusão da organização      |
+
+O escopo de acesso é controlado via `memberships` com campos `scope_business_units`, `scope_departments` e `scope_teams` na tabela `roles_permissions`.
 
 ### LGPD / GDPR
 
@@ -798,7 +1290,7 @@ Supabase Connection Pool
 ```sql
 -- KPIs por organização e período (query mais frequente)
 CREATE INDEX idx_org_kpi_period
-  ON organization_kpi_values(organization_id, kpi_code, period_key);
+  ON user_metrics(organization_id, kpi_code, reference_period);
 
 -- Radar items ativos por organização
 CREATE INDEX idx_radar_active
@@ -807,7 +1299,19 @@ CREATE INDEX idx_radar_active
 
 -- Riscos por organização e status
 CREATE INDEX idx_risks_org_status
-  ON risks(organization_id, status, risk_score DESC);
+  ON risk_registry(organization_id, status, risk_score DESC);
+
+-- Alavancas sugeridas por radar item
+CREATE INDEX idx_radar_levers
+  ON radar_item_suggested_levers(radar_item_id, priority);
+
+-- Métricas por radar item
+CREATE INDEX idx_radar_metrics
+  ON radar_item_metrics(radar_item_id, is_primary_driver);
+
+-- Audit logs por organização e data
+CREATE INDEX idx_audit_logs_org_date
+  ON audit_logs(organization_id, created_at DESC);
 ```
 
 ---
@@ -1831,6 +2335,56 @@ generate-snapshot Edge Function
 **Justificativa**: Elimina a necessidade de o usuário repetir o contexto da empresa em cada análise. Melhora drasticamente a precisão e relevância das recomendações. O Blueprint é carregado uma vez por sessão e cacheado no cliente (staleTime: 15min).
 
 **Trade-offs**: Aumenta o tamanho do prompt em ~500-1000 tokens por chamada; custo adicional aceitável dado o ganho de qualidade. Blueprints muito detalhados podem aproximar o limite de contexto do modelo; mitigado por seleção inteligente dos campos mais relevantes por tipo de análise.
+
+---
+
+#### ADR-012: Modelo Normalizado do Radar
+
+**Decisão**: Usar tabelas separadas para diagnósticos (`library_diagnoses`), impactos (`library_impacts`), timeframes (`library_timeframes`) e complexidades (`library_complexities`) em vez de campos inline em `radar_items`. Os campos `diagnosis_code`, `impact_code`, `timeframe_code` e `complexity_code` são FKs para essas tabelas. Alavancas sugeridas ficam em `radar_item_suggested_levers` e métricas relacionadas em `radar_item_metrics`.
+
+**Justificativa**: Reutilização de diagnósticos entre múltiplos radar items sem duplicação de dados. Consistência garantida por FK — impossível ter diagnóstico com texto diferente para o mesmo código. Facilidade de manutenção da biblioteca: atualizar um diagnóstico reflete em todos os radar items que o referenciam. Permite análise agregada de quais diagnósticos são mais frequentes.
+
+**Trade-offs**: Queries mais complexas com JOINs; mitigado por views materializadas e índices compostos. Migração de dados existentes com campos inline requer script de normalização.
+
+---
+
+#### ADR-013: Hierarquia Organizacional Multi-Nível
+
+**Decisão**: Suportar hierarquia `organizations → business_units → departments → teams` com `memberships` granulares que vinculam usuários a qualquer nível da hierarquia com papel e escopo específicos.
+
+**Justificativa**: PMEs em crescimento precisam de estrutura hierárquica para controle de acesso por área. Uma microempresa pode usar apenas `organization` + `profiles`. Uma empresa média pode usar `business_units` + `departments`. Uma empresa com múltiplas filiais usa a hierarquia completa. A estrutura é opcional em cada nível — não obriga complexidade desnecessária.
+
+**Trade-offs**: Complexidade adicional no sistema de RBAC; mitigado por `memberships` com campos opcionais (business_unit_id, department_id, team_id podem ser null). Queries de autorização mais complexas; mitigado por função PostgreSQL `get_user_scope(user_id)`.
+
+---
+
+#### ADR-014: RBAC com 7 Papéis e Escopo Granular
+
+**Decisão**: Usar `roles_permissions` com 7 níveis hierárquicos (`owner/admin/manager/supervisor/analyst/viewer/guest`) e escopo de acesso por `business_unit`, `department` e `team` via tabela `memberships`.
+
+**Justificativa**: Cobre desde microempresas (1 papel: owner) até médias empresas com estrutura departamental complexa. Os 7 papéis mapeiam para realidades organizacionais reais de PMEs brasileiras. O escopo granular permite que um manager veja apenas seu departamento sem acesso a outros.
+
+**Trade-offs**: Mais papéis que o modelo anterior (4 → 7); mitigado por hierarquia clara e documentação. Verificação de permissão mais complexa; mitigado por função `check_permission(user_id, resource, action)` centralizada.
+
+---
+
+#### ADR-015: library_kpis como Fonte Única de Verdade
+
+**Decisão**: Consolidar todas as tabelas de KPI (`kpi_master_library`, `kpi_library`, `metrics_library`, `kpi_master_unified`) em uma única tabela `library_kpis`. Todas as referências a KPIs usam `kpi_code` (text) como FK para `library_kpis(code)`.
+
+**Justificativa**: Elimina ambiguidade sobre qual tabela usar — havia 4 tabelas com propósitos sobrepostos no banco. Simplifica queries e manutenção. Garante que benchmarks, user_metrics e radar_item_metrics referenciem a mesma fonte. Facilita expansão da biblioteca sem fragmentação.
+
+**Trade-offs**: Migration de limpeza necessária para consolidar dados das 4 tabelas legadas; mitigado por views de compatibilidade temporárias durante a transição. Risco de perda de dados únicos em tabelas legadas; mitigado por script de migração com `ON CONFLICT DO NOTHING`.
+
+---
+
+#### ADR-016: Estratégia de Biblioteca Ampla com Ativação Contextual
+
+**Decisão**: Manter biblioteca completa de 100+ KPIs, 20+ desafios, 50+ alavancas no banco; ativar apenas os relevantes por empresa via motor de relevância baseado em: `is_core = true` (sempre ativo), dados disponíveis (KPIs cujos inputs foram fornecidos) e `industry_template` da empresa.
+
+**Justificativa**: Cobre máximo de segmentos e nichos de PMEs sem sobrecarregar a UX de cada empresa. Uma padaria não vê KPIs de SaaS. Uma startup de tecnologia não vê KPIs de estoque físico. A biblioteca ampla permite expansão futura sem mudanças de schema. O motor de relevância garante que cada empresa veja apenas o que é pertinente ao seu contexto.
+
+**Trade-offs**: Complexidade do motor de relevância; mitigado por função PostgreSQL `get_relevant_kpis(organization_id, available_data_types[])` bem testada. Volume maior de dados na biblioteca; aceitável pois são dados de referência (não crescem com o número de organizações).
 
 ---
 

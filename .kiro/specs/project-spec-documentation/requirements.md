@@ -48,7 +48,7 @@ A plataforma suporta três idiomas nativamente (PT-BR, EN, ES) e segue princípi
 - **Churn_Rate**: Taxa de cancelamento de clientes
 - **Confidence_Score**: Pontuação de confiança da IA na detecção de um desafio (0.0–1.0)
 - **Severity**: Nível de severidade de um alerta (critical, high, medium, low, info)
-- **Domain**: Área de negócio (finance, sales, marketing, operations, people, strategy)
+- **Domain**: Área de negócio (finance, commercial, marketing, operations, people, strategy)
 - **Período**: Intervalo de tempo para análise de KPIs (ex: "2024-03")
 - **Slug**: Identificador textual único de uma organização em formato URL-friendly
 - **Unstructured**: Serviço de extração de conteúdo de documentos não estruturados (PDFs, imagens, DOCX)
@@ -62,6 +62,28 @@ A plataforma suporta três idiomas nativamente (PT-BR, EN, ES) e segue princípi
 - **AI_Narrative**: Resumo executivo em linguagem natural gerado pelo Gemini para um Knowledge Snapshot
 - **Extraction_Confidence**: Score (0–100%) que indica a confiança do parser semântico na extração de dados de um documento
 - **Source_Document_Id**: Referência rastreável ao documento de origem de um valor de KPI extraído automaticamente
+- **Library_KPIs**: Tabela canônica de KPIs (`library_kpis`) — fonte única de verdade para todos os indicadores do sistema
+- **User_Metrics**: Tabela de valores de KPI por organização e período (`user_metrics`) — substitui `organization_kpi_values`
+- **Library_Diagnoses**: Biblioteca de diagnósticos estruturados vinculados a radar items via FK `diagnosis_code`
+- **Library_Impacts**: Biblioteca de impactos quantificados por alavanca, com `target_kpi_code` e `impact_value`
+- **Library_Timeframes**: Biblioteca de prazos de implementação com `days`, `min_days` e `max_days`
+- **Library_Complexities**: Biblioteca de níveis de complexidade com `typical_effort_hours` e `typical_effort_days`
+- **Business_Unit**: Unidade de negócio dentro de uma organização (filial, ponto de venda, escritório regional)
+- **Department**: Departamento dentro de uma business unit (ex: Financeiro, Comercial, RH)
+- **Team**: Equipe dentro de um departamento (ex: Time de Vendas, Suporte Técnico)
+- **Membership**: Vínculo de um usuário a uma organização com papel e escopo específicos (business_unit, department, team)
+- **Role**: Papel de acesso com 7 níveis hierárquicos: owner, admin, manager, supervisor, analyst, viewer, guest
+- **Industry_Template**: Template de configuração padrão por setor industrial com KPIs, desafios e benchmarks pré-configurados
+- **KPI_Tier**: Classificação do KPI (core/domain/segment/advanced/custom) que determina quando é ativado para cada empresa
+- **KPI_Activation**: Processo de ativação contextual de KPIs baseado em dados disponíveis e perfil da empresa via motor de relevância
+- **Radar_Diagnosis**: Diagnóstico estruturado de um radar item, referenciando `library_diagnoses(code)` via FK
+- **Radar_Impact**: Impacto quantificado de um radar item, referenciando `library_impacts(code)` via FK
+- **User_Strategy_Focus**: Foco estratégico ativo de uma organização — combinação de desafio + objetivo em andamento
+- **SWOT**: Análise de Forças, Fraquezas, Oportunidades e Ameaças da organização
+- **Forecast**: Previsão de curto prazo (7/30/60/90 dias) para fluxo de caixa, receita ou despesas
+- **Supplier_Scorecard**: Avaliação estruturada de fornecedores com scores por dimensão (preço, prazo, qualidade)
+- **Client_Health_Score**: Score de saúde do cliente baseado em RFM (Recência, Frequência, Valor monetário)
+- **Employee_Cost**: Custo total de um funcionário incluindo salário base, encargos (INSS, FGTS) e benefícios
 
 ---
 
@@ -106,14 +128,17 @@ A plataforma suporta três idiomas nativamente (PT-BR, EN, ES) e segue princípi
 
 #### Critérios de Aceitação
 
-1. THE Sistema SHALL suportar quatro papéis de usuário: `admin`, `manager`, `analyst` e `viewer`, com hierarquia de permissões crescente.
+1. THE Sistema SHALL suportar sete papéis de usuário: `owner`, `admin`, `manager`, `supervisor`, `analyst`, `viewer` e `guest`, com hierarquia de permissões crescente (guest < viewer < analyst < supervisor < manager < admin < owner).
 2. THE Sistema SHALL garantir que usuários com papel `viewer` possam apenas visualizar dashboards e relatórios, sem criar, editar ou excluir recursos.
 3. THE Sistema SHALL garantir que usuários com papel `analyst` possam criar e editar relatórios e KPIs, mas não gerenciar usuários.
-4. THE Sistema SHALL garantir que usuários com papel `manager` possam gerenciar dados e relatórios do seu departamento e visualizar dados de equipes subordinadas.
-5. THE Sistema SHALL garantir que usuários com papel `admin` tenham acesso total a todas as funcionalidades, incluindo gestão de usuários, configurações do sistema e auditoria.
-6. WHEN um usuário tenta acessar um recurso sem permissão suficiente, THEN THE Sistema SHALL retornar HTTP 403 com mensagem padronizada e registrar a tentativa.
-7. THE Sistema SHALL verificar permissões em cada requisição à API, não apenas no carregamento inicial da interface.
-8. WHERE a funcionalidade de auditoria está habilitada, THE Sistema SHALL registrar todas as ações de criação, edição e exclusão com identificação do usuário, timestamp e recurso afetado.
+4. THE Sistema SHALL garantir que usuários com papel `supervisor` possam gerenciar dados da sua equipe e visualizar dados de equipes subordinadas.
+5. THE Sistema SHALL garantir que usuários com papel `manager` possam gerenciar dados e relatórios do seu departamento e visualizar dados de equipes subordinadas.
+6. THE Sistema SHALL garantir que usuários com papel `admin` tenham acesso total a todas as funcionalidades, incluindo gestão de usuários, configurações do sistema e auditoria.
+7. THE Sistema SHALL garantir que usuários com papel `owner` tenham acesso total incluindo gestão de plano, faturamento e exclusão da organização.
+8. WHEN um usuário tenta acessar um recurso sem permissão suficiente, THEN THE Sistema SHALL retornar HTTP 403 com mensagem padronizada e registrar a tentativa.
+9. THE Sistema SHALL verificar permissões em cada requisição à API, não apenas no carregamento inicial da interface.
+10. THE Sistema SHALL suportar escopo de acesso por `business_unit`, `department` e `team` via tabela `memberships`, permitindo que um manager veja apenas seu departamento sem acesso a outros.
+11. THE Sistema SHALL registrar todas as ações de criação, edição e exclusão em `audit_logs` com campos: `action`, `entity_type`, `entity_id`, `old_values`, `new_values`, `ip_address` e `severity`.
 
 ---
 
@@ -123,16 +148,17 @@ A plataforma suporta três idiomas nativamente (PT-BR, EN, ES) e segue princípi
 
 #### Critérios de Aceitação
 
-1. THE Sistema SHALL disponibilizar uma biblioteca com no mínimo 13 KPIs essenciais para PMEs, organizados nos domínios: financeiro, marketing, vendas e operacional.
-2. THE Sistema SHALL armazenar para cada KPI: código único, título, descrição, fórmula de cálculo, unidade de medida, domínio e direção de tendência (`higher_is_better` ou `lower_is_better`).
-3. THE Sistema SHALL garantir que todo KPI com Threshold tenha os valores na ordem `critical < warning < good`.
-4. WHEN um KPI é consultado por código, THE Sistema SHALL retornar todos os seus metadados incluindo fórmula de cálculo e thresholds padrão.
-5. THE Sistema SHALL suportar os seguintes KPIs financeiros: `NET_PROFIT_MARGIN`, `CONTRIBUTION_MARGIN`, `BURN_RATE`, `RUNWAY`, `BREAK_EVEN`.
-6. THE Sistema SHALL suportar os seguintes KPIs de marketing: `CAC`, `LTV_CAC_RATIO`, `CHURN_RATE`, `CUSTOMER_LTV`.
-7. THE Sistema SHALL suportar os seguintes KPIs de vendas: `SALES_CYCLE_DAYS`, `PIPELINE_COVERAGE`.
-8. THE Sistema SHALL suportar os seguintes KPIs operacionais: `PRODUCTIVITY_PER_EMPLOYEE`, `DAYS_TO_RECEIVE`.
-9. WHERE a funcionalidade de KPIs personalizados está habilitada, THE Sistema SHALL permitir que administradores criem KPIs customizados com código, título, fórmula e thresholds próprios.
-10. FOR ALL KPIs na biblioteca, THE Sistema SHALL garantir que serializar e deserializar os dados do KPI produza um objeto equivalente ao original (propriedade round-trip).
+1. THE Sistema SHALL disponibilizar uma biblioteca com no mínimo 100 KPIs para PMEs, armazenados na tabela `library_kpis`, organizados nos domínios: `finance`, `commercial`, `marketing`, `operations`, `people` e `strategy`.
+2. THE Sistema SHALL armazenar para cada KPI em `library_kpis`: `code` (UK), `title`, `description`, `formula`, `unit`, `domain`, `direction` (`higher_is_better` ou `lower_is_better`), `tier` e `is_core`.
+3. THE Sistema SHALL garantir que todo KPI com Threshold tenha os valores na ordem `benchmark_critical < benchmark_warning < benchmark_average < benchmark_good < benchmark_excellent`.
+4. WHEN um KPI é consultado por código, THE Sistema SHALL retornar todos os seus metadados incluindo fórmula de cálculo e benchmarks padrão.
+5. THE Sistema SHALL classificar cada KPI em um `tier`: `core` (universais, sempre ativos), `domain` (ativados por dados do domínio), `segment` (ativados via industry_template), `advanced` (KPIs derivados) ou `custom` (criados pela empresa).
+6. THE Sistema SHALL ativar KPIs automaticamente quando os dados necessários para seu cálculo estiverem disponíveis — KPIs com `is_core = true` são sempre ativos; demais são ativados por dados presentes ou pelo `industry_template`.
+7. THE Sistema SHALL armazenar 5 níveis de benchmark por KPI: `benchmark_excellent`, `benchmark_good`, `benchmark_average`, `benchmark_warning` e `benchmark_critical`.
+8. THE Sistema SHALL suportar os seguintes KPIs financeiros core: `NET_PROFIT_MARGIN`, `GROSS_MARGIN`, `BURN_RATE`, `RUNWAY_MONTHS`, `REVENUE_GROWTH`, `OPERATING_CASH_FLOW`, `WORKING_CAPITAL`, `DAYS_TO_RECEIVE`, `DAYS_TO_PAY`, `CASH_CONVERSION_CYCLE`.
+9. THE Sistema SHALL suportar os seguintes KPIs comerciais core: `CAC`, `LTV`, `LTV_CAC_RATIO`, `CHURN_RATE`, `AVG_TICKET`, `SALES_CONVERSION`.
+10. WHERE a funcionalidade de KPIs personalizados está habilitada, THE Sistema SHALL permitir que administradores criem KPIs customizados com `tier = 'custom'`, código, título, fórmula e benchmarks próprios.
+11. FOR ALL KPIs na biblioteca, THE Sistema SHALL garantir que serializar e deserializar os dados do KPI produza um objeto equivalente ao original (propriedade round-trip).
 
 ---
 
@@ -142,13 +168,13 @@ A plataforma suporta três idiomas nativamente (PT-BR, EN, ES) e segue princípi
 
 #### Critérios de Aceitação
 
-1. WHEN um usuário registra um valor de KPI para um período, THE Sistema SHALL armazenar: `kpi_id`, `organization_id`, `period_start`, `period_end`, `period_key`, `value`, `currency`, `data_source` e `is_verified`.
-2. THE Sistema SHALL aceitar os seguintes tipos de fonte de dados (`data_source`): `manual_input`, `csv_import`, `api_integration`, `erp_sync`.
+1. WHEN um usuário registra um valor de KPI para um período, THE Sistema SHALL armazenar na tabela `user_metrics`: `kpi_code` (text FK → `library_kpis(code)`), `organization_id`, `period_start`, `period_end`, `reference_period`, `value`, `unit`, `benchmark_value`, `delta_percentage`, `extracted_confidence`, `is_manual_entry`, `is_verified`, `source_file_id` e `notes`.
+2. THE Sistema SHALL aceitar os seguintes tipos de entrada: `is_manual_entry = true` (entrada manual) ou `is_manual_entry = false` (extração automática via Document Pipeline).
 3. WHEN um KPI é consultado com filtro de período, THE Sistema SHALL retornar apenas os registros dentro do intervalo especificado.
-4. THE Sistema SHALL calcular e retornar a tendência de um KPI comparando o valor atual com o valor do período anterior.
+4. THE Sistema SHALL calcular e retornar a tendência de um KPI comparando o valor atual com o valor do período anterior via `delta_percentage`.
 5. WHEN o histórico de um KPI é solicitado, THE Sistema SHALL retornar os registros ordenados cronologicamente com no máximo 12 períodos por padrão.
 6. IF um valor de KPI é registrado com `value` nulo ou não numérico, THEN THE Sistema SHALL rejeitar o registro com mensagem de erro descritiva.
-7. THE Sistema SHALL garantir que para qualquer conjunto de registros de KPI de uma organização, filtrar por `period_key` retorne um subconjunto do total (propriedade metamórfica).
+7. THE Sistema SHALL garantir que para qualquer conjunto de registros de KPI de uma organização, filtrar por `reference_period` retorne um subconjunto do total (propriedade metamórfica).
 8. WHEN um registro de KPI é atualizado, THE Sistema SHALL preservar o histórico de versões anteriores para fins de auditoria.
 
 ---
@@ -266,17 +292,20 @@ A plataforma suporta três idiomas nativamente (PT-BR, EN, ES) e segue princípi
 
 #### Critérios de Aceitação
 
-1. THE Sistema SHALL exibir Radar_Items com: título, tipo, severidade, domínio, status, diagnóstico (causa raiz, efeito no negócio, por quê acontece), impacto estimado e alavancas sugeridas.
+1. THE Sistema SHALL exibir Radar_Items com: título, tipo, severidade, domínio, status, diagnóstico (via FK `diagnosis_code` → `library_diagnoses`), impacto estimado (via FK `impact_code` → `library_impacts`) e alavancas sugeridas (via tabela `radar_item_suggested_levers`).
 2. THE Sistema SHALL suportar os seguintes status de Radar_Item: `detected`, `in_progress`, `acknowledged`, `dismissed`, `resolved`.
 3. THE Sistema SHALL exibir no radar ativo apenas Radar_Items com status `detected` ou `in_progress`.
 4. THE Sistema SHALL exibir no histórico do radar Radar_Items com status `acknowledged`, `dismissed` ou `resolved`.
 5. WHEN um usuário adiciona um Radar_Item ao Plano de Ação, THE Sistema SHALL atualizar o status do item para `in_progress` e criar um Action_Item correspondente na tabela `action_items`.
-6. WHEN um usuário dispensa um Radar_Item, THE Sistema SHALL atualizar o status para `dismissed` e registrar nota de dispensa.
+6. WHEN um usuário dispensa um Radar_Item, THE Sistema SHALL atualizar o status para `dismissed` e registrar nota de dispensa em `custom_notes`.
 7. WHEN um usuário reativa um Radar_Item do histórico, THE Sistema SHALL atualizar o status para `detected`.
-8. THE Sistema SHALL exibir o `aiConfidenceScore` de cada Radar_Item como percentual (0–100%) com indicação do modelo de IA utilizado.
-9. THE Sistema SHALL suportar alavancas recomendadas por código: `price`, `cost`, `volume`, `time`, `quality`, `process`, `people`, `technology`, `marketing`, `sales`.
-10. FOR ALL Radar_Items, THE Sistema SHALL garantir que dispensar um item já dispensado não altere seu estado (propriedade de idempotência).
-11. THE Sistema SHALL exibir o Radar_Item em um painel lateral (Sheet) com gradiente visual baseado no domínio do item.
+8. THE Sistema SHALL exibir o `ai_confidence_score` de cada Radar_Item como percentual (0–100%) com indicação do modelo de IA utilizado (`ai_model_version`).
+9. THE Sistema SHALL armazenar diagnósticos de radar items via FK `diagnosis_code` referenciando `library_diagnoses(code)`, não como campos inline.
+10. THE Sistema SHALL armazenar impactos de radar items via FK `impact_code` referenciando `library_impacts(code)`.
+11. THE Sistema SHALL armazenar alavancas sugeridas em `radar_item_suggested_levers` (tabela separada com `lever_code`, `priority`, `is_primary` e `confidence_score`).
+12. THE Sistema SHALL armazenar métricas relacionadas em `radar_item_metrics` (tabela separada com `kpi_code`, `current_value`, `previous_value`, `change_percent` e `is_primary_driver`).
+13. FOR ALL Radar_Items, THE Sistema SHALL garantir que dispensar um item já dispensado não altere seu estado (propriedade de idempotência).
+14. THE Sistema SHALL exibir o Radar_Item em um painel lateral (Sheet) com gradiente visual baseado no domínio do item.
 
 ---
 
@@ -729,3 +758,112 @@ A plataforma suporta três idiomas nativamente (PT-BR, EN, ES) e segue princípi
 12. THE Sistema SHALL garantir que o Blueprint tenha exatamente um registro por organização (invariante de unicidade 1:1 com organizations).
 13. WHEN o Blueprint está incompleto (completeness_score < 60%), THE Sistema SHALL exibir aviso contextual nas telas de análise indicando que as recomendações podem ser menos precisas.
 14. THE Sistema SHALL disponibilizar uma visualização do Blueprint em formato de "cartão de identidade da empresa" — um resumo visual compacto com os principais atributos do DNA da empresa.
+
+---
+
+### Requisito 35: Hierarquia Organizacional
+
+**User Story:** Como administrador, quero estruturar minha empresa em unidades de negócio, departamentos e equipes, para que o controle de acesso e os relatórios reflitam a estrutura real da organização.
+
+#### Critérios de Aceitação
+
+1. THE Sistema SHALL suportar hierarquia organizacional de quatro níveis: `organizations` → `business_units` → `departments` → `teams`, onde cada nível é opcional — uma microempresa pode usar apenas `organizations` sem os demais.
+2. THE Sistema SHALL permitir criar `business_units` com: `name`, `code`, `type`, `address`, `city`, `state`, `is_primary` e `is_active`, vinculadas a uma organização.
+3. THE Sistema SHALL permitir criar `departments` com: `name`, `code`, `parent_department_id` (para hierarquia de departamentos), `manager_id`, `cost_center` e `budget_limit`, vinculados a uma business_unit.
+4. THE Sistema SHALL permitir criar `teams` com: `name`, `type`, `leader_id` e `is_active`, vinculados a um department.
+5. THE Sistema SHALL gerenciar `memberships` que vinculam usuários a qualquer nível da hierarquia com papel e escopo específicos, suportando campos opcionais `business_unit_id`, `department_id` e `team_id`.
+6. WHEN um usuário com escopo de `department` consulta dados, THE Sistema SHALL retornar apenas dados do seu departamento e equipes subordinadas, nunca dados de outros departamentos.
+7. THE Sistema SHALL disponibilizar hooks `useOrganizationHierarchy`, `useBusinessUnits`, `useDepartments` e `useTeams` para acesso à hierarquia no frontend.
+8. THE Sistema SHALL disponibilizar telas de gestão: `BusinessUnitsPage`, `DepartmentsPage`, `TeamsPage` e `MembershipsPage` acessíveis por usuários com papel `admin` ou superior.
+
+---
+
+### Requisito 36: Templates por Setor Industrial
+
+**User Story:** Como novo usuário, quero que a plataforma configure automaticamente KPIs, desafios e benchmarks relevantes para o meu setor, para que eu não precise configurar tudo do zero.
+
+#### Critérios de Aceitação
+
+1. THE Sistema SHALL disponibilizar `industry_templates` para no mínimo 10 setores: Varejo, Serviços, SaaS/Tech, Indústria, Consultoria, Saúde, Educação, Alimentação, Construção e Agronegócio.
+2. WHEN um template é aplicado a uma organização, THE Sistema SHALL configurar automaticamente: `default_kpis` (KPIs relevantes para o setor), `default_challenges` (desafios típicos do setor) e benchmarks setoriais.
+3. THE Sistema SHALL aplicar o template automaticamente durante o onboarding com base no `industry_sector` informado pelo usuário, sem necessidade de configuração manual.
+4. THE Sistema SHALL permitir que administradores personalizem o template aplicado via `organization_industry_settings.customized_kpis`.
+5. THE Sistema SHALL disponibilizar hook `useIndustryTemplate` e tela de configuração de setor em `/app/settings/industry`.
+6. WHEN o setor da organização é alterado, THE Sistema SHALL sugerir a aplicação do novo template sem sobrescrever configurações personalizadas existentes.
+
+---
+
+### Requisito 37: Análise SWOT e Forças/Fraquezas
+
+**User Story:** Como gestor, quero realizar análises SWOT e de forças/fraquezas da minha empresa, para que eu tenha uma visão estratégica completa além dos KPIs.
+
+#### Critérios de Aceitação
+
+1. THE Sistema SHALL disponibilizar análise SWOT via tabela `swot_simple` com campos: `forcas` (JSONB), `fraquezas` (JSONB), `oportunidades` (JSONB), `ameacas` (JSONB), `balance_score` e `analysis_date`.
+2. THE Sistema SHALL disponibilizar análise de forças e fraquezas via tabela `forces_weaknesses_analysis` com campos estruturados para título, descrição e ação de prioridade.
+3. THE Sistema SHALL suportar geração assistida por IA das análises SWOT e forças/fraquezas via AI Proxy, usando dados de KPIs, radar items e Blueprint como contexto.
+4. THE Sistema SHALL calcular `balance_score` automaticamente baseado na proporção de forças vs. fraquezas e oportunidades vs. ameaças.
+5. THE Sistema SHALL disponibilizar hooks `useSwotAnalysis` e `useForcesWeaknesses` e componentes `SwotPage` e `ForcesWeaknessesPage`.
+6. WHEN uma análise SWOT é gerada, THE Sistema SHALL registrar `analysis_date` e vincular à organização via RLS.
+
+---
+
+### Requisito 38: Previsões de Curto Prazo
+
+**User Story:** Como gestor financeiro, quero previsões de fluxo de caixa, receita e despesas para os próximos 7, 30, 60 e 90 dias, para que eu possa planejar com antecedência.
+
+#### Critérios de Aceitação
+
+1. THE Sistema SHALL disponibilizar previsões de curto prazo via tabela `short_term_forecasts` com campos: `forecast_type` (cash_flow, revenue, expenses), `horizon_days` (7, 30, 60, 90), `forecast_method`, `daily_values` (JSONB), `total_projected`, `confidence_score` e `alert_triggered`.
+2. THE Sistema SHALL suportar os seguintes métodos de previsão: média móvel, tendência linear, sazonalidade e IA (via Gemini).
+3. WHEN `alert_triggered = true`, THE Sistema SHALL notificar o usuário sobre risco de fluxo de caixa negativo no horizonte previsto.
+4. THE Sistema SHALL disponibilizar hook `useShortTermForecasts` e componente `ForecastPage` com gráficos de linha para cada horizonte temporal.
+5. THE Sistema SHALL recalcular previsões automaticamente quando novos valores de KPI são registrados.
+6. FOR ALL previsões, THE Sistema SHALL garantir que `confidence_score ∈ [0.0, 1.0]`.
+
+---
+
+### Requisito 39: Gestão de Fornecedores
+
+**User Story:** Como gestor de operações, quero avaliar e monitorar o desempenho dos meus fornecedores, para que eu identifique riscos na cadeia de suprimentos.
+
+#### Critérios de Aceitação
+
+1. THE Sistema SHALL disponibilizar avaliação de fornecedores via tabela `supplier_scorecards` com campos: `nome`, `categoria`, `score_preco`, `score_prazo_entrega`, `score_qualidade`, `score_geral` e `status`.
+2. THE Sistema SHALL calcular `score_geral` automaticamente como média ponderada dos scores por dimensão.
+3. THE Sistema SHALL registrar histórico de performance via `supplier_performance_history` com `taxa_atraso_percent` e `taxa_defeito_percent` por período.
+4. THE Sistema SHALL gerar alertas de risco via `supplier_risk_alerts` com campos: `alert_type`, `severity`, `title` e `status`, quando scores caem abaixo de thresholds configurados.
+5. THE Sistema SHALL disponibilizar hooks `useSupplierScorecards` e `useSupplierRiskAlerts` e componentes `SuppliersPage`, `SupplierScorecard` e `SupplierRiskAlerts`.
+6. WHEN um fornecedor tem `score_geral < 5.0`, THE Sistema SHALL gerar automaticamente um alerta de risco com `severity = 'high'`.
+
+---
+
+### Requisito 40: Saúde e Ciclo de Vida de Clientes
+
+**User Story:** Como gestor comercial, quero visualizar a saúde de cada cliente e seu estágio no ciclo de vida, para que eu priorize ações de retenção e expansão.
+
+#### Critérios de Aceitação
+
+1. THE Sistema SHALL disponibilizar scores de saúde de clientes via tabela `client_health_scores` com campos: `client_id`, `rfm_score`, `health_status`, `churn_risk_score` e `next_purchase_forecast`.
+2. THE Sistema SHALL calcular `rfm_score` baseado em Recência (última compra), Frequência (número de compras) e Valor monetário (ticket médio).
+3. THE Sistema SHALL classificar `health_status` como: `healthy`, `at_risk`, `churned` ou `dormant` baseado no `rfm_score` e `churn_risk_score`.
+4. THE Sistema SHALL registrar transições de estágio via `client_lifecycle_history` com `stage_from_id`, `stage_to_id`, `transition_date` e `transaction_value`.
+5. THE Sistema SHALL disponibilizar estágios de ciclo de vida configuráveis via `client_lifecycle_stages` com `name`, `sequence_order`, `color` e `icon`.
+6. THE Sistema SHALL disponibilizar hooks `useClientHealthScores` e `useClientLifecycle` e componentes `ClientHealthPage` e `ClientLifecycleBoard`.
+7. WHEN `churn_risk_score > 0.7`, THE Sistema SHALL gerar alerta no Radar com severidade `high`.
+
+---
+
+### Requisito 41: Gestão de Custos de RH
+
+**User Story:** Como gestor de RH, quero calcular o custo total de cada funcionário incluindo encargos e benefícios, para que eu tenha visibilidade real do custo da folha.
+
+#### Critérios de Aceitação
+
+1. THE Sistema SHALL disponibilizar gestão de custos de funcionários via tabela `employee_costs` com campos: `nome`, `cargo`, `departamento`, `salario_base`, `inss_patronal`, `fgts`, `custo_total_mensal` e `status`.
+2. THE Sistema SHALL calcular `custo_total_mensal` automaticamente como: `salario_base + inss_patronal + fgts + beneficios`.
+3. THE Sistema SHALL disponibilizar projeções de folha via tabela `payroll_projections` com campos: `projection_month`, `projection_year`, `folha_normal`, `total_projetado` e `total_com_provisoes`.
+4. THE Sistema SHALL calcular `total_com_provisoes` incluindo: 13º salário (1/12 por mês), férias (1/12 + 1/3 por mês) e FGTS sobre provisões.
+5. THE Sistema SHALL disponibilizar hooks `useEmployeeCosts` e `usePayrollProjections` e componentes `EmployeeCostsPage` e `PayrollProjectionsPage`.
+6. THE Sistema SHALL integrar `custo_total_mensal` com o KPI `LABOR_COST_PCT` para cálculo automático do peso da folha sobre a receita.
+7. WHEN um funcionário é marcado com `status = 'inactive'`, THE Sistema SHALL excluí-lo das projeções futuras mas preservar o histórico de custos.
