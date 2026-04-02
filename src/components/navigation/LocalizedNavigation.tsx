@@ -17,6 +17,7 @@ import {
   PieChart,
   Zap,
   Radar as RadarIcon,
+  Upload,
 } from "lucide-react";
 
 interface LocalizedNavigationProps {
@@ -44,6 +45,11 @@ export const LocalizedNavigation: React.FC<LocalizedNavigationProps> = ({
         name: t("nav.radar", { defaultValue: "Radar" }),
         href: "/pt-BR/app/radar",
         icon: RadarIcon,
+      },
+      {
+        name: t("nav.documents", { defaultValue: "Documentos" }),
+        href: "/pt-BR/app/documentos",
+        icon: Upload,
       },
       {
         name: t("nav.metrics", { defaultValue: "Indicadores" }),
@@ -91,6 +97,16 @@ export const LocalizedNavigation: React.FC<LocalizedNavigationProps> = ({
         name: t("nav.overview", { defaultValue: "Overview" }),
         href: "/en-US/app",
         icon: LayoutDashboard,
+      },
+      {
+        name: t("nav.radar", { defaultValue: "Radar" }),
+        href: "/en-US/app/radar",
+        icon: RadarIcon,
+      },
+      {
+        name: t("nav.documents", { defaultValue: "Documents" }),
+        href: "/en-US/app/documentos",
+        icon: Upload,
       },
       {
         name: t("nav.metrics", { defaultValue: "Metrics" }),
@@ -143,6 +159,11 @@ export const LocalizedNavigation: React.FC<LocalizedNavigationProps> = ({
         name: t("nav.radar", { defaultValue: "Radar" }),
         href: "/es-ES/app/radar",
         icon: RadarIcon,
+      },
+      {
+        name: t("nav.documents", { defaultValue: "Documentos" }),
+        href: "/es-ES/app/documentos",
+        icon: Upload,
       },
       {
         name: t("nav.metrics", { defaultValue: "Métricas" }),

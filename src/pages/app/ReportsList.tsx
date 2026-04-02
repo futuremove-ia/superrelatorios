@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Search,
@@ -38,42 +39,48 @@ import {
 import { Report } from "@/types/reports";
 import { getReportsByOrganization } from "@/services/supabaseReportsService";
 import { useCurrentOrganization } from "@/hooks/useCurrentOrganization";
+import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
 
 const ReportsList = () => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
+  const { toast } = useToast();
   const { organizationId, isDemoMode } = useCurrentOrganization();
   const [reports, setReports] = useState<Report[]>([]);
-  const [filteredReports, setFilteredReports] = useState<Report[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
-  useEffect(() => {
-    const loadReports = async () => {
-      try {
-        if (isDemoMode || !organizationId) {
-          setReports([]);
-          setFilteredReports([]);
-          setLoading(false);
-          return;
-        }
-        const data = await getReportsByOrganization(organizationId);
-        setReports(data);
-        setFilteredReports(data);
-      } catch (error) {
-        console.error("Error loading reports:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadReports();
-  }, [organizationId, isDemoMode]);
+  const { data, isLoading, isError, refetch } = useQuery({
+    queryKey: ["reports", organizationId],
+    queryFn: () => getReportsByOrganization(organizationId),
+    staleTime: 5 * 60 * 1000,
+    enabled: !!organizationId && !isDemoMode,
+  });
+
+  if (isError) {
+    toast({
+      title: t("errors.title"),
+      description: t("reports.errors.load"),
+      variant: "destructive",
+    });
+  }
 
   useEffect(() => {
+    if (data) {
+      setReports(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (isDemoMode || !organizationId) {
+      setReports([]);
+    }
+  }, [isDemoMode, organizationId]);
+
+  const filteredReports = useMemo(() => {
     let filtered = reports;
     if (searchTerm) {
       filtered = filtered.filter(
@@ -89,7 +96,7 @@ const ReportsList = () => {
       filtered = filtered.filter(
         (report) => report.category === categoryFilter,
       );
-    setFilteredReports(filtered);
+    return filtered;
   }, [reports, searchTerm, statusFilter, categoryFilter]);
 
   const getStatusColor = (status: Report["status"]) => {
@@ -116,7 +123,7 @@ const ReportsList = () => {
 
   const categories = Array.from(new Set(reports.map((r) => r.category)));
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="p-4 sm:p-6 max-w-7xl mx-auto">
         <div className="animate-pulse space-y-6">

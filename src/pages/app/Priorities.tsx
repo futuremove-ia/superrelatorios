@@ -1,4 +1,5 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   Target,
   Sparkles,
@@ -122,7 +123,6 @@ const Priorities = () => {
   const { toast } = useToast();
   const { organizationId, isDemoMode } = useCurrentOrganization();
   const [priorities, setPriorities] = useState<Priority[]>([]);
-  const [loading, setLoading] = useState(true);
   const [selectedPriority, setSelectedPriority] = useState<Priority | null>(
     null,
   );
@@ -130,24 +130,32 @@ const Priorities = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [viewMode, setViewMode] = useState<"cards" | "list">("cards");
 
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["priorities", organizationId],
+    queryFn: () => getPrioritiesByOrganization(organizationId),
+    staleTime: 5 * 60 * 1000,
+    enabled: !!organizationId && !isDemoMode,
+  });
+
+  if (isError) {
+    toast({
+      title: t("errors.title"),
+      description: t("priorities.errors.load"),
+      variant: "destructive",
+    });
+  }
+
   useEffect(() => {
-    const loadPriorities = async () => {
-      if (isDemoMode || !organizationId) {
-        setPriorities([]);
-        setLoading(false);
-        return;
-      }
-      try {
-        const data = await getPrioritiesByOrganization(organizationId);
-        setPriorities(data);
-      } catch (error) {
-        console.error("Error loading priorities:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadPriorities();
-  }, [organizationId, isDemoMode]);
+    if (data) {
+      setPriorities(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (isDemoMode || !organizationId) {
+      setPriorities([]);
+    }
+  }, [isDemoMode, organizationId]);
 
   const filteredPriorities = useMemo(() => {
     return priorities.filter(

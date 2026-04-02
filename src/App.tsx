@@ -47,6 +47,8 @@ const AppLayout = lazy(() => import("./components/AppLayout"));
 const DesignSystem = lazy(() => import("./pages/design-system"));
 const Flows = lazy(() => import("./pages/Flows"));
 const Radar = lazy(() => import("./pages/app/Radar"));
+const DocumentUploader = lazy(() => import("./pages/app/DocumentUploader"));
+const Metrics = lazy(() => import("./pages/app/Metrics"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -162,6 +164,8 @@ const App = () => (
                     <Route path="analytics" element={<AdvancedAnalytics />} />
                     <Route path="decision-panel" element={<DecisionPanel />} />
                     <Route path="radar" element={<Radar />} />
+                    <Route path="documentos" element={<DocumentUploader />} />
+                    <Route path="metricas" element={<Metrics />} />
                     <Route path="painel-decisao" element={<DecisionPanel />} />
                     <Route path="panel-decision" element={<DecisionPanel />} />
                     <Route

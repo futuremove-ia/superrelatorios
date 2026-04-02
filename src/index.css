@@ -13,25 +13,25 @@ All colors MUST be HSL.
     --background-dark: 220 13% 5%;
     --background-subtle-light: 0 0% 98%;
     --background-subtle-dark: 220 13% 7%;
-    
+
     /* DSP Foreground System */
     --foreground-light: 210 24% 8%;
     --foreground-dark: 0 0% 98%;
     --foreground-muted-light: 215 16% 47%;
     --foreground-muted-dark: 215 20% 65%;
-    
+
     /* DSP Border System */
     --border-light: 211 20% 94%;
     --border-dark: 215 28% 17%;
-    
+
     /* Primary: Azul mais escuro */
     --primary: 217 91% 27%; /* #1e40af */
     --primary-foreground: 0 0% 100%;
-    
+
     /* DSP Accent */
     --accent: 38 92% 50%; /* #F59E0B */
     --accent-foreground: 0 0% 100%;
-    
+
     /* DSP Status */
     --status-positive: 142 76% 36%;
     --status-negative: 0 84% 60%;
@@ -51,7 +51,7 @@ All colors MUST be HSL.
     --primary-foreground-legacy: 0 0% 100%;
     --primary-dark: 220 91% 15%;
     --primary-dark-foreground: 0 0% 100%;
-    
+
     /* Brand Colors */
     --brand-super: 222 84% 4.9%;
     --brand-relatorios: 217 91% 27%;
@@ -127,7 +127,7 @@ All colors MUST be HSL.
     --primary-foreground-legacy: 222 84% 4.9%;
     --primary-dark: 220 91% 15%;
     --primary-dark-foreground: 210 40% 98%;
-    
+
     --brand-super: 210 40% 98%;
     --brand-relatorios: 217.2 91.2% 59.8%;
 
@@ -172,51 +172,50 @@ All colors MUST be HSL.
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+      Arial, sans-serif;
   }
 
   /* Typography hierarchy - DSP Aligned */
-  h1, h2, h3, h4, h5, h6 {
-    
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
   }
 
   h1 {
-    
   }
 
   h2 {
-    
   }
 
   h3 {
-    
   }
 
   h4 {
-    
   }
 
   h5 {
-    
   }
 
   h6 {
-    
   }
 
   /* Typography base */
-  p, span, div {
-    
+  p,
+  span,
+  div {
   }
 
   /* Typography for metrics */
   .metric {
-    
   }
 
   /* Typography for labels */
   .label {
-    
   }
 
   /* Sections with scroll margin for fixed header */
@@ -337,70 +336,21 @@ All colors MUST be HSL.
     @apply border-yellow-200 dark:border-yellow-800;
   }
 }
-  .animate-in {
-    
-  }
 
-  .fade-in {
-    
-    animation: fadeIn 0.3s ease-out forwards;
-  }
-
-  .slide-up {
-    
-    animation: slideUp 0.3s ease-out forwards;
-  }
-
-  /* Gradient subtle background */
-  .bg-gradient-subtle {
-    background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted) / 0.5) 100%);
-  }
-
-  /* Hover scale utility */
-  /* Hover Scale */
-  .hover-scale {
-    @apply transition-transform duration-200 hover:scale-105;
-  }
-
-  /* Responsive Text Utilities */
-  .text-responsive-xs {
-    @apply text-xs;
-  }
-
-  .text-responsive-sm {
-    @apply text-sm;
-  }
-
-  .text-responsive-base {
-    @apply text-base;
-  }
-
-  .text-responsive-lg {
-    @apply text-lg;
-  }
-
-  .text-responsive-xl {
-    @apply text-xl;
-  }
-
-  .text-responsive-2xl {
-    @apply text-2xl;
-  }
-
-  /* Premium Shine Effect */
-  .btn-shine {
-    @apply relative overflow-hidden;
-  }
-
-  .btn-shine::after {
-    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full transition-transform duration-700 content-[''];
-  }
-
-  .btn-shine:hover::after {
-    @apply translate-x-full;
-  }
+.animate-in {
+  animation: fadeIn 0.3s ease-out forwards;
 }
 
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.slide-up {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: slideUp 0.3s ease-out forwards;
+}
 
 @keyframes fadeIn {
   to {
@@ -440,11 +390,9 @@ All colors MUST be HSL.
   /* High contrast mode support */
   @media (prefers-contrast: high) {
     .text-muted-foreground {
-      
     }
-    
+
     .border-muted {
-      
     }
   }
 
@@ -472,18 +420,15 @@ All colors MUST be HSL.
 
   /* Mobile-first responsive containers */
   .container-fluid {
-    
   }
 
   @media (min-width: 640px) {
     .container-fluid {
-      
     }
   }
 
   @media (min-width: 1024px) {
     .container-fluid {
-      
     }
   }
 
@@ -502,7 +447,6 @@ All colors MUST be HSL.
 
   /* Fixed mobile bottom bar */
   .mobile-bottom-bar {
-    
     padding-bottom: calc(16px + env(safe-area-inset-bottom));
   }
 
@@ -521,11 +465,9 @@ All colors MUST be HSL.
 
   /* Loading and skeleton states */
   .skeleton {
-    
   }
 
   .loading-spinner {
-    
   }
 
   /* Better text readability */
@@ -536,7 +478,6 @@ All colors MUST be HSL.
 
   /* Improved button states */
   .btn-enhanced {
-    
   }
 
   /* Scroll behavior enhancements */
@@ -554,65 +495,48 @@ All colors MUST be HSL.
 
   /* DSP Typography Classes */
   .typography-h1 {
-    
   }
 
   .typography-h2 {
-    
   }
 
   .typography-label {
-    
   }
 
   .typography-body {
-    
   }
 
   .typography-metric {
-    
   }
 
   /* DSP Card System */
   .card-dsp {
-    
-    
-    
-    
   }
 
   /* DSP Information Flow */
   .information-flow {
-    
   }
 
   .problem-section {
-    
   }
 
   .action-section {
-    
   }
 
   .metric-section {
-    
   }
 
   /* DSP Status Colors */
   .status-positive {
-    
   }
 
   .status-negative {
-    
   }
 
   .status-neutral {
-    
   }
 
   .status-pending {
-    
   }
 
   /* DSP Spacing */

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ListChecks,
   CheckCircle2,
@@ -37,28 +38,36 @@ import { useTranslation } from "react-i18next";
 const ActionPlan = () => {
   const { t } = useTranslation();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const { organizationId, isDemoMode } = useCurrentOrganization();
   const [actions, setActions] = useState<Action[]>([]);
-  const [loading, setLoading] = useState(true);
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["actions", organizationId],
+    queryFn: () => getActionsByOrganization(organizationId),
+    staleTime: 5 * 60 * 1000,
+    enabled: !!organizationId && !isDemoMode,
+  });
+
+  if (isError) {
+    toast({
+      title: t("errors.title"),
+      description: t("action_plan.errors.load"),
+      variant: "destructive",
+    });
+  }
 
   useEffect(() => {
-    const loadActions = async () => {
-      if (isDemoMode || !organizationId) {
-        setActions([]);
-        setLoading(false);
-        return;
-      }
-      try {
-        const data = await getActionsByOrganization(organizationId);
-        setActions(data);
-      } catch (error) {
-        console.error("Error loading actions:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadActions();
-  }, [organizationId, isDemoMode]);
+    if (data) {
+      setActions(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (isDemoMode || !organizationId) {
+      setActions([]);
+    }
+  }, [isDemoMode, organizationId]);
 
   const toggleAction = async (id: string) => {
     const action = actions.find((a) => a.id === id);
