@@ -1,8 +1,18 @@
 # Agent Coordination System - Parallel Execution
 
-## Estado Global dos Agentes
+## Arquitetura de Agentes Auto-Melhoráveis (Baseado em Hermes/Nous Research)
 
 **Última atualização:** 2026-04-02
+
+### Sistema de Loop Fechado
+
+O sistema implementa um ciclo de aprendizado fechado:
+
+1. **Agent-curated memory** — Persistência de conhecimento
+2. **Autonomous skill creation** — Cria procedures a partir de experiência
+3. **Skill self-improvement** — Melhora skills durante uso
+4. **FTS5 cross-session recall** — Recuperação com LLM summarization
+5. **User modeling** — Modelo deepening de preferências
 
 ---
 

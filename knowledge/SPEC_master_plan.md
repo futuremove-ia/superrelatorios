@@ -823,6 +823,117 @@ Semana 13-20: FASE 6 (Pipeline Server-Side)
 
 ---
 
+## Sistema de Agentes Auto-Melhoráveis (Baseado em Hermes/Nous Research)
+
+O SuperRelatórios implementa um sistema de agentes com loop de aprendizado fechado, inspiradono Hermes Agent da Nous Research.
+
+### Arquitetura de Agentes
+
+| Componente            | Descrição                                                        |
+| --------------------- | ---------------------------------------------------------------- |
+| **Agent Coordinator** | Agente principal que coordena subtarefas e persiste conhecimento |
+| **Sub-Agents**        | Agentes isolados para workstreams paralelos                      |
+| **Memory System**     | Persistência de conhecimento entre sessões                       |
+| **Skills System**     | Procedures reutilizáveis criadas a partir de experiência         |
+| **User Modeling**     | Modelo deepening de preferências e contexto do usuário           |
+
+### Capacidades Hermes Implementadas
+
+#### 1. Memory System (Persistência Cross-Session)
+
+```typescript
+// Sistema de memória que persiste entre sessões
+interface AgentMemory {
+  session_id: string;
+  knowledge: KnowledgeChunk[];
+  skills: Skill[];
+  user_model: UserPreferences;
+  last_updated: Date;
+}
+
+// FTS5 cross-session recall com LLM summarization
+```
+
+#### 2. Skills System (Criação Auto-Gerada)
+
+```typescript
+// Agente cria skills a partir de experiência
+interface Skill {
+  id: string;
+  name: string;
+  description: string;
+  procedure: Procedure;
+  created_from: string; // task_id que originou
+  usage_count: number;
+  success_rate: number;
+  self_improved: boolean;
+}
+```
+
+#### 3. Self-Improvement Loop
+
+```typescript
+// Agente melhora skills durante uso
+async function improveSkill(skillId: string, executionResult: Result) {
+  if (executionResult.success) {
+    await incrementUsageCount(skillId);
+  } else {
+    await analyzeFailure(skillId, executionResult.error);
+    await proposeImprovement(skillId);
+  }
+}
+```
+
+#### 4. Parallel Sub-Agents
+
+```typescript
+// Spawn de sub-agentes para trabalho paralelo
+const subagents = await Promise.all([
+  agent001.run({ task: "verify_db_queries" }),
+  agent002.run({ task: "fix_benchmark_service" }),
+  agent003.run({ task: "build_kpi_widgets" }),
+]);
+```
+
+#### 5. User Modeling (Honcho-style)
+
+```typescript
+interface UserPreferences {
+  display_mode: "simples" | "completo" | "enterprise";
+  preferred_sector?: string;
+  company_size?: string;
+  communication_style: "direct" | "detailed" | "educational";
+  active_tasks: Task[];
+}
+```
+
+### Agentes Ativos
+
+| Agent ID  | Função                    | Status  |
+| --------- | ------------------------- | ------- |
+| agent-001 | Revisor de queries        | ✅ idle |
+| agent-002 | Corretor de serviços      | ✅ idle |
+| agent-003 | Construtor de componentes | ✅ idle |
+| agent-004 | Corretor LSP              | ✅ idle |
+| agent-005 | Onboarding wizard         | ✅ idle |
+| agent-006 | ActionItem CRUD           | ✅ idle |
+| agent-007 | Settings pages            | ✅ idle |
+| agent-008 | Analytics components      | ✅ idle |
+| agent-009 | Blueprint service         | ✅ idle |
+| agent-010 | Coordinator               | ✅ idle |
+| agent-011 | CSS classes DSP           | ✅ idle |
+| agent-012 | useUIPreferences + Radar  | ✅ idle |
+| agent-013 | DataSuggestionBanner      | ✅ idle |
+| agent-014 | Build TypeScript          | ✅ idle |
+| agent-020 | SPEC progressive          | ✅ idle |
+| agent-021 | Verificação PP-C2         | ✅ idle |
+| agent-022 | Verificação PP-C3         | ✅ idle |
+| agent-023 | Verificação FE-C1 a FE-C4 | ✅ idle |
+| agent-024 | SPEC critical fixes       | ✅ idle |
+| agent-025 | Revisão final + Build     | ✅ idle |
+
+---
+
 ## Checklist de Qualidade
 
 - [ ] `npm run build` sem erros TypeScript
