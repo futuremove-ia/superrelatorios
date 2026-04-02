@@ -52,12 +52,15 @@ export interface CascadedSaveResult {
  * 1. Insere relatório
  * 2. Insere métricas (user_metrics)
  * 3. Cria/atualiza desafio (user_challenges)
+ *
+ * Usa extractPeriodFromData para detectar o período real dos dados.
  */
 export const saveReportWithMetrics = async (
   reportData: ReportSaveData,
   kpis: ExtractedKPI[],
   diagnostic: EnrichedDiagnostic,
   userId: string,
+  rows?: Record<string, unknown>[],
 ): Promise<CascadedSaveResult> => {
   // Buscar organization_id do usuário
   const { data: profile, error: orgError } = await supabase
@@ -71,6 +74,11 @@ export const saveReportWithMetrics = async (
   }
 
   const organizationId = profile.organization_id;
+
+  // Extrair período real dos dados ou usar atual
+  const periodData = rows
+    ? extractPeriodFromData(rows)
+    : getCurrentPeriodWithDates();
 
   // 1. Inserir relatório
   const { data: report, error: reportError } = await supabase
@@ -87,6 +95,7 @@ export const saveReportWithMetrics = async (
         ...reportData.data_json,
         diagnostic: diagnostic,
         extracted_kpis: kpis,
+        reference_period: periodData.reference_period,
       },
     })
     .select()
@@ -110,7 +119,9 @@ export const saveReportWithMetrics = async (
       delta_percentage: kpi.deltaPercentage,
       extracted_confidence: kpi.confidence,
       source_block_index: kpi.sourceBlockIndex,
-      reference_period: getCurrentPeriod(),
+      reference_period: periodData.reference_period,
+      period_start: periodData.period_start,
+      period_end: periodData.period_end,
     }));
 
     const { error: metricsError } = await supabase
@@ -205,6 +216,7 @@ export const saveReportWithMetrics = async (
 export const updateReportMetrics = async (
   reportId: string,
   kpis: ExtractedKPI[],
+  rows?: Record<string, unknown>[],
 ): Promise<number> => {
   // Buscar relatório para pegar organization_id
   const { data: report } = await supabase
@@ -226,6 +238,11 @@ export const updateReportMetrics = async (
 
   const organizationId = profile?.organization_id;
 
+  // Extrair período real dos dados ou usar atual
+  const periodData = rows
+    ? extractPeriodFromData(rows)
+    : getCurrentPeriodWithDates();
+
   // Deletar métricas antigas
   await supabase.from("user_metrics").delete().eq("report_id", reportId);
 
@@ -241,7 +258,9 @@ export const updateReportMetrics = async (
       delta_percentage: kpi.deltaPercentage,
       extracted_confidence: kpi.confidence,
       source_block_index: kpi.sourceBlockIndex,
-      reference_period: getCurrentPeriod(),
+      reference_period: periodData.reference_period,
+      period_start: periodData.period_start,
+      period_end: periodData.period_end,
     }));
 
     const { error } = await supabase.from("user_metrics").insert(metricsData);
