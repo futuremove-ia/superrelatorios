@@ -3,10 +3,19 @@
  * Centered around Diagnostics, Assisted Prioritization, and Action Plans.
  */
 
-export type PriorityLevel = 'high' | 'medium' | 'low';
+export type PriorityLevel = "high" | "medium" | "low";
 
-// Domínios de negócio para tags transversais
-export type Domain = 'finance' | 'commercial' | 'operations' | 'strategy' | 'marketing';
+// Domínios de negócio — Taxonomia PME/SMB v2.1
+export type Domain =
+  | "finance"
+  | "commercial"
+  | "marketing"
+  | "operations"
+  | "people"
+  | "strategy"
+  | "technology"
+  | "customers"
+  | "sales";
 
 export interface DomainConfig {
   id: Domain;
@@ -18,12 +27,18 @@ export interface DomainConfig {
 }
 
 // Alavancas estratégicas (pontos de pressão)
-export type LeverType = 'price' | 'cost' | 'volume' | 'time' | 'quality' | 'process';
+export type LeverType =
+  | "price"
+  | "cost"
+  | "volume"
+  | "time"
+  | "quality"
+  | "process";
 
 export interface Lever {
   type: LeverType;
   label: string;
-  impact: 'high' | 'medium' | 'low';
+  impact: "high" | "medium" | "low";
 }
 
 // Risco - Alerta de perda ou ameaça vital
@@ -31,7 +46,7 @@ export interface Risk {
   id: string;
   title: string;
   description: string;
-  severity: 'critical' | 'high' | 'medium';
+  severity: "critical" | "high" | "medium";
   timeToBreathe: string; // tempo de fôlego (ex: "15 dias", "2 meses")
   domain: Domain;
   metrics: string[]; // IDs das métricas impactadas
@@ -65,7 +80,7 @@ export interface Recommendation {
   description: string; // passo a passo
   expectedImpact: string; // ex: "+25% na conversão"
   timeframe: string; // ex: "30 dias"
-  complexity: 'low' | 'medium' | 'high';
+  complexity: "low" | "medium" | "high";
   confidence: number; // 0-100%
   levers: Lever[];
 }
@@ -73,10 +88,10 @@ export interface Recommendation {
 // Item do Radar (card acionável completo)
 export interface RadarItem {
   id: string;
-  type: 'risk' | 'opportunity';
+  type: "risk" | "opportunity";
   priority: PriorityLevel;
   domain: Domain;
-  urgency: 'immediate' | 'short_term' | 'medium_term';
+  urgency: "immediate" | "short_term" | "medium_term";
   // Entidades hierárquicas
   alert: Risk | Opportunity;
   diagnosis: Diagnosis;
@@ -84,7 +99,7 @@ export interface RadarItem {
   // Metadados
   createdAt: string;
   expiresAt?: string;
-  status: 'active' | 'acknowledged' | 'in_action_plan' | 'resolved';
+  status: "active" | "acknowledged" | "in_action_plan" | "resolved";
 }
 
 export interface Diagnostic {
@@ -98,10 +113,10 @@ export interface Diagnostic {
 }
 
 export interface PriorityScore {
-  impact: number;      // 1-10
-  urgency: number;     // 1-10
-  effort: number;      // 1-10
-  confidence: number;  // 1-10
+  impact: number; // 1-10
+  urgency: number; // 1-10
+  effort: number; // 1-10
+  confidence: number; // 1-10
   calculatedValue: number; // (impact * urgency * confidence) / effort
 }
 
@@ -112,7 +127,7 @@ export interface Priority {
   explanation: string;
   level: PriorityLevel;
   score: PriorityScore;
-  status: 'suggested' | 'validated' | 'dismissed';
+  status: "suggested" | "validated" | "dismissed";
   createdAt: string;
 }
 
@@ -121,7 +136,7 @@ export interface Action {
   priorityId: string;
   title: string;
   description: string;
-  status: 'pending' | 'in_progress' | 'completed' | 'blocked';
+  status: "pending" | "in_progress" | "completed" | "blocked";
   dueDate?: string;
   assignedTo?: string;
   createdAt: string;
@@ -133,6 +148,6 @@ export interface ActionPlan {
   title: string;
   description: string;
   actions: Action[];
-  status: 'active' | 'completed' | 'archived';
+  status: "active" | "completed" | "archived";
   createdAt: string;
 }
