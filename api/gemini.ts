@@ -1,9 +1,32 @@
-import { createClient } from "@supabase/supabase-js";
+import { jwtVerify, createRemoteJWKSet } from "jose";
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 const ALLOWED_ORIGIN =
   process.env.NEXT_PUBLIC_APP_URL || "https://superrelatorios.vercel.app";
+
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+
+const MAX_PAYLOAD_SIZE = 1024 * 1024; // 1MB
+
+const JWKS = createRemoteJWKSet(
+  new URL(`${SUPABASE_URL}/auth/v1/.well-known/jwks`),
+);
+
+async function verifyToken(authHeader: string | null): Promise<boolean> {
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return false;
+  }
+
+  const token = authHeader.slice(7);
+
+  try {
+    await jwtVerify(token, JWKS);
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 // Rate limiting simples em memória (por IP — em produção use Redis/Upstash)
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -42,6 +65,20 @@ export default async function handler(req: Request): Promise<Response> {
 
   if (req.method !== "POST") {
     return jsonResponse({ error: "Method not allowed" }, 405);
+  }
+
+  const contentLength = req.headers.get("content-length");
+  if (contentLength && parseInt(contentLength, 10) > MAX_PAYLOAD_SIZE) {
+    return jsonResponse(
+      { error: "Payload too large. Maximum 1MB allowed." },
+      413,
+    );
+  }
+
+  const authHeader = req.headers.get("Authorization");
+  const isValid = await verifyToken(authHeader);
+  if (!isValid) {
+    return jsonResponse({ error: "Unauthorized" }, 401);
   }
 
   // Rate limiting por IP
