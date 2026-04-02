@@ -1,0 +1,852 @@
+import { u as W, j as e, B as l } from "./index-BvTrNtPA.js";
+import { r } from "./vendor-Bp-AcFIh.js";
+import { C as T, a as k } from "./card-DMEndSBG.js";
+import { B as c } from "./badge-B9qeYiUm.js";
+import { I as y } from "./input-KGcOUGeg.js";
+import { L as n } from "./label-CPxURksw.js";
+import { T as X } from "./textarea-B_VnmAP4.js";
+import { S as x, a as m, b as h, c as p, d as t } from "./select-86jchKrk.js";
+import { D as Y, f as Z, a as _, b as ee, c as se } from "./dialog-DQ-yXBEE.js";
+import {
+  U as ae,
+  n as D,
+  s as te,
+  r as le,
+  t as P,
+  u as re,
+  e as j,
+  at as F,
+  ab as ie,
+  k as ce,
+  E as L,
+  K as A,
+  $ as z,
+  d as I,
+  j as ne,
+  au as M,
+  av as E,
+} from "./utils-BrIGbSZG.js";
+import "./router-Db_Yswnp.js";
+import "./index-Bxi3BZuB.js";
+import "./index-CgkQ-5_2.js";
+import "./index-Lnh6H6P6.js";
+import "./index-CJbNYPTE.js";
+const Ce = () => {
+  const { t: a } = W(),
+    [B, R] = r.useState([]),
+    [V, N] = r.useState(!0),
+    [o, O] = r.useState(""),
+    [u, U] = r.useState("all"),
+    [g, q] = r.useState("all"),
+    [f, w] = r.useState("grid"),
+    [G, d] = r.useState(!1);
+  (r.useState(null),
+    r.useEffect(() => {
+      (async () => {
+        (N(!0),
+          R([
+            {
+              id: "1",
+              name: "Dashboard Financeiro Mensal",
+              description:
+                "Dashboard completo com métricas financeiras essenciais para acompanhamento mensal",
+              category: "financial",
+              type: "dashboard",
+              status: "published",
+              isPublic: !0,
+              isFavorite: !0,
+              usageCount: 245,
+              rating: 4.8,
+              author: "João Silva",
+              createdAt: "2024-01-15",
+              updatedAt: "2024-03-18",
+              tags: ["financeiro", "mensal", "kpi", "dashboard"],
+              preview: "/templates/financial-dashboard-preview.png",
+              blocks: [
+                {
+                  id: "1",
+                  type: "metric",
+                  title: "Receita Total",
+                  config: { dataSource: "revenue", format: "currency" },
+                  position: { x: 0, y: 0, width: 3, height: 2 },
+                },
+                {
+                  id: "2",
+                  type: "chart",
+                  title: "Evolução de Vendas",
+                  config: { chartType: "line", dataSource: "sales" },
+                  position: { x: 3, y: 0, width: 6, height: 4 },
+                },
+              ],
+            },
+            {
+              id: "2",
+              name: "Relatório de Análise de Vendas",
+              description:
+                "Relatório detalhado para análise de performance de vendas por período",
+              category: "sales",
+              type: "report",
+              status: "published",
+              isPublic: !0,
+              isFavorite: !1,
+              usageCount: 189,
+              rating: 4.6,
+              author: "Maria Santos",
+              createdAt: "2024-02-01",
+              updatedAt: "2024-03-15",
+              tags: ["vendas", "análise", "performance", "relatório"],
+              blocks: [
+                {
+                  id: "1",
+                  type: "table",
+                  title: "Top 10 Produtos",
+                  config: { dataSource: "products", pagination: !0 },
+                  position: { x: 0, y: 0, width: 12, height: 6 },
+                },
+              ],
+            },
+            {
+              id: "3",
+              name: "Dashboard Operacional",
+              description:
+                "Monitoramento de métricas operacionais em tempo real",
+              category: "operational",
+              type: "dashboard",
+              status: "draft",
+              isPublic: !1,
+              isFavorite: !0,
+              usageCount: 67,
+              rating: 4.2,
+              author: "Pedro Costa",
+              createdAt: "2024-02-20",
+              updatedAt: "2024-03-19",
+              tags: ["operacional", "kpi", "real-time", "monitoring"],
+              blocks: [
+                {
+                  id: "1",
+                  type: "metric",
+                  title: "Eficiência Operacional",
+                  config: { dataSource: "efficiency", format: "percentage" },
+                  position: { x: 0, y: 0, width: 4, height: 2 },
+                },
+              ],
+            },
+          ]),
+          N(!1));
+      })();
+    }, []));
+  const v = B.filter((s) => {
+      const i =
+          s.name.toLowerCase().includes(o.toLowerCase()) ||
+          s.description.toLowerCase().includes(o.toLowerCase()) ||
+          s.tags.some((Q) => Q.toLowerCase().includes(o.toLowerCase())),
+        K = u === "all" || s.category === u,
+        $ = g === "all" || s.type === g;
+      return i && K && $;
+    }),
+    b = (s) => {
+      switch (s) {
+        case "published":
+          return "bg-green-100 text-green-800";
+        case "draft":
+          return "bg-yellow-100 text-yellow-800";
+        case "archived":
+          return "bg-gray-100 text-gray-800";
+        default:
+          return "bg-gray-100 text-gray-800";
+      }
+    },
+    C = (s) => {
+      switch (s) {
+        case "financial":
+          return e.jsx(M, { className: "w-4 h-4" });
+        case "operational":
+          return e.jsx(P, { className: "w-4 h-4" });
+        case "strategic":
+          return e.jsx(I, { className: "w-4 h-4" });
+        case "marketing":
+          return e.jsx(ne, { className: "w-4 h-4" });
+        case "sales":
+          return e.jsx(I, { className: "w-4 h-4" });
+        default:
+          return e.jsx(j, { className: "w-4 h-4" });
+      }
+    },
+    S = (s) => {
+      switch (s) {
+        case "dashboard":
+          return e.jsx(E, { className: "w-4 h-4" });
+        case "report":
+          return e.jsx(j, { className: "w-4 h-4" });
+        case "analysis":
+          return e.jsx(M, { className: "w-4 h-4" });
+        case "presentation":
+          return e.jsx(E, { className: "w-4 h-4" });
+        default:
+          return e.jsx(j, { className: "w-4 h-4" });
+      }
+    },
+    H = ({ template: s }) =>
+      e.jsx(T, {
+        className: "hover:shadow-md transition-shadow cursor-pointer",
+        children: e.jsxs(k, {
+          className: "p-4",
+          children: [
+            e.jsxs("div", {
+              className: "flex items-start justify-between mb-3",
+              children: [
+                e.jsxs("div", {
+                  className: "flex items-center space-x-2",
+                  children: [
+                    C(s.category),
+                    e.jsx("h3", {
+                      className: "font-semibold text-gray-900 truncate",
+                      children: s.name,
+                    }),
+                    s.isFavorite &&
+                      e.jsx(F, {
+                        className: "w-4 h-4 text-yellow-500 fill-current",
+                      }),
+                  ],
+                }),
+                e.jsxs("div", {
+                  className: "flex items-center space-x-1",
+                  children: [
+                    s.isPublic &&
+                      e.jsx(c, {
+                        variant: "secondary",
+                        className: "text-xs",
+                        children: a("common.public"),
+                      }),
+                    e.jsx(c, { className: b(s.status), children: s.status }),
+                  ],
+                }),
+              ],
+            }),
+            e.jsx("p", {
+              className: "text-sm text-gray-600 mb-3 line-clamp-2",
+              children: s.description,
+            }),
+            e.jsxs("div", {
+              className:
+                "flex items-center justify-between text-xs text-gray-500 mb-3",
+              children: [
+                e.jsxs("div", {
+                  className: "flex items-center space-x-3",
+                  children: [
+                    e.jsxs("span", {
+                      className: "flex items-center",
+                      children: [
+                        e.jsx(ie, { className: "w-3 h-3 mr-1" }),
+                        s.author,
+                      ],
+                    }),
+                    e.jsxs("span", {
+                      className: "flex items-center",
+                      children: [
+                        e.jsx(ce, { className: "w-3 h-3 mr-1" }),
+                        new Date(s.updatedAt).toLocaleDateString(),
+                      ],
+                    }),
+                  ],
+                }),
+                e.jsxs("div", {
+                  className: "flex items-center",
+                  children: [
+                    e.jsx("span", { className: "mr-1", children: "⭐" }),
+                    s.rating,
+                  ],
+                }),
+              ],
+            }),
+            e.jsxs("div", {
+              className: "flex items-center justify-between mb-3",
+              children: [
+                e.jsxs("div", {
+                  className: "flex flex-wrap gap-1",
+                  children: [
+                    s.tags
+                      .slice(0, 3)
+                      .map((i) =>
+                        e.jsx(
+                          c,
+                          {
+                            variant: "outline",
+                            className: "text-xs",
+                            children: i,
+                          },
+                          i,
+                        ),
+                      ),
+                    s.tags.length > 3 &&
+                      e.jsxs(c, {
+                        variant: "outline",
+                        className: "text-xs",
+                        children: ["+", s.tags.length - 3],
+                      }),
+                  ],
+                }),
+                e.jsxs("div", {
+                  className: "flex items-center text-xs text-gray-500",
+                  children: [
+                    e.jsx("span", {
+                      className: "mr-1",
+                      children: s.usageCount,
+                    }),
+                    "usos",
+                  ],
+                }),
+              ],
+            }),
+            e.jsxs("div", {
+              className: "flex items-center justify-between",
+              children: [
+                e.jsxs("div", {
+                  className: "flex items-center space-x-2",
+                  children: [
+                    S(s.type),
+                    e.jsx("span", {
+                      className: "text-sm text-gray-600",
+                      children: s.type,
+                    }),
+                  ],
+                }),
+                e.jsxs("div", {
+                  className: "flex space-x-1",
+                  children: [
+                    e.jsx(l, {
+                      variant: "ghost",
+                      size: "sm",
+                      children: e.jsx(L, { className: "w-4 h-4" }),
+                    }),
+                    e.jsx(l, {
+                      variant: "ghost",
+                      size: "sm",
+                      children: e.jsx(A, { className: "w-4 h-4" }),
+                    }),
+                    e.jsx(l, {
+                      variant: "ghost",
+                      size: "sm",
+                      children: e.jsx(z, { className: "w-4 h-4" }),
+                    }),
+                  ],
+                }),
+              ],
+            }),
+          ],
+        }),
+      }),
+    J = ({ template: s }) =>
+      e.jsx(T, {
+        className: "hover:shadow-md transition-shadow",
+        children: e.jsx(k, {
+          className: "p-4",
+          children: e.jsxs("div", {
+            className: "flex items-center justify-between",
+            children: [
+              e.jsxs("div", {
+                className: "flex items-center space-x-4 flex-1",
+                children: [
+                  e.jsxs("div", {
+                    className: "flex items-center space-x-2",
+                    children: [C(s.category), S(s.type)],
+                  }),
+                  e.jsxs("div", {
+                    className: "flex-1",
+                    children: [
+                      e.jsxs("div", {
+                        className: "flex items-center space-x-2",
+                        children: [
+                          e.jsx("h3", {
+                            className: "font-semibold text-gray-900",
+                            children: s.name,
+                          }),
+                          s.isFavorite &&
+                            e.jsx(F, {
+                              className: "w-4 h-4 text-yellow-500 fill-current",
+                            }),
+                        ],
+                      }),
+                      e.jsx("p", {
+                        className: "text-sm text-gray-600",
+                        children: s.description,
+                      }),
+                      e.jsxs("div", {
+                        className:
+                          "flex items-center space-x-4 mt-1 text-xs text-gray-500",
+                        children: [
+                          e.jsx("span", { children: s.author }),
+                          e.jsxs("span", { children: [s.usageCount, " usos"] }),
+                          e.jsxs("span", { children: ["⭐ ", s.rating] }),
+                          e.jsx("span", {
+                            children: new Date(
+                              s.updatedAt,
+                            ).toLocaleDateString(),
+                          }),
+                        ],
+                      }),
+                    ],
+                  }),
+                ],
+              }),
+              e.jsxs("div", {
+                className: "flex items-center space-x-2",
+                children: [
+                  e.jsx("div", {
+                    className: "flex flex-wrap gap-1 max-w-xs",
+                    children: s.tags
+                      .slice(0, 2)
+                      .map((i) =>
+                        e.jsx(
+                          c,
+                          {
+                            variant: "outline",
+                            className: "text-xs",
+                            children: i,
+                          },
+                          i,
+                        ),
+                      ),
+                  }),
+                  e.jsx(c, { className: b(s.status), children: s.status }),
+                  s.isPublic &&
+                    e.jsx(c, {
+                      variant: "secondary",
+                      className: "text-xs",
+                      children: a("common.public"),
+                    }),
+                  e.jsxs("div", {
+                    className: "flex space-x-1",
+                    children: [
+                      e.jsx(l, {
+                        variant: "ghost",
+                        size: "sm",
+                        children: e.jsx(L, { className: "w-4 h-4" }),
+                      }),
+                      e.jsx(l, {
+                        variant: "ghost",
+                        size: "sm",
+                        children: e.jsx(A, { className: "w-4 h-4" }),
+                      }),
+                      e.jsx(l, {
+                        variant: "ghost",
+                        size: "sm",
+                        children: e.jsx(z, { className: "w-4 h-4" }),
+                      }),
+                    ],
+                  }),
+                ],
+              }),
+            ],
+          }),
+        }),
+      });
+  return V
+    ? e.jsx("div", {
+        className: "flex items-center justify-center h-96",
+        children: e.jsx("div", {
+          className:
+            "animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600",
+        }),
+      })
+    : e.jsxs("div", {
+        className: "space-y-6 p-6",
+        children: [
+          e.jsxs("div", {
+            className: "flex items-center justify-between",
+            children: [
+              e.jsxs("div", {
+                children: [
+                  e.jsx("h1", {
+                    className: "text-3xl font-bold text-gray-900",
+                    children: a("templates.title"),
+                  }),
+                  e.jsx("p", {
+                    className: "text-gray-600 mt-1",
+                    children: a("templates.subtitle"),
+                  }),
+                ],
+              }),
+              e.jsxs("div", {
+                className: "flex space-x-2",
+                children: [
+                  e.jsxs(l, {
+                    variant: "outline",
+                    children: [
+                      e.jsx(ae, { className: "w-4 h-4 mr-2" }),
+                      a("templates.import"),
+                    ],
+                  }),
+                  e.jsxs(Y, {
+                    open: G,
+                    onOpenChange: d,
+                    children: [
+                      e.jsx(Z, {
+                        asChild: !0,
+                        children: e.jsxs(l, {
+                          children: [
+                            e.jsx(D, { className: "w-4 h-4 mr-2" }),
+                            a("templates.create"),
+                          ],
+                        }),
+                      }),
+                      e.jsxs(_, {
+                        className: "max-w-2xl",
+                        children: [
+                          e.jsx(ee, {
+                            children: e.jsx(se, {
+                              children: a("templates.createNew"),
+                            }),
+                          }),
+                          e.jsxs("div", {
+                            className: "space-y-4",
+                            children: [
+                              e.jsxs("div", {
+                                className: "grid grid-cols-2 gap-4",
+                                children: [
+                                  e.jsxs("div", {
+                                    children: [
+                                      e.jsx(n, {
+                                        htmlFor: "name",
+                                        children: a("templates.name"),
+                                      }),
+                                      e.jsx(y, {
+                                        id: "name",
+                                        placeholder: a(
+                                          "templates.namePlaceholder",
+                                        ),
+                                      }),
+                                    ],
+                                  }),
+                                  e.jsxs("div", {
+                                    children: [
+                                      e.jsx(n, {
+                                        htmlFor: "category",
+                                        children: a("templates.category"),
+                                      }),
+                                      e.jsxs(x, {
+                                        children: [
+                                          e.jsx(m, {
+                                            children: e.jsx(h, {
+                                              placeholder: a(
+                                                "templates.selectCategory",
+                                              ),
+                                            }),
+                                          }),
+                                          e.jsxs(p, {
+                                            children: [
+                                              e.jsx(t, {
+                                                value: "financial",
+                                                children: a(
+                                                  "templates.categories.financial",
+                                                ),
+                                              }),
+                                              e.jsx(t, {
+                                                value: "operational",
+                                                children: a(
+                                                  "templates.categories.operational",
+                                                ),
+                                              }),
+                                              e.jsx(t, {
+                                                value: "strategic",
+                                                children: a(
+                                                  "templates.categories.strategic",
+                                                ),
+                                              }),
+                                              e.jsx(t, {
+                                                value: "marketing",
+                                                children: a(
+                                                  "templates.categories.marketing",
+                                                ),
+                                              }),
+                                              e.jsx(t, {
+                                                value: "sales",
+                                                children: a(
+                                                  "templates.categories.sales",
+                                                ),
+                                              }),
+                                              e.jsx(t, {
+                                                value: "custom",
+                                                children: a(
+                                                  "templates.categories.custom",
+                                                ),
+                                              }),
+                                            ],
+                                          }),
+                                        ],
+                                      }),
+                                    ],
+                                  }),
+                                ],
+                              }),
+                              e.jsxs("div", {
+                                children: [
+                                  e.jsx(n, {
+                                    htmlFor: "description",
+                                    children: a("templates.description"),
+                                  }),
+                                  e.jsx(X, {
+                                    id: "description",
+                                    placeholder: a(
+                                      "templates.descriptionPlaceholder",
+                                    ),
+                                  }),
+                                ],
+                              }),
+                              e.jsxs("div", {
+                                className: "grid grid-cols-2 gap-4",
+                                children: [
+                                  e.jsxs("div", {
+                                    children: [
+                                      e.jsx(n, {
+                                        htmlFor: "type",
+                                        children: a("templates.type"),
+                                      }),
+                                      e.jsxs(x, {
+                                        children: [
+                                          e.jsx(m, {
+                                            children: e.jsx(h, {
+                                              placeholder: a(
+                                                "templates.selectType",
+                                              ),
+                                            }),
+                                          }),
+                                          e.jsxs(p, {
+                                            children: [
+                                              e.jsx(t, {
+                                                value: "dashboard",
+                                                children: a(
+                                                  "templates.types.dashboard",
+                                                ),
+                                              }),
+                                              e.jsx(t, {
+                                                value: "report",
+                                                children: a(
+                                                  "templates.types.report",
+                                                ),
+                                              }),
+                                              e.jsx(t, {
+                                                value: "analysis",
+                                                children: a(
+                                                  "templates.types.analysis",
+                                                ),
+                                              }),
+                                              e.jsx(t, {
+                                                value: "presentation",
+                                                children: a(
+                                                  "templates.types.presentation",
+                                                ),
+                                              }),
+                                            ],
+                                          }),
+                                        ],
+                                      }),
+                                    ],
+                                  }),
+                                  e.jsxs("div", {
+                                    children: [
+                                      e.jsx(n, {
+                                        htmlFor: "tags",
+                                        children: a("templates.tags"),
+                                      }),
+                                      e.jsx(y, {
+                                        id: "tags",
+                                        placeholder: a(
+                                          "templates.tagsPlaceholder",
+                                        ),
+                                      }),
+                                    ],
+                                  }),
+                                ],
+                              }),
+                              e.jsxs("div", {
+                                className: "flex justify-end space-x-2",
+                                children: [
+                                  e.jsx(l, {
+                                    variant: "outline",
+                                    onClick: () => d(!1),
+                                    children: a("common.cancel"),
+                                  }),
+                                  e.jsx(l, {
+                                    onClick: () => d(!1),
+                                    children: a("templates.create"),
+                                  }),
+                                ],
+                              }),
+                            ],
+                          }),
+                        ],
+                      }),
+                    ],
+                  }),
+                ],
+              }),
+            ],
+          }),
+          e.jsxs("div", {
+            className: "flex items-center space-x-4",
+            children: [
+              e.jsx("div", {
+                className: "flex-1",
+                children: e.jsxs("div", {
+                  className: "relative",
+                  children: [
+                    e.jsx(te, {
+                      className:
+                        "absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4",
+                    }),
+                    e.jsx(y, {
+                      placeholder: a("templates.searchPlaceholder"),
+                      value: o,
+                      onChange: (s) => O(s.target.value),
+                      className: "pl-10",
+                    }),
+                  ],
+                }),
+              }),
+              e.jsxs(x, {
+                value: u,
+                onValueChange: U,
+                children: [
+                  e.jsx(m, {
+                    className: "w-48",
+                    children: e.jsx(h, {
+                      placeholder: a("templates.filterByCategory"),
+                    }),
+                  }),
+                  e.jsxs(p, {
+                    children: [
+                      e.jsx(t, {
+                        value: "all",
+                        children: a("templates.allCategories"),
+                      }),
+                      e.jsx(t, {
+                        value: "financial",
+                        children: a("templates.categories.financial"),
+                      }),
+                      e.jsx(t, {
+                        value: "operational",
+                        children: a("templates.categories.operational"),
+                      }),
+                      e.jsx(t, {
+                        value: "strategic",
+                        children: a("templates.categories.strategic"),
+                      }),
+                      e.jsx(t, {
+                        value: "marketing",
+                        children: a("templates.categories.marketing"),
+                      }),
+                      e.jsx(t, {
+                        value: "sales",
+                        children: a("templates.categories.sales"),
+                      }),
+                      e.jsx(t, {
+                        value: "custom",
+                        children: a("templates.categories.custom"),
+                      }),
+                    ],
+                  }),
+                ],
+              }),
+              e.jsxs(x, {
+                value: g,
+                onValueChange: q,
+                children: [
+                  e.jsx(m, {
+                    className: "w-48",
+                    children: e.jsx(h, {
+                      placeholder: a("templates.filterByType"),
+                    }),
+                  }),
+                  e.jsxs(p, {
+                    children: [
+                      e.jsx(t, {
+                        value: "all",
+                        children: a("templates.allTypes"),
+                      }),
+                      e.jsx(t, {
+                        value: "dashboard",
+                        children: a("templates.types.dashboard"),
+                      }),
+                      e.jsx(t, {
+                        value: "report",
+                        children: a("templates.types.report"),
+                      }),
+                      e.jsx(t, {
+                        value: "analysis",
+                        children: a("templates.types.analysis"),
+                      }),
+                      e.jsx(t, {
+                        value: "presentation",
+                        children: a("templates.types.presentation"),
+                      }),
+                    ],
+                  }),
+                ],
+              }),
+              e.jsxs(l, {
+                variant: "outline",
+                children: [
+                  e.jsx(le, { className: "w-4 h-4 mr-2" }),
+                  a("common.filters"),
+                ],
+              }),
+              e.jsxs("div", {
+                className: "flex items-center space-x-1 border rounded-md p-1",
+                children: [
+                  e.jsx(l, {
+                    variant: f === "grid" ? "default" : "ghost",
+                    size: "sm",
+                    onClick: () => w("grid"),
+                    children: e.jsx(P, { className: "w-4 h-4" }),
+                  }),
+                  e.jsx(l, {
+                    variant: f === "list" ? "default" : "ghost",
+                    size: "sm",
+                    onClick: () => w("list"),
+                    children: e.jsx(re, { className: "w-4 h-4" }),
+                  }),
+                ],
+              }),
+            ],
+          }),
+          e.jsx("div", {
+            className: "space-y-4",
+            children:
+              f === "grid"
+                ? e.jsx("div", {
+                    className:
+                      "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4",
+                    children: v.map((s) => e.jsx(H, { template: s }, s.id)),
+                  })
+                : e.jsx("div", {
+                    className: "space-y-2",
+                    children: v.map((s) => e.jsx(J, { template: s }, s.id)),
+                  }),
+          }),
+          v.length === 0 &&
+            e.jsxs("div", {
+              className: "text-center py-12",
+              children: [
+                e.jsx(j, { className: "w-12 h-12 text-gray-400 mx-auto mb-4" }),
+                e.jsx("h3", {
+                  className: "text-lg font-semibold text-gray-900 mb-2",
+                  children: a("templates.noResults"),
+                }),
+                e.jsx("p", {
+                  className: "text-gray-600 mb-4",
+                  children: a("templates.noResultsDescription"),
+                }),
+                e.jsxs(l, {
+                  onClick: () => d(!0),
+                  children: [
+                    e.jsx(D, { className: "w-4 h-4 mr-2" }),
+                    a("templates.createFirst"),
+                  ],
+                }),
+              ],
+            }),
+        ],
+      });
+};
+export { Ce as default };

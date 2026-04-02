@@ -14,12 +14,10 @@ export type {
   KPIThreshold,
   KPIResult,
   KPIResultSet,
-  CalculationContext,
-  CalculationOptions,
 } from "./types";
 
-export * from "./dataFields";
+export { KPICalculationEngine, createCalculationEngine } from "./calculator";
+export type { CalculationContext, CalculationOptions } from "./calculator";
+
 export * from "./formulas";
 export * from "./dataMapper";
-export { KPICalculationEngine, createCalculationEngine } from "./calculator";
-export * from "./useKPICalculation";

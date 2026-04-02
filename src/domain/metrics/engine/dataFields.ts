@@ -112,6 +112,13 @@ export const SECTOR_FIELD_MAPPINGS: Record<Sector, DataField[]> = {
       min: 0,
     },
     {
+      name: "total_customers",
+      aliases: ["customer_count"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
       name: "new_customers",
       aliases: ["acquired_customers"],
       required: false,
