@@ -247,31 +247,96 @@ All colors MUST be HSL.
 @layer components {
   /* Card System - Premium Elevation & Refined Borders */
   .card-hover {
-    
+    @apply transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 cursor-pointer;
   }
 
   .card-interactive {
-    
+    @apply transition-all duration-200 hover:ring-2 hover:ring-primary/20 cursor-pointer;
   }
 
   /* Badge System */
   .badge-success {
-    
+    @apply bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300;
   }
 
   .badge-warning {
-    
+    @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300;
   }
 
   .badge-error {
-    
+    @apply bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300;
   }
 
   .badge-info {
-    
+    @apply bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300;
+  }
+
+  /* Typography */
+  .typography-h1 {
+    @apply text-3xl font-bold tracking-tight;
+  }
+
+  .typography-h2 {
+    @apply text-2xl font-semibold tracking-tight;
+  }
+
+  .typography-h3 {
+    @apply text-xl font-semibold;
+  }
+
+  .typography-metric {
+    @apply font-mono font-bold tabular-nums;
+  }
+
+  /* Status Colors */
+  .status-positive {
+    @apply text-green-600 dark:text-green-400;
+  }
+
+  .status-negative {
+    @apply text-red-600 dark:text-red-400;
+  }
+
+  .status-neutral {
+    @apply text-blue-600 dark:text-blue-400;
+  }
+
+  .status-pending {
+    @apply text-amber-600 dark:text-amber-400;
   }
 
   /* Animation Utilities */
+  .animate-fade-in {
+    @apply animate-pulse;
+  }
+
+  /* Touch targets for accessibility */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  /* Empty states */
+  .empty-state {
+    @apply flex flex-col items-center justify-center py-12 text-center;
+  }
+
+  /* KPI Card variants */
+  .kpi-card {
+    @apply rounded-lg border bg-card p-4 shadow-sm;
+  }
+
+  .kpi-card-positive {
+    @apply border-green-200 dark:border-green-800;
+  }
+
+  .kpi-card-negative {
+    @apply border-red-200 dark:border-red-800;
+  }
+
+  .kpi-card-warning {
+    @apply border-yellow-200 dark:border-yellow-800;
+  }
+}
   .animate-in {
     
   }
@@ -292,47 +357,47 @@ All colors MUST be HSL.
   }
 
   /* Hover scale utility */
+  /* Hover Scale */
   .hover-scale {
-    
+    @apply transition-transform duration-200 hover:scale-105;
   }
 
   /* Responsive Text Utilities */
   .text-responsive-xs {
-    
+    @apply text-xs;
   }
 
   .text-responsive-sm {
-    
+    @apply text-sm;
   }
 
   .text-responsive-base {
-    
+    @apply text-base;
   }
 
   .text-responsive-lg {
-    
+    @apply text-lg;
   }
 
   .text-responsive-xl {
-    
+    @apply text-xl;
   }
 
   .text-responsive-2xl {
-    
+    @apply text-2xl;
   }
 
   /* Premium Shine Effect */
   .btn-shine {
-    
+    @apply relative overflow-hidden;
   }
 
   .btn-shine::after {
-    content: '';
-    
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full transition-transform duration-700 content-[''];
   }
 
   .btn-shine:hover::after {
-    
+    @apply translate-x-full;
   }
 }
 
@@ -552,69 +617,69 @@ All colors MUST be HSL.
 
   /* DSP Spacing */
   .space-y-section {
-    
+    @apply space-y-8;
   }
 
   .space-y-element {
-    
+    @apply space-y-4;
   }
 
   .space-y-tight {
-    
+    @apply space-y-2;
   }
 
   .space-x-section {
-    
+    @apply space-x-8;
   }
 
   .space-x-element {
-    
+    @apply space-x-4;
   }
 
   .space-x-tight {
-    
+    @apply space-x-2;
   }
 
   /* DSP Background Colors */
   .bg-dsp-light {
-    
+    @apply bg-white dark:bg-slate-900;
   }
 
   .bg-dsp-dark {
-    
+    @apply bg-slate-900;
   }
 
   .bg-dsp-subtle-light {
-    
+    @apply bg-slate-50;
   }
 
   .bg-dsp-subtle-dark {
-    
+    @apply bg-slate-800;
   }
 
   /* DSP Text Colors */
   .text-dsp-light {
-    
+    @apply text-white;
   }
 
   .text-dsp-dark {
-    
+    @apply text-slate-900 dark:text-white;
   }
 
   .text-dsp-muted-light {
-    
+    @apply text-slate-500;
   }
 
   .text-dsp-muted-dark {
-    
+    @apply text-slate-400;
   }
 
   /* DSP Border Colors */
   .border-dsp-light {
-    
+    @apply border-slate-200 dark:border-slate-700;
   }
 
   .border-dsp-dark {
-    
+    @apply border-slate-700;
   }
 }

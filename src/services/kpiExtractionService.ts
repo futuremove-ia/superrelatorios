@@ -204,7 +204,7 @@ export async function loadKPIMappingsFromDB(): Promise<void> {
     );
 
     const { data, error } = await supabase
-      .from("kpi_library")
+      .from("library_kpis")
       .select("code, title")
       .eq("is_active", true);
 
