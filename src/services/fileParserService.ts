@@ -45,34 +45,45 @@ export const parseFile = (file: File): Promise<ParsedFileData> => {
 };
 
 async function parsePDF(file: File): Promise<ParsedFileData> {
-  const pdfjsLib = await import("pdfjs-dist");
-  const pdfjsWorker = await import("pdfjs-dist/build/pdf.worker?url");
-  pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker.default;
+  try {
+    const pdfjsLib = await import("pdfjs-dist");
+    const pdfjsWorker = await import("pdfjs-dist/build/pdf.worker?url");
+    pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker.default;
 
-  const arrayBuffer = await file.arrayBuffer();
-  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-  const pages: string[] = [];
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const pages: string[] = [];
 
-  for (let i = 1; i <= pdf.numPages; i++) {
-    const page = await pdf.getPage(i);
-    const content = await page.getTextContent();
-    const pageText = (content.items as TextItem[])
-      .filter((item) => item.str)
-      .map((item) => item.str)
-      .join(" ");
-    pages.push(pageText);
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+      const pageText = (content.items as TextItem[])
+        .filter((item) => item.str)
+        .map((item) => item.str)
+        .join(" ");
+      pages.push(pageText);
+    }
+
+    const fullText = pages.join("\n\n");
+    const rows = pages.map((text, index) => ({
+      page: index + 1,
+      content: text,
+    }));
+
+    return {
+      headers: ["page", "content"],
+      rows,
+      rowCount: pages.length,
+      fileType: "pdf",
+      rawText: fullText,
+    };
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Erro desconhecido";
+    throw new Error(
+      `Falha ao processar PDF: ${message}. O arquivo pode estar corrompido ou protegido.`,
+    );
   }
-
-  const fullText = pages.join("\n\n");
-  const rows = pages.map((text, index) => ({ page: index + 1, content: text }));
-
-  return {
-    headers: ["page", "content"],
-    rows,
-    rowCount: pages.length,
-    fileType: "pdf",
-    rawText: fullText,
-  };
 }
 
 async function parseTXT(file: File): Promise<ParsedFileData> {

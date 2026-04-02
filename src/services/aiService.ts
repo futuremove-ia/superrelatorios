@@ -88,6 +88,8 @@ function setCache<T>(
 // Retry com exponential backoff
 // ────────────────────────────────────────────
 
+const AI_TIMEOUT_MS = 30000; // 30 segundos
+
 async function fetchWithRetry(
   url: string,
   options: RequestInit,
@@ -97,7 +99,16 @@ async function fetchWithRetry(
 
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     try {
-      const response = await fetch(url, options);
+      // Criar AbortController para timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), AI_TIMEOUT_MS);
+
+      const response = await fetch(url, {
+        ...options,
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
 
       // Não re-tentar em erros do cliente (4xx exceto 429)
       if (
@@ -112,7 +123,11 @@ async function fetchWithRetry(
       // Para 429 ou 5xx, aguardar antes de re-tentar
       lastError = new Error(`HTTP ${response.status}`);
     } catch (err) {
-      lastError = err instanceof Error ? err : new Error("Network error");
+      if (err instanceof Error && err.name === "AbortError") {
+        lastError = new Error(`Timeout após ${AI_TIMEOUT_MS / 1000}s`);
+      } else {
+        lastError = err instanceof Error ? err : new Error("Network error");
+      }
     }
 
     if (attempt < maxRetries - 1) {
@@ -262,7 +277,23 @@ export const analyzeDataWithAI = async (
 
   try {
     const text = await callGeminiProxy(prompt);
-    const result = JSON.parse(text) as AIAnalysisResult;
+
+    // Try/catch para JSON.parse - fallback em caso de resposta malformada
+    let result: AIAnalysisResult;
+    try {
+      result = JSON.parse(text) as AIAnalysisResult;
+    } catch (parseError) {
+      console.warn(
+        "[aiService] JSON.parse falhou, tentando extrair manualmente:",
+        parseError,
+      );
+      // Fallback: retornar estrutura básica
+      result = {
+        summary: text.substring(0, 500),
+        blocks: [],
+      };
+    }
+
     setCache(analysisCache, cacheKey, result);
     return result;
   } catch (error) {
@@ -288,7 +319,17 @@ export const generateAIDiagnostic = async (
 
   try {
     const text = await callGeminiProxy(prompt);
-    const result = JSON.parse(text) as AIDiagnosticResult;
+
+    // Try/catch para JSON.parse - fallback em caso de resposta malformada
+    let result: AIDiagnosticResult;
+    try {
+      result = JSON.parse(text) as AIDiagnosticResult;
+    } catch (parseError) {
+      console.warn("[aiService] JSON.parse falhou no diagnóstico:", parseError);
+      // Fallback: rejeitar para que o caller possa tratar
+      throw new Error("Resposta da IA malformada. Tente novamente.");
+    }
+
     setCache(diagnosticCache, cacheKey, result);
     return result;
   } catch (error) {

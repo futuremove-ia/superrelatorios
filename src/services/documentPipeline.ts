@@ -63,11 +63,35 @@ export class DocumentPipeline {
     const errors: string[] = [];
 
     try {
+      // P0: Validar organização antes de processar
+      if (!organizationId) {
+        throw new Error(
+          "Organização não especificada. Selecione uma organização primeiro.",
+        );
+      }
+
+      // Verificar se a organização existe
+      const { data: org, error: orgError } = await supabase
+        .from("organizations")
+        .select("id")
+        .eq("id", organizationId)
+        .single();
+
+      if (orgError || !org) {
+        throw new Error(
+          "Organização não encontrada. Verifique se você tem acesso.",
+        );
+      }
+
       onProgress?.({
         status: "queued",
         progress: 10,
         message: "Processando arquivo...",
       });
+
+      if (file.size === 0) {
+        throw new Error("Arquivo vazio. Carregue um arquivo com conteúdo.");
+      }
 
       if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
         throw new Error(`Arquivo muito grande. Máximo: ${MAX_FILE_SIZE_MB}MB`);

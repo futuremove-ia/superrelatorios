@@ -30,6 +30,8 @@ const UNSTRUCTURED_API_URL =
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000;
 
+const UNSTRUCTURED_TIMEOUT_MS = 60000; // 60 segundos para documentos grandes
+
 async function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -74,6 +76,13 @@ export class UnstructuredClient {
 
     for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
       try {
+        // Timeout para cada tentativa
+        const controller = new AbortController();
+        const timeoutId = setTimeout(
+          () => controller.abort(),
+          UNSTRUCTURED_TIMEOUT_MS,
+        );
+
         const response = await fetch(this.baseUrl, {
           method: "POST",
           headers: {
@@ -81,7 +90,21 @@ export class UnstructuredClient {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(payload),
+          signal: controller.signal,
         });
+
+        clearTimeout(timeoutId);
+
+        // Tratar 429 Rate Limit com Retry-After
+        if (response.status === 429) {
+          const retryAfter = response.headers.get("Retry-After");
+          const waitTime = retryAfter
+            ? parseInt(retryAfter) * 1000
+            : RETRY_DELAY * attempt;
+          console.warn(`Rate limited. Waiting ${waitTime}ms before retry.`);
+          await delay(waitTime);
+          continue;
+        }
 
         if (!response.ok) {
           const errorText = await response.text();
@@ -91,9 +114,21 @@ export class UnstructuredClient {
         }
 
         const result = await response.json();
-        return (result.elements || []).map(this.mapElement);
+
+        // Verificar se response tem estrutura válida
+        if (!result.elements || !Array.isArray(result.elements)) {
+          throw new Error("Resposta inválida da API Unstructured");
+        }
+
+        return result.elements.map(this.mapElement);
       } catch (error) {
-        lastError = error as Error;
+        if (error instanceof Error && error.name === "AbortError") {
+          lastError = new Error(
+            `Timeout após ${UNSTRUCTURED_TIMEOUT_MS / 1000}s`,
+          );
+        } else {
+          lastError = error as Error;
+        }
         console.warn(`Unstructured attempt ${attempt} failed:`, error);
 
         if (attempt < MAX_RETRIES) {
