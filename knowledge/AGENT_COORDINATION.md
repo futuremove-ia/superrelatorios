@@ -124,14 +124,14 @@ Repositório: `superrelatorios-agents/`
 | **002** | Service Fixer | Correção serviços | ✅ Ativo |
 | **003** | Component Builder | Componentes React | ✅ Ativo |
 | **004** | LSP Fixer | TypeScript/LSP | ✅ Ativo |
-| **005** | Onboarding Wizard | UX onboarding | ✅ Ativo |
+| **005** | Onboarding Wizard | UX onboarding (Fast/Deep/Demo) | ✅ Ativo |
 | **040** | Relevance Engine | Motor relevância, data points, trends | ✅ Ativo |
 | **041** | Sector Expander | 5→12 setores, ~70 nichos | ✅ Concluído |
 | **042** | Business Models | B2B/B2C/B2B2C/SaaS/Services | ✅ Ativo |
 | **043** | Nichos Library | KPIs por nicho | ✅ Concluído |
 | **044** | Didactic Translator | KPI explanations | ✅ Ativo |
 | **045** | KPI Expander | 29→100+ KPIs | ✅ Concluído |
-| **050** | UX/UI/Product/Frontend/BPMN/Data | UX/UI, Product, React, BPMN, Data Flows | ⏳ Pendente |
+| **050** | UX/UI/Product/Frontend/BPMN/Data | Onboarding Fast Lane + Deep Dive | ✅ Ativo |
 | **SYS** | System Agent | Memory + Skills + Self-improvement | ✅ Ativo |
 
 ---

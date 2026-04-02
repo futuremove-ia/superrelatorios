@@ -63,9 +63,51 @@
 
 ---
 
-## FASE 0 — Hotfixes Críticos ✅ PARCIALMENTE CONCLUÍDO
+## FASE 0 — Hotfixes Críticos ✅ CONCLUÍDO
 
 O sistema mantém 100+ KPIs, desafios e alavancas para cobrir máxima variedadede segmentos, nichos e tamanhos de PMEs (1-100 funcionários). O usuário vê apenas os relevantes ao seu contexto.
+
+---
+
+## FASE 0 — Hotfixes Críticos ✅ CONCLUÍDO
+
+### 0.1 ✅ Corrigir `organization_members` → `profiles`
+
+- **Status:** CORRIGIDO
+
+### 0.2 ✅ Corrigir bug lógico em `hasChallengeSymptoms`
+
+- **Status:** CORRIGIDO
+
+### 0.3 ✅ Unificar tipo `ExtractedKPI`
+
+- **Status:** CORRIGIDO
+
+### 0.4 ✅ Corrigir invalidação de cache em `useRisks`
+
+- **Status:** CORRIGIDO
+
+---
+
+## FASE 0.5 — Novas Funcionalidades ✅ CONCLUÍDO
+
+### 0.5.1 ✅ Onboarding Fast Lane & Deep Dive
+
+- **Porta A (Fast):** "Resolver problema urgente" → Upload rápido → Diagnóstico em 30s
+- **Porta B (Deep):** "Estruturar gestão" → Contexto completo → Análise detalhada
+- **Porta C (Demo):** "Explorar com dados de exemplo" → Modo Demo com dados mock
+
+### 0.5.2 ✅ Setores Expandidos (5→12)
+
+- Technology, Retail, Manufacturing, Services, Healthcare, Finance, Education, Food, Construction, Logistics, Agriculture, Entertainment
+
+### 0.5.3 ✅ KPIs Expandidos (29→100+)
+
+- KPIs por setor e nicho com relevance score
+
+### 0.5.4 ✅ Sistema de Memória 3 Camadas
+
+- Documentação + Código + Banco (agent_memory table)
 
 ---
 
