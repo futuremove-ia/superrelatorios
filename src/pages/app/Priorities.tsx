@@ -218,7 +218,7 @@ const Priorities = () => {
           title={t("priorities.summary.high")}
           value={stats.high.toString()}
           icon={AlertTriangle}
-          variant="destructive"
+          variant="warning"
         />
         <KPICard
           title={t("priorities.summary.medium")}

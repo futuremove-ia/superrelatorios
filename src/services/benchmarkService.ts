@@ -370,11 +370,11 @@ export class BenchmarkService {
       try {
         // Get latest actual value
         const { data: kpiData, error: kpiError } = await this.supabase
-          .from('organization_kpis')
+          .from('user_metrics')
           .select('value')
           .eq('organization_id', organizationId)
-          .eq('kpi_id', kpiId)
-          .order('period_start', { ascending: false })
+          .eq('kpi_code', kpiId)
+          .order('reference_period', { ascending: false })
           .limit(1)
           .maybeSingle()
 

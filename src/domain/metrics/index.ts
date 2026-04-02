@@ -3,4 +3,4 @@ export type { KPIValue, Threshold } from './value-objects';
 export * from './repositories';
 export * from './services';
 export * from '../shared/events';
-export * from '../shared/types';
+export type { BaseDomainEntity } from '../shared/types';

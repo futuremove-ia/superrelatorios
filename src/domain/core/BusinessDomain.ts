@@ -36,6 +36,9 @@ export interface Threshold {
   readonly good: number;
 }
 
+// Re-export Threshold from metrics to avoid duplication
+export type { Threshold as DomainThreshold } from '../metrics/value-objects/Threshold';
+
 export interface BaseDomainEntity {
   readonly id: string;
   readonly period: string;

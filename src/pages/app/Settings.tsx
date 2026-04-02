@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { User, Settings as SettingsIcon, Shield, Bell, Palette, Zap } from 'lucide-react';
+import { Settings as SettingsIcon, Building, Bell, Link, User, Palette, Shield, Zap } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,8 +9,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from 'react-i18next';
+import CompanySettings from '@/components/settings/CompanySettings';
+import NotificationSettings from '@/components/settings/NotificationSettings';
+import IntegrationSettings from '@/components/settings/IntegrationSettings';
 
 const Settings = () => {
   const { toast } = useToast();
@@ -28,17 +32,6 @@ const Settings = () => {
       description: `As configurações de ${section} foram atualizadas com sucesso.`,
     });
   };
-
-  const sections = [
-    { id: 'profile', title: t('settings.sections.profile'), icon: User, description: t('settings.profile.desc') },
-    { id: 'notifications', title: t('settings.sections.notifications'), icon: Bell, description: t('settings.notifications.desc') },
-    { id: 'appearance', title: t('settings.sections.appearance'), icon: Palette, description: t('settings.appearance.description') },
-    { id: 'security', title: t('settings.sections.security'), icon: Shield, description: t('settings.security.desc') },
-    { id: 'plan', title: t('settings.sections.plan'), icon: Zap, description: t('settings.plan.desc') },
-  ];
-
-
-  const [activeSection, setActiveSection] = useState('profile');
 
   const renderProfile = () => (
     <div className="space-y-6">
@@ -92,50 +85,6 @@ const Settings = () => {
           </div>
           
           <Button onClick={() => handleSave(t('settings.sections.profile'))}>{t('settings.profile.save_button')}</Button>
-        </CardContent>
-      </Card>
-    </div>
-  );
-
-  const renderNotifications = () => (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Bell className="h-5 w-5 text-primary" />
-            {t('settings.notifications.title')}
-          </CardTitle>
-          <CardDescription>{t('settings.notifications.desc')}</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-
-          {[
-            { key: 'email', label: t('settings.notifications.email'), desc: t('settings.notifications.email_desc') },
-            { key: 'push', label: t('settings.notifications.push'), desc: t('settings.notifications.push_desc') },
-            { key: 'reports', label: t('settings.notifications.reports'), desc: t('settings.notifications.reports_desc') },
-            { key: 'marketing', label: t('settings.notifications.marketing'), desc: t('settings.notifications.marketing_desc') },
-          ].map((item, i) => (
-            <div key={item.key}>
-              {i > 0 && <Separator className="mb-4" />}
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5 flex-1 mr-4">
-                  <Label>{item.label}</Label>
-                  <p className="text-sm text-muted-foreground">{item.desc}</p>
-                </div>
-                <Switch 
-                  checked={settings.notifications[item.key as keyof typeof settings.notifications]}
-                  onCheckedChange={(checked) => 
-                    setSettings(prev => ({
-                      ...prev,
-                      notifications: { ...prev.notifications, [item.key]: checked }
-                    }))
-                  }
-                />
-              </div>
-            </div>
-          ))}
-          <Button onClick={() => handleSave(t('settings.sections.notifications'))}>{t('settings.notifications.save_button')}</Button>
-
         </CardContent>
       </Card>
     </div>
@@ -282,71 +231,58 @@ const Settings = () => {
     </div>
   );
 
-  const renderSection = () => {
-    switch (activeSection) {
-      case 'profile': return renderProfile();
-      case 'notifications': return renderNotifications();
-      case 'appearance': return renderAppearance();
-      case 'security': return renderSecurity();
-      case 'plan': return renderPlan();
-      default: return renderProfile();
-    }
-  };
-
   return (
     <div className="bg-gradient-subtle min-h-full">
       <div className="max-w-5xl mx-auto p-4 sm:p-6">
-        {/* Mobile Section Selector */}
-        <div className="lg:hidden mb-6">
-          <Select value={activeSection} onValueChange={setActiveSection}>
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {sections.map((section) => (
-                <SelectItem key={section.id} value={section.id}>
-                  {section.title}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+            <SettingsIcon className="h-6 w-6 text-primary" />
+            {t('settings.title')}
+          </h1>
+          <p className="text-muted-foreground mt-1">{t('settings.subtitle') || 'Gerencie suas configurações e preferências'}</p>
         </div>
 
-        <div className="flex gap-6">
-          {/* Desktop Sidebar */}
-          <div className="hidden lg:block w-64 flex-shrink-0">
-            <div className="sticky top-20">
-              <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
-                <SettingsIcon className="h-5 w-5 text-primary" />
-                {t('settings.title')}
-              </h2>
-              <nav className="space-y-1">
-                {sections.map((section) => (
-                  <button
-                    key={section.id}
-                    onClick={() => setActiveSection(section.id)}
-                    className={`w-full text-left p-3 rounded-lg transition-colors flex items-center gap-3 ${
-                      activeSection === section.id
-                        ? 'bg-primary text-primary-foreground'
-                        : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                    }`}
-                  >
-                    <section.icon className="h-4 w-4 flex-shrink-0" />
-                    <div className="min-w-0">
-                      <div className="font-medium text-sm">{section.title}</div>
-                      <div className="text-xs opacity-70 truncate">{section.description}</div>
-                    </div>
-                  </button>
-                ))}
-              </nav>
+        <Tabs defaultValue="general" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:inline-flex">
+            <TabsTrigger value="general" className="flex items-center gap-2">
+              <SettingsIcon className="h-4 w-4" />
+              <span className="hidden sm:inline">{t('settings.tabs.general') || 'Geral'}</span>
+            </TabsTrigger>
+            <TabsTrigger value="company" className="flex items-center gap-2">
+              <Building className="h-4 w-4" />
+              <span className="hidden sm:inline">{t('settings.tabs.company') || 'Empresa'}</span>
+            </TabsTrigger>
+            <TabsTrigger value="notifications" className="flex items-center gap-2">
+              <Bell className="h-4 w-4" />
+              <span className="hidden sm:inline">{t('settings.tabs.notifications') || 'Notificações'}</span>
+            </TabsTrigger>
+            <TabsTrigger value="integrations" className="flex items-center gap-2">
+              <Link className="h-4 w-4" />
+              <span className="hidden sm:inline">{t('settings.tabs.integrations') || 'Integrações'}</span>
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="general">
+            <div className="space-y-6">
+              {renderProfile()}
+              {renderAppearance()}
+              {renderSecurity()}
+              {renderPlan()}
             </div>
-          </div>
+          </TabsContent>
 
-          {/* Main Content */}
-          <div className="flex-1 min-w-0">
-            {renderSection()}
-          </div>
-        </div>
+          <TabsContent value="company">
+            <CompanySettings />
+          </TabsContent>
+
+          <TabsContent value="notifications">
+            <NotificationSettings />
+          </TabsContent>
+
+          <TabsContent value="integrations">
+            <IntegrationSettings />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

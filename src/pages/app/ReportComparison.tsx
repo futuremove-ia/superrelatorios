@@ -10,7 +10,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   FileText, 
   TrendingUp, 
-  TrendingDown, 
+  TrendingDown,
+  Minus,
   BarChart3, 
   Calendar,
   Download,
@@ -35,6 +36,14 @@ interface ReportComparison {
   }[];
   insights: string[];
   created_at: string;
+  report1?: {
+    title: string;
+    created_at: string;
+  };
+  report2?: {
+    title: string;
+    created_at: string;
+  };
 }
 
 interface Report {
@@ -195,7 +204,7 @@ const ReportComparison = () => {
           report2_id: selectedReport2,
           comparison_name: `${report1Data?.title} vs ${report2Data?.title}`,
           comparison_type: comparisonType,
-          metrics_comparison,
+          metricsComparison,
           insights
         });
       
