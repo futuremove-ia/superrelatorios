@@ -53,12 +53,17 @@ const CompanySettings = () => {
 
   const sectors = [
     { value: 'technology', label: 'Tecnologia' },
-    { value: 'finance', label: 'Financeiro' },
-    { value: 'healthcare', label: 'Saúde' },
-    { value: 'education', label: 'Educação' },
     { value: 'retail', label: 'Varejo' },
     { value: 'manufacturing', label: 'Manufatura' },
     { value: 'services', label: 'Serviços' },
+    { value: 'healthcare', label: 'Saúde' },
+    { value: 'finance', label: 'Financeiro' },
+    { value: 'education', label: 'Educação' },
+    { value: 'food', label: 'Alimentação' },
+    { value: 'construction', label: 'Construção Civil' },
+    { value: 'logistics', label: 'Logística' },
+    { value: 'agriculture', label: 'Agronegócios' },
+    { value: 'entertainment', label: 'Entretenimento' },
     { value: 'other', label: 'Outro' }
   ];
 

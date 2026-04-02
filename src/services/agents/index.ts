@@ -4,6 +4,8 @@ export * from "./toolSystem.js";
 export * from "./llmIntegration.js";
 export * from "./specLoader.js";
 export * from "./coordinator.js";
+export * from "./docAutoUpdate.js";
+export * from "./memoryIntegration.js";
 
 export type {
   KnowledgeChunk,

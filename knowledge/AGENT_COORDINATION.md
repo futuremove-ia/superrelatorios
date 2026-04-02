@@ -99,20 +99,40 @@ Repositório: `superrelatorios-agents/`
 
 | Sistema         | Arquivo             | Status | Notas                  |
 | --------------- | ------------------- | ------ | ---------------------- |
-| **Memory**      | `memorySystem.ts`   | ✅     | Em memória (Map)       |
+| **Memory**      | `memorySystem.ts`   | ✅     | Persiste no Supabase   |
 | **Skills**      | `skillSystem.ts`    | ✅     | Auto-create, improve   |
 | **Tools**       | `toolSystem.ts`     | ✅     | file, bash, grep, glob |
 | **LLM**         | `llmIntegration.ts` | ⚠️     | Mock (sem LLM real)    |
 | **SPEC Loader** | `specLoader.ts`     | ✅     | Parser markdown        |
 | **Coordinator** | `coordinator.ts`    | ✅     | Orquestração           |
+| **Doc AutoUpdate** | `docAutoUpdate.ts` | ✅     | Auto-update docs       |
+| **Memory Integration** | `memoryIntegration.ts` | ✅ | Integra 3 camadas |
 
-### Não Incluso (para evitar complexidade)
+### 3 Camadas de Memória
 
-- ❌ Self-modification (OpenCLAW)
-- ❌ Persistent memory database
-- ❌ Tool calling com IA real
-- ❌ Scheduler/cron
-- ❌ MCP integration (a avaliar se necessário)
+| Camada | Componente | Status |
+|--------|------------|--------|
+| **Documentação** | `knowledge/AGENT_COORDINATION.md` | ✅ |
+| **Código** | `memorySystem.ts` (Map + Supabase) | ✅ |
+| **Banco** | `agent_memory` table | ⏳ (precisa executar SQL) |
+
+### Agentes Especialistas
+
+| ID | Nome | Escopo | Status |
+|----|------|--------|--------|
+| **001** | Query Reviewer | DB queries | ✅ Ativo |
+| **002** | Service Fixer | Correção serviços | ✅ Ativo |
+| **003** | Component Builder | Componentes React | ✅ Ativo |
+| **004** | LSP Fixer | TypeScript/LSP | ✅ Ativo |
+| **005** | Onboarding Wizard | UX onboarding | ✅ Ativo |
+| **040** | Relevance Engine | Motor relevância, data points, trends | ✅ Ativo |
+| **041** | Sector Expander | 5→12 setores, ~70 nichos | ✅ Concluído |
+| **042** | Business Models | B2B/B2C/B2B2C/SaaS/Services | ✅ Ativo |
+| **043** | Nichos Library | KPIs por nicho | ✅ Concluído |
+| **044** | Didactic Translator | KPI explanations | ✅ Ativo |
+| **045** | KPI Expander | 29→100+ KPIs | ✅ Concluído |
+| **050** | UX/UI/Product/Frontend/BPMN/Data | UX/UI, Product, React, BPMN, Data Flows | ⏳ Pendente |
+| **SYS** | System Agent | Memory + Skills + Self-improvement | ✅ Ativo |
 
 ---
 
@@ -126,17 +146,30 @@ Repositório: `superrelatorios-agents/`
 | 4   | Criar Biblioteca de Nichos com KPIs específicos             | agent-043   | ⏳     |
 | 5   | Adicionar traduções didáticas por KPI                       | agent-044   | ✅     |
 | 6   | Expandir KPIs Library (29 → 100+)                           | agent-045   | ⏳     |
+| 50  | UX/UI/Product Design + Frontend + BPMN + Data Flows         | agent-050   | ⏳     |
 
-### Novos Especialistas Ativados
+| #   | Especialidade                                          | Responsável | Status |
+| --- | ------------------------------------------------------ | ----------- | ------ |
+| 50  | **UX/UI/Product Design + Frontend + BPMN + Data Flows** | agent-050   | ✅     |
 
-| #   | Especialidade        | Responsável | Status |
-| --- | -------------------- | ----------- | ------ |
-| 50  | UX Design            | agent-050   | ⏳     |
-| 51  | UI Design            | agent-051   | ⏳     |
-| 52  | Product Design       | agent-052   | ⏳     |
-| 53  | Frontend Development | agent-053   | ⏳     |
-| 54  | BPMN & System Flows  | agent-054   | ⏳     |
-| 55  | Data Flows           | agent-055   | ⏳     |
+**Foco do agent-050:**
+- UX Design (jornada, fluxos, acessibilidade)
+- UI Design (componentes, design system, responsividade)
+- Product Design (features, roadmap, priorização)
+- Frontend Development (React, hooks, performance)
+- BPMN & System Flows (processos, diagramas)
+- Data Flows (ETL, pipelines, banco)
+
+### Agente Sistema (Consolidado)
+
+| #   | Especialidade                         | Responsável | Status |
+| --- | ------------------------------------ | ----------- | ------ |
+| SYS | **Memory + Skills + Self-improvement** | agent-SYS   | ✅     |
+
+**Foco do agent-SYS:**
+- Gerenciamento de memória (consolidado de 030)
+- Criação automática de skills (consolidado de 031)
+- Auto-melhoria durante uso (consolidado de 032)
 
 ---
 

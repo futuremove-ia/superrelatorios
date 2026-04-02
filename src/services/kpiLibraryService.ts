@@ -17,6 +17,9 @@ export const kpiSchema = z.object({
     "hr",
     "strategy",
   ]),
+  sector: z.string().optional(),
+  business_model: z.string().optional(),
+  niche: z.string().optional(),
   trend_direction: z.enum(["higher_is_better", "lower_is_better", "no_trend"]),
   input_type: z.enum(["cumulative", "non_cumulative"]),
   group_data_period: z.enum([

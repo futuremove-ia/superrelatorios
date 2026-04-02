@@ -1,4 +1,5 @@
 import { randomUUID } from "crypto";
+import { supabase } from "@/lib/supabase";
 
 export interface KnowledgeChunk {
   id: string;
@@ -218,6 +219,121 @@ export class AgentMemorySystem {
 
   importMemory(sessionId: string, memory: AgentMemory): void {
     this.memory.set(sessionId, memory);
+  }
+
+  async persistToDatabase(sessionId: string): Promise<boolean> {
+    const session = this.getSession(sessionId);
+    if (!session) return false;
+
+    const supabaseClient = supabase;
+
+    try {
+      for (const chunk of session.knowledge) {
+        await supabase.from("agent_memory").upsert({
+          id: chunk.id,
+          session_id: sessionId,
+          memory_type: "knowledge",
+          content: { content: chunk.content, embedding: chunk.embedding },
+          relevance_score: chunk.relevance_score,
+          tags: chunk.tags,
+          last_accessed: chunk.lastAccessed.toISOString(),
+          access_count: chunk.accessCount,
+        });
+      }
+
+      for (const skill of session.skills) {
+        await supabase.from("agent_memory").upsert({
+          id: skill.id,
+          session_id: sessionId,
+          memory_type: "skill",
+          content: {
+            name: skill.name,
+            description: skill.description,
+            procedure: skill.procedure,
+            createdFrom: skill.createdFrom,
+            usageCount: skill.usageCount,
+            successRate: skill.successRate,
+            selfImproved: skill.selfImproved,
+            lastUsed: skill.lastUsed?.toISOString(),
+            createdAt: skill.createdAt.toISOString(),
+          },
+          relevance_score: skill.successRate,
+          tags: [skill.name, skill.createdFrom],
+        });
+      }
+
+      await supabase.from("agent_memory").upsert({
+        id: sessionId,
+        session_id: sessionId,
+        memory_type: "user_model",
+        content: session.userModel,
+        relevance_score: 1.0,
+        tags: ["user_model", session.userModel.displayMode],
+      });
+
+      return true;
+    } catch (error) {
+      console.error("Failed to persist memory:", error);
+      return false;
+    }
+  }
+
+  async loadFromDatabase(sessionId: string): Promise<boolean> {
+    const supabaseClient = supabase;
+
+    try {
+      const { data, error } = await supabase
+        .from("agent_memory")
+        .select("*")
+        .eq("session_id", sessionId);
+
+      if (error || !data || data.length === 0) return false;
+
+      if (!this.memory.has(sessionId)) {
+        this.createSession(sessionId);
+      }
+
+      const session = this.memory.get(sessionId)!;
+      session.knowledge = [];
+      session.skills = [];
+
+      for (const row of data) {
+        if (row.memory_type === "knowledge") {
+          session.knowledge.push({
+            id: row.id,
+            content: row.content.content,
+            embedding: row.content.embedding,
+            sessionId: row.session_id,
+            createdAt: new Date(row.created_at),
+            lastAccessed: new Date(row.last_accessed),
+            accessCount: row.access_count,
+            relevance_score: row.relevance_score,
+            tags: row.tags || [],
+          });
+        } else if (row.memory_type === "skill") {
+          session.skills.push({
+            id: row.id,
+            name: row.content.name,
+            description: row.content.description,
+            procedure: row.content.procedure,
+            createdFrom: row.content.createdFrom,
+            usageCount: row.content.usageCount,
+            successRate: row.content.successRate,
+            selfImproved: row.content.selfImproved,
+            lastUsed: row.content.lastUsed ? new Date(row.content.lastUsed) : undefined,
+            createdAt: new Date(row.content.createdAt),
+          });
+        } else if (row.memory_type === "user_model") {
+          session.userModel = row.content;
+        }
+      }
+
+      session.lastUpdated = new Date();
+      return true;
+    } catch (error) {
+      console.error("Failed to load memory:", error);
+      return false;
+    }
   }
 }
 

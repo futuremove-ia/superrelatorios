@@ -196,19 +196,46 @@ export class SubAgentSystem {
         description: "Gerencia onboarding",
       },
       {
-        id: "agent-030",
-        name: "Memory Manager",
-        description: "Gerencia memória FTS5",
+        id: "agent-040",
+        name: "Relevance Engine",
+        description: "Motor de relevância, data points, trends",
       },
       {
-        id: "agent-031",
-        name: "Skill Creator",
-        description: "Cria skills automaticamente",
+        id: "agent-041",
+        name: "Sector Expander",
+        description: "Expande setores (5→10) e nichos (~70)",
       },
       {
-        id: "agent-032",
-        name: "Self Improver",
-        description: "Melhora skills durante uso",
+        id: "agent-042",
+        name: "Business Models",
+        description: "Modelos de negócio (B2B/B2C/B2B2C/SaaS/Services)",
+      },
+      {
+        id: "agent-043",
+        name: "Nichos Library",
+        description: "Biblioteca de nichos com KPIs específicos",
+      },
+      {
+        id: "agent-044",
+        name: "Didactic Translator",
+        description: "Traduções didáticas por KPI",
+      },
+      {
+        id: "agent-045",
+        name: "KPI Expander",
+        description: "Expande KPIs Library (29→100+)",
+      },
+      {
+        id: "agent-050",
+        name: "UX/UI/Product/Frontend/BPMN/Data",
+        description:
+          "UX Design, UI Design, Product Design, Frontend React, BPMN & System Flows, Data Flows",
+      },
+      {
+        id: "agent-SYS",
+        name: "System Agent",
+        description:
+          "Memory, Skills auto-create, Self-improvement (consolidado)",
       },
     ];
 
