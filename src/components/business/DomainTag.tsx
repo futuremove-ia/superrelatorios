@@ -1,56 +1,96 @@
-import React from 'react';
-import { cn } from '@/lib/utils';
-import { Domain, DomainConfig } from '@/types/business';
-import { 
-  DollarSign, 
-  TrendingUp, 
-  Settings, 
-  Target, 
-  Megaphone 
-} from 'lucide-react';
+import React from "react";
+import { cn } from "@/lib/utils";
+import type { Domain, DomainConfig } from "@/types/business";
+import {
+  DollarSign,
+  TrendingUp,
+  Settings,
+  Target,
+  Megaphone,
+  Users,
+  Cpu,
+  Heart,
+} from "lucide-react";
 
-// Configuração dos domínios
+// ============================================================
+// DOMÍNIOS — Taxonomia PME/SMB v2.1
+// 8 domínios não-redundantes e compatíveis com o schema V2
+// ============================================================
+
 export const DOMAINS: Record<Domain, DomainConfig> = {
   finance: {
-    id: 'finance',
-    label: 'Financeiro',
-    labelEn: 'Finance',
-    labelEs: 'Finanzas',
-    color: 'emerald',
-    icon: 'DollarSign'
+    id: "finance",
+    label: "Financeiro",
+    labelEn: "Finance",
+    labelEs: "Finanzas",
+    color: "emerald",
+    icon: "DollarSign",
   },
   commercial: {
-    id: 'commercial',
-    label: 'Comercial',
-    labelEn: 'Commercial',
-    labelEs: 'Comercial',
-    color: 'blue',
-    icon: 'TrendingUp'
-  },
-  operations: {
-    id: 'operations',
-    label: 'Operacional',
-    labelEn: 'Operations',
-    labelEs: 'Operaciones',
-    color: 'amber',
-    icon: 'Settings'
-  },
-  strategy: {
-    id: 'strategy',
-    label: 'Estratégia',
-    labelEn: 'Strategy',
-    labelEs: 'Estrategia',
-    color: 'purple',
-    icon: 'Target'
+    id: "commercial",
+    label: "Comercial",
+    labelEn: "Commercial",
+    labelEs: "Comercial",
+    color: "blue",
+    icon: "TrendingUp",
   },
   marketing: {
-    id: 'marketing',
-    label: 'Marketing',
-    labelEn: 'Marketing',
-    labelEs: 'Marketing',
-    color: 'pink',
-    icon: 'Megaphone'
-  }
+    id: "marketing",
+    label: "Marketing",
+    labelEn: "Marketing",
+    labelEs: "Marketing",
+    color: "pink",
+    icon: "Megaphone",
+  },
+  operations: {
+    id: "operations",
+    label: "Operações",
+    labelEn: "Operations",
+    labelEs: "Operaciones",
+    color: "amber",
+    icon: "Settings",
+  },
+  people: {
+    id: "people",
+    label: "Pessoas",
+    labelEn: "People",
+    labelEs: "Personas",
+    color: "rose",
+    icon: "Users",
+  },
+  strategy: {
+    id: "strategy",
+    label: "Estratégia",
+    labelEn: "Strategy",
+    labelEs: "Estrategia",
+    color: "purple",
+    icon: "Target",
+  },
+  technology: {
+    id: "technology",
+    label: "Tecnologia",
+    labelEn: "Technology",
+    labelEs: "Tecnología",
+    color: "cyan",
+    icon: "Cpu",
+  },
+  customers: {
+    id: "customers",
+    label: "Clientes",
+    labelEn: "Customers",
+    labelEs: "Clientes",
+    color: "orange",
+    icon: "Heart",
+  },
+  // Legacy: mantido para compatibilidade com dados existentes no banco
+  sales: {
+    id: "sales",
+    label: "Vendas",
+    labelEn: "Sales",
+    labelEs: "Ventas",
+    color: "blue",
+    icon: "TrendingUp",
+  },
 };
 
 // Mapeamento de ícones
@@ -59,52 +99,55 @@ const ICON_MAP = {
   TrendingUp,
   Settings,
   Target,
-  Megaphone
+  Megaphone,
+  Users,
+  Cpu,
+  Heart,
 };
 
 interface DomainTagProps {
   domain: Domain;
-  size?: 'sm' | 'md' | 'lg';
-  variant?: 'default' | 'outline' | 'filled';
+  size?: "sm" | "md" | "lg";
+  variant?: "default" | "outline" | "filled";
   showIcon?: boolean;
   className?: string;
 }
 
-export const DomainTag: React.FC<DomainTagProps> = ({ 
-  domain, 
-  size = 'md',
-  variant = 'default',
+export const DomainTag: React.FC<DomainTagProps> = ({
+  domain,
+  size = "md",
+  variant = "default",
   showIcon = true,
-  className
+  className,
 }) => {
   const config = DOMAINS[domain];
   const Icon = ICON_MAP[config.icon as keyof typeof ICON_MAP];
 
   const sizeClasses = {
-    sm: 'text-[10px] px-1.5 py-0.5 gap-1',
-    md: 'text-xs px-2 py-1 gap-1.5',
-    lg: 'text-sm px-3 py-1.5 gap-2'
+    sm: "text-[10px] px-1.5 py-0.5 gap-1",
+    md: "text-xs px-2 py-1 gap-1.5",
+    lg: "text-sm px-3 py-1.5 gap-2",
   };
 
   const variantClasses = {
     default: `bg-${config.color}-50 text-${config.color}-700 border-${config.color}-200`,
     outline: `bg-transparent text-${config.color}-700 border-${config.color}-300`,
-    filled: `bg-${config.color}-500 text-white border-transparent`
+    filled: `bg-${config.color}-500 text-white border-transparent`,
   };
 
   const iconSizes = {
-    sm: 'h-3 w-3',
-    md: 'h-3.5 w-3.5',
-    lg: 'h-4 w-4'
+    sm: "h-3 w-3",
+    md: "h-3.5 w-3.5",
+    lg: "h-4 w-4",
   };
 
   return (
-    <span 
+    <span
       className={cn(
-        'inline-flex items-center font-medium border rounded-full transition-colors',
+        "inline-flex items-center font-medium border rounded-full transition-colors",
         sizeClasses[size],
         variantClasses[variant],
-        className
+        className,
       )}
     >
       {showIcon && Icon && <Icon className={iconSizes[size]} />}
@@ -120,16 +163,16 @@ interface DomainFilterProps {
   className?: string;
 }
 
-export const DomainFilter: React.FC<DomainFilterProps> = ({ 
-  selected, 
+export const DomainFilter: React.FC<DomainFilterProps> = ({
+  selected,
   onChange,
-  className 
+  className,
 }) => {
   const domains = Object.keys(DOMAINS) as Domain[];
 
   const toggleDomain = (domain: Domain) => {
     if (selected.includes(domain)) {
-      onChange(selected.filter(d => d !== domain));
+      onChange(selected.filter((d) => d !== domain));
     } else {
       onChange([...selected, domain]);
     }
@@ -144,38 +187,39 @@ export const DomainFilter: React.FC<DomainFilterProps> = ({
   };
 
   return (
-    <div className={cn('flex flex-wrap items-center gap-2', className)}>
+    <div className={cn("flex flex-wrap items-center gap-2", className)}>
       <span className="text-sm text-muted-foreground mr-2">Filtrar por:</span>
-      
+
       {domains.map((domain) => (
         <button
           key={domain}
           onClick={() => toggleDomain(domain)}
           className={cn(
-            'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium',
-            'transition-all duration-200 border',
+            "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium",
+            "transition-all duration-200 border",
             selected.includes(domain)
               ? `bg-${DOMAINS[domain].color}-500 text-white border-${DOMAINS[domain].color}-500`
-              : `bg-white text-${DOMAINS[domain].color}-700 border-${DOMAINS[domain].color}-200 hover:bg-${DOMAINS[domain].color}-50`
+              : `bg-white text-${DOMAINS[domain].color}-700 border-${DOMAINS[domain].color}-200 hover:bg-${DOMAINS[domain].color}-50`,
           )}
         >
           {(() => {
-            const Icon = ICON_MAP[DOMAINS[domain].icon as keyof typeof ICON_MAP];
+            const Icon =
+              ICON_MAP[DOMAINS[domain].icon as keyof typeof ICON_MAP];
             return Icon ? <Icon className="h-4 w-4" /> : null;
           })()}
           {DOMAINS[domain].label}
         </button>
       ))}
-      
+
       <div className="ml-auto flex gap-2">
-        <button 
+        <button
           onClick={selectAll}
           className="text-xs text-muted-foreground hover:text-foreground transition-colors"
         >
           Todos
         </button>
         <span className="text-muted-foreground">|</span>
-        <button 
+        <button
           onClick={clearAll}
           className="text-xs text-muted-foreground hover:text-foreground transition-colors"
         >
