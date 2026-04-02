@@ -1,140 +1,151 @@
-import { useState, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/lib/supabase";
 
-interface Challenge {
+export interface Challenge {
   id: string;
+  organization_id: string;
+  challenge_code: string;
   title: string;
   description: string;
-  severity: 'critical' | 'warning' | 'info';
-  category: 'financial' | 'operational' | 'strategic' | 'marketing' | 'sales';
-  status: 'active' | 'resolved' | 'ignored';
+  severity: "critical" | "warning" | "info";
+  status: "detected" | "acknowledged" | "in_progress" | "resolved" | "ignored";
   priority: number;
-  createdAt: string;
-  updatedAt: string;
-  detectedKPIs: string[];
-  confidence: number;
-  recommendations: string[];
+  confidence_score: number;
+  detected_at: string;
+  updated_at: string;
+  suggested_lever_code: string | null;
+  ai_diagnostic_data: Record<string, unknown> | null;
+  expected_resolution_days: number;
 }
 
 interface UseActiveChallengesOptions {
   category?: string;
   severity?: string;
   status?: string;
+  organizationId?: string;
   refreshInterval?: number;
 }
 
-export const useActiveChallenges = (options: UseActiveChallengesOptions = {}) => {
-  const { category, severity, status, refreshInterval = 60000 } = options;
+export const useActiveChallenges = (
+  options: UseActiveChallengesOptions = {},
+) => {
+  const {
+    category,
+    severity,
+    status,
+    organizationId,
+    refreshInterval = 60000,
+  } = options;
 
   const {
     data: challenges,
     isLoading,
     error,
-    refetch
+    refetch,
   } = useQuery({
-    queryKey: ['active-challenges', category, severity, status],
+    queryKey: ["active-challenges", organizationId, category, severity, status],
     queryFn: async (): Promise<Challenge[]> => {
-      // Mock API call - replace with actual API
-      const mockChallenges: Challenge[] = [
-        {
-          id: '1',
-          title: 'Runway Crítico',
-          description: 'O runway atual de 4.2 meses está abaixo do ideal de 6 meses. Considerar redução de custos ou aceleração de receita.',
-          severity: 'critical',
-          category: 'financial',
-          status: 'active',
-          priority: 1,
-          createdAt: '2024-03-15T10:30:00Z',
-          updatedAt: '2024-03-20T14:22:00Z',
-          detectedKPIs: ['RUNWAY', 'BURN_RATE'],
-          confidence: 0.92,
-          recommendations: [
-            'Reduzir despesas não essenciais imediatamente',
-            'Acelerar esforços de vendas para aumentar receita',
-            'Renegociar termos com fornecedores'
-          ]
-        },
-        {
-          id: '2',
-          title: 'Ciclo de Vendas Elevado',
-          description: 'O ciclo de vendas de 45 dias está acima do ideal de 30 dias. Otimizar processo pode impactar positivamente o crescimento.',
-          severity: 'warning',
-          category: 'sales',
-          status: 'active',
-          priority: 2,
-          createdAt: '2024-03-18T09:15:00Z',
-          updatedAt: '2024-03-20T16:45:00Z',
-          detectedKPIs: ['SALES_CYCLE_DAYS', 'CONVERSION_RATE'],
-          confidence: 0.78,
-          recommendations: [
-            'Mapear gargalos no processo de vendas',
-            'Implementar automação de follow-up',
-            'Treinar equipe em técnicas de fechamento'
-          ]
-        },
-        {
-          id: '3',
-          title: 'Taxa de Churn Acima da Meta',
-          description: 'A taxa de churn de 3.2% está ligeiramente acima da meta de 2%. Ações de retenção podem melhorar este indicador.',
-          severity: 'warning',
-          category: 'operational',
-          status: 'active',
-          priority: 3,
-          createdAt: '2024-03-19T13:22:00Z',
-          updatedAt: '2024-03-20T11:30:00Z',
-          detectedKPIs: ['CHURN_RATE', 'CUSTOMER_SATISFACTION'],
-          confidence: 0.65,
-          recommendations: [
-            'Implementar programa de sucesso do cliente',
-            'Analisar causas principais de churn',
-            'Criar ofertas de retenção personalizadas'
-          ]
-        }
-      ];
-
-      let filteredChallenges = mockChallenges;
-
-      // Apply filters
-      if (category && category !== 'all') {
-        filteredChallenges = filteredChallenges.filter(challenge => challenge.category === category);
+      if (!organizationId) {
+        console.warn("useActiveChallenges: organizationId is required");
+        return [];
       }
 
-      if (severity && severity !== 'all') {
-        filteredChallenges = filteredChallenges.filter(challenge => challenge.severity === severity);
+      let query = supabase
+        .from("user_challenges")
+        .select("*")
+        .eq("organization_id", organizationId)
+        .in("status", ["detected", "acknowledged", "in_progress"])
+        .order("severity", { ascending: true })
+        .order("detected_at", { ascending: false });
+
+      if (severity && severity !== "all") {
+        query = query.eq("severity", severity);
       }
 
-      if (status && status !== 'all') {
-        filteredChallenges = filteredChallenges.filter(challenge => challenge.status === status);
+      if (status && status !== "all") {
+        query = query.eq("status", status);
+      }
+
+      const { data, error: fetchError } = await query;
+
+      if (fetchError) {
+        console.error("Error fetching challenges:", fetchError);
+        throw fetchError;
+      }
+
+      let filteredChallenges = data || [];
+
+      if (category && category !== "all") {
+        const categoryMap: Record<string, string[]> = {
+          financial: ["RUNWAY", "BURN_RATE", "MARGIN"],
+          operational: [
+            "CHURN_RATE",
+            "CUSTOMER_SATISFACTION",
+            "PROCESS_EFFICIENCY",
+          ],
+          strategic: ["MARKET_SHARE", "GROWTH_RATE", "COMPETITIVE_POSITION"],
+          marketing: ["CAC", "LTV", "MARKETING_ROI"],
+          sales: ["SALES_CYCLE_DAYS", "CONVERSION_RATE", "REVENUE_PER_REP"],
+        };
+        const codes = categoryMap[category] || [];
+        filteredChallenges = filteredChallenges.filter((c) =>
+          codes.includes(c.challenge_code),
+        );
       }
 
       return filteredChallenges;
     },
+    enabled: !!organizationId,
     refetchInterval: refreshInterval,
-    staleTime: 30000
+    staleTime: 30000,
   });
 
   const getChallengesByCategory = (cat: string) => {
-    return challenges?.filter(challenge => challenge.category === cat) || [];
+    return (
+      challenges?.filter((challenge) => {
+        const categoryMap: Record<string, string[]> = {
+          financial: ["RUNWAY", "BURN_RATE", "MARGIN"],
+          operational: [
+            "CHURN_RATE",
+            "CUSTOMER_SATISFACTION",
+            "PROCESS_EFFICIENCY",
+          ],
+          strategic: ["MARKET_SHARE", "GROWTH_RATE", "COMPETITIVE_POSITION"],
+          marketing: ["CAC", "LTV", "MARKETING_ROI"],
+          sales: ["SALES_CYCLE_DAYS", "CONVERSION_RATE", "REVENUE_PER_REP"],
+        };
+        return categoryMap[cat]?.includes(challenge.challenge_code) || false;
+      }) || []
+    );
   };
 
   const getChallengesBySeverity = (sev: string) => {
-    return challenges?.filter(challenge => challenge.severity === sev) || [];
+    return challenges?.filter((challenge) => challenge.severity === sev) || [];
   };
 
   const getCriticalChallenges = () => {
-    return challenges?.filter(challenge => challenge.severity === 'critical') || [];
+    return (
+      challenges?.filter((challenge) => challenge.severity === "critical") || []
+    );
   };
 
   const getWarningChallenges = () => {
-    return challenges?.filter(challenge => challenge.severity === 'warning') || [];
+    return (
+      challenges?.filter((challenge) => challenge.severity === "warning") || []
+    );
   };
 
   const getActiveChallenges = () => {
-    return challenges?.filter(challenge => challenge.status === 'active') || [];
+    return (
+      challenges?.filter((challenge) =>
+        ["detected", "acknowledged", "in_progress"].includes(challenge.status),
+      ) || []
+    );
   };
 
   const getChallengeById = (id: string) => {
-    return challenges?.find(challenge => challenge.id === id);
+    return challenges?.find((challenge) => challenge.id === id);
   };
 
   const refreshChallenges = () => {
@@ -151,7 +162,7 @@ export const useActiveChallenges = (options: UseActiveChallengesOptions = {}) =>
     getCriticalChallenges,
     getWarningChallenges,
     getActiveChallenges,
-    getChallengeById
+    getChallengeById,
   };
 };
 

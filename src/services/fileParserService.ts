@@ -13,9 +13,14 @@ export interface ParsedFileData {
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
 
-/**
- * Lê um arquivo CSV, XLSX, PDF ou TXT e retorna os dados como JSON.
- */
+function sanitizeFileName(name: string): string {
+  const sanitized = name
+    .replace(/[^a-zA-Z0-9._-]/g, "_")
+    .replace(/\s+/g, "_")
+    .replace(/_+/g, "_");
+  return sanitized.length > 100 ? sanitized.substring(0, 100) : sanitized;
+}
+
 export const parseFile = (file: File): Promise<ParsedFileData> => {
   return new Promise((resolve, reject) => {
     // Validação de tamanho

@@ -1,5 +1,5 @@
-import { createClient } from '@/lib/supabase'
-import { z } from 'zod'
+import { createClient } from "@/lib/supabase";
+import { z } from "zod";
 
 // Schema Types
 export const kpiSchema = z.object({
@@ -9,17 +9,36 @@ export const kpiSchema = z.object({
   description: z.string().optional(),
   calculation_formula: z.string().optional(),
   unit: z.string(),
-  domain: z.enum(['finance', 'sales', 'marketing', 'operations', 'hr', 'strategy']),
-  trend_direction: z.enum(['higher_is_better', 'lower_is_better', 'no_trend']),
-  input_type: z.enum(['cumulative', 'non_cumulative']),
-  group_data_period: z.enum(['daily', 'weekly', 'monthly', 'quarterly', 'yearly']),
-  total_is: z.enum(['sum_of_values', 'average_of_values', 'last_value', 'all_time', 'ytd_as_of']),
+  domain: z.enum([
+    "finance",
+    "sales",
+    "marketing",
+    "operations",
+    "hr",
+    "strategy",
+  ]),
+  trend_direction: z.enum(["higher_is_better", "lower_is_better", "no_trend"]),
+  input_type: z.enum(["cumulative", "non_cumulative"]),
+  group_data_period: z.enum([
+    "daily",
+    "weekly",
+    "monthly",
+    "quarterly",
+    "yearly",
+  ]),
+  total_is: z.enum([
+    "sum_of_values",
+    "average_of_values",
+    "last_value",
+    "all_time",
+    "ytd_as_of",
+  ]),
   is_active: z.boolean(),
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
-})
+});
 
-export type KPI = z.infer<typeof kpiSchema>
+export type KPI = z.infer<typeof kpiSchema>;
 
 export const organizationKPISchema = z.object({
   id: z.string().uuid(),
@@ -35,32 +54,32 @@ export const organizationKPISchema = z.object({
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
   kpi_library: kpiSchema.optional(),
-})
+});
 
-export type OrganizationKPI = z.infer<typeof organizationKPISchema>
+export type OrganizationKPI = z.infer<typeof organizationKPISchema>;
 
 export class KPILibraryService {
   private supabase = createClient(
-    import.meta.env.VITE_SUPABASE_URL || '',
-    import.meta.env.VITE_SUPABASE_ANON_KEY || ''
-  )
+    import.meta.env.VITE_SUPABASE_URL || "",
+    import.meta.env.VITE_SUPABASE_ANON_KEY || "",
+  );
 
   /**
    * Get all active KPIs from the library
    */
   async getKPIs(): Promise<KPI[]> {
     const { data, error } = await this.supabase
-      .from('kpi_library')
-      .select('*')
-      .eq('is_active', true)
-      .order('code')
+      .from("library_kpis")
+      .select("*")
+      .eq("is_active", true)
+      .order("code");
 
     if (error) {
-      console.error('Error fetching KPIs:', error)
-      throw new Error(`Failed to fetch KPIs: ${error.message}`)
+      console.error("Error fetching KPIs:", error);
+      throw new Error(`Failed to fetch KPIs: ${error.message}`);
     }
 
-    return kpiSchema.array().parse(data || [])
+    return kpiSchema.array().parse(data || []);
   }
 
   /**
@@ -68,17 +87,17 @@ export class KPILibraryService {
    */
   async getKPIById(id: string): Promise<KPI | null> {
     const { data, error } = await this.supabase
-      .from('kpi_library')
-      .select('*')
-      .eq('id', id)
-      .maybeSingle()
+      .from("library_kpis")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
 
     if (error) {
-      console.error('Error fetching KPI:', error)
-      throw new Error(`Failed to fetch KPI: ${error.message}`)
+      console.error("Error fetching KPI:", error);
+      throw new Error(`Failed to fetch KPI: ${error.message}`);
     }
 
-    return kpiSchema.safeParse(data).success ? data : null
+    return kpiSchema.safeParse(data).success ? data : null;
   }
 
   /**
@@ -86,17 +105,17 @@ export class KPILibraryService {
    */
   async getKPIByCode(code: string): Promise<KPI | null> {
     const { data, error } = await this.supabase
-      .from('kpi_library')
-      .select('*')
-      .eq('code', code.toUpperCase())
-      .maybeSingle()
+      .from("library_kpis")
+      .select("*")
+      .eq("code", code.toUpperCase())
+      .maybeSingle();
 
     if (error) {
-      console.error('Error fetching KPI by code:', error)
-      throw new Error(`Failed to fetch KPI by code: ${error.message}`)
+      console.error("Error fetching KPI by code:", error);
+      throw new Error(`Failed to fetch KPI by code: ${error.message}`);
     }
 
-    return kpiSchema.safeParse(data).success ? data : null
+    return kpiSchema.safeParse(data).success ? data : null;
   }
 
   /**
@@ -104,18 +123,18 @@ export class KPILibraryService {
    */
   async getKPIsByDomain(domain: string): Promise<KPI[]> {
     const { data, error } = await this.supabase
-      .from('kpi_library')
-      .select('*')
-      .eq('is_active', true)
-      .eq('domain', domain)
-      .order('code')
+      .from("library_kpis")
+      .select("*")
+      .eq("is_active", true)
+      .eq("domain", domain)
+      .order("code");
 
     if (error) {
-      console.error('Error fetching KPIs by domain:', error)
-      throw new Error(`Failed to fetch KPIs by domain: ${error.message}`)
+      console.error("Error fetching KPIs by domain:", error);
+      throw new Error(`Failed to fetch KPIs by domain: ${error.message}`);
     }
 
-    return kpiSchema.array().parse(data || [])
+    return kpiSchema.array().parse(data || []);
   }
 
   /**
@@ -126,25 +145,25 @@ export class KPILibraryService {
     const kpiData = {
       ...kpi,
       code: kpi.code?.toUpperCase(),
-    }
+    };
 
     const { data, error } = await this.supabase
-      .from('kpi_library')
+      .from("library_kpis")
       .insert(kpiData)
       .select()
-      .single()
+      .single();
 
     if (error) {
-      console.error('Error creating KPI:', error)
-      throw new Error(`Failed to create KPI: ${error.message}`)
+      console.error("Error creating KPI:", error);
+      throw new Error(`Failed to create KPI: ${error.message}`);
     }
 
-    const parsed = kpiSchema.safeParse(data)
+    const parsed = kpiSchema.safeParse(data);
     if (!parsed.success) {
-      throw new Error(`Invalid KPI data returned: ${parsed.error.message}`)
+      throw new Error(`Invalid KPI data returned: ${parsed.error.message}`);
     }
 
-    return parsed.data
+    return parsed.data;
   }
 
   /**
@@ -155,26 +174,26 @@ export class KPILibraryService {
     const updateData = {
       ...updates,
       ...(updates.code && { code: updates.code.toUpperCase() }),
-    }
+    };
 
     const { data, error } = await this.supabase
-      .from('kpi_library')
+      .from("library_kpis")
       .update(updateData)
-      .eq('id', id)
+      .eq("id", id)
       .select()
-      .single()
+      .single();
 
     if (error) {
-      console.error('Error updating KPI:', error)
-      throw new Error(`Failed to update KPI: ${error.message}`)
+      console.error("Error updating KPI:", error);
+      throw new Error(`Failed to update KPI: ${error.message}`);
     }
 
-    const parsed = kpiSchema.safeParse(data)
+    const parsed = kpiSchema.safeParse(data);
     if (!parsed.success) {
-      throw new Error(`Invalid KPI data returned: ${parsed.error.message}`)
+      throw new Error(`Invalid KPI data returned: ${parsed.error.message}`);
     }
 
-    return parsed.data
+    return parsed.data;
   }
 
   /**
@@ -182,13 +201,13 @@ export class KPILibraryService {
    */
   async deleteKPI(id: string): Promise<void> {
     const { error } = await this.supabase
-      .from('kpi_library')
+      .from("library_kpis")
       .update({ is_active: false })
-      .eq('id', id)
+      .eq("id", id);
 
     if (error) {
-      console.error('Error deleting KPI:', error)
-      throw new Error(`Failed to delete KPI: ${error.message}`)
+      console.error("Error deleting KPI:", error);
+      throw new Error(`Failed to delete KPI: ${error.message}`);
     }
   }
 
@@ -197,13 +216,13 @@ export class KPILibraryService {
    */
   async hardDeleteKPI(id: string): Promise<void> {
     const { error } = await this.supabase
-      .from('kpi_library')
+      .from("library_kpis")
       .delete()
-      .eq('id', id)
+      .eq("id", id);
 
     if (error) {
-      console.error('Error hard deleting KPI:', error)
-      throw new Error(`Failed to hard delete KPI: ${error.message}`)
+      console.error("Error hard deleting KPI:", error);
+      throw new Error(`Failed to hard delete KPI: ${error.message}`);
     }
   }
 
@@ -212,18 +231,18 @@ export class KPILibraryService {
    */
   async getKPIDomains(): Promise<string[]> {
     const { data, error } = await this.supabase
-      .from('kpi_library')
-      .select('domain')
-      .eq('is_active', true)
+      .from("library_kpis")
+      .select("domain")
+      .eq("is_active", true);
 
     if (error) {
-      console.error('Error fetching KPI domains:', error)
-      throw new Error(`Failed to fetch KPI domains: ${error.message}`)
+      console.error("Error fetching KPI domains:", error);
+      throw new Error(`Failed to fetch KPI domains: ${error.message}`);
     }
 
     // Extract unique domains
-    const domains = [...new Set((data || []).map((kpi: any) => kpi.domain))]
-    return domains
+    const domains = [...new Set((data || []).map((kpi: any) => kpi.domain))];
+    return domains;
   }
 
   /**
@@ -231,20 +250,20 @@ export class KPILibraryService {
    */
   async searchKPIs(query: string): Promise<KPI[]> {
     const { data, error } = await this.supabase
-      .from('kpi_library')
-      .select('*')
-      .eq('is_active', true)
+      .from("library_kpis")
+      .select("*")
+      .eq("is_active", true)
       .or(`title.ilike.%${query}%,description.ilike.%${query}%`)
-      .order('code')
+      .order("code");
 
     if (error) {
-      console.error('Error searching KPIs:', error)
-      throw new Error(`Failed to search KPIs: ${error.message}`)
+      console.error("Error searching KPIs:", error);
+      throw new Error(`Failed to search KPIs: ${error.message}`);
     }
 
-    return kpiSchema.array().parse(data || [])
+    return kpiSchema.array().parse(data || []);
   }
 }
 
 // Export singleton instance
-export const kpiLibraryService = new KPILibraryService()
+export const kpiLibraryService = new KPILibraryService();

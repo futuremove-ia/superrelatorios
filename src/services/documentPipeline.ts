@@ -61,16 +61,15 @@ export class DocumentPipeline {
   ): Promise<PipelineResult> {
     const startTime = Date.now();
     const errors: string[] = [];
+    let uploadedFileName: string | null = null;
 
     try {
-      // P0: Validar organização antes de processar
       if (!organizationId) {
         throw new Error(
           "Organização não especificada. Selecione uma organização primeiro.",
         );
       }
 
-      // Verificar se a organização existe
       const { data: org, error: orgError } = await supabase
         .from("organizations")
         .select("id")
@@ -111,6 +110,8 @@ export class DocumentPipeline {
       if (uploadError) {
         throw new Error(`Erro ao fazer upload: ${uploadError.message}`);
       }
+
+      uploadedFileName = fileName;
 
       onProgress?.({
         status: "extracting",
@@ -222,6 +223,11 @@ export class DocumentPipeline {
       const errorMessage =
         error instanceof Error ? error.message : "Erro desconhecido";
       errors.push(errorMessage);
+
+      if (uploadedFileName) {
+        await supabase.storage.from("documents").remove([uploadedFileName]);
+      }
+
       onProgress?.({ status: "failed", progress: 0, message: errorMessage });
 
       return {

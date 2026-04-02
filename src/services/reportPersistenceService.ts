@@ -1,6 +1,59 @@
 import { supabase } from "@/lib/supabase";
 import type { ExtractedKPI } from "@/types/extraction";
 
+interface TransactionOperation<T> {
+  execute: () => Promise<T>;
+  rollback?: () => Promise<void>;
+}
+
+interface TransactionResult<T> {
+  success: boolean;
+  data?: T[];
+  error?: string;
+  completedOperations: number;
+}
+
+async function executeInTransaction<T>(
+  operations: TransactionOperation<unknown>[],
+): Promise<TransactionResult<T>> {
+  const completedOperations: (() => Promise<void>)[] = [];
+  const results: unknown[] = [];
+
+  try {
+    for (let i = 0; i < operations.length; i++) {
+      const result = await operations[i].execute();
+      results.push(result);
+      completedOperations.push(async () => {
+        if (operations[i].rollback) {
+          await operations[i].rollback();
+        }
+      });
+    }
+
+    return {
+      success: true,
+      data: results as T[],
+      completedOperations: completedOperations.length,
+    };
+  } catch (error) {
+    console.error("Transaction failed, executing rollback:", error);
+
+    for (const rollback of completedOperations.reverse()) {
+      try {
+        await rollback();
+      } catch (rollbackError) {
+        console.error("Rollback operation failed:", rollbackError);
+      }
+    }
+
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+      completedOperations: completedOperations.length,
+    };
+  }
+}
+
 /**
  * Dados do relatório a ser salvo
  */
@@ -80,132 +133,223 @@ export const saveReportWithMetrics = async (
     ? extractPeriodFromData(rows)
     : getCurrentPeriodWithDates();
 
-  // 1. Inserir relatório
-  const { data: report, error: reportError } = await supabase
-    .from("reports")
-    .insert({
-      user_id: userId,
-      title: reportData.title,
-      description: reportData.description,
-      category: reportData.category,
-      template_id: reportData.template_id,
-      blocks: reportData.blocks,
-      status: reportData.status || "completed",
-      data_json: {
-        ...reportData.data_json,
-        diagnostic: diagnostic,
-        extracted_kpis: kpis,
-        reference_period: periodData.reference_period,
+  const metricsData = kpis.map((kpi) => ({
+    organization_id: organizationId,
+    report_id: "TEMP_ID",
+    kpi_code: kpi.code,
+    value: kpi.value,
+    unit: kpi.unit,
+    benchmark_value: kpi.benchmarkValue,
+    delta_percentage: kpi.deltaPercentage,
+    extracted_confidence: kpi.confidence,
+    source_block_index: kpi.sourceBlockIndex,
+    reference_period: periodData.reference_period,
+    period_start: periodData.period_start,
+    period_end: periodData.period_end,
+  }));
+
+  const validationResult = await supabase.from("reports").select("id").limit(1);
+  if (validationResult.error) {
+    throw new Error(
+      "Falha na validação de transação: " + validationResult.error.message,
+    );
+  }
+  if (metricsData.length > 0) {
+    const metricsValidation = await supabase
+      .from("user_metrics")
+      .select("id")
+      .limit(1);
+    if (metricsValidation.error) {
+      throw new Error(
+        "Falha na validação de métricas: " + metricsValidation.error.message,
+      );
+    }
+  }
+
+  const transactionResult = await executeInTransaction([
+    {
+      execute: async () => {
+        const { data, error } = await supabase
+          .from("reports")
+          .insert({
+            user_id: userId,
+            title: reportData.title,
+            description: reportData.description,
+            category: reportData.category,
+            template_id: reportData.template_id,
+            blocks: reportData.blocks,
+            status: reportData.status || "completed",
+            data_json: {
+              ...reportData.data_json,
+              diagnostic: diagnostic,
+              extracted_kpis: kpis,
+              reference_period: periodData.reference_period,
+            },
+          })
+          .select()
+          .single();
+
+        if (error) throw error;
+        return data;
       },
-    })
-    .select()
+      rollback: async () => {
+        const { data: tempReport } = await supabase
+          .from("reports")
+          .select("id")
+          .eq("user_id", userId)
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .single();
+        if (tempReport?.id) {
+          await supabase.from("reports").delete().eq("id", tempReport.id);
+        }
+      },
+    },
+    {
+      execute: async () => {
+        const recentReport = await supabase
+          .from("reports")
+          .select("id")
+          .eq("user_id", userId)
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .single();
+
+        if (!recentReport.data) throw new Error("Relatório não encontrado");
+
+        if (kpis.length === 0) return { id: recentReport.data.id, count: 0 };
+
+        const metricsWithReportId = metricsData.map((m) => ({
+          ...m,
+          report_id: recentReport.data.id,
+        }));
+
+        const { error } = await supabase
+          .from("user_metrics")
+          .insert(metricsWithReportId);
+
+        if (error) throw error;
+        return { id: recentReport.data.id, count: kpis.length };
+      },
+      rollback: async () => {
+        const recentReport = await supabase
+          .from("reports")
+          .select("id")
+          .eq("user_id", userId)
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .single();
+
+        if (recentReport.data?.id) {
+          await supabase
+            .from("user_metrics")
+            .delete()
+            .eq("report_id", recentReport.data.id);
+        }
+      },
+    },
+    {
+      execute: async () => {
+        const recentReport = await supabase
+          .from("reports")
+          .select("id")
+          .eq("user_id", userId)
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .single();
+
+        if (!recentReport.data) throw new Error("Relatório não encontrado");
+        const reportId = recentReport.data.id;
+
+        const { data: existingChallenge } = await supabase
+          .from("user_challenges")
+          .select("id, status")
+          .eq("organization_id", organizationId)
+          .eq("challenge_code", diagnostic.challenge_code)
+          .in("status", ["detected", "acknowledged", "in_progress"])
+          .maybeSingle();
+
+        if (existingChallenge) {
+          const { data, error } = await supabase
+            .from("user_challenges")
+            .update({
+              detected_in_report_id: reportId,
+              detected_at: new Date().toISOString(),
+              confidence_score: diagnostic.confidence || 0.8,
+              ai_diagnostic_data: diagnostic,
+              updated_at: new Date().toISOString(),
+            })
+            .eq("id", existingChallenge.id)
+            .select()
+            .single();
+
+          if (error) throw error;
+          return { created: false, id: data?.id };
+        } else {
+          const { data, error } = await supabase
+            .from("user_challenges")
+            .insert({
+              organization_id: organizationId,
+              challenge_code: diagnostic.challenge_code,
+              title: diagnostic.title,
+              description: diagnostic.description,
+              severity: diagnostic.severity,
+              status: "detected",
+              detected_in_report_id: reportId,
+              suggested_lever_code: diagnostic.suggested_lever_code,
+              confidence_score: diagnostic.confidence || 0.8,
+              ai_diagnostic_data: diagnostic,
+              expected_resolution_days: 30,
+            })
+            .select()
+            .single();
+
+          if (error) throw error;
+          return { created: true, id: data?.id };
+        }
+      },
+      rollback: async () => {
+        const recentReport = await supabase
+          .from("reports")
+          .select("id")
+          .eq("user_id", userId)
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .single();
+
+        if (recentReport.data?.id) {
+          await supabase
+            .from("user_challenges")
+            .delete()
+            .eq("detected_in_report_id", recentReport.data.id)
+            .eq("challenge_code", diagnostic.challenge_code);
+        }
+      },
+    },
+  ]);
+
+  if (!transactionResult.success || !transactionResult.data) {
+    throw new Error(transactionResult.error || "Erro na transação");
+  }
+
+  const [reportResult, metricsResult, challengeResult] =
+    transactionResult.data as [
+      { id: string; title: string; status: string; created_at: string },
+      { id: string; count: number },
+      { created: boolean; id?: string },
+    ];
+
+  const finalReport = await supabase
+    .from("reports")
+    .select("id, title, status, created_at")
+    .eq("id", reportResult.id)
     .single();
 
-  if (reportError) {
-    console.error("Erro ao salvar relatório:", reportError);
-    throw new Error(`Erro ao salvar relatório: ${reportError.message}`);
-  }
-
-  // 2. Inserir métricas (user_metrics)
-  let metricsCount = 0;
-  if (kpis.length > 0) {
-    const metricsData = kpis.map((kpi) => ({
-      organization_id: organizationId,
-      report_id: report.id,
-      kpi_code: kpi.code,
-      value: kpi.value,
-      unit: kpi.unit,
-      benchmark_value: kpi.benchmarkValue,
-      delta_percentage: kpi.deltaPercentage,
-      extracted_confidence: kpi.confidence,
-      source_block_index: kpi.sourceBlockIndex,
-      reference_period: periodData.reference_period,
-      period_start: periodData.period_start,
-      period_end: periodData.period_end,
-    }));
-
-    const { error: metricsError } = await supabase
-      .from("user_metrics")
-      .insert(metricsData);
-
-    if (metricsError) {
-      console.error("Erro ao salvar métricas:", metricsError);
-      // Não falhar completamente, apenas logar
-    } else {
-      metricsCount = kpis.length;
-    }
-  }
-
-  // 3. Criar ou atualizar desafio (user_challenges)
-  let challengeCreated = false;
-  let challengeId: string | undefined;
-
-  try {
-    // Verificar se já existe desafio ativo para este código
-    const { data: existingChallenge } = await supabase
-      .from("user_challenges")
-      .select("id, status")
-      .eq("organization_id", organizationId)
-      .eq("challenge_code", diagnostic.challenge_code)
-      .in("status", ["detected", "acknowledged", "in_progress"])
-      .maybeSingle();
-
-    if (existingChallenge) {
-      // Atualizar desafio existente com novo relatório
-      const { data: updatedChallenge, error: updateError } = await supabase
-        .from("user_challenges")
-        .update({
-          detected_in_report_id: report.id,
-          detected_at: new Date().toISOString(),
-          confidence_score: diagnostic.confidence || 0.8,
-          ai_diagnostic_data: diagnostic,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", existingChallenge.id)
-        .select()
-        .single();
-
-      if (!updateError) {
-        challengeId = updatedChallenge?.id;
-        challengeCreated = true;
-      }
-    } else {
-      // Criar novo desafio
-      const { data: newChallenge, error: challengeError } = await supabase
-        .from("user_challenges")
-        .insert({
-          organization_id: organizationId,
-          challenge_code: diagnostic.challenge_code,
-          title: diagnostic.title,
-          description: diagnostic.description,
-          severity: diagnostic.severity,
-          status: "detected",
-          detected_in_report_id: report.id,
-          suggested_lever_code: diagnostic.suggested_lever_code,
-          confidence_score: diagnostic.confidence || 0.8,
-          ai_diagnostic_data: diagnostic,
-          expected_resolution_days: 30, // Default
-        })
-        .select()
-        .single();
-
-      if (challengeError) {
-        console.error("Erro ao criar desafio:", challengeError);
-      } else {
-        challengeId = newChallenge?.id;
-        challengeCreated = true;
-      }
-    }
-  } catch (error) {
-    console.error("Erro ao processar desafio:", error);
-    // Não falhar completamente
-  }
-
   return {
-    report,
-    metricsCount,
-    challengeCreated,
-    challengeId,
+    report: finalReport.data!,
+    metricsCount: metricsResult.count,
+    challengeCreated: challengeResult.created,
+    challengeId: challengeResult.id,
   };
 };
 
