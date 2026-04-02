@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { LucideIcon, TrendingUp, TrendingDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { domainColors, type DomainType } from "@/utils/domainColors";
 
 interface KPICardProps {
   title: string;
@@ -15,9 +16,10 @@ interface KPICardProps {
   };
   subtitle?: string;
   variant?: "default" | "success" | "warning" | "info";
+  domain?: DomainType; // NOVO: Cor de domínio
   className?: string;
   role?: string;
-  'aria-label'?: string;
+  "aria-label"?: string;
   style?: React.CSSProperties;
 }
 
@@ -28,45 +30,68 @@ const KPICard = ({
   trend,
   subtitle,
   variant = "default",
+  domain,
   className,
   role,
-  'aria-label': ariaLabel,
-  style
+  "aria-label": ariaLabel,
+  style,
 }: KPICardProps) => {
-  const getVariantStyles = () => {
+  const domainColor = domain ? domainColors[domain] : null;
+
+  const getDomainVariantStyles = () => {
+    if (domainColor) {
+      return {
+        borderColor: `${domainColor.main}20`,
+        backgroundColor: domainColor.bg,
+      };
+    }
     switch (variant) {
       case "success":
-        return "border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950/20";
+        return { borderColor: "#86EFAC", backgroundColor: "#F0FDF4" };
       case "warning":
-        return "border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-950/20";
+        return { borderColor: "#FDE047", backgroundColor: "#FEFCE8" };
       case "info":
-        return "border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950/20";
+        return { borderColor: "#93C5FD", backgroundColor: "#EFF6FF" };
       default:
-        return "";
+        return {};
     }
   };
 
-  const getIconColor = () => {
+  const getDomainIconColor = () => {
+    if (domainColor) {
+      return domainColor.main;
+    }
     switch (variant) {
       case "success":
-        return "text-green-600 dark:text-green-400";
+        return "#10B981";
       case "warning":
-        return "text-yellow-600 dark:text-yellow-400";
+        return "#F59E0B";
       case "info":
-        return "text-blue-600 dark:text-blue-400";
+        return "#3B82F6";
       default:
-        return "text-primary";
+        return "currentColor";
     }
   };
+
+  const variantStyles = getDomainVariantStyles();
+  const iconColor = getDomainIconColor();
+
+  // Border accent for domain
+  const borderAccent = domainColor ? `border-l-4` : "";
 
   return (
-    <Card 
+    <Card
       className={cn(
-        "card-hover touch-target",
-        getVariantStyles(),
-        className
+        "card-hover touch-target border",
+        !domainColor && getDomainVariantStyles(),
+        borderAccent,
+        className,
       )}
-      style={style}
+      style={{
+        ...style,
+        ...variantStyles,
+        ...(domainColor && { borderLeftColor: domainColor.main }),
+      }}
       role={role}
       aria-label={ariaLabel}
     >
@@ -74,12 +99,16 @@ const KPICard = ({
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
-              <Icon className={cn("h-4 w-4 sm:h-5 sm:w-5", getIconColor())} aria-hidden="true" />
+              <Icon
+                className={cn("h-4 w-4 sm:h-5 sm:w-5")}
+                style={{ color: iconColor }}
+                aria-hidden="true"
+              />
               <p className="text-xs sm:text-sm font-medium text-muted-foreground">
                 {title}
               </p>
             </div>
-            
+
             <div className="space-y-1">
               <p className="text-2xl sm:text-3xl font-bold text-foreground">
                 {value}
@@ -91,34 +120,39 @@ const KPICard = ({
               )}
             </div>
           </div>
-          
+
           {trend && (
             <div className="flex items-center gap-1">
               {trend.isPositive ? (
-                <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 text-green-600" aria-hidden="true" />
+                <TrendingUp
+                  className="h-3 w-3 sm:h-4 sm:w-4 text-green-600"
+                  aria-hidden="true"
+                />
               ) : (
-                <TrendingDown className="h-3 w-3 sm:h-4 sm:w-4 text-red-600" aria-hidden="true" />
+                <TrendingDown
+                  className="h-3 w-3 sm:h-4 sm:w-4 text-red-600"
+                  aria-hidden="true"
+                />
               )}
-              <Badge 
-                variant="secondary" 
+              <Badge
+                variant="secondary"
                 className={cn(
                   "text-xs",
-                  trend.isPositive 
-                    ? "bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300" 
-                    : "bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300"
+                  trend.isPositive
+                    ? "bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300"
+                    : "bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300",
                 )}
-                aria-label={`Tendência ${trend.isPositive ? 'positiva' : 'negativa'} de ${Math.abs(trend.value)}%`}
+                aria-label={`Tendência ${trend.isPositive ? "positiva" : "negativa"} de ${Math.abs(trend.value)}%`}
               >
-                {trend.isPositive ? "+" : ""}{trend.value}%
+                {trend.isPositive ? "+" : ""}
+                {trend.value}%
               </Badge>
             </div>
           )}
         </div>
-        
+
         {trend?.label && (
-          <p className="text-xs text-muted-foreground mt-2">
-            {trend.label}
-          </p>
+          <p className="text-xs text-muted-foreground mt-2">{trend.label}</p>
         )}
       </CardContent>
     </Card>

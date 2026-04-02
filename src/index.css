@@ -72,6 +72,35 @@ All colors MUST be HSL.
     --info: 217 91% 60%; /* status-neutral */
     --info-foreground: 0 0% 100%;
 
+    /* ============================================
+       DOMAIN COLORS - Cores por Domínio (Unicorn Style)
+       Usar apenas para dados, não para interface
+       ============================================ */
+    /* Financeiro - Verde Esmeralda */
+    --domain-finance: 160 84% 40%;
+    --domain-finance-light: 160 84% 45%;
+    --domain-finance-bg: 160 84% 96%;
+
+    /* Comercial - Azul Confiança */
+    --domain-commercial: 217 91% 60%;
+    --domain-commercial-light: 217 91% 70%;
+    --domain-commercial-bg: 217 91% 96%;
+
+    /* Marketing - Roxo Criatividade */
+    --domain-marketing: 263 70% 58%;
+    --domain-marketing-light: 263 70% 70%;
+    --domain-marketing-bg: 263 70% 97%;
+
+    /* Operações - Âmbar Energia */
+    --domain-operations: 38 92% 50%;
+    --domain-operations-light: 38 92% 60%;
+    --domain-operations-bg: 38 92% 97%;
+
+    /* Gente/RH - Teal Humano */
+    --domain-people: 172 66% 50%;
+    --domain-people-light: 172 66% 60%;
+    --domain-people-bg: 172 66% 97%;
+
     /* UI Elements */
     --border: 220 13% 91%;
     --input: 220 13% 91%;
