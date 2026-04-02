@@ -14,6 +14,8 @@ export type {
   KPIThreshold,
   KPIResult,
   KPIResultSet,
+  CalculationContext,
+  CalculationOptions,
 } from "./types";
 
 export * from "./dataFields";

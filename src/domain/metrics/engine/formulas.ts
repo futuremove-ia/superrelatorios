@@ -1877,6 +1877,531 @@ export const KPI_FORMULAS: Record<string, KPIFormula> = {
       ),
     getThresholds: () => ({ critical: 80, warning: 50, good: 20 }),
   },
+
+  // EDUCATION SECTOR
+  "EDU-ENROLLMENT-001": {
+    code: "EDU-ENROLLMENT-001",
+    type: "simple_ratio",
+    description: "Taxa de Matrículas",
+    requiredFields: [
+      { name: "enrollment", description: "Matrículas ativas", required: true },
+      { name: "capacity", description: "Capacidade máxima", required: true },
+    ],
+    calculation: (params) => {
+      const enrollment = params.enrollment as number;
+      const capacity = params.capacity as number;
+      return createSafeDivision(enrollment, capacity, 0, 100);
+    },
+    getConfidence: (params) =>
+      getConfidenceFromDataCompleteness(["enrollment"], params),
+    getThresholds: () => ({ critical: 50, warning: 75, good: 95 }),
+  },
+  "EDU-DROPOUT-001": {
+    code: "EDU-DROPOUT-001",
+    type: "percentage",
+    description: "Taxa de Evasão",
+    requiredFields: [
+      { name: "dropouts", description: "Alunos evadidos", required: true },
+      { name: "enrollment", description: "Matrículas totales", required: true },
+    ],
+    calculation: (params) => {
+      const dropouts = params.dropouts as number;
+      const enrollment = params.enrollment as number;
+      return createSafeDivision(dropouts, enrollment, 0, 100);
+    },
+    getConfidence: (params) =>
+      getConfidenceFromDataCompleteness(["dropouts", "enrollment"], params),
+    getThresholds: () => ({ critical: 30, warning: 15, good: 5 }),
+  },
+  "EDU-ATTENDANCE-001": {
+    code: "EDU-ATTENDANCE-001",
+    type: "percentage",
+    description: "Taxa de Frequência",
+    requiredFields: [
+      {
+        name: "attendance_rate",
+        description: "Taxa de frequência",
+        required: true,
+      },
+    ],
+    calculation: (params) => {
+      const rate = params.attendance_rate as number;
+      if (rate === undefined || !isFinite(rate)) {
+        return {
+          value: null,
+          status: "insufficient_data",
+          error: "Taxa não fornecida",
+          warnings: [],
+        };
+      }
+      return { value: rate, status: "success", warnings: [] };
+    },
+    getConfidence: (params) =>
+      getConfidenceFromDataCompleteness(["attendance_rate"], params),
+    getThresholds: () => ({ critical: 60, warning: 80, good: 95 }),
+  },
+  "EDU-PASS-001": {
+    code: "EDU-PASS-001",
+    type: "percentage",
+    description: "Taxa de Aprovação",
+    requiredFields: [
+      { name: "pass_rate", description: "Taxa de aprovação", required: true },
+    ],
+    calculation: (params) => {
+      const rate = params.pass_rate as number;
+      if (rate === undefined || !isFinite(rate)) {
+        return {
+          value: null,
+          status: "insufficient_data",
+          error: "Taxa não fornecida",
+          warnings: [],
+        };
+      }
+      return { value: rate, status: "success", warnings: [] };
+    },
+    getConfidence: (params) =>
+      getConfidenceFromDataCompleteness(["pass_rate"], params),
+    getThresholds: () => ({ critical: 50, warning: 70, good: 85 }),
+  },
+  "EDU-COMPLETION-001": {
+    code: "EDU-COMPLETION-001",
+    type: "percentage",
+    description: "Taxa de Conclusão de Curso",
+    requiredFields: [
+      {
+        name: "completion_rate",
+        description: "Taxa de conclusão",
+        required: true,
+      },
+    ],
+    calculation: (params) => {
+      const rate = params.completion_rate as number;
+      if (rate === undefined || !isFinite(rate)) {
+        return {
+          value: null,
+          status: "insufficient_data",
+          error: "Taxa não fornecida",
+          warnings: [],
+        };
+      }
+      return { value: rate, status: "success", warnings: [] };
+    },
+    getConfidence: (params) =>
+      getConfidenceFromDataCompleteness(["completion_rate"], params),
+    getThresholds: () => ({ critical: 40, warning: 65, good: 80 }),
+  },
+  "EDU-PLACEMENT-001": {
+    code: "EDU-PLACEMENT-001",
+    type: "percentage",
+    description: "Taxa de Inserção Profissional",
+    requiredFields: [
+      {
+        name: "placement_rate",
+        description: "Taxa de inserção",
+        required: true,
+      },
+    ],
+    calculation: (params) => {
+      const rate = params.placement_rate as number;
+      if (rate === undefined || !isFinite(rate)) {
+        return {
+          value: null,
+          status: "insufficient_data",
+          error: "Taxa não fornecida",
+          warnings: [],
+        };
+      }
+      return { value: rate, status: "success", warnings: [] };
+    },
+    getConfidence: (params) =>
+      getConfidenceFromDataCompleteness(["placement_rate"], params),
+    getThresholds: () => ({ critical: 30, warning: 60, good: 80 }),
+  },
+  "EDU-RATIO-001": {
+    code: "EDU-RATIO-001",
+    type: "simple_ratio",
+    description: "Ratio Professor/Aluno",
+    requiredFields: [
+      { name: "students", description: "Total de alunos", required: true },
+      { name: "teachers", description: "Total de professores", required: true },
+    ],
+    calculation: (params) => {
+      const students = params.students as number;
+      const teachers = params.teachers as number;
+      return createSafeDivision(students, teachers, 0, 1);
+    },
+    getConfidence: (params) =>
+      getConfidenceFromDataCompleteness(["students", "teachers"], params),
+    getThresholds: () => ({ critical: 30, warning: 20, good: 15 }),
+  },
+  "EDU-REVENUE-STU": {
+    code: "EDU-REVENUE-STU",
+    type: "simple_ratio",
+    description: "Receita por Aluno",
+    requiredFields: [
+      { name: "tuition", description: "Mensalidades totais", required: true },
+      { name: "enrollment", description: "Matrículas ativas", required: true },
+    ],
+    calculation: (params) => {
+      const tuition = params.tuition as number;
+      const enrollment = params.enrollment as number;
+      return createSafeDivision(tuition, enrollment, 0, 1);
+    },
+    getConfidence: (params) =>
+      getConfidenceFromDataCompleteness(["tuition", "enrollment"], params),
+    getThresholds: () => ({ critical: 200, warning: 500, good: 1000 }),
+  },
+
+  // REAL ESTATE SECTOR
+  "RE-VACANCY-001": {
+    code: "RE-VACANCY-001",
+    type: "percentage",
+    description: "Taxa de Vagas",
+    requiredFields: [
+      { name: "vacancy_rate", description: "Taxa de vagas", required: true },
+    ],
+    calculation: (params) => {
+      const rate = params.vacancy_rate as number;
+      if (rate === undefined || !isFinite(rate)) {
+        return {
+          value: null,
+          status: "insufficient_data",
+          error: "Taxa não fornecida",
+          warnings: [],
+        };
+      }
+      return { value: rate, status: "success", warnings: [] };
+    },
+    getConfidence: (params) =>
+      getConfidenceFromDataCompleteness(["vacancy_rate"], params),
+    getThresholds: () => ({ critical: 30, warning: 15, good: 5 }),
+  },
+  "RE-OCCUPANCY-001": {
+    code: "RE-OCCUPANCY-001",
+    type: "percentage",
+    description: "Taxa de Ocupação",
+    requiredFields: [
+      {
+        name: "occupied_units",
+        description: "Unidades ocupadas",
+        required: true,
+      },
+      { name: "properties", description: "Total de unidades", required: true },
+    ],
+    calculation: (params) => {
+      const occupied = params.occupied_units as number;
+      const total = params.properties as number;
+      return createSafeDivision(occupied, total, 0, 100);
+    },
+    getConfidence: (params) =>
+      getConfidenceFromDataCompleteness(
+        ["occupied_units", "properties"],
+        params,
+      ),
+    getThresholds: () => ({ critical: 50, warning: 75, good: 95 }),
+  },
+  "RE-NOI-001": {
+    code: "RE-NOI-001",
+    type: "simple_ratio",
+    description: "Net Operating Income",
+    requiredFields: [{ name: "noi", description: "NOI", required: true }],
+    calculation: (params) => {
+      const noi = params.noi as number;
+      if (noi === undefined || !isFinite(noi)) {
+        return {
+          value: null,
+          status: "insufficient_data",
+          error: "NOI não fornecido",
+          warnings: [],
+        };
+      }
+      return { value: noi, status: "success", warnings: [] };
+    },
+    getConfidence: (params) =>
+      getConfidenceFromDataCompleteness(["noi"], params),
+    getThresholds: () => ({ critical: 0, warning: 50000, good: 200000 }),
+  },
+  "RE-CAP-RATE": {
+    code: "RE-CAP-RATE",
+    type: "percentage",
+    description: "Capitalization Rate",
+    requiredFields: [
+      { name: "noi", description: "NOI", required: true },
+      {
+        name: "property_value",
+        description: "Valor do imóvel",
+        required: true,
+      },
+    ],
+    calculation: (params) => {
+      const noi = params.noi as number;
+      const value = params.property_value as number;
+      return createSafeDivision(noi, value, 0, 100);
+    },
+    getConfidence: (params) =>
+      getConfidenceFromDataCompleteness(["noi", "property_value"], params),
+    getThresholds: () => ({ critical: 3, warning: 6, good: 10 }),
+  },
+  "RE-RENT-PSF": {
+    code: "RE-RENT-PSF",
+    type: "simple_ratio",
+    description: "Aluguel por m²",
+    requiredFields: [
+      { name: "rent", description: "Aluguel total", required: true },
+      { name: "area_sqft", description: "Área em m²", required: true },
+    ],
+    calculation: (params) => {
+      const rent = params.rent as number;
+      const area = params.area_sqft as number;
+      return createSafeDivision(rent, area, 0, 1);
+    },
+    getConfidence: (params) =>
+      getConfidenceFromDataCompleteness(["rent", "area_sqft"], params),
+    getThresholds: () => ({ critical: 10, warning: 25, good: 50 }),
+  },
+  "RE-MAINTENANCE-PC": {
+    code: "RE-MAINTENANCE-PC",
+    type: "percentage",
+    description: "Custo de Manutenção %",
+    requiredFields: [
+      {
+        name: "maintenance_cost",
+        description: "Custo de manutenção",
+        required: true,
+      },
+      { name: "rent", description: "Receita de aluguel", required: true },
+    ],
+    calculation: (params) => {
+      const cost = params.maintenance_cost as number;
+      const revenue = params.rent as number;
+      return createSafeDivision(cost, revenue, 0, 100);
+    },
+    getConfidence: (params) =>
+      getConfidenceFromDataCompleteness(["maintenance_cost", "rent"], params),
+    getThresholds: () => ({ critical: 20, warning: 10, good: 5 }),
+  },
+  "RE-TURNOVER": {
+    code: "RE-TURNOVER",
+    type: "percentage",
+    description: "Rotatividade de Inquilinos",
+    requiredFields: [
+      { name: "tenant_turnover", description: "Rotatividade", required: true },
+    ],
+    calculation: (params) => {
+      const rate = params.tenant_turnover as number;
+      if (rate === undefined || !isFinite(rate)) {
+        return {
+          value: null,
+          status: "insufficient_data",
+          error: "Taxa não fornecida",
+          warnings: [],
+        };
+      }
+      return { value: rate, status: "success", warnings: [] };
+    },
+    getConfidence: (params) =>
+      getConfidenceFromDataCompleteness(["tenant_turnover"], params),
+    getThresholds: () => ({ critical: 30, warning: 15, good: 5 }),
+  },
+
+  // MEDIA SECTOR
+  "MEDIA-SUBS-001": {
+    code: "MEDIA-SUBS-001",
+    type: "simple_ratio",
+    description: "Total de Assinantes",
+    requiredFields: [
+      { name: "subscribers", description: "Assinantes", required: true },
+    ],
+    calculation: (params) => {
+      const subs = params.subscribers as number;
+      if (subs === undefined || !isFinite(subs)) {
+        return {
+          value: null,
+          status: "insufficient_data",
+          error: "Assinantes não fornecidos",
+          warnings: [],
+        };
+      }
+      return { value: subs, status: "success", warnings: [] };
+    },
+    getConfidence: (params) =>
+      getConfidenceFromDataCompleteness(["subscribers"], params),
+    getThresholds: () => ({ critical: 1000, warning: 10000, good: 100000 }),
+  },
+  "MEDIA-ARPU-001": {
+    code: "MEDIA-ARPU-001",
+    type: "simple_ratio",
+    description: "Average Revenue per User",
+    requiredFields: [
+      {
+        name: "subscription_revenue",
+        description: "Receita de assinatura",
+        required: true,
+      },
+      { name: "subscribers", description: "Assinantes", required: true },
+    ],
+    calculation: (params) => {
+      const revenue = params.subscription_revenue as number;
+      const subs = params.subscribers as number;
+      return createSafeDivision(revenue, subs, 0, 1);
+    },
+    getConfidence: (params) =>
+      getConfidenceFromDataCompleteness(
+        ["subscription_revenue", "subscribers"],
+        params,
+      ),
+    getThresholds: () => ({ critical: 5, warning: 15, good: 30 }),
+  },
+  "MEDIA-CHURN-001": {
+    code: "MEDIA-CHURN-001",
+    type: "percentage",
+    description: "Taxa de Churn",
+    requiredFields: [
+      { name: "churn_rate", description: "Taxa de churn", required: true },
+    ],
+    calculation: (params) => {
+      const rate = params.churn_rate as number;
+      if (rate === undefined || !isFinite(rate)) {
+        return {
+          value: null,
+          status: "insufficient_data",
+          error: "Taxa não fornecida",
+          warnings: [],
+        };
+      }
+      return { value: rate, status: "success", warnings: [] };
+    },
+    getConfidence: (params) =>
+      getConfidenceFromDataCompleteness(["churn_rate"], params),
+    getThresholds: () => ({ critical: 15, warning: 8, good: 3 }),
+  },
+  "MEDIA-ENGAGEMENT": {
+    code: "MEDIA-ENGAGEMENT",
+    type: "percentage",
+    description: "Taxa de Engajamento",
+    requiredFields: [
+      {
+        name: "engagement_rate",
+        description: "Taxa de engajamento",
+        required: true,
+      },
+    ],
+    calculation: (params) => {
+      const rate = params.engagement_rate as number;
+      if (rate === undefined || !isFinite(rate)) {
+        return {
+          value: null,
+          status: "insufficient_data",
+          error: "Taxa não fornecida",
+          warnings: [],
+        };
+      }
+      return { value: rate, status: "success", warnings: [] };
+    },
+    getConfidence: (params) =>
+      getConfidenceFromDataCompleteness(["engagement_rate"], params),
+    getThresholds: () => ({ critical: 2, warning: 5, good: 10 }),
+  },
+  "MEDIA-VIEWS-001": {
+    code: "MEDIA-VIEWS-001",
+    type: "simple_ratio",
+    description: "Visualizações",
+    requiredFields: [
+      { name: "views", description: "Visualizações", required: true },
+    ],
+    calculation: (params) => {
+      const views = params.views as number;
+      if (views === undefined || !isFinite(views)) {
+        return {
+          value: null,
+          status: "insufficient_data",
+          error: "Views não fornecidas",
+          warnings: [],
+        };
+      }
+      return { value: views, status: "success", warnings: [] };
+    },
+    getConfidence: (params) =>
+      getConfidenceFromDataCompleteness(["views"], params),
+    getThresholds: () => ({ critical: 10000, warning: 100000, good: 1000000 }),
+  },
+  "MEDIA-AD-REV": {
+    code: "MEDIA-AD-REV",
+    type: "simple_ratio",
+    description: "Receita de Anúncios",
+    requiredFields: [
+      {
+        name: "ad_revenue",
+        description: "Receita de anúncios",
+        required: true,
+      },
+    ],
+    calculation: (params) => {
+      const revenue = params.ad_revenue as number;
+      if (revenue === undefined || !isFinite(revenue)) {
+        return {
+          value: null,
+          status: "insufficient_data",
+          error: "Receita não fornecida",
+          warnings: [],
+        };
+      }
+      return { value: revenue, status: "success", warnings: [] };
+    },
+    getConfidence: (params) =>
+      getConfidenceFromDataCompleteness(["ad_revenue"], params),
+    getThresholds: () => ({ critical: 0, warning: 5000, good: 50000 }),
+  },
+  "MEDIA-SESSION": {
+    code: "MEDIA-SESSION",
+    type: "simple_ratio",
+    description: "Duração Média da Sessão",
+    requiredFields: [
+      {
+        name: "session_duration",
+        description: "Duração em minutos",
+        required: true,
+      },
+    ],
+    calculation: (params) => {
+      const duration = params.session_duration as number;
+      if (duration === undefined || !isFinite(duration)) {
+        return {
+          value: null,
+          status: "insufficient_data",
+          error: "Duração não fornecida",
+          warnings: [],
+        };
+      }
+      return { value: duration, status: "success", warnings: [] };
+    },
+    getConfidence: (params) =>
+      getConfidenceFromDataCompleteness(["session_duration"], params),
+    getThresholds: () => ({ critical: 1, warning: 5, good: 15 }),
+  },
+  "MEDIA-AD-LOAD": {
+    code: "MEDIA-AD-LOAD",
+    type: "percentage",
+    description: "Carga de Anúncios",
+    requiredFields: [
+      { name: "ad_load", description: "Carga de anúncios", required: true },
+    ],
+    calculation: (params) => {
+      const load = params.ad_load as number;
+      if (load === undefined || !isFinite(load)) {
+        return {
+          value: null,
+          status: "insufficient_data",
+          error: "Carga não fornecida",
+          warnings: [],
+        };
+      }
+      return { value: load, status: "success", warnings: [] };
+    },
+    getConfidence: (params) =>
+      getConfidenceFromDataCompleteness(["ad_load"], params),
+    getThresholds: () => ({ critical: 20, warning: 15, good: 10 }),
+  },
 };
 
 export const getFormula = (code: string): KPIFormula | undefined => {
@@ -1894,9 +2419,9 @@ export const getFormulasBySector = (sector: string): KPIFormula[] => {
     food: ["FOOD-"],
     logistics: ["LOG-"],
     construction: ["CONTRACT-"],
-    education: [],
-    real_estate: [],
-    media: [],
+    education: ["EDU-"],
+    real_estate: ["RE-"],
+    media: ["MEDIA-"],
   };
 
   const prefixes = sectorPrefixes[sector] || [];

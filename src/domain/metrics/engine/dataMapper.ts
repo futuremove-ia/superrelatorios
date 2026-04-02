@@ -37,7 +37,6 @@ const findFieldByAlias = (
 export const mapUserDataToKPIFields = (
   rawData: Record<string, number | number[]>,
   sector?: Sector,
-  niche?: Niche,
 ): MappedData => {
   const allFields = [
     ...COMMON_FIELDS,

@@ -2,7 +2,6 @@ import {
   KPIResult,
   KPIResultSet,
   Sector,
-  Niche,
   BusinessModel,
   GroupDataPeriod,
   CalculationStatus,
@@ -18,7 +17,6 @@ import {
 
 export interface CalculationOptions {
   sector?: Sector;
-  niche?: Niche;
   businessModel?: BusinessModel;
   period?: GroupDataPeriod;
   includeAllSectors?: boolean;
@@ -28,7 +26,15 @@ export interface CalculationOptions {
 export interface CalculationContext {
   organizationId: string;
   sector?: Sector;
-  niche?: Niche;
+  businessModel?: BusinessModel;
+  period: GroupDataPeriod;
+  startDate?: Date;
+  endDate?: Date;
+}
+
+export interface CalculationContext {
+  organizationId: string;
+  sector?: Sector;
   businessModel?: BusinessModel;
   period: GroupDataPeriod;
   startDate?: Date;
@@ -127,11 +133,7 @@ export class KPICalculationEngine {
       );
     }
 
-    const mappedData = mapUserDataToKPIFields(
-      rawData,
-      this.context.sector,
-      this.context.niche,
-    );
+    const mappedData = mapUserDataToKPIFields(rawData, this.context.sector);
 
     const kpiData = mapDataForKPI(
       mappedData,
@@ -200,7 +202,6 @@ export class KPICalculationEngine {
       kpis: results,
       metadata: {
         sector: this.context.sector,
-        niche: this.context.niche,
         businessModel: this.context.businessModel,
         period: this.context.period,
         calculatedAt: new Date(),
@@ -308,11 +309,7 @@ export class KPICalculationEngine {
       ? getFormulasBySector(sector)
       : Object.values(KPI_FORMULAS);
 
-    const mappedData = mapUserDataToKPIFields(
-      rawData,
-      sector,
-      this.context.niche,
-    );
+    const mappedData = mapUserDataToKPIFields(rawData, sector);
 
     return formulas
       .map((formula) => {
@@ -352,11 +349,7 @@ export class KPICalculationEngine {
       ? getFormulasBySector(sector)
       : Object.values(KPI_FORMULAS);
 
-    const mappedData = mapUserDataToKPIFields(
-      rawData,
-      sector,
-      this.context.niche,
-    );
+    const mappedData = mapUserDataToKPIFields(rawData, sector);
 
     for (const formula of formulas) {
       const requiredFields = formula.requiredFields.map((f) => f.name);

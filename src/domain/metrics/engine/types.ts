@@ -35,7 +35,19 @@ export type Niche =
   | "warehousing"
   | "residential"
   | "commercial"
-  | "industrial";
+  | "industrial"
+  | "school"
+  | "university"
+  | "online_learning"
+  | "tutoring"
+  | "residential_rental"
+  | "commercial_rental"
+  | "development"
+  | "property_management"
+  | "publishing"
+  | "streaming"
+  | "gaming"
+  | "advertising";
 
 export type BusinessModel =
   | "b2b"

@@ -8,7 +8,6 @@ import {
   KPIResultSet,
   KPIResult,
   Sector,
-  Niche,
   GroupDataPeriod,
   LibraryKPI,
   mapUserDataToKPIFields,
@@ -18,8 +17,8 @@ import {
 interface UseKPICalculatorOptions extends CalculationOptions {
   organizationId: string;
   sector?: Sector;
-  niche?: Niche;
   businessModel?: BusinessModel;
+  period?: GroupDataPeriod;
 }
 
 type BusinessModel =
@@ -54,14 +53,7 @@ interface UseKPICalculationResult {
 export const useKPICalculation = (
   options: UseKPICalculatorOptions,
 ): UseKPICalculationResult => {
-  const {
-    organizationId,
-    sector,
-    niche,
-    businessModel,
-    period = "monthly",
-    includeAllSectors,
-  } = options;
+  const { organizationId, sector, businessModel, period = "monthly" } = options;
 
   const {
     data: kpiLibrary = [],
@@ -86,22 +78,19 @@ export const useKPICalculation = (
     () => ({
       organizationId,
       sector,
-      niche,
       businessModel,
       period,
     }),
-    [organizationId, sector, niche, businessModel, period],
+    [organizationId, sector, businessModel, period],
   );
 
   const calculationOptions = useMemo<CalculationOptions>(
     () => ({
       sector,
-      niche,
       businessModel,
       period,
-      includeAllSectors,
     }),
-    [sector, niche, businessModel, period, includeAllSectors],
+    [sector, businessModel, period],
   );
 
   const engine = useMemo(() => {
@@ -155,7 +144,7 @@ export const useKPICalculation = (
   };
 };
 
-export const useQuickKPICalculation = (sector?: Sector, niche?: Niche) => {
+export const useQuickKPICalculation = (sector?: Sector) => {
   const calculate = useCallback(
     (
       rawData: Record<string, number | number[]>,
@@ -164,7 +153,6 @@ export const useQuickKPICalculation = (sector?: Sector, niche?: Niche) => {
       const context: CalculationContext = {
         organizationId: "quick-calc",
         sector,
-        niche,
         period: "monthly",
       };
 
@@ -176,7 +164,7 @@ export const useQuickKPICalculation = (sector?: Sector, niche?: Niche) => {
 
       return engine.calculateAllForSector(rawData);
     },
-    [sector, niche],
+    [sector],
   );
 
   const getKPIsForData = useCallback(
@@ -186,7 +174,7 @@ export const useQuickKPICalculation = (sector?: Sector, niche?: Niche) => {
       if (!sector) return [];
 
       const formulas = getFormulasBySector(sector);
-      const mappedData = mapUserDataToKPIFields(rawData, sector, niche);
+      const mappedData = mapUserDataToKPIFields(rawData, sector);
 
       return formulas
         .map((formula) => {
@@ -208,7 +196,7 @@ export const useQuickKPICalculation = (sector?: Sector, niche?: Niche) => {
         .filter((kpi) => kpi.readiness > 0)
         .sort((a, b) => b.readiness - a.readiness);
     },
-    [sector, niche],
+    [sector],
   );
 
   return {
