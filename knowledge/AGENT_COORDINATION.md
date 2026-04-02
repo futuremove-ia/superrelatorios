@@ -131,7 +131,9 @@ Repositório: `superrelatorios-agents/`
 | **043** | Nichos Library | KPIs por nicho | ✅ Concluído |
 | **044** | Didactic Translator | KPI explanations | ✅ Ativo |
 | **045** | KPI Expander | 29→100+ KPIs | ✅ Concluído |
-| **050** | UX/UI/Product/Frontend/BPMN/Data | Onboarding Fast Lane + Deep Dive | ✅ Ativo |
+| **050** | UX/UI/Product/Frontend/BPMN/Data | Onboarding Fast Lane + Deep Dive + Diagnosis Progress | ✅ Ativo |
+| **051** | Diagnosis Progress UI | Barra de Conclusão do Diagnóstico | ✅ Criado |
+| **052** | Data Drop Zone UI | UI de upload por domínio | ✅ Criado |
 | **SYS** | System Agent | Memory + Skills + Self-improvement | ✅ Ativo |
 
 ---

@@ -5,11 +5,13 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ChevronRight, ChevronLeft, Building2, FolderOpen, FileUp, Check, Zap, BarChart3, Play } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { ChevronRight, ChevronLeft, Building2, FolderOpen, FileUp, Check, Zap, BarChart3, Play, TrendingUp, TrendingDown, DollarSign, Users, Package } from "lucide-react";
 import { useCurrentOrganization } from "@/hooks/useCurrentOrganization";
 import { useI18nRouter } from "@/hooks/useI18nRouter";
 
 type OnboardingGoal = "fast" | "deep" | "demo";
+type PriorityArea = "foundation" | "efficiency" | "growth";
 
 interface OnboardingData {
   companyName: string;
@@ -18,6 +20,8 @@ interface OnboardingData {
   firstFileName: string;
   goal: OnboardingGoal;
   revenueModel: string;
+  priorityArea: PriorityArea;
+  uploadedDomains: string[];
 }
 
 const SECTORS = [
@@ -63,8 +67,8 @@ const GOAL_OPTIONS = [
   {
     id: "deep" as OnboardingGoal,
     icon: BarChart3,
-    title: "Estruturar gestão",
-    description: "Quero uma consultoria completa e estruturada",
+    title: "Diagnóstico completo (360°)",
+    description: "Quero uma visão completa da saúde da minha empresa",
     color: "bg-blue-600 hover:bg-blue-700",
   },
   {
@@ -75,6 +79,27 @@ const GOAL_OPTIONS = [
     color: "bg-green-600 hover:bg-green-700",
   },
 ];
+
+const PRIORITY_AREAS: { value: PriorityArea; label: string; icon: React.ElementType; description: string; color: string }[] = [
+  { value: "foundation", label: "Fundação (Caixa e Finanças)", icon: DollarSign, description: "Fluxo de caixa, margem, endividamento", color: "bg-green-600" },
+  { value: "efficiency", label: "Eficiência (Vendas e Marketing)", icon: TrendingUp, description: "Conversão, ticket médio, CAC", color: "bg-blue-600" },
+  { value: "growth", label: "Crescimento (Operações e Pessoas)", icon: Users, description: "Produtividade, custos operacionais", color: "bg-purple-600" },
+];
+
+const DOMAIN_FILES: Record<PriorityArea, { domain: string; label: string; example: string }[]> = {
+  foundation: [
+    { domain: "finance", label: "DRE ou Balancete", example: "Planilha de resultados mensais" },
+    { domain: "bank", label: "Extrato Bancário", example: "PDF do banco" },
+  ],
+  efficiency: [
+    { domain: "sales", label: "Relatório de Vendas", example: "Planilha do CRM" },
+    { domain: "marketing", label: "Dados de Anúncios", example: "Relatório Google Ads" },
+  ],
+  growth: [
+    { domain: "operations", label: "Custos Operacionais", example: "Notas fiscais ou planilha de custos" },
+    { domain: "hr", label: "Folha de Pagamento", example: "Resumo da folha" },
+  ],
+};
 
 const STORAGE_KEY = "onboarding_wizard_data";
 
@@ -91,6 +116,8 @@ export function OnboardingWizard() {
     firstFileName: "",
     goal: "fast",
     revenueModel: "",
+    priorityArea: "foundation",
+    uploadedDomains: [],
   });
 
   useEffect(() => {
@@ -123,7 +150,11 @@ export function OnboardingWizard() {
   const handleNext = () => {
     if (currentStep === 0) return;
     
-    if (currentStep === 3) {
+    if (data.goal === "deep" && currentStep === 3) {
+      handleFinish();
+    } else if (data.goal === "fast" && currentStep === 3) {
+      handleFinish();
+    } else if (currentStep === 4) {
       handleFinish();
     } else {
       setCurrentStep(currentStep + 1);
@@ -232,6 +263,36 @@ export function OnboardingWizard() {
         );
 
       case 2:
+        if (data.goal === "deep") {
+          return (
+            <div className="space-y-4">
+              <div className="text-center mb-4">
+                <h3 className="text-lg font-semibold">Qual área mais te preocupa?</h3>
+                <p className="text-sm text-muted-foreground">Escolha a prioridade para personalizarmos seu diagnóstico</p>
+              </div>
+              <div className="space-y-3">
+                {PRIORITY_AREAS.map((area) => {
+                  const Icon = area.icon;
+                  return (
+                    <button
+                      key={area.value}
+                      onClick={() => saveData({ priorityArea: area.value })}
+                      className={`w-full p-4 rounded-lg text-white ${area.color} transition-all hover:scale-[1.02] hover:shadow-lg flex items-center gap-4 text-left ${
+                        data.priorityArea === area.value ? "ring-4 ring-white" : ""
+                      }`}
+                    >
+                      <Icon className="h-8 w-8 flex-shrink-0" />
+                      <div>
+                        <div className="font-semibold">{area.label}</div>
+                        <div className="text-sm opacity-90">{area.description}</div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        }
         return (
           <div className="space-y-4">
             <div className="space-y-2">
