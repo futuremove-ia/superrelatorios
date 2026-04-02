@@ -93,13 +93,14 @@ O sistema implementa um ciclo de aprendizado fechado:
 
 ## TAREFAS EM ANDAMENTO
 
-| #   | Tarefa                                   | Responsável | Status |
-| --- | ---------------------------------------- | ----------- | ------ |
-| 1   | Implementar Memory System (FTS5)         | agent-030   | ⏳     |
-| 2   | Implementar Skills System                | agent-031   | ⏳     |
-| 3   | Implementar Self-Improvement Loop        | agent-032   | ⏳     |
-| 4   | Implementar Parallel Sub-Agents          | agent-033   | ⏳     |
-| 5   | Implementar User Modeling (Honcho-style) | agent-034   | ⏳     |
+| #   | Tarefa                                     | Responsável | Status |
+| --- | ------------------------------------------ | ----------- | ------ |
+| 1   | Implementar Motor de Relevância (FASE 4)   | agent-040   | ⏳     |
+| 2   | Implementar Progressive Disclosure UI      | agent-041   | ⏳     |
+| 3   | Implementar Radar Hook com JOINs           | agent-042   | ⏳     |
+| 4   | Implementar DataSuggestionBanner           | agent-043   | ⏳     |
+| 5   | Implementar Edge Function process-document | agent-044   | ⏳     |
+| 6   | Implementar KPIs Library (100+)            | agent-045   | ⏳     |
 
 ---
 
