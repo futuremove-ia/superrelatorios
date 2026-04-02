@@ -46,6 +46,7 @@ const AuthCallback = lazy(() => import("./pages/auth/AuthCallback"));
 const AppLayout = lazy(() => import("./components/AppLayout"));
 const DesignSystem = lazy(() => import("./pages/design-system"));
 const Flows = lazy(() => import("./pages/Flows"));
+const Radar = lazy(() => import("./pages/app/Radar"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -119,9 +120,18 @@ const App = () => (
 
                   {/* Design System - Public */}
                   <Route path="/design-system/*" element={<DesignSystem />} />
-                  <Route path="/pt-BR/design-system/*" element={<DesignSystem />} />
-                  <Route path="/en-US/design-system/*" element={<DesignSystem />} />
-                  <Route path="/es-ES/design-system/*" element={<DesignSystem />} />
+                  <Route
+                    path="/pt-BR/design-system/*"
+                    element={<DesignSystem />}
+                  />
+                  <Route
+                    path="/en-US/design-system/*"
+                    element={<DesignSystem />}
+                  />
+                  <Route
+                    path="/es-ES/design-system/*"
+                    element={<DesignSystem />}
+                  />
 
                   {/* Flows - Public */}
                   <Route path="/flows" element={<Flows />} />
