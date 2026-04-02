@@ -1,12 +1,14 @@
 import Papa from "papaparse";
 import * as XLSX from "xlsx";
+import type { TextItem } from "pdfjs-dist/types/src/display/api";
 
 export interface ParsedFileData {
   headers: string[];
   rows: Record<string, unknown>[];
   rowCount: number;
-  fileType: "csv" | "xlsx" | "pdf" | "txt" | "json";
+  fileType: "csv" | "xlsx" | "pdf" | "txt" | "json" | "docx" | "text";
   rawText?: string;
+  source?: "file" | "text_input";
 }
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
@@ -54,9 +56,9 @@ async function parsePDF(file: File): Promise<ParsedFileData> {
   for (let i = 1; i <= pdf.numPages; i++) {
     const page = await pdf.getPage(i);
     const content = await page.getTextContent();
-    const pageText = content.items
-      .map((item: { str?: string }) => item.str)
-      .filter(Boolean)
+    const pageText = (content.items as TextItem[])
+      .filter((item) => item.str)
+      .map((item) => item.str)
       .join(" ");
     pages.push(pageText);
   }
@@ -154,3 +156,59 @@ function parseXLSX(file: File): Promise<ParsedFileData> {
     reader.readAsArrayBuffer(file);
   });
 }
+
+function detectDelimiter(lines: string[]): string | null {
+  if (lines.length === 0) return null;
+  const firstLine = lines[0];
+  if (firstLine.includes("\t")) return "\t";
+  if (firstLine.includes(";")) return ";";
+  if (firstLine.includes(",")) return ",";
+  return null;
+}
+
+export const parseTextInput = (text: string): ParsedFileData => {
+  const lines = text.split("\n").filter((line) => line.trim());
+
+  if (lines.length === 0) {
+    return {
+      headers: [],
+      rows: [],
+      rowCount: 0,
+      fileType: "text",
+      rawText: text,
+      source: "text_input",
+    };
+  }
+
+  const delimiter = detectDelimiter(lines);
+
+  if (delimiter) {
+    const headers = lines[0].split(delimiter).map((h) => h.trim());
+    const rows = lines.slice(1).map((line) => {
+      const values = line.split(delimiter);
+      const row: Record<string, unknown> = {};
+      headers.forEach((header, index) => {
+        row[header] = values[index]?.trim() || "";
+      });
+      return row;
+    });
+    return {
+      headers,
+      rows,
+      rowCount: rows.length,
+      fileType: "text",
+      rawText: text,
+      source: "text_input",
+    };
+  }
+
+  const rows = lines.map((line, index) => ({ line: index + 1, content: line }));
+  return {
+    headers: ["line", "content"],
+    rows,
+    rowCount: rows.length,
+    fileType: "text",
+    rawText: text,
+    source: "text_input",
+  };
+};
