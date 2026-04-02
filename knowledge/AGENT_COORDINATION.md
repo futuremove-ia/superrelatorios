@@ -158,6 +158,35 @@ O sistema implementa um ciclo de aprendizado fechado:
 
 ---
 
+## ARQUITETURA DE VALIDAÇÃO E DOCUMENTAÇÃO
+
+### Princípio: Documentação como Fonte de Verdade
+
+A validação de negócio NÃO é responsabilidade de um agente específico, mas sim da **arquitetura de SPECs** que todos acessam:
+
+| Componente        | Responsabilidade               |
+| ----------------- | ------------------------------ |
+| **SPECs**         | Requisitos, regras, validações |
+| **Memory System** | Persistência cross-session     |
+| **Agentes**       | Executam baseados em SPECs     |
+| **Coordenador**   | Orquestra e valida             |
+
+### Sistema de Validação Embutido nas SPECs
+
+| Dimensão          | Validação                                 | Fonte                    |
+| ----------------- | ----------------------------------------- | ------------------------ |
+| **Sobrevivência** | Runway, Burn Rate, Cash Conversion Cycle  | SPEC_library_strategy.md |
+| **Estabilização** | Margem Bruta, EBITDA, Ponto de Equilíbrio | SPEC_library_strategy.md |
+| **Crescimento**   | Revenue Growth, CAC, LTV, Churn           | SPEC_library_strategy.md |
+| **Escala**        | Operating Cash Flow, Working Capital      | SPEC_library_strategy.md |
+| **Público-Alvo**  | PMEs/SMBs 1-100 funcionários, 10 setores  | SPEC_requirements.md     |
+
+### 4 Premissas UX (Sempre respeitadas)
+
+> "Simplicidade genial. Didática extrema. Utilidade radical. Moldar gestão."
+
+---
+
 ## AGENTE COORDENADOR
 
 Para sincronização, usar este arquivo como fonte de verdade.
