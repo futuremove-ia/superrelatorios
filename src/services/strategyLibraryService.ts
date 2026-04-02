@@ -279,7 +279,7 @@ class StrategyLibraryService {
 
     const relevantCodes = challengeSymptoms[challenge] || [];
     return relevantCodes.some((code) =>
-      kpis.some((kpi) => kpi.code === code && kpi.status === "critical"),
+      kpis.some((kpi) => kpi.code === code && kpi.confidence < 0.5),
     );
   }
 
@@ -309,9 +309,3 @@ class StrategyLibraryService {
 }
 
 export default StrategyLibraryService;
-export type {
-  StrategyTemplate,
-  ActionLever,
-  ActionStep,
-  StrategyRecommendation,
-};

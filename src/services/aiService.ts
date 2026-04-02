@@ -29,6 +29,17 @@ export interface AIDiagnosticResult {
   >;
 }
 
+export interface PromptContext {
+  blueprint?: {
+    industry_sector?: string;
+    business_model?: string;
+    company_stage?: string;
+    employee_count_range?: string;
+    known_challenges?: string[];
+  };
+  kpiLibrary?: Array<{ code: string; title: string; unit: string }>;
+}
+
 // ────────────────────────────────────────────
 // Cache em sessão (por hash de dados + contexto)
 // ────────────────────────────────────────────
@@ -117,12 +128,27 @@ async function fetchWithRetry(
 // Prompts
 // ────────────────────────────────────────────
 
-function buildAnalysisPrompt(data: unknown[], context: string): string {
+function buildAnalysisPrompt(
+  data: unknown[],
+  context: string,
+  ctx?: PromptContext,
+): string {
+  const blueprintSection = ctx?.blueprint
+    ? `\nCONTEXTO DA EMPRESA:\n${JSON.stringify(ctx.blueprint)}`
+    : "";
+
+  const kpiSection = ctx?.kpiLibrary?.length
+    ? `\nKPIs RELEVANTES PARA MAPEAR:\n${ctx.kpiLibrary
+        .slice(0, 30)
+        .map((k) => `${k.code}: ${k.title} (${k.unit})`)
+        .join("\n")}`
+    : "";
+
   return `
 Aja como um especialista em análise de dados para PMEs.
 Sua tarefa é analisar os dados fornecidos e gerar um resumo executivo com blocos de visualização estratégica.
 
-CONTEXTO: ${context || "Negócio em geral"}
+CONTEXTO: ${context || "Negócio em geral"}${blueprintSection}${kpiSection}
 DADOS: ${JSON.stringify(data.slice(0, 100))}
 
 Sua resposta DEVE ser um objeto JSON puro, sem markdown ou explicações extras:
@@ -141,12 +167,20 @@ Sua resposta DEVE ser um objeto JSON puro, sem markdown ou explicações extras:
   `.trim();
 }
 
-function buildDiagnosticPrompt(data: unknown[], context: string): string {
+function buildDiagnosticPrompt(
+  data: unknown[],
+  context: string,
+  ctx?: PromptContext,
+): string {
+  const blueprintSection = ctx?.blueprint
+    ? `\nCONTEXTO DA EMPRESA:\n${JSON.stringify(ctx.blueprint)}`
+    : "";
+
   return `
 Aja como um Consultor Estratégico Sênior especializado em PMEs.
 Analise os dados e identifique o problema MAIS CRÍTICO (Diagnóstico) e sugira a ação MAIS IMPORTANTE (Prioridade).
 
-CONTEXTO: ${context || "Negócio em geral"}
+CONTEXTO: ${context || "Negócio em geral"}${blueprintSection}
 DADOS: ${JSON.stringify(data.slice(0, 100))}
 
 Sua resposta DEVE ser um objeto JSON puro, sem markdown ou explicações extras:
@@ -218,12 +252,13 @@ async function callGeminiProxy(prompt: string): Promise<string> {
 export const analyzeDataWithAI = async (
   data: unknown[],
   context: string,
+  promptContext?: PromptContext,
 ): Promise<AIAnalysisResult> => {
   const cacheKey = hashKey(data, `analysis:${context}`);
   const cached = getFromCache(analysisCache, cacheKey);
   if (cached) return cached;
 
-  const prompt = buildAnalysisPrompt(data, context);
+  const prompt = buildAnalysisPrompt(data, context, promptContext);
 
   try {
     const text = await callGeminiProxy(prompt);
@@ -243,12 +278,13 @@ export const analyzeDataWithAI = async (
 export const generateAIDiagnostic = async (
   data: unknown[],
   context: string,
+  promptContext?: PromptContext,
 ): Promise<AIDiagnosticResult> => {
   const cacheKey = hashKey(data, `diagnostic:${context}`);
   const cached = getFromCache(diagnosticCache, cacheKey);
   if (cached) return cached;
 
-  const prompt = buildDiagnosticPrompt(data, context);
+  const prompt = buildDiagnosticPrompt(data, context, promptContext);
 
   try {
     const text = await callGeminiProxy(prompt);

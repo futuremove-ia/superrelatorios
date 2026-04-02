@@ -283,6 +283,83 @@ export const getReportMetrics = async (
 };
 
 /**
+ * Extrai período de dados baseado em colunas de data encontradas
+ */
+function extractPeriodFromData(rows: Record<string, unknown>[]): {
+  reference_period: string;
+  period_start: string;
+  period_end: string;
+} {
+  if (!rows || rows.length === 0) {
+    return getCurrentPeriodWithDates();
+  }
+
+  const dateColumns = Object.keys(rows[0] || {}).filter((col) =>
+    /data|date|mês|mes|month|período|period|ano|year|ref|exercise|exercício/i.test(
+      col,
+    ),
+  );
+
+  if (dateColumns.length === 0) {
+    return getCurrentPeriodWithDates();
+  }
+
+  const allDates: Date[] = [];
+  for (const row of rows) {
+    for (const col of dateColumns) {
+      const value = row[col];
+      if (value) {
+        const dateStr = String(value);
+        const date = new Date(dateStr);
+        if (!isNaN(date.getTime())) {
+          allDates.push(date);
+        }
+      }
+    }
+  }
+
+  if (allDates.length === 0) {
+    return getCurrentPeriodWithDates();
+  }
+
+  allDates.sort((a, b) => a.getTime() - b.getTime());
+  const first = allDates[0];
+  const last = allDates[allDates.length - 1];
+
+  const period = `${first.getFullYear()}-${String(first.getMonth() + 1).padStart(2, "0")}`;
+  return {
+    reference_period: period,
+    period_start: first.toISOString().split("T")[0],
+    period_end: last.toISOString().split("T")[0],
+  };
+}
+
+/**
+ * Retorna o período atual com datas de início e fim do mês
+ */
+function getCurrentPeriodWithDates(): {
+  reference_period: string;
+  period_start: string;
+  period_end: string;
+} {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const period = `${year}-${month}`;
+
+  const periodStart = `${period}-01`;
+  const periodEnd = new Date(year, now.getMonth() + 1, 0)
+    .toISOString()
+    .split("T")[0];
+
+  return {
+    reference_period: period,
+    period_start: periodStart,
+    period_end: periodEnd,
+  };
+}
+
+/**
  * Retorna o período atual no formato YYYY-MM
  */
 const getCurrentPeriod = (): string => {

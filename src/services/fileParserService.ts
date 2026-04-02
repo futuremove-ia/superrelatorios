@@ -1,51 +1,156 @@
-import Papa from 'papaparse';
-import * as XLSX from 'xlsx';
+import Papa from "papaparse";
+import * as XLSX from "xlsx";
 
 export interface ParsedFileData {
   headers: string[];
   rows: Record<string, unknown>[];
   rowCount: number;
-  fileType: 'csv' | 'xlsx' | 'json';
+  fileType: "csv" | "xlsx" | "pdf" | "txt" | "json";
+  rawText?: string;
 }
 
+const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
+
 /**
- * Lê um arquivo CSV ou XLSX e retorna os dados como JSON.
+ * Lê um arquivo CSV, XLSX, PDF ou TXT e retorna os dados como JSON.
  */
 export const parseFile = (file: File): Promise<ParsedFileData> => {
   return new Promise((resolve, reject) => {
-    const extension = file.name.split('.').pop()?.toLowerCase();
+    // Validação de tamanho
+    if (file.size > MAX_FILE_SIZE) {
+      return reject(new Error("Arquivo muito grande. Máximo: 50MB"));
+    }
 
-    if (extension === 'csv') {
-      // Parse CSV com PapaParse
-      Papa.parse(file, {
-        header: true,
-        skipEmptyLines: true,
-        complete: (result) => {
-          const rows = result.data as Record<string, unknown>[];
-          const headers = rows.length > 0 ? Object.keys(rows[0]) : [];
-          resolve({ headers, rows, rowCount: rows.length, fileType: 'csv' });
-        },
-        error: (error) => reject(new Error(`Erro ao ler CSV: ${error.message}`))
-      });
-    } else if (extension === 'xlsx' || extension === 'xls') {
-      // Parse Excel com SheetJS
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          const data = new Uint8Array(e.target?.result as ArrayBuffer);
-          const workbook = XLSX.read(data, { type: 'array' });
-          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-          const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(firstSheet);
-          const headers = rows.length > 0 ? Object.keys(rows[0]) : [];
-          resolve({ headers, rows, rowCount: rows.length, fileType: 'xlsx' });
-        } catch (err) {
-          reject(new Error('Erro ao ler Excel. Verifique se o arquivo não está corrompido.'));
-        }
-      };
-      reader.onerror = () => reject(new Error('Erro ao carregar o arquivo.'));
-      reader.readAsArrayBuffer(file);
+    const extension = file.name.split(".").pop()?.toLowerCase();
+    const SUPPORTED = ["csv", "xlsx", "xls", "pdf", "txt"];
+
+    if (!SUPPORTED.includes(extension || "")) {
+      return reject(
+        new Error(`Formato não suportado. Use: ${SUPPORTED.join(", ")}`),
+      );
+    }
+
+    if (extension === "pdf") {
+      parsePDF(file).then(resolve).catch(reject);
+    } else if (extension === "txt") {
+      parseTXT(file).then(resolve).catch(reject);
+    } else if (extension === "csv") {
+      parseCSV(file).then(resolve).catch(reject);
     } else {
-      reject(new Error(`Formato não suportado: .${extension}. Use CSV ou XLSX.`));
+      parseXLSX(file).then(resolve).catch(reject);
     }
   });
 };
+
+async function parsePDF(file: File): Promise<ParsedFileData> {
+  const pdfjsLib = await import("pdfjs-dist");
+  const pdfjsWorker = await import("pdfjs-dist/build/pdf.worker?url");
+  pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker.default;
+
+  const arrayBuffer = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+  const pages: string[] = [];
+
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    const pageText = content.items
+      .map((item: { str?: string }) => item.str)
+      .filter(Boolean)
+      .join(" ");
+    pages.push(pageText);
+  }
+
+  const fullText = pages.join("\n\n");
+  const rows = pages.map((text, index) => ({ page: index + 1, content: text }));
+
+  return {
+    headers: ["page", "content"],
+    rows,
+    rowCount: pages.length,
+    fileType: "pdf",
+    rawText: fullText,
+  };
+}
+
+async function parseTXT(file: File): Promise<ParsedFileData> {
+  const text = await file.text();
+  const lines = text.split("\n").filter((line) => line.trim());
+
+  // Tentar detectar formato tabular (separado por tab, vírgula ou ponto e vírgula)
+  const delimiter = lines[0]?.includes("\t")
+    ? "\t"
+    : lines[0]?.includes(";")
+      ? ";"
+      : ",";
+
+  if (delimiter && lines.length > 0) {
+    const headers = lines[0].split(delimiter).map((h) => h.trim());
+    const rows = lines.slice(1).map((line) => {
+      const values = line.split(delimiter);
+      const row: Record<string, unknown> = {};
+      headers.forEach((header, index) => {
+        row[header] = values[index]?.trim() || "";
+      });
+      return row;
+    });
+
+    return {
+      headers,
+      rows,
+      rowCount: rows.length,
+      fileType: "txt",
+      rawText: text,
+    };
+  }
+
+  // Formato não tabular - retornar como linhas
+  const rows = lines.map((line, index) => ({ line: index + 1, content: line }));
+  return {
+    headers: ["line", "content"],
+    rows,
+    rowCount: rows.length,
+    fileType: "txt",
+    rawText: text,
+  };
+}
+
+function parseCSV(file: File): Promise<ParsedFileData> {
+  return new Promise((resolve, reject) => {
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      complete: (result) => {
+        const rows = result.data as Record<string, unknown>[];
+        const headers = rows.length > 0 ? Object.keys(rows[0]) : [];
+        resolve({ headers, rows, rowCount: rows.length, fileType: "csv" });
+      },
+      error: (error) => reject(new Error(`Erro ao ler CSV: ${error.message}`)),
+    });
+  });
+}
+
+function parseXLSX(file: File): Promise<ParsedFileData> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = new Uint8Array(e.target?.result as ArrayBuffer);
+        const workbook = XLSX.read(data, { type: "array" });
+        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+        const rows =
+          XLSX.utils.sheet_to_json<Record<string, unknown>>(firstSheet);
+        const headers = rows.length > 0 ? Object.keys(rows[0]) : [];
+        resolve({ headers, rows, rowCount: rows.length, fileType: "xlsx" });
+      } catch (err) {
+        reject(
+          new Error(
+            "Erro ao ler Excel. Verifique se o arquivo não está corrompido.",
+          ),
+        );
+      }
+    };
+    reader.onerror = () => reject(new Error("Erro ao carregar o arquivo."));
+    reader.readAsArrayBuffer(file);
+  });
+}
