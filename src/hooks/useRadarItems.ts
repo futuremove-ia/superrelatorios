@@ -7,75 +7,32 @@ export const RADAR_KEYS = {
   byId: (id: string) => ["radar_items", id] as const,
 };
 
-const RADAR_SELECT = `
-  *,
-  library_diagnoses!diagnosis_code(technical_term, cause, effect, why),
-  library_impacts!impact_code(description, impact_value, impact_type, impact_direction, category),
-  library_timeframes!timeframe_code(label, days),
-  library_complexities!complexity_code(label, typical_effort_hours),
-  radar_item_suggested_levers(lever_code, priority, is_primary, confidence_score),
-  radar_item_metrics(kpi_code, current_value, previous_value, change_percent, is_primary_driver)
-`;
-
 export interface RadarItem {
   id: string;
   organization_id: string;
+  type: string;
+  title: string;
   diagnosis_code: string;
   impact_code: string;
   timeframe_code: string;
   complexity_code: string;
+  severity: "low" | "medium" | "high" | "critical";
+  domain: string;
   status:
     | "detected"
     | "in_progress"
     | "acknowledged"
     | "dismissed"
     | "resolved";
-  severity: "low" | "medium" | "high" | "critical";
-  priority_score: number;
-  custom_notes?: string;
-  ai_confidence_score?: number;
+  priority_score: number | null;
+  custom_notes: string | null;
+  ai_confidence_score: number | null;
+  ai_raw_analysis: Record<string, unknown> | null;
+  detected_at: string | null;
+  detected_in_report_id: string | null;
+  source_type: string | null;
   created_at: string;
   updated_at: string;
-  diagnosisTerm?: string;
-  diagnosisCause?: string;
-  diagnosisEffect?: string;
-  diagnosisWhy?: string;
-  impactValue?: number;
-  impactType?: string;
-  impactDirection?: string;
-  impactCategory?: string;
-  impactDescription?: string;
-  timeframeLabel?: string;
-  complexityLabel?: string;
-  typicalEffortHours?: number;
-  suggestedLeverCodes?: string[];
-}
-
-function mapRadarItem(row: Record<string, unknown>): RadarItem {
-  const diag = row.library_diagnoses as Record<string, string> | null;
-  const impact = row.library_impacts as Record<string, unknown> | null;
-  const timeframe = row.library_timeframes as Record<string, unknown> | null;
-  const complexity = row.library_complexities as Record<string, unknown> | null;
-  const levers =
-    (row.radar_item_suggested_levers as Array<{ lever_code: string }>) || [];
-
-  return {
-    ...row,
-    diagnosisTerm: diag?.technical_term,
-    diagnosisCause: diag?.cause,
-    diagnosisEffect: diag?.effect,
-    diagnosisWhy: diag?.why,
-    impactValue: impact?.impact_value as number,
-    impactType: impact?.impact_type as string,
-    impactDirection: impact?.impact_direction as string,
-    impactCategory: impact?.category as string,
-    impactDescription: impact?.description as string,
-    timeframeLabel: timeframe?.label as string,
-    complexityLabel: complexity?.label as string,
-    typicalEffortHours: (complexity?.typical_effort_hours as number) ?? 0,
-    suggestedLeverCodes: levers.map((l) => l.lever_code),
-    ai_confidence_score: row.ai_confidence_score as number,
-  } as RadarItem;
 }
 
 export function useRadarItems(organizationId: string) {
@@ -84,13 +41,13 @@ export function useRadarItems(organizationId: string) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("radar_items")
-        .select(RADAR_SELECT)
+        .select("*")
         .eq("organization_id", organizationId)
         .in("status", ["detected", "in_progress"])
         .order("priority_score", { ascending: false });
 
       if (error) throw error;
-      return (data || []).map(mapRadarItem);
+      return (data || []) as RadarItem[];
     },
     enabled: !!organizationId,
     staleTime: 2 * 60 * 1000,
@@ -103,43 +60,117 @@ export function useRadarHistory(organizationId: string) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("radar_items")
-        .select(RADAR_SELECT)
+        .select("*")
         .eq("organization_id", organizationId)
         .in("status", ["acknowledged", "dismissed", "resolved"])
         .order("updated_at", { ascending: false });
 
       if (error) throw error;
-      return (data || []).map(mapRadarItem);
+      return (data || []) as RadarItem[];
     },
     enabled: !!organizationId,
     staleTime: 5 * 60 * 1000,
   });
 }
 
+export function useRadarItem(id: string) {
+  return useQuery({
+    queryKey: RADAR_KEYS.byId(id),
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("radar_items")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (error) throw error;
+      return data as RadarItem;
+    },
+    enabled: !!id,
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
 export function useUpdateRadarItemStatus() {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async ({
       id,
       status,
-      customNotes,
+      notes,
     }: {
       id: string;
       status: string;
-      customNotes?: string;
+      notes?: string;
     }) => {
+      const updateData: Record<string, unknown> = {
+        status,
+        updated_at: new Date().toISOString(),
+      };
+
+      if (notes !== undefined) {
+        updateData.custom_notes = notes;
+      }
+
+      if (status === "acknowledged") {
+        updateData.acknowledged_at = new Date().toISOString();
+      } else if (status === "in_progress") {
+        updateData.started_at = new Date().toISOString();
+      } else if (status === "resolved") {
+        updateData.resolved_at = new Date().toISOString();
+      } else if (status === "dismissed") {
+        updateData.dismissed_at = new Date().toISOString();
+      }
+
       const { data, error } = await supabase
         .from("radar_items")
-        .update({
-          status,
-          custom_notes: customNotes,
-          updated_at: new Date().toISOString(),
-        })
+        .update(updateData)
         .eq("id", id)
         .select()
         .single();
+
       if (error) throw error;
       return data;
+    },
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["radar_items"] });
+      queryClient.setQueryData(RADAR_KEYS.byId(variables.id), _data);
+    },
+  });
+}
+
+export function useCreateRadarItem() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (item: Partial<RadarItem>) => {
+      const { data, error } = await supabase
+        .from("radar_items")
+        .insert(item)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data as RadarItem;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["radar_items"] });
+    },
+  });
+}
+
+export function useDeleteRadarItem() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from("radar_items")
+        .delete()
+        .eq("id", id);
+
+      if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["radar_items"] });
