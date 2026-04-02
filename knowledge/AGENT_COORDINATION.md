@@ -91,6 +91,31 @@ O sistema implementa um ciclo de aprendizado fechado:
 
 ---
 
+## ARQUITETURA DE AGENTES — @superrelatorios/agents
+
+Repositório: `superrelatorios-agents/`
+
+### Sistemas Implementados
+
+| Sistema         | Arquivo             | Status | Notas                  |
+| --------------- | ------------------- | ------ | ---------------------- |
+| **Memory**      | `memorySystem.ts`   | ✅     | Em memória (Map)       |
+| **Skills**      | `skillSystem.ts`    | ✅     | Auto-create, improve   |
+| **Tools**       | `toolSystem.ts`     | ✅     | file, bash, grep, glob |
+| **LLM**         | `llmIntegration.ts` | ⚠️     | Mock (sem LLM real)    |
+| **SPEC Loader** | `specLoader.ts`     | ✅     | Parser markdown        |
+| **Coordinator** | `coordinator.ts`    | ✅     | Orquestração           |
+
+### Não Incluso (para evitar complexidade)
+
+- ❌ Self-modification (OpenCLAW)
+- ❌ Persistent memory database
+- ❌ Tool calling com IA real
+- ❌ Scheduler/cron
+- ❌ MCP integration (a avaliar se necessário)
+
+---
+
 ## TAREFAS EM ANDAMENTO
 
 | #   | Tarefa                                     | Responsável | Status |
@@ -156,6 +181,8 @@ O sistema implementa um ciclo de aprendizado fechado:
 | 🟡 Média   | Conectar onboarding ao pipeline |
 | 🟢 Baixa   | Adicionar mais testes           |
 
+**Nota:** Sistema de agentes movido para `superrelatorios-agents/` (repositório dedicado)
+
 ---
 
 ## ARQUITETURA DE VALIDAÇÃO E DOCUMENTAÇÃO
@@ -184,6 +211,54 @@ A validação de negócio NÃO é responsabilidade de um agente específico, mas
 ### 4 Premissas UX (Sempre respeitadas)
 
 > "Simplicidade genial. Didática extrema. Utilidade radical. Moldar gestão."
+
+---
+
+## ARQUITETURA DE AGENTES — Repositório Separado
+
+O sistema de agentes foi extraído para repositório dedicado:
+
+**@superrelatorios/agents** — `superrelatorios-agents/`
+
+| Sistema             | Arquivo             | Descrição                             |
+| ------------------- | ------------------- | ------------------------------------- |
+| **Memory System**   | `memorySystem.ts`   | FTS5 cross-session, relevance scoring |
+| **Skill System**    | `skillSystem.ts`    | Auto-create + self-improvement        |
+| **Tool System**     | `toolSystem.ts`     | File, bash, grep, glob                |
+| **LLM Integration** | `llmIntegration.ts` | Gemini, OpenAI, OpenRouter            |
+| **SPEC Loader**     | `specLoader.ts`     | Parse specifications                  |
+| **Coordinator**     | `coordinator.ts`    | Orchestration, parallel execution     |
+
+**Instalação:**
+
+```bash
+cd superrelatorios-agents && npm install && npm run build
+```
+
+---
+
+## GAPS IDENTIFICADOS — O que falta para agentes eficazes
+
+### Estado Atual (Implementado)
+
+| Componente    | Status     | Limitações                                   |
+| ------------- | ---------- | -------------------------------------------- |
+| Memory System | ⚠️ Parcial | Em memória (Map), não persiste entre sessões |
+| Skill System  | ⚠️ Parcial | Procedures estáticas, sem aprendizado real   |
+| Sub-Agents    | ⚠️ mock    | Sem ferramentas reais                        |
+| Coordinator   | ⚠️ Parcial | Orquestração básica                          |
+
+### O que FALTA para Agentes Inteligentes
+
+| #   | Componente              | Descrição                                                   | Prioridade |
+| --- | ----------------------- | ----------------------------------------------------------- | ---------- |
+| 1   | **Persistência Real**   | Integrar com PostgreSQL/Supabase para memória cross-session | 🔴 Alta    |
+| 2   | **SPEC Loader**         | Agentes leem automaticamente SPECs antes de executar        | 🔴 Alta    |
+| 3   | **Tool Calling**        | Agentes têm ferramentas reais (file ops, git, bash, search) | 🔴 Alta    |
+| 4   | **LLM Integration**     | Agentes usam LLM para raciocínio e tomada de decisão        | 🔴 Alta    |
+| 5   | **Validation Pipeline** | Auto-validação contra SPECs após cada task                  | 🟡 Média   |
+| 6   | **MCP Integration**     | Model Context Protocol para ferramentas externas            | 🟡 Média   |
+| 7   | **Scheduler**           | Execução periódica (cron) de tarefas                        | 🟢 Baixa   |
 
 ---
 

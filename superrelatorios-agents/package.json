@@ -1,0 +1,73 @@
+{
+  "name": "@superrelatorios/agents",
+  "version": "1.0.0",
+  "description": "Self-improving AI agents system based on Hermes/Nous Research - Memory, Skills, Tools, LLM Integration",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/superrelatorios/agents"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./memory": {
+      "types": "./dist/memorySystem.d.ts",
+      "import": "./dist/memorySystem.js"
+    },
+    "./skills": {
+      "types": "./dist/skillSystem.d.ts",
+      "import": "./dist/skillSystem.js"
+    },
+    "./tools": {
+      "types": "./dist/toolSystem.d.ts",
+      "import": "./dist/toolSystem.js"
+    },
+    "./llm": {
+      "types": "./dist/llmIntegration.d.ts",
+      "import": "./dist/llmIntegration.js"
+    },
+    "./spec": {
+      "types": "./dist/specLoader.d.ts",
+      "import": "./dist/specLoader.js"
+    },
+    "./coordinator": {
+      "types": "./dist/coordinator.d.ts",
+      "import": "./dist/coordinator.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src --fix",
+    "prepublish": "npm run build"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "hermes",
+    "self-improving",
+    "memory",
+    "skills",
+    "llm",
+    "mcp"
+  ],
+  "peerDependencies": {
+    "typescript": ">=5.0.0"
+  },
+  "dependencies": {
+    "glob": "^10.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0"
+  }
+}
