@@ -4,6 +4,11 @@ import {
   type OrganizationKPI,
 } from "./organizationKPIService";
 import { kpiLibraryService, type KPI } from "./kpiLibraryService";
+import {
+  BUSINESS_MODELS,
+  getKPIDescription,
+  type BusinessModel,
+} from "@/types/businessModels";
 
 export interface DataPresence {
   totalKPIs: number;
@@ -22,6 +27,11 @@ export interface RelevantKPI {
   readiness_level: number;
   dataPoints: number;
   next_action: string;
+  kpiDescription?: {
+    whatIsIt: string;
+    whyItMatters: string;
+    howToImprove: string;
+  };
 }
 
 export type MaturityLevel = 0 | 1 | 2 | 3 | 4;
@@ -38,10 +48,69 @@ const PRIORITY_KPIS: Record<string, { priority: number; reason: string }> = {
   REVENUE: { priority: 1, reason: "Receita principal do negócio" },
   GM: { priority: 1, reason: "Margem bruta essencial para saúde financeira" },
   GROWTH: { priority: 1, reason: "Crescimento indica saúde do negócio" },
-  EBITDA: { priority: 2, reason: "Lucro operacional关键" },
+  EBITDA: { priority: 2, reason: "Lucro operacional" },
   CAC: { priority: 2, reason: "Custo de aquisição de cliente" },
   LTV: { priority: 2, reason: "Lifetime value do cliente" },
   CHURN: { priority: 2, reason: "Taxa de cancelamento crítica" },
+};
+
+const MODEL_RELEVANT_KPIS: Record<string, string[]> = {
+  B2B: [
+    "CAC",
+    "LTV",
+    "WIN_RATE",
+    "SALES_CYCLE",
+    "MRR",
+    "LEAD_VELOCITY",
+    "PIPELINE",
+    "ARPU",
+  ],
+  B2C: [
+    "AOV",
+    "CONVERSION",
+    "FOOT_TRAFFIC",
+    "REPEAT_PURCHASE",
+    "NPS",
+    "BASKET_SIZE",
+    "STORE_TRAFFIC",
+    "GMV",
+  ],
+  B2B2C: [
+    "GMV",
+    "TAKE_RATE",
+    "SELLER_COUNT",
+    "BUYER_COUNT",
+    "MATCH_RATE",
+    "DISTRIBUTOR_MARGIN",
+  ],
+  MARKETPLACE: [
+    "GMV",
+    "TAKE_RATE",
+    "MATCH_RATE",
+    "CAC",
+    "LTV",
+    "SELLER_CHURN",
+    "BUYER_CHURN",
+    "FILL_RATE",
+  ],
+  SAAS: [
+    "MRR",
+    "ARR",
+    "CHURN",
+    "CAC",
+    "LTV",
+    "BURN_RATE",
+    "NRR",
+    "ARPU",
+    "TRIAL_CONVERSION",
+  ],
+  SERVICES: [
+    "UTILIZATION",
+    "BILLABLE_HOURS",
+    "PROJECT_MARGIN",
+    "CLIENT_SATISFACTION",
+    "AVG_PROJECT_VALUE",
+  ],
 };
 
 const SECTOR_RELEVANT_KPIS: Record<string, string[]> = {
@@ -129,6 +198,7 @@ export class RelevanceEngine {
     organizationId: string,
     sector?: string,
     companySize?: string,
+    businessModel?: string,
   ): Promise<RelevantKPI[]> {
     const kpis = await kpiLibraryService.getKPIs();
     const dataPresence = await this.getDataPresence(organizationId);
@@ -139,6 +209,9 @@ export class RelevanceEngine {
     const relevantBySize = companySize
       ? COMPANY_SIZE_RELEVANT_KPIS[companySize] || []
       : [];
+    const relevantByModel = businessModel
+      ? MODEL_RELEVANT_KPIS[businessModel] || []
+      : [];
 
     for (const kpi of kpis) {
       let priority = 999;
@@ -148,6 +221,11 @@ export class RelevanceEngine {
       if (priorityInfo) {
         priority = priorityInfo.priority;
         reason = priorityInfo.reason;
+      }
+
+      if (relevantByModel.includes(kpi.code)) {
+        priority = Math.max(priority - 2, 1);
+        reason = `Relevante para modelo ${businessModel}`;
       }
 
       if (relevantBySector.includes(kpi.code)) {
@@ -163,6 +241,10 @@ export class RelevanceEngine {
       const dataPoints = dataPresence.byKPI[kpi.code] || 0;
 
       if (this.shouldIncludeKPI(maturityLevel, dataPoints, priority)) {
+        const kpiDescription = businessModel
+          ? getKPIDescription(businessModel, kpi.code)
+          : undefined;
+
         relevantKPIs.push({
           code: kpi.code,
           title: kpi.title,
@@ -172,6 +254,13 @@ export class RelevanceEngine {
           readiness_level: maturityLevel,
           dataPoints,
           next_action: this.suggestNextAction(kpi.code),
+          kpiDescription: kpiDescription
+            ? {
+                whatIsIt: kpiDescription.whatIsIt,
+                whyItMatters: kpiDescription.whyItMatters,
+                howToImprove: kpiDescription.howToImprove,
+              }
+            : undefined,
         });
       }
     }
@@ -186,7 +275,7 @@ export class RelevanceEngine {
   ): boolean {
     switch (maturityLevel) {
       case 0:
-        return false;
+        return priority <= 1;
       case 1:
         return priority <= 3 && dataPoints > 0;
       case 2:

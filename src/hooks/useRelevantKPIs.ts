@@ -22,11 +22,17 @@ export function useRelevantKPIs(
   organizationId: string,
   sector?: string,
   companySize?: string,
+  businessModel?: string,
 ): UseRelevantKPIsResult {
   const relevanceQuery = useQuery({
     queryKey: RELEVANCE_KEYS.relevance(organizationId),
     queryFn: () =>
-      relevanceEngine.calculateRelevance(organizationId, sector, companySize),
+      relevanceEngine.calculateRelevance(
+        organizationId,
+        sector,
+        companySize,
+        businessModel,
+      ),
     enabled: !!organizationId,
     staleTime: 5 * 60 * 1000,
   });

@@ -118,14 +118,25 @@ Repositório: `superrelatorios-agents/`
 
 ## TAREFAS EM ANDAMENTO
 
-| #   | Tarefa                                     | Responsável | Status |
-| --- | ------------------------------------------ | ----------- | ------ |
-| 1   | Implementar Motor de Relevância (FASE 4)   | agent-040   | ⏳     |
-| 2   | Implementar Progressive Disclosure UI      | agent-041   | ⏳     |
-| 3   | Implementar Radar Hook com JOINs           | agent-042   | ⏳     |
-| 4   | Implementar DataSuggestionBanner           | agent-043   | ⏳     |
-| 5   | Implementar Edge Function process-document | agent-044   | ⏳     |
-| 6   | Implementar KPIs Library (100+)            | agent-045   | ⏳     |
+| #   | Tarefa                                                      | Responsável | Status |
+| --- | ----------------------------------------------------------- | ----------- | ------ |
+| 1   | Corrigir Motor de Relevância (nível 0, data points, trends) | agent-040   | ✅     |
+| 2   | Expandir setores (5 → 10) + nichos (~70)                    | agent-041   | ⏳     |
+| 3   | Adicionar modelo de negócio (B2B/B2C/B2B2C/SaaS/Services)   | agent-042   | ✅     |
+| 4   | Criar Biblioteca de Nichos com KPIs específicos             | agent-043   | ⏳     |
+| 5   | Adicionar traduções didáticas por KPI                       | agent-044   | ✅     |
+| 6   | Expandir KPIs Library (29 → 100+)                           | agent-045   | ⏳     |
+
+### Novos Especialistas Ativados
+
+| #   | Especialidade        | Responsável | Status |
+| --- | -------------------- | ----------- | ------ |
+| 50  | UX Design            | agent-050   | ⏳     |
+| 51  | UI Design            | agent-051   | ⏳     |
+| 52  | Product Design       | agent-052   | ⏳     |
+| 53  | Frontend Development | agent-053   | ⏳     |
+| 54  | BPMN & System Flows  | agent-054   | ⏳     |
+| 55  | Data Flows           | agent-055   | ⏳     |
 
 ---
 
