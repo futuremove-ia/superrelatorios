@@ -1,0 +1,648 @@
+import {
+  Sector,
+  Niche,
+  BusinessModel,
+  GroupDataPeriod,
+  ConfidenceLevel,
+  CalculationStatus,
+} from "./types";
+
+export interface UserDataInput {
+  organizationId: string;
+  sector?: Sector;
+  niche?: Niche;
+  businessModel?: BusinessModel;
+  data: Record<string, number | number[]>;
+  metadata?: {
+    period?: GroupDataPeriod;
+    startDate?: Date;
+    endDate?: Date;
+  };
+}
+
+export interface DataField {
+  name: string;
+  aliases: string[];
+  description?: string;
+  required: boolean;
+  type: "number" | "currency" | "percent" | "count";
+  min?: number;
+  max?: number;
+  default?: number;
+}
+
+export interface DataFieldCollection {
+  sector: Sector;
+  niche?: Niche;
+  fields: DataField[];
+}
+
+export const COMMON_FIELDS: DataField[] = [
+  {
+    name: "revenue",
+    aliases: ["receita", "sales", "faturamento"],
+    required: false,
+    type: "currency",
+    min: 0,
+  },
+  {
+    name: "cost",
+    aliases: ["custo", "costs", "despesa"],
+    required: false,
+    type: "currency",
+    min: 0,
+  },
+  {
+    name: "profit",
+    aliases: ["lucro", "gain"],
+    required: false,
+    type: "currency",
+  },
+  {
+    name: "customers",
+    aliases: ["clientes", "clients"],
+    required: false,
+    type: "count",
+    min: 0,
+  },
+  {
+    name: "leads",
+    aliases: ["oportunidades", "prospects"],
+    required: false,
+    type: "count",
+    min: 0,
+  },
+  {
+    name: "deals",
+    aliases: ["negociacoes", "contracts"],
+    required: false,
+    type: "count",
+    min: 0,
+  },
+  {
+    name: "employees",
+    aliases: ["funcionarios", "staff", "team"],
+    required: false,
+    type: "count",
+    min: 0,
+  },
+];
+
+export const SECTOR_FIELD_MAPPINGS: Record<Sector, DataField[]> = {
+  technology: [
+    {
+      name: "mrr",
+      aliases: ["monthly_recurring_revenue"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+    {
+      name: "arr",
+      aliases: ["annual_recurring_revenue"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+    {
+      name: "churned_customers",
+      aliases: ["cancelled_customers"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "new_customers",
+      aliases: ["acquired_customers"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "marketing_spend",
+      aliases: ["marketing_expense", "acquisition_spend"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+    {
+      name: "sales_spend",
+      aliases: ["sales_expense"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+    {
+      name: "dau",
+      aliases: ["daily_active_users"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "mau",
+      aliases: ["monthly_active_users"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "nps_score",
+      aliases: ["net_promoter_score"],
+      required: false,
+      type: "number",
+      min: -100,
+      max: 100,
+    },
+  ],
+  retail: [
+    {
+      name: "gmv",
+      aliases: ["gross_merchandise_value", "valor_vendas"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+    {
+      name: "orders",
+      aliases: ["pedidos", "transactions"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "visitors",
+      aliases: ["visitors", "traffic"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "cart_adds",
+      aliases: ["add_to_cart"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "returns",
+      aliases: ["devolucoes"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "inventory_value",
+      aliases: ["estoque"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+    {
+      name: "cogs",
+      aliases: ["cost_of_goods_sold", "custo_mercadoria"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+  ],
+  healthcare: [
+    {
+      name: "beds",
+      aliases: ["leitos"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "occupied_beds",
+      aliases: ["leitos_ocupados"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "readmissions",
+      aliases: ["readmissoes"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "patients",
+      aliases: ["pacientes"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "appointments",
+      aliases: ["consultas"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "no_shows",
+      aliases: ["faltas"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "claims",
+      aliases: ["sinistros"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "staff_count",
+      aliases: ["equipe"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+  ],
+  manufacturing: [
+    {
+      name: "oee",
+      aliases: ["overall_equipment_effectiveness"],
+      required: false,
+      type: "percent",
+      min: 0,
+      max: 100,
+    },
+    {
+      name: "first_pass_yield",
+      aliases: ["fpy"],
+      required: false,
+      type: "percent",
+      min: 0,
+      max: 100,
+    },
+    {
+      name: "defects",
+      aliases: ["defeitos"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "total_produced",
+      aliases: ["produzido"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "downtime_hours",
+      aliases: ["parada"],
+      required: false,
+      type: "number",
+      min: 0,
+    },
+    {
+      name: "cycle_time",
+      aliases: ["tempo_ciclo"],
+      required: false,
+      type: "number",
+      min: 0,
+    },
+    {
+      name: "inventory_days",
+      aliases: ["dias_estoque"],
+      required: false,
+      type: "number",
+      min: 0,
+    },
+    {
+      name: "capacity",
+      aliases: ["capacidade"],
+      required: false,
+      type: "number",
+      min: 0,
+    },
+    {
+      name: "scrap",
+      aliases: ["refugo"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+  ],
+  services: [
+    {
+      name: "billable_hours",
+      aliases: ["horas_faturaveis"],
+      required: false,
+      type: "number",
+      min: 0,
+    },
+    {
+      name: "total_hours",
+      aliases: ["horas_totais"],
+      required: false,
+      type: "number",
+      min: 0,
+    },
+    {
+      name: "project_revenue",
+      aliases: ["receita_projeto"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+    {
+      name: "project_cost",
+      aliases: ["custo_projeto"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+    {
+      name: "resources",
+      aliases: ["recursos"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "tickets",
+      aliases: ["tickets"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "escalated_tickets",
+      aliases: ["escalados"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "contracts",
+      aliases: ["contratos"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "renewed_contracts",
+      aliases: ["renovados"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+  ],
+  finance: [
+    {
+      name: "loans",
+      aliases: ["emprestimos"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+    {
+      name: "npl",
+      aliases: ["non_performing"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+    {
+      name: "interest_income",
+      aliases: ["juros_receita"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+    {
+      name: "interest_expense",
+      aliases: ["juros_despesa"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+    {
+      name: "equity",
+      aliases: ["patrimonio"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+    {
+      name: "ebitda",
+      aliases: ["lucro_operacional"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+    {
+      name: "cash_flow",
+      aliases: ["fluxo_caixa"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+    {
+      name: "receivables",
+      aliases: ["recebiveis"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+    {
+      name: "dso",
+      aliases: ["days_sales_outstanding"],
+      required: false,
+      type: "number",
+      min: 0,
+    },
+  ],
+  food: [
+    {
+      name: "tables",
+      aliases: ["mesas"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "table_turns",
+      aliases: ["giros_mesa"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "covers",
+      aliases: ["cover"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "food_cost",
+      aliases: ["custo_comida"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+    {
+      name: "labor_cost",
+      aliases: ["custo_mao_obra"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+    {
+      name: "waste",
+      aliases: ["desperdicio"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+    {
+      name: "delivery_orders",
+      aliases: ["pedidos_delivery"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "on_time_deliveries",
+      aliases: ["entregas_tempo"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+  ],
+  logistics: [
+    {
+      name: "deliveries",
+      aliases: ["entregas"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "on_time_deliveries",
+      aliases: ["no_prazo"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "complete_deliveries",
+      aliases: ["completas"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "mileage",
+      aliases: ["milhas"],
+      required: false,
+      type: "number",
+      min: 0,
+    },
+    {
+      name: "load_capacity",
+      aliases: ["capacidade_carga"],
+      required: false,
+      type: "number",
+      min: 0,
+    },
+    {
+      name: "vehicles",
+      aliases: ["veiculos"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "warehouse_picks",
+      aliases: ["picks"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "accurate_picks",
+      aliases: ["picks_acurados"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+  ],
+  construction: [
+    {
+      name: "project_revenue",
+      aliases: ["receita_projeto"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+    {
+      name: "project_cost",
+      aliases: ["custo_projeto"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+    {
+      name: "budget",
+      aliases: ["orcamento"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+    {
+      name: "actual_cost",
+      aliases: ["custo_real"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+    {
+      name: "planned_days",
+      aliases: ["dias_planejados"],
+      required: false,
+      type: "number",
+      min: 0,
+    },
+    {
+      name: "actual_days",
+      aliases: ["dias_reais"],
+      required: false,
+      type: "number",
+      min: 0,
+    },
+    {
+      name: "incidents",
+      aliases: ["incidentes"],
+      required: false,
+      type: "count",
+      min: 0,
+    },
+    {
+      name: "contingency",
+      aliases: ["contingencia"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+    {
+      name: "contingency_used",
+      aliases: ["contingencia_usada"],
+      required: false,
+      type: "currency",
+      min: 0,
+    },
+  ],
+  education: [],
+  real_estate: [],
+  media: [],
+};

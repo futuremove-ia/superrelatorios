@@ -1,0 +1,470 @@
+import { j as e, c as t, u as y, B as b } from "./index-CzFfXFeY.js";
+import { a as w } from "./DomainTag-B-zk6gIL.js";
+import {
+  i as N,
+  bq as C,
+  br as T,
+  k as h,
+  bs as B,
+  c as P,
+  q as k,
+  b as $,
+  $ as A,
+  Z as I,
+  d as u,
+  f as M,
+  K as f,
+  n as R,
+  T as D,
+} from "./utils-BYPr0Dmq.js";
+import { C as z, b as E, a as O } from "./card-DEQcRzjn.js";
+import { B as j } from "./badge-DQqwMB41.js";
+const S = {
+    price: {
+      label: "Preço",
+      color: "rose",
+      icon: N,
+      description: "Ponto de pressão no valor cobrado",
+    },
+    cost: {
+      label: "Custo",
+      color: "orange",
+      icon: C,
+      description: "Ponto de pressão nos gastos operacionais",
+    },
+    volume: {
+      label: "Volume",
+      color: "blue",
+      icon: T,
+      description: "Ponto de pressão na quantidade vendida",
+    },
+    time: {
+      label: "Prazo",
+      color: "amber",
+      icon: h,
+      description: "Ponto de pressão no tempo de entrega",
+    },
+    quality: {
+      label: "Qualidade",
+      color: "purple",
+      icon: B,
+      description: "Ponto de pressão no padrão do produto",
+    },
+    process: {
+      label: "Processo",
+      color: "slate",
+      icon: P,
+      description: "Ponto de pressão no fluxo operacional",
+    },
+  },
+  q = ({
+    lever: a,
+    showImpact: i = !0,
+    size: o = "md",
+    variant: d = "default",
+    className: c,
+  }) => {
+    var m;
+    const s = S[a],
+      r = s.icon,
+      l = {
+        sm: "text-[10px] px-2 py-0.5 gap-1",
+        md: "text-xs px-2.5 py-1 gap-1.5",
+        lg: "text-sm px-3 py-1.5 gap-2",
+      },
+      x = {
+        default: `bg-${s.color}-100 text-${s.color}-800 border-${s.color}-200`,
+        outline: `bg-transparent text-${s.color}-700 border-${s.color}-300`,
+        filled: `bg-${s.color}-500 text-white border-transparent`,
+      },
+      p = { sm: "h-3 w-3", md: "h-3.5 w-3.5", lg: "h-4 w-4" },
+      g = {
+        high: {
+          label: "Alto Impacto",
+          color: "text-red-600",
+          dot: "bg-red-500",
+        },
+        medium: {
+          label: "Médio Impacto",
+          color: "text-amber-600",
+          dot: "bg-amber-500",
+        },
+        low: {
+          label: "Baixo Impacto",
+          color: "text-blue-600",
+          dot: "bg-blue-500",
+        },
+      };
+    return e.jsxs("span", {
+      className: t(
+        "inline-flex items-center font-medium border rounded-md transition-colors",
+        l[o],
+        x[d],
+        c,
+      ),
+      title: s.description,
+      children: [
+        e.jsx(r, { className: p[o] }),
+        e.jsxs("span", {
+          className: "font-semibold",
+          children: ["#", s.label],
+        }),
+        i &&
+          e.jsx("span", {
+            className: t(
+              "ml-1 text-[10px] opacity-75",
+              ((m = g[s.color]) == null ? void 0 : m.color) ||
+                "text-muted-foreground",
+            ),
+            children: "●",
+          }),
+      ],
+    });
+  },
+  G = ({ levers: a, size: i = "md", className: o }) =>
+    !a || a.length === 0
+      ? null
+      : e.jsxs("div", {
+          className: t("flex flex-wrap gap-2", o),
+          children: [
+            e.jsx("span", {
+              className: "text-xs text-muted-foreground mr-1",
+              children: "Alavancas:",
+            }),
+            a.map((d, c) =>
+              e.jsx(
+                q,
+                { lever: d.type, size: i, showImpact: !0 },
+                `${d.type}-${c}`,
+              ),
+            ),
+          ],
+        }),
+  F = ({ item: a, onAddToPlan: i, onDismiss: o, onClick: d, className: c }) => {
+    y();
+    const s = a.type === "risk",
+      r = a.alert,
+      l = s
+        ? {
+            icon: D,
+            headerBg: "bg-red-50",
+            headerBorder: "border-red-200",
+            badgeColor: "bg-red-500 text-white",
+            badgeText: "RISCO",
+            urgencyColor: "text-red-600",
+            severityConfig: {
+              critical: { color: "bg-red-500", label: "Crítico" },
+              high: { color: "bg-orange-500", label: "Alto" },
+              medium: { color: "bg-yellow-500", label: "Médio" },
+            },
+          }
+        : {
+            icon: u,
+            headerBg: "bg-emerald-50",
+            headerBorder: "border-emerald-200",
+            badgeColor: "bg-emerald-500 text-white",
+            badgeText: "OPORTUNIDADE",
+            urgencyColor: "text-emerald-600",
+            severityConfig: null,
+          },
+      x = l.icon,
+      p = (g) => {
+        const m = new Date(),
+          v = new Date(g),
+          n = Math.floor((m.getTime() - v.getTime()) / (1e3 * 60 * 60 * 24));
+        return n === 0
+          ? "Hoje"
+          : n === 1
+            ? "Ontem"
+            : n < 7
+              ? `${n} dias`
+              : n < 30
+                ? `${Math.floor(n / 7)} semanas`
+                : `${Math.floor(n / 30)} meses`;
+      };
+    return e.jsxs(z, {
+      className: t(
+        "overflow-hidden transition-all duration-300 hover:shadow-lg",
+        "border-l-4",
+        s ? "border-l-red-500" : "border-l-emerald-500",
+        c,
+      ),
+      children: [
+        e.jsx(E, {
+          className: t("p-4 pb-3", l.headerBg, "border-b", l.headerBorder),
+          children: e.jsxs("div", {
+            className: "flex items-start justify-between gap-3",
+            children: [
+              e.jsxs("div", {
+                className: "flex items-start gap-3 flex-1 min-w-0",
+                children: [
+                  e.jsx("div", {
+                    className: t(
+                      "p-2 rounded-lg flex-shrink-0",
+                      s ? "bg-red-100" : "bg-emerald-100",
+                    ),
+                    children: e.jsx(x, {
+                      className: t(
+                        "h-5 w-5",
+                        s ? "text-red-600" : "text-emerald-600",
+                      ),
+                    }),
+                  }),
+                  e.jsxs("div", {
+                    className: "flex-1 min-w-0",
+                    children: [
+                      e.jsxs("div", {
+                        className: "flex items-center gap-2 flex-wrap mb-1",
+                        children: [
+                          e.jsx(j, {
+                            className: t("text-xs font-bold", l.badgeColor),
+                            children: l.badgeText,
+                          }),
+                          e.jsx(w, { domain: a.domain, size: "sm" }),
+                          e.jsx(j, {
+                            variant: "outline",
+                            className: t(
+                              "text-[10px]",
+                              a.priority === "high"
+                                ? "border-red-300 text-red-700"
+                                : a.priority === "medium"
+                                  ? "border-amber-300 text-amber-700"
+                                  : "border-blue-300 text-blue-700",
+                            ),
+                            children:
+                              a.priority === "high"
+                                ? "Alta Prioridade"
+                                : a.priority === "medium"
+                                  ? "Média Prioridade"
+                                  : "Baixa Prioridade",
+                          }),
+                        ],
+                      }),
+                      e.jsx("h3", {
+                        className:
+                          "font-bold text-base text-foreground leading-tight",
+                        children: r.title,
+                      }),
+                      e.jsxs("div", {
+                        className:
+                          "flex items-center gap-3 mt-1 text-xs text-muted-foreground",
+                        children: [
+                          e.jsxs("span", {
+                            className: "flex items-center gap-1",
+                            children: [
+                              e.jsx(h, { className: "h-3 w-3" }),
+                              "Detectado ",
+                              p(a.createdAt),
+                            ],
+                          }),
+                          s &&
+                            "severity" in r &&
+                            e.jsxs("span", {
+                              className: t(
+                                "flex items-center gap-1 font-medium",
+                                r.severity === "critical"
+                                  ? "text-red-600"
+                                  : r.severity === "high"
+                                    ? "text-orange-600"
+                                    : "text-yellow-600",
+                              ),
+                              children: [
+                                e.jsx(k, { className: "h-3 w-3" }),
+                                "Gravidade: ",
+                                r.severity === "critical"
+                                  ? "Crítica"
+                                  : r.severity === "high"
+                                    ? "Alta"
+                                    : "Média",
+                              ],
+                            }),
+                          !s &&
+                            "potentialProfit" in r &&
+                            e.jsxs("span", {
+                              className:
+                                "flex items-center gap-1 text-emerald-600 font-medium",
+                              children: [
+                                e.jsx(N, { className: "h-3 w-3" }),
+                                "Potencial: ",
+                                r.potentialProfit,
+                              ],
+                            }),
+                        ],
+                      }),
+                    ],
+                  }),
+                ],
+              }),
+              s &&
+                "timeToBreathe" in r &&
+                e.jsxs("div", {
+                  className: "flex-shrink-0 text-right",
+                  children: [
+                    e.jsx("div", {
+                      className: t("text-sm font-bold", l.urgencyColor),
+                      children: r.timeToBreathe,
+                    }),
+                    e.jsx("div", {
+                      className: "text-[10px] text-muted-foreground",
+                      children: "para agir",
+                    }),
+                  ],
+                }),
+            ],
+          }),
+        }),
+        e.jsxs(O, {
+          className: "p-4 space-y-4",
+          children: [
+            e.jsxs("div", {
+              className: "space-y-3",
+              children: [
+                e.jsxs("div", {
+                  className: "bg-muted/50 rounded-lg p-3",
+                  children: [
+                    e.jsx("div", {
+                      className:
+                        "text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1",
+                      children: "Termo Técnico",
+                    }),
+                    e.jsx("div", {
+                      className: "font-mono text-sm text-foreground",
+                      children: a.diagnosis.technicalTerm,
+                    }),
+                  ],
+                }),
+                e.jsxs("div", {
+                  children: [
+                    e.jsxs("div", {
+                      className:
+                        "text-xs font-bold text-foreground mb-1 flex items-center gap-1",
+                      children: [
+                        e.jsx($, { className: "h-3.5 w-3.5 text-primary" }),
+                        "Causa Raiz",
+                      ],
+                    }),
+                    e.jsx("p", {
+                      className:
+                        "text-sm text-muted-foreground leading-relaxed",
+                      children: a.diagnosis.cause,
+                    }),
+                  ],
+                }),
+                e.jsxs("div", {
+                  children: [
+                    e.jsxs("div", {
+                      className:
+                        "text-xs font-bold text-foreground mb-1 flex items-center gap-1",
+                      children: [
+                        e.jsx(A, { className: "h-3.5 w-3.5 text-red-500" }),
+                        "Efeito no Negócio",
+                      ],
+                    }),
+                    e.jsx("p", {
+                      className:
+                        "text-sm text-muted-foreground leading-relaxed",
+                      children: a.diagnosis.effect,
+                    }),
+                  ],
+                }),
+                e.jsx(G, { levers: a.recommendation.levers, size: "sm" }),
+              ],
+            }),
+            e.jsxs("div", {
+              className: "pt-3 border-t",
+              children: [
+                e.jsxs("div", {
+                  className:
+                    "text-xs font-bold text-foreground mb-2 flex items-center gap-1",
+                  children: [
+                    e.jsx(I, { className: "h-3.5 w-3.5 text-amber-500" }),
+                    "Recomendação da IA",
+                  ],
+                }),
+                e.jsx("p", {
+                  className: "text-sm text-foreground mb-3 leading-relaxed",
+                  children: a.recommendation.description,
+                }),
+                e.jsxs("div", {
+                  className: "flex flex-wrap items-center gap-3 mb-4 text-xs",
+                  children: [
+                    e.jsxs("span", {
+                      className:
+                        "inline-flex items-center gap-1 px-2 py-1 bg-primary/10 rounded-md",
+                      children: [
+                        e.jsx(u, { className: "h-3 w-3 text-primary" }),
+                        e.jsx("span", {
+                          className: "font-semibold text-primary",
+                          children: a.recommendation.expectedImpact,
+                        }),
+                      ],
+                    }),
+                    e.jsxs("span", {
+                      className:
+                        "inline-flex items-center gap-1 px-2 py-1 bg-muted rounded-md",
+                      children: [
+                        e.jsx(h, {
+                          className: "h-3 w-3 text-muted-foreground",
+                        }),
+                        a.recommendation.timeframe,
+                      ],
+                    }),
+                    e.jsxs("span", {
+                      className: t(
+                        "inline-flex items-center gap-1 px-2 py-1 rounded-md",
+                        a.recommendation.complexity === "low"
+                          ? "bg-green-50 text-green-700"
+                          : a.recommendation.complexity === "medium"
+                            ? "bg-amber-50 text-amber-700"
+                            : "bg-red-50 text-red-700",
+                      ),
+                      children: [
+                        e.jsx(M, { className: "h-3 w-3" }),
+                        "Complexidade: ",
+                        a.recommendation.complexity === "low"
+                          ? "Baixa"
+                          : a.recommendation.complexity === "medium"
+                            ? "Média"
+                            : "Alta",
+                      ],
+                    }),
+                    e.jsxs("span", {
+                      className:
+                        "inline-flex items-center gap-1 px-2 py-1 bg-blue-50 rounded-md text-blue-700",
+                      children: [
+                        e.jsx(f, { className: "h-3 w-3" }),
+                        "Confiança: ",
+                        a.recommendation.confidence,
+                        "%",
+                      ],
+                    }),
+                  ],
+                }),
+                e.jsxs("div", {
+                  className: "flex items-center gap-2",
+                  children: [
+                    e.jsxs(b, {
+                      className: "flex-1 gap-2",
+                      onClick: () => (i == null ? void 0 : i(a.id)),
+                      children: [
+                        e.jsx(R, { className: "h-4 w-4" }),
+                        "Adicionar ao Plano",
+                      ],
+                    }),
+                    e.jsx(b, {
+                      variant: "outline",
+                      size: "icon",
+                      onClick: () => (o == null ? void 0 : o(a.id)),
+                      title: "Dispensar alerta",
+                      children: e.jsx(f, { className: "h-4 w-4" }),
+                    }),
+                  ],
+                }),
+              ],
+            }),
+          ],
+        }),
+      ],
+    });
+  };
+export { F as A };
