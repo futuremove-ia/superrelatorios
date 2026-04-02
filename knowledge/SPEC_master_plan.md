@@ -717,26 +717,20 @@ export default async function handler(req: Request): Promise<Response> {
 
 ### 6.2 Unstructured Client
 
+| Status          | Arquivo                               |
+| --------------- | ------------------------------------- |
+| ✅ Implementado | `src/services/unstructuredService.ts` |
+
 ```typescript
-// api/lib/unstructured/UnstructuredClient.ts
-interface UnstructuredElement {
-  type: "Title" | "NarrativeText" | "Table" | "Image" | "ListItem";
-  text: string;
-  metadata?: {
-    page_number?: number;
-    table_as_json?: string;
-    image_base64?: string;
-  };
-}
+// Usando o serviço
+import { unstructuredClient } from "@/services/unstructuredService";
 
-export class UnstructuredClient {
-  private apiKey: string;
-  private baseUrl: string;
+const elements = await unstructuredClient.extractFromStorage(
+  "documents/report.pdf",
+  organizationId,
+);
+```
 
-  async extractElements(
-    filePath: string,
-    fileType: string,
-  ): Promise<UnstructuredElement[]> {
     const response = await fetch(`${this.baseUrl}/general/v0/general`, {
       method: "POST",
       headers: {
@@ -753,21 +747,23 @@ export class UnstructuredClient {
 
     const result = await response.json();
     return result.elements.map(this.mapElement);
-  }
 
-  private mapElement(raw: any): UnstructuredElement {
-    return {
-      type: raw.type,
-      text: raw.text,
-      metadata: {
-        page_number: raw.metadata?.page_number,
-        table_as_json: raw.metadata?.table_as_json,
-        image_base64: raw.metadata?.image_base64,
-      },
-    };
-  }
 }
-```
+
+private mapElement(raw: any): UnstructuredElement {
+return {
+type: raw.type,
+text: raw.text,
+metadata: {
+page_number: raw.metadata?.page_number,
+table_as_json: raw.metadata?.table_as_json,
+image_base64: raw.metadata?.image_base64,
+},
+};
+}
+}
+
+````
 
 ### 6.3 Data Source Connections (Google Drive, OneDrive)
 
@@ -810,7 +806,7 @@ export class UnstructuredClient {
     "test:unit": "vitest run --testNamePattern='unit'"
   }
 }
-```
+````
 
 ---
 

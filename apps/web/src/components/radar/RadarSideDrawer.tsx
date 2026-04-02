@@ -1,21 +1,23 @@
 import * as React from "react";
-import { cn } from "@superrelatorios/ui";
+import { cn } from "@/lib/utils";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetDescription,
-} from "@superrelatorios/ui";
-import { Button } from "@superrelatorios/ui";
-import { Badge } from "@superrelatorios/ui";
-import { Progress } from "@superrelatorios/ui";
-import { Separator } from "@superrelatorios/ui";
-import { SeverityBadge, TypeBadge, DomainBadge } from "@superrelatorios/ui";
-import type { RadarItemEnriched } from "@/types/business-indexed";
-import { useUpdateRadarItemStatus } from "@/hooks/useRadarItems";
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import {
+  Badge,
+  SeverityBadge,
+  TypeBadge,
+  DomainBadge,
+} from "@/components/radar/badges";
+import { Progress } from "@/components/ui/progress";
+import { Separator } from "@/components/ui/separator";
+import type { RadarItem } from "@/hooks/useRadarItems";
 import { supabase } from "@/lib/supabase";
-import { toast } from "sonner";
 import {
   AlertTriangle,
   TrendingUp,
@@ -37,7 +39,7 @@ import {
 // ============================================================
 
 interface RadarSideDrawerProps {
-  item: RadarItemEnriched | null;
+  item: RadarItem | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   organizationId: string;
