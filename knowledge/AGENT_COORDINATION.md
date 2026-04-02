@@ -93,9 +93,13 @@ O sistema implementa um ciclo de aprendizado fechado:
 
 ## TAREFAS EM ANDAMENTO
 
-| #   | Tarefa  | Responsável | Status |
-| --- | ------- | ----------- | ------ |
-| -   | Nenhuma | -           | -      |
+| #   | Tarefa                                   | Responsável | Status |
+| --- | ---------------------------------------- | ----------- | ------ |
+| 1   | Implementar Memory System (FTS5)         | agent-030   | ⏳     |
+| 2   | Implementar Skills System                | agent-031   | ⏳     |
+| 3   | Implementar Self-Improvement Loop        | agent-032   | ⏳     |
+| 4   | Implementar Parallel Sub-Agents          | agent-033   | ⏳     |
+| 5   | Implementar User Modeling (Honcho-style) | agent-034   | ⏳     |
 
 ---
 
