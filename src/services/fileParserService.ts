@@ -1,5 +1,6 @@
 import Papa from "papaparse";
 import * as XLSX from "xlsx";
+import mammoth from "mammoth";
 import type { TextItem } from "pdfjs-dist/types/src/display/api";
 
 export interface ParsedFileData {
@@ -29,7 +30,7 @@ export const parseFile = (file: File): Promise<ParsedFileData> => {
     }
 
     const extension = file.name.split(".").pop()?.toLowerCase();
-    const SUPPORTED = ["csv", "xlsx", "xls", "pdf", "txt"];
+    const SUPPORTED = ["csv", "xlsx", "xls", "pdf", "txt", "docx"];
 
     if (!SUPPORTED.includes(extension || "")) {
       return reject(
@@ -39,6 +40,8 @@ export const parseFile = (file: File): Promise<ParsedFileData> => {
 
     if (extension === "pdf") {
       parsePDF(file).then(resolve).catch(reject);
+    } else if (extension === "docx") {
+      parseDOCX(file).then(resolve).catch(reject);
     } else if (extension === "txt") {
       parseTXT(file).then(resolve).catch(reject);
     } else if (extension === "csv") {
@@ -171,6 +174,32 @@ function parseXLSX(file: File): Promise<ParsedFileData> {
     reader.onerror = () => reject(new Error("Erro ao carregar o arquivo."));
     reader.readAsArrayBuffer(file);
   });
+}
+
+async function parseDOCX(file: File): Promise<ParsedFileData> {
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const result = await mammoth.extractRawText({ arrayBuffer });
+    const text = result.value;
+    const lines = text.split("\n").filter((line) => line.trim());
+
+    const rows = lines.map((line, index) => ({
+      line: index + 1,
+      content: line,
+    }));
+
+    return {
+      headers: ["line", "content"],
+      rows,
+      rowCount: rows.length,
+      fileType: "docx",
+      rawText: text,
+    };
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Erro desconhecido";
+    throw new Error(`Falha ao processar DOCX: ${message}`);
+  }
 }
 
 function detectDelimiter(lines: string[]): string | null {

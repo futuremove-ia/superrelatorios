@@ -17,7 +17,9 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import type { RadarItem } from "@/hooks/useRadarItems";
+import { useUpdateRadarItemStatus } from "@/hooks/useRadarItems";
 import { supabase } from "@/lib/supabase";
+import { toast } from "sonner";
 import {
   AlertTriangle,
   TrendingUp,
@@ -126,8 +128,8 @@ export function RadarSideDrawer({
         status: "pending",
         priority:
           item.severity === "critical" ? 5 : item.severity === "high" ? 4 : 3,
-        notes: item.diagnosisTerm
-          ? `Diagnóstico: ${item.diagnosisTerm}\n\nCausa: ${item.diagnosisCause}`
+        notes: item.diagnosis?.technical_term
+          ? `Diagnóstico: ${item.diagnosis?.technical_term}\n\nCausa: ${item.diagnosis?.cause}`
           : null,
       });
 
@@ -220,7 +222,7 @@ export function RadarSideDrawer({
             </SheetTitle>
 
             <SheetDescription className="text-sm text-muted-foreground text-left">
-              {item.diagnosisTerm}
+              {item.diagnosis?.technical_term}
             </SheetDescription>
           </SheetHeader>
         </div>
@@ -236,33 +238,33 @@ export function RadarSideDrawer({
               </span>
             </div>
             <div className="space-y-3 text-sm">
-              {item.diagnosisCause && (
+              {item.diagnosis?.cause && (
                 <div className="rounded-lg bg-muted/50 p-3">
                   <p className="text-xs font-medium text-muted-foreground mb-1">
                     Causa Raiz
                   </p>
                   <p className="text-foreground leading-relaxed">
-                    {item.diagnosisCause}
+                    {item.diagnosis?.cause}
                   </p>
                 </div>
               )}
-              {item.diagnosisEffect && (
+              {item.diagnosis?.effect && (
                 <div className="rounded-lg bg-destructive/5 border border-destructive/10 p-3">
                   <p className="text-xs font-medium text-destructive/70 mb-1">
                     Efeito no Negócio
                   </p>
                   <p className="text-foreground leading-relaxed">
-                    {item.diagnosisEffect}
+                    {item.diagnosis?.effect}
                   </p>
                 </div>
               )}
-              {item.diagnosisWhy && (
+              {item.diagnosis?.why && (
                 <div className="rounded-lg bg-amber-500/5 border border-amber-500/10 p-3">
                   <p className="text-xs font-medium text-amber-600 mb-1">
                     Por quê acontece
                   </p>
                   <p className="text-foreground leading-relaxed">
-                    {item.diagnosisWhy}
+                    {item.diagnosis?.why}
                   </p>
                 </div>
               )}
@@ -284,7 +286,7 @@ export function RadarSideDrawer({
                 <Zap
                   className={cn(
                     "h-5 w-5",
-                    item.impactDirection === "increase"
+                    item.impact?.direction === "increase"
                       ? "text-emerald-500"
                       : "text-red-500",
                   )}
@@ -292,23 +294,23 @@ export function RadarSideDrawer({
                 <span
                   className={cn(
                     "text-2xl font-black",
-                    item.impactDirection === "increase"
+                    item.impact?.direction === "increase"
                       ? "text-emerald-600"
                       : "text-red-600",
                   )}
                 >
-                  {item.impactDirection === "increase" ? "+" : "-"}
-                  {item.impactValue}
-                  {item.impactType === "percentage" ? "%" : ""}
+                  {item.impact?.direction === "increase" ? "+" : "-"}
+                  {item.impact?.value}
+                  {item.impact?.category === "percentage" ? "%" : ""}
                 </span>
               </div>
               <div className="flex flex-col">
                 <span className="text-sm text-muted-foreground">
-                  {item.impactCategory}
+                  {item.impact?.category}
                 </span>
-                {item.impactDescription && (
+                {item.impact?.value_en && (
                   <span className="text-xs text-muted-foreground/70">
-                    {item.impactDescription}
+                    {item.impact?.value_en}
                   </span>
                 )}
               </div>
@@ -319,29 +321,30 @@ export function RadarSideDrawer({
               <div className="flex items-center gap-1.5 rounded-md bg-muted px-3 py-2">
                 <Clock className="h-3.5 w-3.5 text-muted-foreground" />
                 <span className="text-xs font-medium">
-                  {item.timeframeLabel}
+                  {item.timeframe?.label}
                 </span>
               </div>
               <div className="flex items-center gap-1.5 rounded-md bg-muted px-3 py-2">
                 <Target className="h-3.5 w-3.5 text-muted-foreground" />
                 <span className="text-xs font-medium">
-                  {item.complexityLabel}
+                  {item.complexity?.label}
                 </span>
               </div>
-              {item.typicalEffortHours > 0 && (
-                <div className="flex items-center gap-1.5 rounded-md bg-muted px-3 py-2">
-                  <span className="text-xs font-medium">
-                    {item.typicalEffortHours}h estimadas
-                  </span>
-                </div>
-              )}
+              {item.complexity?.effort_hours &&
+                item.complexity?.effort_hours > 0 && (
+                  <div className="flex items-center gap-1.5 rounded-md bg-muted px-3 py-2">
+                    <span className="text-xs font-medium">
+                      {item.complexity?.effort_hours}h estimadas
+                    </span>
+                  </div>
+                )}
             </div>
           </section>
 
           <Separator />
 
           {/* ── Bloco 3: Alavancas ── */}
-          {item.suggestedLeverCodes && item.suggestedLeverCodes.length > 0 && (
+          {item.suggested_levers && item.suggested_levers.length > 0 && (
             <>
               <section className="py-5">
                 <div className="flex items-center gap-2 mb-3">
@@ -351,13 +354,13 @@ export function RadarSideDrawer({
                   </span>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {item.suggestedLeverCodes.map((code) => (
+                  {item.suggested_levers.map((lever) => (
                     <Badge
-                      key={code}
+                      key={lever.lever_code}
                       variant="secondary"
                       className="text-sm px-3 py-1 font-medium"
                     >
-                      {getLeverLabel(code)}
+                      {getLeverLabel(lever.lever_code)}
                     </Badge>
                   ))}
                 </div>
@@ -376,18 +379,24 @@ export function RadarSideDrawer({
             </div>
             <div className="flex items-center gap-3">
               <Progress
-                value={item.aiConfidenceScore * 100}
+                value={(item.ai_confidence_score ?? 0) * 100}
                 className="h-2 flex-1"
               />
               <span className="text-sm font-bold text-foreground w-12 text-right">
-                {(item.aiConfidenceScore * 100).toFixed(0)}%
+                {((item.ai_confidence_score ?? 0) * 100).toFixed(0)}%
               </span>
             </div>
-            {item.aiModelVersion && (
-              <p className="text-xs text-muted-foreground mt-1.5">
-                Modelo: {item.aiModelVersion}
-              </p>
-            )}
+            {item.ai_raw_analysis &&
+              typeof item.ai_raw_analysis === "object" &&
+              "model_version" in item.ai_raw_analysis && (
+                <p className="text-xs text-muted-foreground mt-1.5">
+                  Modelo:{" "}
+                  {String(
+                    (item.ai_raw_analysis as Record<string, unknown>)
+                      .model_version,
+                  )}
+                </p>
+              )}
           </section>
         </div>
 
