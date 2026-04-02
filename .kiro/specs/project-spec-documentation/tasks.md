@@ -359,7 +359,7 @@ Tarefas de implementação para garantir que o projeto SuperRelatórios esteja e
     - Registrar ADR-004 (Monorepo com Turborepo) com justificativa e trade-offs
     - Registrar ADR-005 (i18n First com i18next) com justificativa e trade-offs
     - Registrar ADR-006 (Demo Mode sem Credenciais) com justificativa e trade-offs
-    - Registrar ADR-007 (RBAC com 4 Papéis) com justificativa e trade-offs
+    - Registrar ADR-007 (RBAC com 7 Papéis e Escopo Granular) com justificativa e trade-offs
     - _Requirements: 30.5_
 
   - [ ] 20.2 Atualizar `CHANGELOG.md` com release da especificação

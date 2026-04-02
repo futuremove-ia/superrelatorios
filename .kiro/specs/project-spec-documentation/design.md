@@ -1188,7 +1188,9 @@ sequenceDiagram
 └─────────────────────────────────────────────────────┘
 ┌─────────────────────────────────────────────────────┐
 │  CAMADA 3: Autorização (RBAC)                       │
-│  • 4 papéis: admin > manager > analyst > viewer     │
+│  • 7 papéis: owner > admin > manager > supervisor   │
+│              > analyst > viewer > guest             │
+│  • Escopo granular: business_unit/department/team   │
 │  • Verificação em cada requisição à API             │
 │  • HTTP 403 para acessos não autorizados            │
 └─────────────────────────────────────────────────────┘
@@ -1434,13 +1436,15 @@ Formato obrigatório: `type(scope): description`
 
 ---
 
-### ADR-007: RBAC com 4 Papéis
+### ADR-007: RBAC com 7 Papéis
 
-**Decisão**: Hierarquia de 4 papéis: `admin > manager > analyst > viewer`.
+**Decisão**: Hierarquia de 7 papéis: `owner > admin > manager > supervisor > analyst > viewer > guest`. Escopo de acesso granular por `business_unit`, `department` e `team` via tabela `memberships`. Ver ADR-014 para detalhes completos.
 
-**Justificativa**: Cobre os casos de uso de PMEs sem complexidade excessiva. Permissões verificadas em cada requisição à API (não apenas no carregamento da UI).
+**Justificativa**: Cobre desde microempresas (1 papel: owner) até médias empresas com estrutura departamental. Os 7 papéis mapeiam para realidades organizacionais reais de PMEs brasileiras. Permissões verificadas em cada requisição à API (não apenas no carregamento da UI).
 
-**Trade-offs**: Papéis fixos podem não cobrir todos os casos enterprise; extensível via permissões granulares futuras.
+**Trade-offs**: Mais papéis que o modelo original (4 → 7); mitigado por hierarquia clara e documentação. Verificação de permissão mais complexa; mitigado por função `check_permission(user_id, resource, action)` centralizada.
+
+**Nota:** Este ADR substitui a versão anterior que documentava apenas 4 papéis. A expansão para 7 papéis reflete o banco real do Supabase (ver AUDIT_REPORT.md).
 
 ---
 
