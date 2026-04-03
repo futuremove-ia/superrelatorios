@@ -331,7 +331,14 @@ export class DocumentProcessingService {
             {
               changeType: "extraction",
               sourceDocumentId: documentId,
-              confidenceScore: kpi.confidence,
+              confidenceScore:
+                kpi.confidence === "high"
+                  ? 0.9
+                  : kpi.confidence === "medium"
+                    ? 0.6
+                    : kpi.confidence === "low"
+                      ? 0.3
+                      : 0.5,
               changeReason: `KPI ${kpi.code} atualizado via extração de documento`,
             },
           );
@@ -380,7 +387,10 @@ export class DocumentProcessingService {
         organizationId: "",
         success: false,
         parsedData: null,
+        blueprint: null,
         kpis: [],
+        versionChanges: 0,
+        validationPending: 0,
         errors: ["Documento não encontrado"],
         warnings: [],
       };
@@ -412,7 +422,10 @@ export class DocumentProcessingService {
       organizationId: extraction.organization_id,
       success: true,
       parsedData,
+      blueprint: null,
       kpis,
+      versionChanges: 0,
+      validationPending: 0,
       errors: [],
       warnings: [],
     };
