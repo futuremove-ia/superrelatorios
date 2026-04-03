@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-04-03T17:04:09.844Z",
+  "entries": [
+    "api-endpoint-builder",
+    "bug-hunter",
+    "codebase-audit-pre-push",
+    "docs",
+    "hono",
+    "jq",
+    "performance-optimizer",
+    "skill-check",
+    "tmux"
+  ]
+}

@@ -23,6 +23,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { SkipLink } from "@/components/ui/skip-link";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -195,8 +196,14 @@ const AppLayout = () => {
           </div>
         </header>
 
+        {/* Skip Link for Accessibility */}
+        <SkipLink />
+
         {/* Page Content */}
-        <main className="min-h-[calc(100vh-4rem)] pb-20 lg:pb-0 animate-fade-in">
+        <main
+          id="main-content"
+          className="min-h-[calc(100vh-4rem)] pb-20 lg:pb-0 animate-fade-in"
+        >
           <div className="container mx-auto px-4 py-6">
             <div className="mb-6">
               <LocalizedBreadcrumbs />

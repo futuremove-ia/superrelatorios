@@ -19,8 +19,13 @@ Tarefas de implementação para garantir que o projeto SuperRelatórios esteja e
   - Adicionar scripts `test`, `test:coverage` e `test:watch` no `package.json` de cada app
   - _Requirements: 26.7_
 
-- [ ] 2. Implementar Motor de Cálculo de KPIs (`MetricsCalculationService`)
-  - Criar `apps/api/src/domain/domain/metrics/services/MetricsCalculationService.ts` com os métodos: `calculateRunway`, `calculateLtvCacRatio`, `calculateChurnRate`, `calculateNetProfitMargin`, `calculateContributionMargin`
+- [ ] 2. Implementar/Validar Cálculo de KPIs (Serviços Existentes)
+  - **ANÁLISE REAL:** O serviço `MetricsCalculationService` não existe no código. Verificar implementações existentes:
+  - Verificar `KPICalculationEngine` em `src/tests/integration/domain/metrics/engine/`
+  - Verificar lógica de cálculo em `src/services/documentProcessingService.ts` (método `calculateKPIs`)
+  - Verificar lógica de cálculo em `src/domain/unified/factories/UnifiedMetricsFactory.ts` (método `calculateKPIsFromRawData`)
+  - **AÇÃO:** Se cálculos existem mas estão dispersos, consolidar em serviço centralizado
+  - **ALTERNATIVA:** Se não existem, implementar serviço de cálculo com métodos: `calculateRunway`, `calculateLtvCacRatio`, `calculateChurnRate`, `calculateNetProfitMargin`, `calculateContributionMargin`
   - Cada método deve retornar um objeto `Result<number, string>` (success/failure)
   - Implementar validação de denominador zero ou negativo com mensagem de erro descritiva
   - Garantir precisão de casas decimais conforme especificado (RUNWAY: 1 decimal; demais: 2 decimais)
@@ -42,7 +47,7 @@ Tarefas de implementação para garantir que o projeto SuperRelatórios esteja e
   - [ ]\* 2.3 Escrever property test — Property 11: Model-based testing dos cálculos de KPI
     - **Property 11: Model-based testing dos cálculos de KPI**
     - Implementar funções de referência simples (cálculo direto sem otimizações)
-    - Comparar resultado do `MetricsCalculationService` com as funções de referência para inputs aleatórios
+    - Comparar resultado do serviço de cálculo com as funções de referência para inputs aleatórios
     - **Validates: Requirements 7.11**
 
   - [ ]\* 2.4 Escrever testes unitários para casos de borda do Motor de Cálculo
@@ -52,12 +57,14 @@ Tarefas de implementação para garantir que o projeto SuperRelatórios esteja e
     - Testar `NET_PROFIT_MARGIN` e `CONTRIBUTION_MARGIN` com `receita = 0`
     - _Requirements: 7.6, 7.7, 7.8, 7.9_
 
-- [ ] 3. Implementar detecção de desafios de negócio (`DetectChallengesUseCase`)
-  - Criar `apps/api/src/domain/domain/strategy/use-cases/DetectChallengesUseCase.ts`
-  - Implementar detecção de `CASH_FLOW_CRUNCH`, `INEFFICIENT_SALES_MACHINE` e `COMMODITY_TRAP`
-  - Implementar cálculo de `confidence_score` proporcional à gravidade (intervalo [0.0, 1.0])
-  - Implementar ordenação por severidade (`critical > warning > info`) e depois por `confidence_score` decrescente
-  - Retornar lista vazia quando nenhum KPI está em estado crítico ou de alerta
+- [ ] 3. Validar/Implementar detecção de desafios de negócio (`DetectionService`)
+  - **ANÁLISE REAL:** O serviço `DetectionService` JÁ EXISTE em `src/services/strategic/DetectionService.ts`
+  - Verificar implementação existente: métodos `detectSymptoms`, `calculateRuleScore`, `calculateOverallHealth`
+  - Validar que detecta: `CASH_FLOW_CRUNCH`, `INEFFICIENT_SALES_MACHINE` e `COMMODITY_TRAP`
+  - Validar cálculo de `confidence_score` proporcional à gravidade (intervalo [0.0, 1.0])
+  - Validar ordenação por severidade (`critical > warning > info`) e depois por `confidence_score` decrescente
+  - Validar retorno de lista vazia quando nenhum KPI está em estado crítico ou de alerta
+  - **AÇÃO:** Se serviço existe mas não está completo, completar implementação
   - _Requirements: 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.9_
 
   - [ ]\* 3.1 Escrever property test — Property 12: Confidence score sempre em [0.0, 1.0]
@@ -68,7 +75,7 @@ Tarefas de implementação para garantir que o projeto SuperRelatórios esteja e
 
   - [ ]\* 3.2 Escrever property test — Property 13: Idempotência da detecção de desafios
     - **Property 13: Idempotência da detecção de desafios**
-    - Executar `DetectChallengesUseCase` duas vezes com os mesmos dados e verificar igualdade de resultado
+    - Executar `DetectionService` duas vezes com os mesmos dados e verificar igualdade de resultado
     - Comparar códigos, severidades e confidence scores
     - **Validates: Requirements 8.8**
 

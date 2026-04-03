@@ -16,7 +16,7 @@ export interface PaginationOptions {
   readonly page: number;
   readonly limit: number;
   readonly sortBy?: string;
-  readonly sortOrder?: 'asc' | 'desc';
+  readonly sortOrder?: "asc" | "desc";
 }
 
 export interface PaginationResult<T> {
@@ -56,7 +56,7 @@ export interface AuditLog {
   id: string;
   entity: string;
   entityId: string;
-  action: 'create' | 'update' | 'delete' | 'view';
+  action: "create" | "update" | "delete" | "view";
   userId: string;
   timestamp: Date;
   changes?: any;
@@ -82,12 +82,20 @@ export interface TimeSeriesData<T> {
   readonly timestamp: Date;
 }
 
-export type KPICode = 
-  | 'netProfitMargin'
-  | 'cashBurnRate' 
-  | 'runway'
-  | 'salesConversion'
-  | 'customerAcquisitionCost';
+export type KPICode =
+  | "netProfitMargin"
+  | "cashBurnRate"
+  | "runway"
+  | "salesConversion"
+  | "customerAcquisitionCost";
 
-export type AlertLevel = 'critical' | 'warning' | 'info';
-export type TrendDirection = 'up' | 'down' | 'stable';
+export type AlertLevel = "critical" | "warning" | "info";
+export type TrendDirection = "up" | "down" | "stable";
+
+export type Domain =
+  | "finance"
+  | "commercial"
+  | "marketing"
+  | "operations"
+  | "people"
+  | "strategy";

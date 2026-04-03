@@ -171,20 +171,66 @@ export class UnstructuredClient {
 
   getSupportedTypes(): string[] {
     return [
+      // Documentos de texto
       ".pdf",
-      ".docx",
       ".doc",
-      ".pptx",
-      ".ppt",
-      ".xlsx",
-      ".xls",
-      ".csv",
+      ".docx",
       ".txt",
+      // Planilhas
+      ".xls",
+      ".xlsx",
+      ".csv",
+      // Apresentações
+      ".ppt",
+      ".pptx",
+      // E-mails
       ".eml",
       ".msg",
+      // Web
       ".html",
       ".json",
+      // Imagens (com OCR)
+      ".png",
+      ".jpg",
+      ".jpeg",
+      ".tiff",
+      ".bmp",
     ];
+  }
+
+  getSupportedGoogleTypes(): string[] {
+    return [
+      "google-docs",
+      "google-sheets",
+      "google-slides",
+      "google-docs",
+      "google-sheets",
+      "google-slides",
+    ];
+  }
+
+  getMimeTypeMap(): Record<string, string[]> {
+    return {
+      "application/pdf": [".pdf"],
+      "application/msword": [".doc"],
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        [".docx"],
+      "application/vnd.ms-excel": [".xls"],
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
+        ".xlsx",
+      ],
+      "application/vnd.ms-powerpoint": [".ppt"],
+      "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+        [".pptx"],
+      "text/csv": [".csv"],
+      "text/plain": [".txt"],
+      "message/rfc822": [".eml"],
+      "text/html": [".html"],
+      "image/png": [".png"],
+      "image/jpeg": [".jpg", ".jpeg"],
+      "image/tiff": [".tiff"],
+      "image/bmp": [".bmp"],
+    };
   }
 }
 

@@ -28,11 +28,9 @@ const Settings = lazy(() => import("./pages/app/Settings"));
 const Priorities = lazy(() => import("./pages/app/Priorities"));
 const ActionPlan = lazy(() => import("./pages/app/ActionPlan"));
 const ConsolidatedDashboard = lazy(
-  () => import("./pages/app/ConsolidatedDashboard-Atualizado"),
+  () => import("./pages/app/ConsolidatedDashboard"),
 );
-const MetricsDashboard = lazy(
-  () => import("./pages/app/MetricsDashboard-Otimizado"),
-);
+const MetricsDashboard = lazy(() => import("./pages/app/MetricsDashboard"));
 const OrganizationManager = lazy(
   () => import("./pages/app/OrganizationManager"),
 );

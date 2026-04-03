@@ -251,6 +251,17 @@ superrelatorios/
 
 ## 11. Pendências e Divídas Técnicas
 
+### Sessão 2026-04-03: OnboardingFlow v2.0
+
+**Implementado:**
+
+- OnboardingFlow type (instant, strategic, cloud, demo)
+- OnboardingService com 22 testes TDD
+- OnboardingWizard UI com 4 fluxos
+- Testes e2e em e2e/onboarding.spec.ts
+
+**Status:** ✅ Completo
+
 ### LSP Errors
 
 | Arquivo                 | Erros     |
@@ -284,4 +295,4 @@ superrelatorios/
 ---
 
 _Documento mantido atualizado a cada sessão de desenvolvimento_
-_Última atualização: 2026-04-02_
+_Última atualização: 2026-04-03_

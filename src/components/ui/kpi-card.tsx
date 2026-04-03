@@ -1,3 +1,33 @@
+/**
+ * @deprecated Use MetricCard from './metric-card' instead
+ *
+ * This component is maintained for backward compatibility.
+ * All new implementations should use the unified MetricCard component.
+ *
+ * Migration guide:
+ * - Replace KPICard with MetricCard
+ * - Update props: trend.isPositive -> trend.direction ('up' | 'down' | 'stable')
+ * - Use 'domainColor' instead of 'domain' for domain-specific styling
+ * - Use 'status' prop instead of 'variant' for status-based styling
+ *
+ * @example
+ * // Before
+ * <KPICard
+ *   title="Receita"
+ *   value={10000}
+ *   trend={{ value: 10, isPositive: true }}
+ *   domain="finance"
+ * />
+ *
+ * // After
+ * <MetricCard
+ *   title="Receita"
+ *   value={10000}
+ *   trend={{ value: 10, direction: 'up' }}
+ *   domainColor="finance"
+ * />
+ */
+
 import * as React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -16,7 +46,7 @@ interface KPICardProps {
   };
   subtitle?: string;
   variant?: "default" | "success" | "warning" | "info";
-  domain?: DomainType; // NOVO: Cor de domínio
+  domain?: DomainType;
   className?: string;
   role?: string;
   "aria-label"?: string;
@@ -75,8 +105,6 @@ const KPICard = ({
 
   const variantStyles = getDomainVariantStyles();
   const iconColor = getDomainIconColor();
-
-  // Border accent for domain
   const borderAccent = domainColor ? `border-l-4` : "";
 
   return (
@@ -160,3 +188,4 @@ const KPICard = ({
 };
 
 export { KPICard };
+export default KPICard;

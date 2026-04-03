@@ -1,10 +1,18 @@
+/* ============================================
+   SUPERRELATÓRIOS DESIGN SYSTEM (DSP)
+   ============================================
+   Tipografia:
+   - Interface (UI): Inter - máxima legibilidade
+   - Brand/Headings: DM Sans - marca premium
+   - Dados (KPIs): JetBrains Mono - alinhamento de números
+   ============================================ */
+
+/* Fontes via Google Fonts - DEVE VIR ANTES DOS TAILWIND */
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
 
 @layer base {
   :root {
@@ -194,6 +202,17 @@ All colors MUST be HSL.
 }
 
 @layer base {
+  :root {
+    /* DSP Typography System */
+    --font-sans:
+      "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      sans-serif;
+    --font-mono:
+      "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, monospace;
+    --font-metric:
+      "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, monospace;
+  }
+
   * {
     border-color: hsl(var(--border));
   }
@@ -201,9 +220,9 @@ All colors MUST be HSL.
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
-    font-family:
-      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
-      Arial, sans-serif;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   /* Typography hierarchy - DSP Aligned */
@@ -213,6 +232,18 @@ All colors MUST be HSL.
   h4,
   h5,
   h6 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  /* KPI/Dados - JetBrains Mono */
+  .font-metric,
+  .tabular-nums,
+  [data-kpi="true"] {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.025em;
   }
 
   h1 {

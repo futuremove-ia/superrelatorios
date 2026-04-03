@@ -101,3 +101,55 @@ export interface ActionLever {
   impact: "low" | "medium" | "high";
   kpis: string[];
 }
+
+export interface LibraryAnalysis {
+  id?: number;
+  code: string;
+  name_pt: string;
+  name_en: string;
+  name_es: string;
+  description_pt?: string;
+  description_en?: string;
+  description_es?: string;
+  category: string;
+  trigger_kpi_codes: string[];
+  trigger_condition_pt?: string;
+  trigger_condition_en?: string;
+  trigger_condition_es?: string;
+  display_order?: number;
+}
+
+export interface LibraryRisk {
+  id?: number;
+  code: string;
+  name_pt: string;
+  name_en: string;
+  name_es: string;
+  description_pt?: string;
+  description_en?: string;
+  description_es?: string;
+  domain: string;
+  severity_level: number;
+  trigger_kpi_codes?: string[];
+  threshold_value?: number;
+  threshold_operator?: string;
+  display_order?: number;
+}
+
+export interface LibraryOpportunity {
+  id?: number;
+  code: string;
+  name_pt: string;
+  name_en: string;
+  name_es: string;
+  description_pt?: string;
+  description_en?: string;
+  description_es?: string;
+  domain: string;
+  potential_impact: string;
+  trigger_kpi_codes?: string[];
+  threshold_value?: number;
+  threshold_operator?: string;
+  suggested_levers?: string[];
+  display_order?: number;
+}

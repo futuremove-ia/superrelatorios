@@ -1,3 +1,10 @@
+/**
+ * @deprecated Use MetricCard from './metric-card' instead
+ *
+ * This component is maintained for backward compatibility.
+ * All new implementations should use the unified MetricCard component.
+ */
+
 "use client";
 
 import * as React from "react";

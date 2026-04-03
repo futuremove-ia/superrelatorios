@@ -1,0 +1,44 @@
+{
+  "version": "1.0.0",
+  "updated": "2026-04-04",
+  "structure": {
+    "public": {
+      "path": "docs",
+      "description": "Documentação pública para usuários externos",
+      "subfolders": [
+        "concepts",
+        "api",
+        "user-guides",
+        "integrations",
+        "deployment",
+        "contribute"
+      ]
+    },
+    "internal": {
+      "path": "knowledge",
+      "description": "Base de conhecimento interna",
+      "subfolders": ["architecture", "decisions", "runbooks", "onboarding"]
+    },
+    "archived": {
+      "path": "knowledge/ARCHIVED",
+      "description": "Documentos obsoletos (leitura apenas)",
+      "subfolders": ["specs", "audits", "plans", "legacy"]
+    }
+  },
+  "naming": {
+    "files": "kebab-case",
+    "folders": "kebab-case",
+    "adr": "###-description.md"
+  },
+  "frontmatter": {
+    "required": ["title", "version", "updated", "status"],
+    "statusOptions": ["active", "deprecated", "archived"]
+  },
+  "ignore": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/.git/**",
+    "**/*.test.ts",
+    "**/*.spec.ts"
+  ]
+}

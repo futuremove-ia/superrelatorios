@@ -54,3 +54,46 @@ export {
   type DocumentProcessingResult,
   type ProcessDocumentOptions,
 } from "./documentProcessingService";
+export {
+  FinancialDataParserService,
+  createFinancialParser,
+  parseFinancialData,
+} from "./financialDataParserService";
+export type {
+  ParsingResult,
+  FinancialDocumentType,
+  ParsedFinancialData,
+  FinancialMetric,
+  ParsingError,
+  ColumnMapping,
+  FinancialUploadOptions,
+  ParsingProgress,
+  DetectedColumn,
+  KPIMapping,
+  FinancialRow,
+} from "@/types/financial-parser";
+export {
+  FinancialDocumentPipeline,
+  createFinancialDocumentPipeline,
+  processFinancialDocument,
+  type FinancialDocumentPipelineOptions,
+  type FinancialDocumentPipelineResult,
+} from "./financialDocumentPipeline";
+export {
+  AlertThresholdService,
+  createAlertThresholdService,
+  evaluateKPIsForAlerts,
+  type KPIValue,
+} from "./alertThresholdService";
+export {
+  AlertNotificationService,
+  createAlertNotificationService,
+} from "./alertNotificationService";
+export {
+  alertManagementService,
+  AlertManagementService,
+} from "./alertManagementService";
+export * from "./universalParserService";
+export * from "./domainDetector";
+export * from "./columnMappingEngine";
+export * from "./dataPipelineService";

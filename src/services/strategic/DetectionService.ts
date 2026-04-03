@@ -1,11 +1,16 @@
 import {
   KPIData,
   Challenge,
+  ChallengeSeverity,
   DetectionResult,
   DetectionRule,
   Opportunity,
   OpportunityRule,
+  LibraryAnalysis,
+  LibraryRisk,
+  LibraryOpportunity,
 } from "@/types/strategic";
+import { createClient } from "@/lib/supabase";
 
 export type RiskSeverity = "low" | "medium" | "high" | "critical";
 export type RiskDomain =
@@ -287,12 +292,57 @@ export const KPI_DEFINITIONS: Record<string, KPIDefinition> = {
 
 class DetectionService {
   private static instance: DetectionService;
+  private supabase = createClient(
+    import.meta.env.VITE_SUPABASE_URL || "",
+    import.meta.env.VITE_SUPABASE_ANON_KEY || "",
+  );
+  private libraryRisks: LibraryRisk[] = [];
+  private libraryOpportunities: LibraryOpportunity[] = [];
+  private libraryAnalyses: LibraryAnalysis[] = [];
+  private rulesLoaded = false;
 
   static getInstance(): DetectionService {
     if (!DetectionService.instance) {
       DetectionService.instance = new DetectionService();
     }
     return DetectionService.instance;
+  }
+
+  async loadLibraryRules(): Promise<void> {
+    if (this.rulesLoaded) return;
+
+    const { data: risks } = await this.supabase
+      .from("library_risks")
+      .select("*")
+      .order("display_order");
+
+    const { data: opportunities } = await this.supabase
+      .from("library_opportunities")
+      .select("*")
+      .order("display_order");
+
+    const { data: analyses } = await this.supabase
+      .from("library_analysis")
+      .select("*")
+      .order("display_order");
+
+    if (risks) this.libraryRisks = risks;
+    if (opportunities) this.libraryOpportunities = opportunities;
+    if (analyses) this.libraryAnalyses = analyses;
+
+    this.rulesLoaded = true;
+  }
+
+  getLibraryRisks(): LibraryRisk[] {
+    return this.libraryRisks;
+  }
+
+  getLibraryOpportunities(): LibraryOpportunity[] {
+    return this.libraryOpportunities;
+  }
+
+  getLibraryAnalyses(): LibraryAnalysis[] {
+    return this.libraryAnalyses;
   }
 
   private detectionRules: DetectionRule[] = [
@@ -725,6 +775,139 @@ class DetectionService {
       potential_impact: "Investimento em crescimento",
     },
   ];
+
+  async detectSymptomsFromLibrary(kpis: KPIData[]): Promise<DetectionResult> {
+    await this.loadLibraryRules();
+
+    const detectedChallenges: Challenge[] = [];
+
+    for (const risk of this.libraryRisks) {
+      const triggerKpis = kpis.filter((kpi) =>
+        risk.trigger_kpi_codes?.includes(kpi.code),
+      );
+
+      if (triggerKpis.length > 0) {
+        let score = 0;
+        for (const kpi of triggerKpis) {
+          if (kpi.value !== undefined) {
+            score += this.evaluateRiskCondition(risk, kpi);
+          }
+        }
+
+        if (score >= 0.5) {
+          const severity = this.mapSeverity(risk.severity_level);
+          detectedChallenges.push({
+            id: risk.code,
+            name: risk.name_pt,
+            description: risk.description_pt || "",
+            severity,
+            detectedKPIs: risk.trigger_kpi_codes || [],
+            confidence: score,
+            domain: risk.domain,
+          });
+        }
+      }
+    }
+
+    const overallHealth = this.calculateOverallHealth(detectedChallenges);
+    const summary = this.generateSummary(detectedChallenges, overallHealth);
+
+    return {
+      challenges: detectedChallenges,
+      overallHealth,
+      summary,
+    };
+  }
+
+  async detectOpportunitiesFromLibrary(
+    kpis: KPIData[],
+  ): Promise<Opportunity[]> {
+    await this.loadLibraryRules();
+
+    const detectedOpportunities: Opportunity[] = [];
+
+    for (const opp of this.libraryOpportunities) {
+      const triggerKpis = kpis.filter((kpi) =>
+        opp.trigger_kpi_codes?.includes(kpi.code),
+      );
+
+      if (triggerKpis.length > 0) {
+        let score = 0;
+        for (const kpi of triggerKpis) {
+          if (kpi.value !== undefined) {
+            score += this.evaluateOpportunityCondition(opp, kpi);
+          }
+        }
+
+        if (score >= 0.5) {
+          detectedOpportunities.push({
+            id: opp.code,
+            name: opp.name_pt,
+            description: opp.description_pt || "",
+            confidence: score,
+            domain: opp.domain,
+            suggestedLevers: opp.suggested_levers || [],
+            potentialImpact: opp.potential_impact,
+            kpis: opp.trigger_kpi_codes || [],
+          });
+        }
+      }
+    }
+
+    return detectedOpportunities.sort((a, b) => b.confidence - a.confidence);
+  }
+
+  private evaluateRiskCondition(risk: LibraryRisk, kpi: KPIData): number {
+    const threshold = risk.threshold_value;
+    if (!threshold) return 0.5;
+
+    const value = kpi.value;
+    const operator = risk.threshold_operator;
+
+    switch (operator) {
+      case "<":
+        return value < threshold ? 1 : 0;
+      case "<=":
+        return value <= threshold ? 1 : 0;
+      case ">":
+        return value > threshold ? 1 : 0;
+      case ">=":
+        return value >= threshold ? 1 : 0;
+      default:
+        return 0.5;
+    }
+  }
+
+  private evaluateOpportunityCondition(
+    opp: LibraryOpportunity,
+    kpi: KPIData,
+  ): number {
+    const threshold = opp.threshold_value;
+    if (!threshold) return 0.5;
+
+    const value = kpi.value;
+    const operator = opp.threshold_operator;
+
+    switch (operator) {
+      case "<":
+        return value < threshold ? 1 : 0;
+      case "<=":
+        return value <= threshold ? 1 : 0;
+      case ">":
+        return value > threshold ? 1 : 0;
+      case ">=":
+        return value >= threshold ? 1 : 0;
+      default:
+        return 0.5;
+    }
+  }
+
+  private mapSeverity(level: number): ChallengeSeverity {
+    if (level >= 4) return "critical";
+    if (level >= 3) return "high";
+    if (level >= 2) return "medium";
+    return "low";
+  }
 
   detectSymptoms(kpis: KPIData[]): DetectionResult {
     const detectedChallenges: Challenge[] = [];
