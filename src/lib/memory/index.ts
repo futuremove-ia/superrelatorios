@@ -18,3 +18,16 @@ export type {
   UseMemoryOptions,
   UseMemoryReturn,
 } from "@/hooks/memory/useProjectMemory";
+
+export {
+  useAutomaticMemory,
+  recordDevelopmentDecision,
+  recordDevelopmentAction,
+  setCurrentTask,
+  getMemorySummary,
+  getRecentDecisions,
+  getRecentActions,
+} from "./automaticMemory";
+
+export { useAgentMemory } from "./useAgentMemory";
+export type { UseAgentMemoryOptions, AgentMemoryState } from "./useAgentMemory";

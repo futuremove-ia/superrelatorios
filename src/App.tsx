@@ -14,6 +14,10 @@ import { I18nRouter } from "@/components/I18nRouter";
 import PageLoader from "@/components/layout/PageLoader";
 import { ErrorBoundary } from "@/components/error/ErrorBoundary";
 import LocaleGuard from "@/components/navigation/LocaleGuard";
+import {
+  useAutomaticMemory,
+  recordDevelopmentDecision,
+} from "@/lib/memory/automaticMemory";
 
 // Lazy loaded pages
 const Index = lazy(() => import("./pages/Index"));
@@ -94,8 +98,15 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+// Memory Tracker - Automatic session tracking
+const MemoryTracker = () => {
+  useAutomaticMemory();
+  return null;
+};
+
 const App = () => (
   <ErrorBoundary>
+    <MemoryTracker />
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <TooltipProvider>
