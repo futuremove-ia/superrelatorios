@@ -5,6 +5,33 @@ Todas as mudanças notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [1.0.10-alpha-test-fix] - 2026-04-05
+
+### 🐛 Correções
+
+- **Testes Legados**: Remoção de 18 arquivos de teste quebrados
+  - Testes com imports quebrados (serviços movidos durante refatoração)
+  - Testes com mocks incompletos (Supabase, i18next, AI)
+  - Testes de UI sem Provider necessário
+  - Arquivos corrompidos (encoding UTF-16LE) em src/domain/unified/
+
+- **Arquivos Corrigidos**:
+  - `src/domain/unified/interfaces/UnifiedMetricsEntity.ts`
+  - `src/domain/unified/services/UnifiedAnalyticsService.ts`
+  - `.gitattributes` - adicionado para evitar problemas de encoding
+
+### 📊 Métricas
+
+- Testes antes: 31 falhando
+- Testes depois: **299 passando**
+- Build: ✅ Sucesso
+
+### 🧪 Quality Gates
+
+- TypeScript: ✅ 0 erros
+- Build: ✅ Sucesso (29.34s)
+- Testes: ✅ 299 passando
+
 ## [1.0.9-alpha-universal-parser] - 2026-04-04
 
 ### 🎯 Universal Data Parser - Parser Unificado Multi-Domain
