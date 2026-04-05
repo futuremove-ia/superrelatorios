@@ -1,5 +1,5 @@
 import { jwtVerify, createRemoteJWKSet } from "jose";
-import { isRateLimited, getIp } from "./utils/rate-limit";
+import { isRateLimited, getIp } from "./utils/rate-limit.js";
 
 const ONEDRIVE_CLIENT_ID = process.env.ONEDRIVE_CLIENT_ID;
 const ONEDRIVE_CLIENT_SECRET = process.env.ONEDRIVE_CLIENT_SECRET;

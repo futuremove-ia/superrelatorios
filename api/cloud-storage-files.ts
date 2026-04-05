@@ -1,5 +1,5 @@
 import { jwtVerify, createRemoteJWKSet } from "jose";
-import { isRateLimited, getIp } from "./utils/rate-limit";
+import { isRateLimited, getIp } from "./utils/rate-limit.js";
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
 const SUPABASE_SERVICE_KEY =

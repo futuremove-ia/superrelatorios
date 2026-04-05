@@ -33,10 +33,6 @@ const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT = 20; // 20 req/minuto por IP
 const RATE_WINDOW_MS = 60_000;
 
-function getRateLimitKey(ip: string) {
-  return ip;
-}
-
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
   const entry = rateLimitMap.get(ip);
