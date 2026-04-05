@@ -5,6 +5,27 @@ Todas as mudanças notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [1.0.12-alpha-edge-functions] - 2026-04-05
+
+### ✨ Novas Funcionalidades
+
+- **Edge Functions para Cloud Storage OAuth**
+  - api/google-drive.ts: Google Drive OAuth flow
+  - api/onedrive.ts: OneDrive OAuth flow
+  - api/cloud-storage-files.ts: File operations (list, read)
+  - Supabase service key auth via jose
+
+### 🔧 Melhorias
+
+- cloudStorage API client now uses Edge Functions instead of browser-based services
+- orgId removed from API params (extracted from JWT token)
+
+### 🧪 Quality Gates
+
+- TypeScript: ✅ 0 erros
+- Build: ✅ Sucesso (17.81s)
+- Deploy: ✅ https://superrelatorios.com.br
+
 ## [1.0.11-alpha-cloud-storage-rag] - 2026-04-05
 
 ### ✨ Novas Funcionalidades
