@@ -1,0 +1,43 @@
+import { j as a } from "./vendor-radix-C8JHQxE0.js";
+import { r as s } from "./vendor-react-Ju9LKgAZ.js";
+import { a as l } from "./vendor-utils-BdCfJOxW.js";
+import { c as o } from "./index-DF8MdIXV.js";
+const d = l(
+    "relative w-full rounded-lg border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground",
+    {
+      variants: {
+        variant: {
+          default: "bg-background text-foreground",
+          destructive:
+            "border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive",
+        },
+      },
+      defaultVariants: { variant: "default" },
+    },
+  ),
+  n = s.forwardRef(({ className: t, variant: e, ...r }, i) =>
+    a.jsx("div", {
+      ref: i,
+      role: "alert",
+      className: o(d({ variant: e }), t),
+      ...r,
+    }),
+  );
+n.displayName = "Alert";
+const c = s.forwardRef(({ className: t, ...e }, r) =>
+  a.jsx("h5", {
+    ref: r,
+    className: o("mb-1 font-medium leading-none tracking-tight", t),
+    ...e,
+  }),
+);
+c.displayName = "AlertTitle";
+const v = s.forwardRef(({ className: t, ...e }, r) =>
+  a.jsx("div", {
+    ref: r,
+    className: o("text-sm [&_p]:leading-relaxed", t),
+    ...e,
+  }),
+);
+v.displayName = "AlertDescription";
+export { n as A, v as a, c as b };
