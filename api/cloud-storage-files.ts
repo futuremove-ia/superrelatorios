@@ -1,4 +1,5 @@
 import { jwtVerify, createRemoteJWKSet } from "jose";
+import { isRateLimited, getIp } from "./utils/rate-limit";
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
 const SUPABASE_SERVICE_KEY =
@@ -251,6 +252,14 @@ export default async function handler(req: Request): Promise<Response> {
 
   if (!isValid) {
     return jsonResponse({ error: "Unauthorized" }, 401);
+  }
+
+  const ip = getIp(req);
+  if (isRateLimited(ip)) {
+    return jsonResponse(
+      { error: "Too many requests. Please try again later." },
+      429,
+    );
   }
 
   const orgId = await getOrgIdFromToken(authHeader!);
