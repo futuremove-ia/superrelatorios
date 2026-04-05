@@ -90,11 +90,28 @@ Para funcionalidades de IA, a chave é configurada apenas como variável de ambi
 
 ### Environment Variables
 
-| Variável                 | Descrição                 | Obrigatório     |
-| ------------------------ | ------------------------- | --------------- |
-| `VITE_SUPABASE_URL`      | URL do projeto Supabase   | Não (modo demo) |
-| `VITE_SUPABASE_ANON_KEY` | Chave anônima Supabase    | Não (modo demo) |
-| `GEMINI_API_KEY`         | API key Gemini (Servidor) | Não (opcional)  |
+#### Base (Obligatoire)
+
+| Variable                 | Description              | Obligatoire     |
+| ------------------------ | ------------------------ | --------------- |
+| `VITE_SUPABASE_URL`      | URL du projet Supabase   | Non (mode demo) |
+| `VITE_SUPABASE_ANON_KEY` | Clé anonime Supabase     | Non (mode demo) |
+| `GEMINI_API_KEY`         | Clé API Gemini (Serveur) | Non (optionnel) |
+
+#### Cloud Storage OAuth (Optionnel)
+
+Pour Google Drive et OneDrive, configurez ces variables dans Vercel :
+
+| Variable                 | Description                   |
+| ------------------------ | ----------------------------- |
+| `GOOGLE_CLIENT_ID`       | Client ID Google OAuth        |
+| `GOOGLE_CLIENT_SECRET`   | Client Secret Google OAuth    |
+| `GOOGLE_REDIRECT_URI`    | URI de callback Google        |
+| `ONEDRIVE_CLIENT_ID`     | Client ID Microsoft OAuth     |
+| `ONEDRIVE_CLIENT_SECRET` | Client Secret Microsoft OAuth |
+| `ONEDRIVE_REDIRECT_URI`  | URI de callback Microsoft     |
+
+**Note:** Ne pas utiliser le préfixe `VITE_` pour ces variables car elles sont utilisées par les Edge Functions côté serveur.
 
 ## 🚀 Testes
 

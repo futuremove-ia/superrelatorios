@@ -249,7 +249,63 @@ superrelatorios/
 
 ---
 
-## 11. Pendências e Divídas Técnicas
+## 11. Módulos Cloud Storage + RAG (2026-04-05)
+
+### Implementado
+
+| Módulo         | Arquivos                                                         | Status |
+| -------------- | ---------------------------------------------------------------- | ------ |
+| Cloud Storage  | GoogleDriveAdapter, OneDriveAdapter                              | ✅     |
+| RAG            | RagService, EmbeddingProvider                                    | ✅     |
+| Edge Functions | api/google-drive.ts, api/onedrive.ts, api/cloud-storage-files.ts | ✅     |
+
+### Edge Functions
+
+```
+api/
+├── google-drive.ts        # Google OAuth flow (auth-url, connect, disconnect, status)
+├── onedrive.ts            # OneDrive OAuth flow (auth-url, connect, disconnect, status)
+├── cloud-storage-files.ts # File ops (list-files, read-file)
+└── gemini.ts              # AI proxy (existing)
+```
+
+### Domain Entities
+
+```
+src/domain/
+├── cloud/
+│   ├── types.ts           # CloudProvider, CloudFile, CloudConnection
+│   └── entities/
+│       ├── CloudConfig.ts
+│       └── CloudFile.ts
+└── rag/
+    ├── types.ts           # RagDocument, RagChunk, EmbeddingProvider
+    └── entities/
+        ├── RagDocument.ts
+        └── RagChunk.ts
+```
+
+### Tables
+
+| Tabela                | Descrição                         |
+| --------------------- | --------------------------------- |
+| cloud_storage_configs | Credenciais OAuth por organização |
+| rag_documents         | Documentos indexados              |
+| rag_chunks            | Chunks de embeddings              |
+| platform_config       | Configuração global de IA         |
+
+### API Clients
+
+```
+src/lib/api/
+├── cloudStorage.ts       # Client para Edge Functions
+├── rag.ts                # Client para RAG
+└── types.ts              # Tipos compartilhados
+```
+
+---
+
+## 12. Pendências e Divídas Técnicas
 
 ### Sessão 2026-04-03: OnboardingFlow v2.0
 
@@ -295,4 +351,4 @@ superrelatorios/
 ---
 
 _Documento mantido atualizado a cada sessão de desenvolvimento_
-_Última atualização: 2026-04-03_
+_Última atualização: 2026-04-05_
