@@ -93,3 +93,18 @@ END $$;
 -- Indexes for RAG
 CREATE INDEX IF NOT EXISTS rag_chunks_org_idx ON rag_chunks(organization_id);
 CREATE INDEX IF NOT EXISTS rag_documents_org_idx ON rag_documents(organization_id);
+
+-- Platform Config (global - não por tenant)
+CREATE TABLE IF NOT EXISTS platform_config (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  key VARCHAR(100) NOT NULL UNIQUE,
+  value JSONB DEFAULT '{}',
+  embedding_provider VARCHAR(50),
+  huggingface_api_key TEXT,
+  openai_api_key TEXT,
+  gemini_api_key TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS platform_config_key_idx ON platform_config(key);

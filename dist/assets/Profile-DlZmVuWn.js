@@ -1,0 +1,314 @@
+import { j as e } from "./vendor-data-DuuuwLk5.js";
+import { r as N } from "./vendor-react-DfYPWlel.js";
+import { C as i, a as r, b as v, c as b, d as y } from "./card-CTs8HHrG.js";
+import { b as _, d as w, u as C, B as c } from "./index-CaCe4Bjh.js";
+import { I as l } from "./input-D9BHdvW6.js";
+import { L as t } from "./label-DVbglEJw.js";
+import { A, a as F, b as S } from "./avatar-BNfmjNcO.js";
+import {
+  ad as B,
+  ae as T,
+  af as V,
+  ag as I,
+  ah as L,
+  S as U,
+  ai as k,
+} from "./vendor-utils-CGetvm_l.js";
+import "./vendor-radix-CfL9Rjb9.js";
+const J = () => {
+  var n, o, x, p, h, f, j;
+  const { user: s } = _(),
+    { toast: g } = w(),
+    { t: a } = C(),
+    [d, m] = N.useState(!1),
+    u = () => {
+      (m(!0),
+        setTimeout(() => {
+          (m(!1),
+            g({
+              title: a("settings.appearance.save_success_title"),
+              description: a("settings.profile.save_button"),
+            }));
+        }, 1e3));
+    };
+  return e.jsx("div", {
+    className: "bg-gradient-subtle min-h-screen p-4 sm:p-6 lg:p-8",
+    children: e.jsxs("div", {
+      className: "max-w-4xl mx-auto space-y-8 animate-fade-in",
+      children: [
+        e.jsxs("div", {
+          children: [
+            e.jsx("h1", {
+              className: "text-3xl font-bold text-foreground",
+              children: a("profile.title"),
+            }),
+            e.jsx("p", {
+              className: "text-muted-foreground mt-2",
+              children: a("profile.subtitle"),
+            }),
+          ],
+        }),
+        e.jsxs("div", {
+          className: "grid grid-cols-1 lg:grid-cols-3 gap-8",
+          children: [
+            e.jsx(i, {
+              className: "lg:col-span-1 h-fit",
+              children: e.jsxs(r, {
+                className: "pt-8 text-center space-y-4",
+                children: [
+                  e.jsxs(A, {
+                    className: "h-32 w-32 mx-auto ring-4 ring-primary/10",
+                    children: [
+                      e.jsx(F, {
+                        src:
+                          (n = s == null ? void 0 : s.user_metadata) == null
+                            ? void 0
+                            : n.avatar_url,
+                      }),
+                      e.jsx(S, {
+                        className: "text-3xl bg-primary/5 text-primary",
+                        children:
+                          (o = s == null ? void 0 : s.email) == null
+                            ? void 0
+                            : o.charAt(0).toUpperCase(),
+                      }),
+                    ],
+                  }),
+                  e.jsxs("div", {
+                    className: "space-y-1",
+                    children: [
+                      e.jsx("h2", {
+                        className: "text-xl font-bold",
+                        children:
+                          ((x = s == null ? void 0 : s.user_metadata) == null
+                            ? void 0
+                            : x.full_name) || "Usuário",
+                      }),
+                      e.jsx("p", {
+                        className: "text-sm text-muted-foreground",
+                        children: s == null ? void 0 : s.email,
+                      }),
+                    ],
+                  }),
+                  e.jsxs(c, {
+                    variant: "outline",
+                    size: "sm",
+                    className: "w-full",
+                    children: [
+                      e.jsx(B, { className: "h-4 w-4 mr-2" }),
+                      a("settings.profile.change_photo"),
+                    ],
+                  }),
+                ],
+              }),
+            }),
+            e.jsxs(i, {
+              className: "lg:col-span-2",
+              children: [
+                e.jsxs(v, {
+                  children: [
+                    e.jsx(b, { children: a("settings.profile.title") }),
+                    e.jsx(y, { children: a("profile.subtitle") }),
+                  ],
+                }),
+                e.jsxs(r, {
+                  className: "space-y-6",
+                  children: [
+                    e.jsxs("div", {
+                      className: "grid grid-cols-1 sm:grid-cols-2 gap-4",
+                      children: [
+                        e.jsxs("div", {
+                          className: "space-y-2",
+                          children: [
+                            e.jsxs(t, {
+                              htmlFor: "firstName",
+                              className: "flex items-center gap-2",
+                              children: [
+                                e.jsx(T, {
+                                  className: "h-4 w-4 text-muted-foreground",
+                                }),
+                                a("settings.profile.first_name"),
+                              ],
+                            }),
+                            e.jsx(l, {
+                              id: "firstName",
+                              defaultValue:
+                                ((h =
+                                  (p = s == null ? void 0 : s.user_metadata) ==
+                                  null
+                                    ? void 0
+                                    : p.full_name) == null
+                                  ? void 0
+                                  : h.split(" ")[0]) || "",
+                            }),
+                          ],
+                        }),
+                        e.jsxs("div", {
+                          className: "space-y-2",
+                          children: [
+                            e.jsx(t, {
+                              htmlFor: "lastName",
+                              children: a("settings.profile.last_name"),
+                            }),
+                            e.jsx(l, {
+                              id: "lastName",
+                              defaultValue:
+                                ((j =
+                                  (f = s == null ? void 0 : s.user_metadata) ==
+                                  null
+                                    ? void 0
+                                    : f.full_name) == null
+                                  ? void 0
+                                  : j.split(" ").slice(1).join(" ")) || "",
+                            }),
+                          ],
+                        }),
+                      ],
+                    }),
+                    e.jsxs("div", {
+                      className: "space-y-2",
+                      children: [
+                        e.jsxs(t, {
+                          htmlFor: "email",
+                          className: "flex items-center gap-2",
+                          children: [
+                            e.jsx(V, {
+                              className: "h-4 w-4 text-muted-foreground",
+                            }),
+                            a("settings.profile.email"),
+                          ],
+                        }),
+                        e.jsx(l, {
+                          id: "email",
+                          type: "email",
+                          defaultValue: (s == null ? void 0 : s.email) || "",
+                          disabled: !0,
+                        }),
+                        e.jsx("p", {
+                          className: "text-xs text-muted-foreground italic",
+                          children: a("profile.fields.email_hint"),
+                        }),
+                      ],
+                    }),
+                    e.jsxs("div", {
+                      className: "grid grid-cols-1 sm:grid-cols-2 gap-4",
+                      children: [
+                        e.jsxs("div", {
+                          className: "space-y-2",
+                          children: [
+                            e.jsxs(t, {
+                              htmlFor: "company",
+                              className: "flex items-center gap-2",
+                              children: [
+                                e.jsx(I, {
+                                  className: "h-4 w-4 text-muted-foreground",
+                                }),
+                                a("settings.profile.company"),
+                              ],
+                            }),
+                            e.jsx(l, {
+                              id: "company",
+                              placeholder: "Nome da empresa",
+                            }),
+                          ],
+                        }),
+                        e.jsxs("div", {
+                          className: "space-y-2",
+                          children: [
+                            e.jsxs(t, {
+                              htmlFor: "role",
+                              className: "flex items-center gap-2",
+                              children: [
+                                e.jsx(L, {
+                                  className: "h-4 w-4 text-muted-foreground",
+                                }),
+                                a("settings.profile.role"),
+                              ],
+                            }),
+                            e.jsx(l, { id: "role", placeholder: "Seu cargo" }),
+                          ],
+                        }),
+                      ],
+                    }),
+                    e.jsxs("div", {
+                      className: "pt-4 flex flex-col sm:flex-row gap-3",
+                      children: [
+                        e.jsx(c, {
+                          className: "flex-1",
+                          onClick: u,
+                          disabled: d,
+                          children: a(d ? "common.processing" : "common.save"),
+                        }),
+                        e.jsx(c, {
+                          variant: "outline",
+                          className: "flex-1",
+                          children: a("profile.actions.revert_changes"),
+                        }),
+                      ],
+                    }),
+                  ],
+                }),
+              ],
+            }),
+          ],
+        }),
+        e.jsxs("div", {
+          className: "grid grid-cols-1 md:grid-cols-2 gap-6",
+          children: [
+            e.jsx(i, {
+              className: "hover-scale cursor-pointer bg-muted/30",
+              children: e.jsxs(r, {
+                className: "p-6 flex items-center gap-4",
+                children: [
+                  e.jsx("div", {
+                    className:
+                      "h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center",
+                    children: e.jsx(U, { className: "h-5 w-5 text-blue-600" }),
+                  }),
+                  e.jsxs("div", {
+                    children: [
+                      e.jsx("h4", {
+                        className: "font-medium",
+                        children: "Segurança da Conta",
+                      }),
+                      e.jsx("p", {
+                        className: "text-xs text-muted-foreground text-xs",
+                        children: "Proteção em duas etapas está desativada.",
+                      }),
+                    ],
+                  }),
+                ],
+              }),
+            }),
+            e.jsx(i, {
+              className: "hover-scale cursor-pointer bg-muted/30",
+              children: e.jsxs(r, {
+                className: "p-6 flex items-center gap-4",
+                children: [
+                  e.jsx("div", {
+                    className:
+                      "h-10 w-10 rounded-full bg-amber-100 flex items-center justify-center",
+                    children: e.jsx(k, { className: "h-5 w-5 text-amber-600" }),
+                  }),
+                  e.jsxs("div", {
+                    children: [
+                      e.jsx("h4", {
+                        className: "font-medium",
+                        children: "Notificações",
+                      }),
+                      e.jsx("p", {
+                        className: "text-xs text-muted-foreground",
+                        children: "Você tem 4 avisos recentes não lidos.",
+                      }),
+                    ],
+                  }),
+                ],
+              }),
+            }),
+          ],
+        }),
+      ],
+    }),
+  });
+};
+export { J as default };

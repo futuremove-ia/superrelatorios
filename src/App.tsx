@@ -51,6 +51,7 @@ const Flows = lazy(() => import("./pages/Flows"));
 const Radar = lazy(() => import("./pages/app/Radar"));
 const DocumentUploader = lazy(() => import("./pages/app/DocumentUploader"));
 const Metrics = lazy(() => import("./pages/app/Metrics"));
+const AIAnalyst = lazy(() => import("./pages/app/AIAnalyst"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -190,6 +191,7 @@ const App = () => (
                     <Route path="prioridades" element={<Priorities />} />
                     <Route path="profile" element={<Profile />} />
                     <Route path="settings" element={<Settings />} />
+                    <Route path="ai-analyst" element={<AIAnalyst />} />
                   </Route>
                   <Route path="*" element={<NotFound />} />
                 </Routes>

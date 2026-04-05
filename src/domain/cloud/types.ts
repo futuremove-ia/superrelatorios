@@ -26,3 +26,13 @@ export interface CloudConfig {
   syncEnabled: boolean;
   lastSyncAt?: Date;
 }
+
+export interface CloudConnection {
+  id: string;
+  organizationId: string;
+  provider: CloudProvider;
+  connected: boolean;
+  email?: string;
+  lastSync?: Date;
+  createdAt: Date;
+}
