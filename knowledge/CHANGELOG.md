@@ -5,6 +5,39 @@ Todas as mudanças notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [1.0.11-alpha-cloud-storage-rag] - 2026-04-05
+
+### ✨ Novas Funcionalidades
+
+- **Cloud Storage Integration**: Integração com Google Drive e OneDrive
+  - CloudConfig e CloudFile (Domain entities)
+  - GoogleDriveAdapter e OneDriveAdapter (Infrastructure)
+  - CloudStorageService com OAuth flow
+  - Supabase tables: cloud_configs, cloud_files
+
+- **RAG Module**: Retrieval-Augmented Generation para AI Analyst
+  - RagDocument e RagChunk (Domain entities)
+  - EmbeddingProvider multi-provider: HuggingFace, OpenAI, Gemini, Local fallback
+  - DocumentParser para chunking de documentos
+  - RagService: indexDocument, search, generateQueryVariations
+  - Multi-query generation (PT↔EN translations)
+  - Supabase tables: rag_documents, rag_chunks
+
+### 🧪 Quality Gates
+
+- TypeScript: ✅ 0 erros
+- Build: ✅ Sucesso (13.85s)
+- Testes: ✅ 9 passando (CloudStorageService + RagService)
+
+### 📁 Arquivos Afetados
+
+- `src/domain/cloud/` - entidades CloudConfig, CloudFile
+- `src/domain/rag/` - entidades RagDocument, RagChunk
+- `src/application/` - CloudStorageService, RagService
+- `src/infrastructure/cloud/` - GoogleDriveAdapter, OneDriveAdapter
+- `src/infrastructure/rag/` - EmbeddingProvider, DocumentParser
+- `supabase/migrations/20260405_cloud_storage_rag_tables.sql`
+
 ## [1.0.10-alpha-test-fix] - 2026-04-05
 
 ### 🐛 Correções
